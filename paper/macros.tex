@@ -1,0 +1,125 @@
+% ============================================================================
+% macros.tex -- notation for self-reinforced geometric absorption
+% Notation clashes resolved here (see docs/NOTATION.md):
+%   \Gam   = conversion rate        (Christoffel written explicitly)
+%   \Mmem  = memory variable        (\Mpl = reduced Planck mass)
+%   \bfrac = branching ratio        (baryons carry subscript \mathrm{b})
+%   \clock = constrained clock T    (stress tensor is \Tmn)
+% ============================================================================
+
+% ---- Calculus --------------------------------------------------------------
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\pdv}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\odv}[2]{\frac{\dd #1}{\dd #2}}
+\newcommand{\pdvat}[2]{\partial_{#2} #1}
+\DeclareMathOperator{\Ei}{Ei}
+\DeclareMathOperator{\csch}{csch}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\order}[1]{\mathcal{O}\!\left(#1\right)}
+\newcommand{\eqdef}{\coloneqq}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\avg}[1]{\left\langle #1 \right\rangle}
+
+% ---- Gravity / geometry ----------------------------------------------------
+\newcommand{\Mpl}{M_{\mathrm{Pl}}}
+\newcommand{\Lag}{\mathcal{L}}
+\newcommand{\Sact}{S}
+\newcommand{\gdet}{\sqrt{-g}}
+\newcommand{\covd}{\nabla}
+\newcommand{\Tmn}{T_{\mu\nu}}
+\newcommand{\Tup}{T^{\mu\nu}}
+\newcommand{\Tof}[1]{T^{(#1)}_{\mu\nu}}
+\newcommand{\Gmn}{G_{\mu\nu}}
+\newcommand{\umu}{u^{\mu}}
+\newcommand{\ulow}{u_{\mu}}
+\newcommand{\proj}{\Delta^{\mu\nu}}
+\newcommand{\expa}{\Theta}
+\newcommand{\clock}{T}                       % constrained clock field
+\newcommand{\lagm}{\lambda}                  % Lagrange multiplier
+\newcommand{\fourform}{\mathcal{H}}          % four-form field strength
+
+% ---- Cosmological densities ------------------------------------------------
+\newcommand{\rhoI}{\rho_{I}}                 % precursor
+\newcommand{\rhoD}{\rho_{D}}                 % localized defects
+\newcommand{\rhoV}{V}                        % vacuum energy density
+\newcommand{\rhob}{\rho_{\mathrm{b}}}        % baryons
+\newcommand{\rhor}{\rho_{\mathrm{r}}}        % radiation
+\newcommand{\rhom}{\rho_{\mathrm{m}}}        % total dust
+\newcommand{\rhotot}{\rho_{\mathrm{tot}}}
+\newcommand{\rhodmeff}{\rho_{\mathrm{dm}}^{\mathrm{eff}}}
+\newcommand{\Vinf}{V_{\infty}}
+\newcommand{\Vearly}{V_{\mathrm{early}}}
+
+% ---- Absorption kinetics ---------------------------------------------------
+\newcommand{\Gam}{\Gamma}                    % conversion rate
+\newcommand{\Gamz}{\Gamma_{0}}
+\newcommand{\Gamdn}{\Gamma_{\downarrow}}     % reverse (Track B) channel
+\newcommand{\fconv}{f}                       % converted fraction
+\newcommand{\Mmem}{M}                        % memory variable
+\newcommand{\tauM}{\tau_{M}}
+\newcommand{\bfrac}{b}                       % branching ratio to defects
+\newcommand{\QV}{Q_{V}}                      % energy transfer density-rate
+\newcommand{\Qnet}{Q_{\mathrm{net}}}
+\newcommand{\xieff}{\xi_{\mathrm{eff}}}
+\newcommand{\actS}{S_{\mathrm{act}}}         % activation switch
+\newcommand{\zact}{z_{\mathrm{act}}}
+\newcommand{\aact}{a_{\mathrm{act}}}
+
+% ---- Expansion & cosmography -----------------------------------------------
+\newcommand{\Hub}{H}
+\newcommand{\Hz}{H_{0}}
+\newcommand{\Hinf}{H_{\infty}}
+\newcommand{\Om}[1]{\Omega_{#1}}
+\newcommand{\Omm}{\Omega_{\mathrm{m}}}
+\newcommand{\Omr}{\Omega_{\mathrm{r}}}
+\newcommand{\OmV}{\Omega_{V}}
+\newcommand{\decel}{q}
+\newcommand{\jerk}{j}
+\newcommand{\snap}{s}
+\newcommand{\efold}{N}
+\newcommand{\weff}{w_{\mathrm{eff}}}
+\newcommand{\dS}{de~Sitter\xspace}
+\newcommand{\LCDM}{\Lambda\mathrm{CDM}}
+\newcommand{\wCDM}{w\mathrm{CDM}}
+\newcommand{\wzwa}{w_{0}w_{a}\mathrm{CDM}}
+
+% ---- Distances & data ------------------------------------------------------
+\newcommand{\DM}{D_{M}}
+\newcommand{\DHub}{D_{H}}
+\newcommand{\DV}{D_{V}}
+\newcommand{\DL}{D_{L}}
+\newcommand{\DA}{D_{A}}
+\newcommand{\rdrag}{r_{\mathrm{d}}}
+\newcommand{\rs}{r_{s}}
+\newcommand{\zstar}{z_{*}}
+\newcommand{\shift}{\mathcal{R}}             % CMB shift parameter
+\newcommand{\lA}{\ell_{A}}
+\newcommand{\fsig}{f\sigma_{8}}
+\newcommand{\chisq}{\chi^{2}}
+\newcommand{\lnL}{\ln\mathcal{L}}
+\newcommand{\AIC}{\mathrm{AIC}}
+\newcommand{\BIC}{\mathrm{BIC}}
+\newcommand{\lnZ}{\ln\mathcal{Z}}
+\newcommand{\lnB}{\ln B}
+
+% ---- Probability & quantum -------------------------------------------------
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Real}{\mathbb{R}}
+\newcommand{\Nat}{\mathbb{N}}
+\newcommand{\Int}{\mathbb{Z}}
+\newcommand{\Lind}{\mathcal{L}}              % Lindblad generator
+\newcommand{\dens}{\varrho}                  % density matrix
+\newcommand{\jump}{L}                        % jump operator
+\newcommand{\Hilb}{\mathscr{H}}
+
+% ---- Defects ---------------------------------------------------------------
+\newcommand{\Fstar}{F_{*}}
+\newcommand{\kaps}{\kappa_{s}}
+\newcommand{\Rs}{R_{s}}
+\newcommand{\degB}{B}                        % topological degree

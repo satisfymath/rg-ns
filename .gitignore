@@ -1,0 +1,31 @@
+# LaTeX build
+paper/build/
+*.aux
+*.log
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.out
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.swp
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+*.egg-info/
+
+# Data (fetched, verified by SHA256SUMS)
+data/raw/*
+!data/raw/.gitkeep
+
+# Heavy results (regenerable); results.json IS committed
+results/chains/
+results/sims/
+*.npz
+*.h5
