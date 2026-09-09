@@ -306,9 +306,15 @@ class RSDLikelihood:
     the DESI sample and would otherwise be counted twice.
 
     Growth is not part of the background module, so the model must be
-    supplied as a callable ``fs8_model(bg, z) -> array``.  Wire it to the
-    growth solver once that exists; until then the likelihood raises rather
-    than silently returning a wrong number.
+    supplied as a callable ``fs8_model(bg, z) -> array``; sigma_8 (or the
+    combination A_s-sigma_8) is then a nuisance parameter of that callable,
+    not of this class.  With :mod:`absorb.growth` the wiring is::
+
+        from absorb.growth import Growth
+        RSDLikelihood(fs8_model=lambda bg, z: Growth(bg).f_sigma8(z, sigma8_0))
+
+    Until a model is supplied the likelihood raises rather than silently
+    returning a wrong number.
     """
 
     fs8_model: FS8Model | None = None
