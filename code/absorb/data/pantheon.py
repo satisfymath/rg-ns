@@ -54,6 +54,13 @@ class PantheonData:
         Corrected apparent peak magnitude; m_b_corr = M_B + mu.
     is_calibrator
         Boolean mask of Cepheid-calibrated hosts.
+    use_cepheid
+        Rows whose residual must be built from ``ceph_dist`` instead of the
+        model distance modulus.  Equal to ``is_calibrator`` when
+        ``with_shoes`` and all-False otherwise: ten calibrators sit above the
+        Hubble-flow cut and are therefore *in* the SN-only sample, but there
+        they must be treated as ordinary supernovae, or the external Cepheid
+        calibration would leak into a sample that is meant to be free of it.
     ceph_dist
         Cepheid distance modulus of the host (only meaningful where
         ``is_calibrator``; -9 elsewhere in the release, left untouched).
@@ -71,6 +78,7 @@ class PantheonData:
     z_hel: np.ndarray
     m_b_corr: np.ndarray
     is_calibrator: np.ndarray
+    use_cepheid: np.ndarray
     ceph_dist: np.ndarray
     cov: np.ndarray
     cho: tuple[np.ndarray, bool]
@@ -119,12 +127,9 @@ def load_pantheon(with_shoes: bool = False) -> PantheonData:
     calib = t["IS_CALIBRATOR"] > 0.5
     sel = t["zHD"] > Z_MIN_HUBBLE_FLOW
     if with_shoes:
+        # Cepheid hosts are nearby, so most of them fall below the cut; they
+        # are added back because their external distance is what anchors M_B.
         sel = sel | calib
-    else:
-        # Calibrators are nearby hosts; without the Cepheid anchors their
-        # magnitudes carry no cosmological information, so drop them even if
-        # a rare one sits above the redshift cut.
-        sel = sel & ~calib
     idx = np.flatnonzero(sel)
 
     C = _read_cov()
@@ -137,6 +142,7 @@ def load_pantheon(with_shoes: bool = False) -> PantheonData:
         z_hel=t["zHEL"][idx].copy(),
         m_b_corr=t["m_b_corr"][idx].copy(),
         is_calibrator=calib[idx].copy(),
+        use_cepheid=(calib[idx] & bool(with_shoes)),
         ceph_dist=t["CEPH_DIST"][idx].copy(),
         cov=C,
         cho=cho_factor(C, lower=True),

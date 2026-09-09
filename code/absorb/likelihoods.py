@@ -130,7 +130,7 @@ class PantheonLikelihood:
         """Delta_i, i.e. the residual *before* subtracting M_B."""
         d = self._d
         mu = bg.distance_modulus(d.z_hd, d.z_hel)
-        model = np.where(d.is_calibrator, d.ceph_dist, mu)
+        model = np.where(d.use_cepheid, d.ceph_dist, mu)
         return d.m_b_corr - model
 
     def chi2(self, bg: Background, nuisance: Nuisance = None) -> float:
