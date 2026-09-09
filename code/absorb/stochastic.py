@@ -590,14 +590,26 @@ class Hysteresis:
     prep: dict = field(default_factory=dict)
     """How history B was prepared (pulse amplitude, solved initial fraction...)."""
 
+    @property
+    def residual_ratio(self) -> float:
+        """``(1 - f_B)/(1 - f_A)`` at ``t_final``.
+
+        The converted fractions themselves both approach 1, so the sharpest way
+        to state the effect is as a ratio of the *unconverted remainders*: a
+        value far from 1 means the two histories are still visibly different
+        after the checkpoint.
+        """
+        num, den = 1.0 - self.f_final_B, 1.0 - self.f_final_A
+        return num / den if den != 0.0 else float("inf")
+
 
 def hysteresis_experiment(
-    params: Kinetics = Kinetics(Gamma0=1.0, alpha=3.0, beta=3.0, tau_M=2.0),
+    params: Kinetics = Kinetics(Gamma0=0.15, alpha=2.0, beta=4.0, tau_M=12.0),
     *,
     f_start: float = 0.05,
-    f_start_ratio: float = 0.25,
+    f_start_ratio: float = 0.1,
     t_prepare: float = 1.0,
-    t_final: float = 12.0,
+    t_final: float = 5.0,
     pulse_end: float | None = None,
     amplitude_max: float = 1.0e6,
     a: Callable[[float], float] | None = None,

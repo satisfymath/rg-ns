@@ -1,4 +1,141 @@
 % 06_solvable_early
-\section{A solvable family and the early-universe branch}\label{sec:solvable-early}
+\section{A solvable family and the early-universe branch}
+\label{sec:solvable-early}
 
-\TODO{not written yet}
+This section does two things. It exhibits a one-parameter family for which the
+whole background is elementary, used throughout as a numerical benchmark; and
+it repairs a defect of the rate law as originally written, which is that a
+positive rate floor is incompatible with a standard early universe.
+
+\subsection{Conversion proportional to the expansion}\label{sec:solvable-family}
+
+Take $\Gam=\xi \Hub$ with $\xi\ge0$ constant, activation switched hard at
+$a_{\rm act}$. Then $\dd \fconv/\dd N=(1-\fconv)\xi$ is independent of the
+expansion rate, and with $n=3+\xi$ the system integrates in closed form:
+%
+\begin{keyresult}{I}{eq:solvable-closed-form}
+  \begin{aligned}
+    \fconv&=1-\left(a/a_{\rm act}\right)^{-\xi}, &
+    \rhoI&=\rho_{I,\rm act}\,(a/a_{\rm act})^{-n},\\
+    \rhoD&=a^{-3}\left[\rho_{D,\rm act}+\bfrac\,\rho_{I,\rm act}
+      \left(1-(a/a_{\rm act})^{-\xi}\right)\right], &
+    \rhoV&=V_{\rm act}+\frac{(1-\bfrac)\xi}{3+\xi}\rho_{I,\rm act}
+      \left(1-(a/a_{\rm act})^{-n}\right).
+  \end{aligned}
+\end{keyresult}
+%
+Summing gives the expansion history explicitly,
+%
+\begin{equation}\label{eq:solvable-friedmann}
+  3\Mpl^2\Hub^2=\Vinf
+  +\left(\rho_{\rm b,act}+\rho_{D,\rm act}+\bfrac\rho_{I,\rm act}\right)a^{-3}
+  +\frac{3(1-\bfrac)}{3+\xi}\rho_{I,\rm act}\,a^{-(3+\xi)}
+  +\rho_{\rm r,act}a^{-4} ,
+\end{equation}
+%
+with $\Vinf=V_{\rm act}+(1-\bfrac)\xi\rho_{I,\rm act}/(3+\xi)$. In the
+two-sector subcase one may go further and solve for the time dependence,
+$\Hub=\Hinf\coth y$ with $y=\tfrac{n}{2}\Hinf(t-t_B)$ and
+$a^n\propto\sinh^2y$; substituting into
+\cref{eq:realizations-clock-action} gives a closed-form potential
+$V(\clock)=\Mpl^2\Hinf^2[3-\xi\csch^2(\tfrac n2\Hinf(\clock-t_B))]$ that
+realises this trajectory exactly. This is an existence statement about a local
+covariant action, nothing more: $t_B$ is a parameter of the mathematical
+extension, not necessarily a physical big bang.
+
+\Cref{eq:solvable-closed-form} is the benchmark against which the numerical
+integrator is verified in \cref{app:numerics}; agreement is at the level of
+$10^{-9}$ in the converted fraction.
+
+\subsection{A positive rate floor has no early universe}
+\label{sec:solvable-nogo}
+
+Extending \cref{eq:solvable-closed-form} backwards makes the problem visible:
+$\rhoV$ crosses zero at a finite scale factor. The draft treated this as a
+restriction on the domain. It is worse than that, and the following makes the
+obstruction quantitative for the rate law as originally written.
+
+\begin{theorem}[Rate-floor no-go]\label{thm:no-go}
+  Suppose the solution exists with non-negative densities on $[a_i,1]$, that
+  $\Gam\ge\Gamz>0$ throughout, that $\bfrac<1$ and $\rho_{I0}>0$, and that
+  $\Hub$ is non-increasing. Then
+  %
+  \begin{keyresult}{C}{eq:solvable-nogo}
+    V_0-\rhoV(a_i)\ \ge\ c\,(1-\bfrac)\Mpl^2\,\Gamz \Hub_i ,
+    \qquad
+    \Gamz\ \lesssim\ \frac{\Hz^2}{\Hub_i} ,
+  \end{keyresult}
+  %
+  with $c=\order{1}$ set by the precursor fraction at $a_i$. Consequently the
+  fraction converted over the entire late universe is
+  $\Delta \fconv\lesssim \Hz/\Hub_i$.
+\end{theorem}
+
+\begin{proof}
+  From $V_0-\rhoV(a_i)=(1-\bfrac)\int\Gam\rhoI\,\dd t\ge(1-\bfrac)\Gamz\int\rhoI\,\dd t$,
+  change variables with $\dd t=\dd a/(a\Hub)$ and use $\rhoI\ge\rho_{I0}a^{-3}$
+  together with $\Hub\le \Hub_i$ to get
+  $\int\rhoI\,\dd t\ge\rho_{I0}(a_i^{-3}-1)/(3\Hub_i)$. The second inequality
+  follows from $\rhoV(a_i)\ge0$, which is \cref{thm:quasi-positivity}, and
+  $V_0\le3\Mpl^2\Hz^2$. The statement about $\Delta \fconv$ follows from
+  $\dot \fconv\le\Gam\le\Gamz e^{\alpha+\beta}$.
+\end{proof}
+
+Anchoring $a_i$ anywhere in the radiation era makes $\Hub_i/\Hz$ astronomically
+large, so the converted fraction is astronomically small: a rate with a
+positive floor either violates positivity in the past or converts nothing at
+all. The rate law of the draft therefore has no viable early universe, and the
+hypothesis $\Gam\ge g>0$ used in its convergence theorems cannot be assumed
+back to early times. \Cref{thm:regular-future,thm:de-sitter} are restated here
+for $t\ge t_{\rm act}$, which is all they are used for.
+
+\subsection{The activation law}\label{sec:solvable-activation}
+
+\begin{assumption}[Activation]\label{asm:activation}
+  Replace the floor by a switch that tracks the expansion,
+  %
+  \begin{keyresult}{C}{eq:solvable-activation}
+    \Gam(a,\fconv,\Mmem)=\Gamz\,\actS(a)\,e^{\alpha \fconv+\beta \Mmem},
+    \qquad
+    \actS(a)=\frac{a^{p}}{a^{p}+\aact^{p}},
+    \qquad p>3 .
+  \end{keyresult}
+\end{assumption}
+
+The reinforcement and memory structure is untouched; only the floor is
+replaced. All results of \cref{sec:positivity-ide,sec:cosmography,sec:perturbations}
+survive verbatim, because each needs only $\Gam\ge0$.
+
+\begin{proposition}[Convergence and positivity]\label{prop:activation}
+  Under \cref{asm:activation} with $\bfrac<1$, the limit
+  $V_{\rm early}=\lim_{a\to0^+}\rhoV(a)$ exists and is finite, $\rhoV$ is
+  non-decreasing, and therefore $\rhoV\ge0$ on $(0,1]$ if and only if
+  $V_{\rm early}\ge0$. A sufficient condition explicit in the parameters is
+  $\xi_0\,\mathcal I_{\actS}\le\Omega_{V0}(1-\fconv_0)/[(1-\bfrac)e^{\alpha+\beta}\Omega_{I0}]$
+  with $\mathcal I_{\actS}=\int_0^1\actS(a)a^{-4}\dd a$, which for the switch
+  above obeys
+  $\mathcal I_{\actS}\simeq\left[(p-3)^{-1}+\tfrac13\right]\aact^{-3}$.
+\end{proposition}
+
+The exponent condition $p>3$ is exactly the requirement that the integral
+generating the vacuum converge; it is the analytic content of the repair. Two
+sub-models follow. In the \emph{fully generated} case $V_{\rm early}=0$, the
+matter deficit of \cref{eq:positivity-deficit} would have to equal the entire
+present vacuum density, which is excluded unless activation is pushed to
+redshifts where it is unobservable. In the \emph{partially generated} case
+$V_{\rm early}>0$ the deficit is small and the model is testable; this is the
+regime studied in \cref{sec:observations}.
+
+Numerically, with $p=6$ and activation at $z_{\rm act}=1$ the conversion rate
+at recombination is below $10^{-21}$ of the expansion rate, so nucleosynthesis,
+recombination and the sound horizon are untouched, and the vacuum density
+generated after activation is a minority of its present value. A switch with
+$p=2$ fails this test for the expansion-tracking form of the rate, by nine
+orders of magnitude: the exponent is not cosmetic.
+
+\paragraph{What this section establishes.}
+A closed-form benchmark, a proof that the original rate law cannot be extended
+into the early universe, and a minimal repair with an explicit positivity
+condition. What it does not establish is a mechanism that switches conversion
+on at a particular epoch: $\aact$ and $p$ are parameters, and
+\cref{sec:outlook} lists deriving them as an open problem.
