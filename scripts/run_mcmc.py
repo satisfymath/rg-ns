@@ -40,7 +40,7 @@ def save_results(data: dict) -> None:
     RESULTS.write_text(json.dumps(data, indent=2, sort_keys=True))
 
 
-def derived_summary(model: str, flat: np.ndarray, n_max: int = 4000) -> dict:
+def derived_summary(model: str, flat: np.ndarray, n_max: int = 2000) -> dict:
     """Posterior of the derived quantities quoted in the paper."""
     from absorb.params import MODELS as M
     m = M[model]
@@ -110,7 +110,11 @@ def main() -> int:
             entry = summary.to_dict()
             entry["parameters"] = ci
             entry["derived"] = derived_summary(mname, flat)
-            theta_map = find_map(post, seed=args.seed)
+            # Refine from the best sample of the chain rather than searching
+            # the prior volume again: the chain has already found the mode.
+            sub = flat[:: max(1, len(flat) // 2000)]
+            seed_theta = sub[int(np.argmax([post(t) for t in sub]))]
+            theta_map = find_map(post, seed=args.seed, x0=seed_theta)
             bg = MODELS[mname].builder(MODELS[mname].to_dict(theta_map))
             entry["chi2_breakdown"] = {k: float(v)
                                        for k, v in like.breakdown(bg).items()}

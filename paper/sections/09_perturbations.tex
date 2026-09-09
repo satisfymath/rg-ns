@@ -1,4 +1,178 @@
 % 09_perturbations
 \section{Linear perturbations}\label{sec:perturbations}
 
-\TODO{not written yet}
+A background model with an interacting vacuum is not testable until its
+perturbations are specified, and the specification is not free: an exact
+vacuum has no rest frame of its own, so the way it exchanges energy determines
+how it perturbs. This section fixes that choice, shows why the obvious
+alternative is unstable, derives the growth equation, and corrects a result of
+the draft version that is wrong when both products are present.
+
+\subsection{The integrability condition and the geodesic realization}
+\label{sec:perturbations-realization}
+
+Suppose the vacuum receives energy with no spatial force in the frame $\umu$,
+so that $-\covd^\mu \rhoV=\QV \umu$. Lowering the index, the left side is a
+gradient, hence
+%
+\begin{keyresult}{I}{eq:perturbations-integrability}
+  \covd_{[\mu}\left(\QV u_{\nu]}\right)=0 .
+\end{keyresult}
+%
+This is a genuine constraint, not a definition: a scalar expression for $\QV$
+does not by itself define a consistent transfer. In the clock realization
+$u_\mu=-\partial_\mu \clock$, and \cref{eq:perturbations-integrability} is
+equivalent to $\dd \QV\wedge \dd \clock=0$, so that $\QV$ and $\rhoV$ are
+functions of $\clock$ alone wherever the clock is regular. On comoving
+hypersurfaces of constant $\clock$ this gives
+%
+\begin{equation}\label{eq:perturbations-com}
+  \delta \rhoV_{\rm com}=0, \qquad \delta Q_{V,\rm com}=0 .
+\end{equation}
+
+\begin{assumption}[Geodesic realization]\label{asm:geodesic}
+  The transfer is realised geodesically: $u_\mu=-\partial_\mu \clock$ with
+  $\rhoV=\rhoV(\clock)$, so that \cref{eq:perturbations-com} holds. The rate
+  law \cref{eq:process-rate} then applies to the background mode, and the
+  perturbations of the kinetic variables are slaved,
+  $\delta\Gam/\bar\Gam=-\delta_I$, with $\delta \fconv$ and $\delta \Mmem$
+  following by integration.
+\end{assumption}
+
+The draft listed four ways to extend the transfer off the background and chose
+none of them. We choose this one, and state it as an assumption rather than a
+derivation, because that is what it is. The choice is not arbitrary, however:
+the natural alternative is unstable.
+
+\begin{proposition}[A clumping vacuum is gradient-unstable]
+  \label{prop:clumping-unstable}
+  If instead $\delta \rhoV_{\rm com}=\zeta\,\delta_I$ with $\zeta>0$, the dust
+  experiences a force $\rhoI A^i=\partial^i \rhoV$, and the growth equation
+  acquires a term $-k^2\zeta\delta/(a^2\bar\rho_I)$. The effective sound speed
+  squared is then negative and short-wavelength modes grow without bound.
+\end{proposition}
+
+So the geodesic choice is the one that keeps the theory viable, which is worth
+saying explicitly because it is also the choice made in the interacting-vacuum
+literature \parencite{wands2012_12036776,sebastianutti2023_231214123}.
+
+\subsection{The branching ratio is invisible}\label{sec:perturbations-b}
+
+\begin{theorem}[$\bfrac$-independence of linear growth]\label{thm:b-independence}
+  Under \cref{asm:geodesic}, let
+  $\delta_{\rm m}=\sum_k\bar\rho_k\delta_k/\bar\rho_{\rm m}$ run over all
+  pressureless species $k\in\{I,D,{\rm b}\}$ and let $\vartheta$ be the
+  perturbed expansion. Then for every $\bfrac\in[0,1]$
+  %
+  \begin{keyresult}{C}{eq:perturbations-system}
+    \dot\delta_{\rm m}=-\vartheta+\gamma_c\delta_{\rm m},
+    \qquad
+    \dot\vartheta+2\Hub\vartheta=-\frac{\bar\rho_{\rm m}}{2\Mpl^2}\delta_{\rm m},
+    \qquad
+    \gamma_c=\frac{\bar \QV}{\bar\rho_{\rm m}} ,
+  \end{keyresult}
+  %
+  and hence
+  %
+  \begin{keyresult}{C}{eq:perturbations-growth}
+    \ddot\delta_{\rm m}+(2\Hub-\gamma_c)\dot\delta_{\rm m}
+    -\left(\frac{\bar\rho_{\rm m}}{2\Mpl^2}+\dot\gamma_c+2\Hub\gamma_c\right)
+    \delta_{\rm m}=0 .
+  \end{keyresult}
+\end{theorem}
+
+\begin{proof}
+  Perturb the continuity equation of each pressureless species and add. The
+  transfer contributes $-\bar\Gam\bar\rho_I\delta_I$ to the precursor and
+  $+\bfrac\bar\Gam\bar\rho_I\delta_I$ to the defects; the terms proportional to
+  $\bfrac$ cancel in the sum, leaving $-\bar \QV\delta_I$ distributed over the
+  total. Using $\delta Q_{V,\rm com}=0$ from \cref{eq:perturbations-com} gives
+  the first of \cref{eq:perturbations-system}. The linearised Raychaudhuri
+  equation with geodesic motion, and with shear and vorticity entering
+  quadratically, gives the second, its source being the total dust.
+  Eliminating $\vartheta$ yields \cref{eq:perturbations-growth}.
+\end{proof}
+
+\begin{corollary}\label{cor:b-invisible}
+  Every linear observable built from $\delta_{\rm m}$, $\vartheta$ and the
+  metric potentials depends on the model only through $\Hub(a)$ and
+  $\gamma_c(a)$. In particular $\bfrac$, and the split of the dark sector into
+  precursor and defects, cannot be measured by any linear probe.
+\end{corollary}
+
+\paragraph{Correction to the draft.} Proposition 7 of the draft version wrote
+\cref{eq:perturbations-growth} for the precursor contrast $\delta_I$, with
+$\gamma_c=\bar \QV/\bar\rho_I$ and a gravitational source $\bar\rho_I\delta_I$.
+That is correct only at $\bfrac=0$, and the restriction was not stated. For
+$\bfrac>0$ it fails twice: the friction coefficient in the $\delta_I$ equation
+is $\bar\Gam$, not $(1-\bfrac)\bar\Gam$; and the Poisson source is the total
+dust, not the precursor alone, which by
+\cref{eq:cosmology-survival} underestimates it by a factor tending to zero as
+$\fconv\to1$. \Cref{thm:b-independence} is the repaired statement, and it has
+the same form as what the draft wrote, but for the right variable.
+
+\subsection{Growth, redshift-space distortions and the potential}
+\label{sec:perturbations-growth}
+
+In $\efold=\ln a$, with $E=\Hub/H_{100}$ and $g_c=\gamma_c/\Hub$,
+\cref{eq:perturbations-growth} is
+%
+\begin{keyresult}{C}{eq:perturbations-growth-N}
+  \delta_{\rm m}''+\left(2+\frac{E'}{E}-g_c\right)\delta_{\rm m}'
+  -\left[\frac32\Omm+g_c'+\left(2+\frac{E'}{E}\right)g_c\right]\delta_{\rm m}=0 ,
+\end{keyresult}
+%
+where $g_c=\omega_V'/\omega_{\rm m}$ in the reduced units of
+\cref{app:numerics}, and the growing mode has $\delta_{\rm m}\propto a$ deep in
+matter domination. Setting $g_c=0$ recovers the standard equation.
+
+The observationally important point is that redshift-space distortions do not
+measure $\dd\ln\delta_{\rm m}/\dd\ln a$. They measure the velocity divergence,
+and here the two differ precisely because the dust is being sourced:
+%
+\begin{keyresult}{C}{eq:perturbations-frsd}
+  f_{\rm RSD}=-\frac{\vartheta}{\Hub\delta_{\rm m}}
+  =\frac{\dd\ln\delta_{\rm m}}{\dd\ln a}-\frac{\QV}{\Hub\rho_{\rm m}} ,
+  \qquad
+  \left[\fsig\right]_{\rm RSD}=f_{\rm RSD}\,\sigma_8(z) .
+\end{keyresult}
+%
+The correction is not small: at the parameter values that fit the expansion
+history it suppresses $\fsig$ noticeably, which makes growth data an
+independent and rather sharp test of the model rather than a formality. This is
+reported in \cref{sec:observations}.
+
+For the gravitational potential, $\dd\ln\Phi/\dd\ln a=f_{\rm RSD}-1$, so $\Phi$
+already decays during matter domination at rate $\QV/(\Hub\rho_{\rm m})$: the
+integrated Sachs--Wolfe signal has the same sign as in $\LCDM$ but a larger
+amplitude.
+
+\subsection{No large-scale instability}\label{sec:perturbations-stability}
+
+Interacting dark energy models are notorious for a super-horizon instability of
+the curvature perturbation, which afflicts couplings with a propagating dark
+energy component and a constant equation of state
+\parencite{valiviita2008_08040232}.
+
+\begin{proposition}[Absence of the instability]\label{prop:no-instability}
+  Under \cref{asm:geodesic} the system \cref{eq:perturbations-system} contains
+  no independent dark-energy degree of freedom, no pressure perturbation, and
+  no $k$-dependent coefficient. Its coefficients are of order $\Hub$ and
+  $\Hub^2$, so $|\delta_{\rm m}|$ is bounded by a power of $a$ on every scale.
+\end{proposition}
+
+The instability arises when a dark-energy fluid is given a sound speed and a
+density perturbation of its own while being coupled; an exact vacuum has
+neither, and \cref{eq:perturbations-com} is precisely the statement that its
+perturbation is determined rather than assigned. This should not be confused
+with the separate and genuine problem that the clock congruence has vanishing
+sound speed and can form caustics: that is nonlinear, no linear analysis speaks
+to it, and \cref{sec:outlook} records it as open.
+
+\paragraph{What this section establishes.}
+A closed and stable linear system under \cref{asm:geodesic}, a theorem that the
+branching ratio is unobservable in linear theory, a corrected growth equation,
+and a quantitative prediction for $\fsig$ and the ISW amplitude. What it does
+not establish is nonlinear behaviour, the fate of caustics, or a full CMB
+calculation: the compressed distance priors used in \cref{sec:observations} are
+a geometric summary, not a substitute for a Boltzmann code.

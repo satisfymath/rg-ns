@@ -128,28 +128,41 @@ class Posterior:
 # --------------------------------------------------------------------------- #
 # MAP search
 # --------------------------------------------------------------------------- #
-def find_map(post: Posterior, n_starts: int = 8, seed: int = SEED) -> np.ndarray:
-    """Best-fit parameters from multi-start Powell followed by Nelder-Mead."""
+def find_map(post: Posterior, n_starts: int = 4, seed: int = SEED,
+             x0: np.ndarray | None = None) -> np.ndarray:
+    """Best-fit parameters.
+
+    If ``x0`` is given, normally the best sample of an existing chain, a single
+    local refinement is run from it: the chain has already located the mode, so
+    repeating a global search wastes more time than the chain itself took.
+    Otherwise a short multi-start Latin-hypercube search seeds the walkers.
+    The iteration caps matter, because an uncapped Powell run on a 13 ms
+    likelihood dominates the total runtime.
+    """
     from scipy.optimize import minimize
     from scipy.stats import qmc
 
-    rng = np.random.default_rng(seed)
     lows = np.array([p.low for p in _priors_of(post)])
     highs = np.array([p.high for p in _priors_of(post)])
-    starts = qmc.LatinHypercube(d=post.ndim, seed=seed).random(n_starts)
-    starts = lows + starts * (highs - lows)
+    if x0 is not None:
+        starts = np.atleast_2d(np.asarray(x0, dtype=float))
+    else:
+        starts = qmc.LatinHypercube(d=post.ndim, seed=seed).random(n_starts)
+        starts = lows + starts * (highs - lows)
 
     def neg(theta):
         v = post(theta)
         return 1e10 if not np.isfinite(v) else -v
 
     best, best_val = None, np.inf
-    for x0 in starts:
+    for start in starts:
         try:
-            r = minimize(neg, x0, method="Powell",
-                         options=dict(maxiter=4000, xtol=1e-4, ftol=1e-6))
+            r = minimize(neg, start, method="Powell",
+                         options=dict(maxiter=40, maxfev=4000,
+                                      xtol=1e-4, ftol=1e-6))
             r = minimize(neg, r.x, method="Nelder-Mead",
-                         options=dict(maxiter=4000, xatol=1e-5, fatol=1e-7))
+                         options=dict(maxiter=1500, maxfev=1500,
+                                      xatol=1e-5, fatol=1e-6))
         except Exception:                                          # pragma: no cover
             continue
         if r.fun < best_val:

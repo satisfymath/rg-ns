@@ -101,13 +101,39 @@ def test_samplers_are_statistically_indistinguishable() -> None:
 
 
 def test_samplers_agree_without_memory_feedback() -> None:
-    """With beta = 0 both samplers reduce to the same closed-form exponential."""
+    """With beta = 0 the intensity is piecewise constant; both samplers still agree.
+
+    (The two draw different numbers of uniforms per jump -- thinning needs an
+    acceptance variate -- so the *paths* differ even at equal seeds; only the
+    laws must coincide.)
+    """
     p = st.Kinetics(Gamma0=1.3, alpha=1.0, beta=0.0, tau_M=0.5)
     t = np.array([0.2, 0.5, 1.0])
-    a = st.simulate_thinning(50, t, p, R=1200, seed=SEED)
-    b = st.simulate_inversion(50, t, p, R=1200, seed=SEED)
-    # identical seeds and identical (constant) waiting-time law => identical paths
-    assert np.array_equal(a.f, b.f)
+    a = st.simulate_thinning(50, t, p, R=1500, seed=SEED)
+    b = st.simulate_inversion(50, t, p, R=1500, seed=SEED + 1)
+    for i in range(t.size):
+        assert ks_2samp(a.f[:, i], b.f[:, i], method="asymp").pvalue > 0.01
+
+
+def test_independent_units_are_binomial() -> None:
+    """alpha = beta = 0: the units are independent, so k(t) ~ Binomial(N, q).
+
+    This is the one case with a fully closed-form law, and it pins the absolute
+    normalisation of both samplers rather than just their mutual agreement.
+    """
+    N, Gamma0, R = 40, 0.9, 4000
+    p = st.Kinetics(Gamma0=Gamma0, alpha=0.0, beta=0.0)
+    t = np.array([0.3, 0.8, 1.6])
+    q = 1.0 - np.exp(-Gamma0 * t)
+    rng = np.random.default_rng(SEED + 7)
+    for sampler in (st.simulate_thinning, st.simulate_inversion):
+        ens = sampler(N, t, p, R=R, seed=SEED)
+        sem = np.sqrt(q * (1.0 - q) / N / R)
+        assert np.all(np.abs(ens.mean_f - q) < 4.0 * sem)
+        assert np.allclose(ens.f.var(axis=0), q * (1.0 - q) / N, rtol=0.12)
+        for i in range(t.size):
+            ref = rng.binomial(N, q[i], size=R) / N
+            assert ks_2samp(ens.f[:, i], ref, method="asymp").pvalue > 0.01
 
 
 def test_integrated_intensity_matches_quadrature() -> None:
@@ -303,12 +329,19 @@ def test_hysteresis_asymptotic_invariant_in_an_expanding_background() -> None:
 
 
 def test_hysteresis_effect_grows_with_beta() -> None:
-    """The separation is controlled by beta, as the mechanism requires."""
-    prev = -1.0
-    for beta in (0.0, 1.0, 2.0, 4.0):
-        h = st.hysteresis_experiment(st.Kinetics(0.15, 2.0, beta, 12.0))
-        assert abs(h.delta_f_final) > prev
-        prev = abs(h.delta_f_final)
+    """The separation is controlled by beta, as the mechanism requires.
+
+    The absolute gap ``|f_A - f_B|`` is not monotone in beta -- at large beta
+    both histories run away and saturate, squeezing the gap -- but the ratio of
+    surviving unconverted fractions is, and that is the scale-free statement.
+    """
+    ratios = [
+        st.hysteresis_experiment(st.Kinetics(0.15, 2.0, beta, 12.0)).residual_ratio
+        for beta in (0.0, 0.5, 1.0, 2.0, 3.0, 4.0)
+    ]
+    assert ratios[0] == pytest.approx(1.0, abs=1e-8)
+    assert np.all(np.diff(ratios) > 0.0), ratios
+    assert ratios[-1] > 3.0
 
 
 def test_hysteresis_rejects_bad_windows() -> None:
