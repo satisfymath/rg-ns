@@ -24,6 +24,9 @@ HEADER = (
 )
 
 
+_DIGIT_LETTERS = "ZOTWFVXSEN"
+
+
 def camel(path: str) -> str:
     """results key path -> a valid LaTeX macro name."""
     parts = re.split(r"[^A-Za-z0-9]+", path)
@@ -32,7 +35,10 @@ def camel(path: str) -> str:
         if not p:
             continue
         head = p[0].upper() + p[1:]
-        out += re.sub(r"[0-9]", lambda m: "ZOTTFSSEN"[int(m.group())], head)
+        # LaTeX command names cannot contain digits, so map each digit to a
+        # distinct letter (Zero, One, Two, thWee, Four, fiVe, siX, Seven,
+        # Eight, Nine); the mapping only has to be injective.
+        out += re.sub(r"[0-9]", lambda m: _DIGIT_LETTERS[int(m.group())], head)
     return out
 
 

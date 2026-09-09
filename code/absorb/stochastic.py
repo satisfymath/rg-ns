@@ -55,7 +55,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass, field
-from typing import Callable, Literal
+from typing import Callable
 
 import numpy as np
 from scipy.integrate import solve_ivp

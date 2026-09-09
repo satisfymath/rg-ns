@@ -122,5 +122,111 @@
       "tau_max": 12.408596888571498,
       "thin": 6
     }
+  },
+  "convergence": {
+    "lln_error_N100": {
+      "fmt": ".2e",
+      "value": 0.014231337825682422
+    },
+    "lln_error_N1000": {
+      "fmt": ".2e",
+      "value": 0.0012995861511093665
+    },
+    "lln_error_N10000": {
+      "fmt": ".2e",
+      "value": 0.00048090698760550055
+    },
+    "scaled_std_N100": {
+      "fmt": ".4f",
+      "value": 0.8877386377132
+    },
+    "scaled_std_N1000": {
+      "fmt": ".4f",
+      "value": 0.9066399260762545
+    },
+    "scaled_std_N10000": {
+      "fmt": ".4f",
+      "value": 0.9330522576766831
+    }
+  },
+  "hysteresis": {
+    "delta_memory": {
+      "fmt": ".5f",
+      "value": 0.04164490634198608
+    },
+    "delta_vacuum": {
+      "fmt": ".5f",
+      "value": 0.0053985998673569124
+    },
+    "f_checkpoint": {
+      "fmt": ".5f",
+      "value": 0.26283232409614143
+    },
+    "memory_A": {
+      "fmt": ".5f",
+      "value": 0.05833405083283243
+    },
+    "memory_B": {
+      "fmt": ".5f",
+      "value": 0.016689144490846353
+    },
+    "relative_delta_vacuum": {
+      "fmt": ".4f",
+      "value": 0.007346213586121571
+    },
+    "vacuum_A": {
+      "fmt": ".5f",
+      "value": 0.7348819638944231
+    },
+    "vacuum_B": {
+      "fmt": ".5f",
+      "value": 0.7294833640270662
+    }
+  },
+  "lindblad": {
+    "closure_error_N8": {
+      "fmt": ".2e",
+      "value": 0.007283707928452121
+    },
+    "closure_slope": {
+      "fmt": ".3f",
+      "value": -1.1904384066166303
+    }
+  },
+  "skyrme": {
+    "bound": {
+      "fmt": ".3f",
+      "value": 83.74637039566656
+    },
+    "bound_ratio": {
+      "fmt": ".4f",
+      "value": 1.23144570258705
+    },
+    "degree": {
+      "fmt": ".6f",
+      "value": 0.9999999958252157
+    },
+    "energy": {
+      "fmt": ".3f",
+      "value": 103.12910750046515
+    },
+    "trial_min": {
+      "fmt": ".3f",
+      "value": 118.4352528130723
+    },
+    "trial_ratio": {
+      "fmt": ".3f",
+      "value": 0.8707636033270854
+    },
+    "virial_residual": {
+      "fmt": ".2e",
+      "value": 1.6985267006909278e-10
+    }
+  },
+  "symbolic": {
+    "n_checks": {
+      "fmt": "d",
+      "value": 6
+    }
   }
 }

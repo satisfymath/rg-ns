@@ -1,0 +1,147 @@
+#!/usr/bin/env python3
+"""Run every simulation that feeds a number or a figure in the paper.
+
+Writes results/results.json (merging with whatever the MCMC runner has already
+put there) and results/sims/*.npz for the figure scripts.  Every number quoted
+in the manuscript comes from this file; nothing is typed by hand.
+"""
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+import numpy as np
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "code"))
+
+from absorb import lindblad, skyrme, stochastic, symbolic          # noqa: E402
+from absorb.constants import SEED                                  # noqa: E402
+
+RESULTS = ROOT / "results" / "results.json"
+SIMS = ROOT / "results" / "sims"
+
+
+def load() -> dict:
+    return json.loads(RESULTS.read_text()) if RESULTS.exists() else {}
+
+
+def save(d: dict) -> None:
+    RESULTS.parent.mkdir(parents=True, exist_ok=True)
+    RESULTS.write_text(json.dumps(d, indent=2, sort_keys=True))
+
+
+def run_skyrme() -> dict:
+    print("skyrme: solving the hedgehog boundary-value problem ...")
+    h = skyrme.solve_hedgehog()
+    trial_min = 12.0 * np.pi ** 2
+    bound = skyrme.bogomolny_bound()
+    np.savez(SIMS / "skyrme_profile.npz", x=h.x, F=h.F, Fp=h.Fp)
+    out = {
+        "energy":        {"value": float(h.Etilde), "fmt": ".3f"},
+        "bound":         {"value": float(bound), "fmt": ".3f"},
+        "trial_min":     {"value": float(trial_min), "fmt": ".3f"},
+        "bound_ratio":   {"value": float(h.bound_ratio), "fmt": ".4f"},
+        "trial_ratio":   {"value": float(h.trial_ratio), "fmt": ".3f"},
+        "degree":        {"value": float(h.B), "fmt": ".6f"},
+        "virial_residual": {"value": float(abs(h.E2 - h.E4) / h.E2), "fmt": ".2e"},
+    }
+    print(f"  E = {h.Etilde:.4f}  = {h.bound_ratio:.4f} x bound"
+          f"  = {h.trial_ratio:.4f} x trial;  B = {h.B:.6f}")
+    return out
+
+
+def run_hysteresis() -> dict:
+    print("stochastic: hysteresis experiment ...")
+    h = stochastic.hysteresis_experiment()
+    np.savez(SIMS / "hysteresis.npz", t=h.t, f_A=h.f_A, f_B=h.f_B,
+             M_A=h.M_A_traj, M_B=h.M_B_traj)
+    out = {
+        "f_checkpoint":     {"value": float(h.f_checkpoint), "fmt": ".5f"},
+        "memory_A":         {"value": float(h.M_A), "fmt": ".5f"},
+        "memory_B":         {"value": float(h.M_B), "fmt": ".5f"},
+        "delta_memory":     {"value": float(h.delta_M), "fmt": ".5f"},
+        "vacuum_A":         {"value": float(h.V_A), "fmt": ".5f"},
+        "vacuum_B":         {"value": float(h.V_B), "fmt": ".5f"},
+        "delta_vacuum":     {"value": float(h.delta_V), "fmt": ".5f"},
+        "relative_delta_vacuum": {"value": float(h.relative_delta_V), "fmt": ".4f"},
+    }
+    print(f"  same f = {h.f_checkpoint:.5f}, memories differ by {h.delta_M:.5f}"
+          f"  ->  final vacua differ by {100*h.relative_delta_V:.2f}%")
+    return out
+
+
+def run_convergence() -> dict:
+    print("stochastic: law of large numbers and fluctuation scaling ...")
+    kin = stochastic.Kinetics(Gamma0=1.0, alpha=2.0, beta=1.0, tau_M=0.7)
+    t = np.linspace(0.0, 4.0, 200)
+    det = stochastic.deterministic(t, kin)
+    rows, out = [], {}
+    for N in (100, 1000, 10000):
+        ens = stochastic.simulate_thinning(N, t, kin, R=600, seed=SEED)
+        mean = ens.f.mean(axis=0)
+        std = ens.f.std(axis=0)
+        err = float(np.max(np.abs(mean - det.f)))
+        scaled = float(np.max(np.sqrt(N) * std))
+        rows.append((N, err, scaled))
+        out[f"lln_error_N{N}"] = {"value": err, "fmt": ".2e"}
+        out[f"scaled_std_N{N}"] = {"value": scaled, "fmt": ".4f"}
+        print(f"  N={N:6d}  max|mean - ODE| = {err:.2e}   max sqrt(N) std = {scaled:.4f}")
+    # store the ensembles needed by the fan-chart figure
+    ens_store = {}
+    for N in (100, 1000, 10000, 100000):
+        ens = stochastic.simulate_thinning(N, t, kin, R=40, seed=SEED + N)
+        ens_store[f"f_N{N}"] = ens.f
+    np.savez(SIMS / "gillespie.npz", t=t, det_f=det.f, det_M=det.M, **ens_store)
+    return out
+
+
+def run_lindblad() -> dict:
+    print("lindblad: mean-field closure error versus N ...")
+    t = np.linspace(0.0, 4.0, 200)
+    sc = lindblad.closure_error_scaling((2, 3, 4, 5, 6, 7, 8), t)
+    np.savez(SIMS / "lindblad.npz", N=sc.N, error=sc.error)
+    print(f"  fitted slope of log(error) vs log(N): {sc.slope:.4f}  (expected -1)")
+    return {
+        "closure_slope": {"value": float(sc.slope), "fmt": ".3f"},
+        "closure_error_N8": {"value": float(sc.error[-1]), "fmt": ".2e"},
+    }
+
+
+def run_symbolic() -> dict:
+    print("symbolic: verifying the analytic claims with sympy ...")
+    checks = {}
+    for name in dir(symbolic):
+        if not name.startswith("check_"):
+            continue
+        fn = getattr(symbolic, name)
+        if not callable(fn):
+            continue
+        try:
+            fn()
+            checks[name] = True
+            print(f"  {name}: ok")
+        except Exception as exc:                                  # noqa: BLE001
+            checks[name] = False
+            print(f"  {name}: FAILED -- {exc}")
+    if not all(checks.values()):
+        raise SystemExit("symbolic verification failed")
+    return {"n_checks": {"value": len(checks), "fmt": "d"}}
+
+
+def main() -> int:
+    SIMS.mkdir(parents=True, exist_ok=True)
+    data = load()
+    data["skyrme"] = run_skyrme()
+    data["hysteresis"] = run_hysteresis()
+    data["convergence"] = run_convergence()
+    data["lindblad"] = run_lindblad()
+    data["symbolic"] = run_symbolic()
+    save(data)
+    print(f"\nwrote {RESULTS.relative_to(ROOT)}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

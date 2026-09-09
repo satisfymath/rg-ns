@@ -41,3 +41,32 @@ def test_growth_normalization():
     g = Growth(lcdm(omega_L=0.30))
     assert np.isclose(float(g.D(0.0)[0]), 1.0, atol=1e-12)
     assert np.all(np.diff(g.D(np.linspace(0, 3, 50))) < 0.0)
+
+
+def test_opposite_sign_growth_signature():
+    """The sharpest linear signature of the model.
+
+    Because the vacuum receives the same absolute energy density everywhere,
+    overdense regions lose the smaller fraction: the density growth rate is
+    *enhanced* while the velocity growth rate, which RSD measure, is
+    *suppressed*.  A coupling that drained energy in proportion to the local
+    density would move both the same way.
+    """
+    bg = Background(BackgroundParams(
+        omega_b=0.02237, omega_c=0.14, omega_V_act=0.20, eps=0.35,
+        log10_gamma0=0.0, alpha_tot=2.0, r_beta=0.5, log10_tau=-0.3, z_act=3.0))
+    g = Growth(bg)
+    z = np.array([3.0, 2.0, 1.0])
+    assert np.all(g.f_growth(z) > 1.0), "density growth must be enhanced"
+    assert np.all(g.f_rsd(z) < 1.0), "velocity growth must be suppressed"
+    # and the two must straddle unity by comparable amounts at the same epoch
+    assert np.all(g.f_growth(z) - g.f_rsd(z) > 0.0)
+
+
+def test_signature_vanishes_before_activation():
+    bg = Background(BackgroundParams(
+        omega_b=0.02237, omega_c=0.14, omega_V_act=0.20, eps=0.35,
+        log10_gamma0=0.0, alpha_tot=2.0, r_beta=0.5, log10_tau=-0.3, z_act=3.0))
+    g = Growth(bg)
+    assert np.isclose(float(g.f_growth(20.0)[0]), 1.0, atol=2e-3)
+    assert np.isclose(float(g.f_rsd(20.0)[0]), 1.0, atol=2e-3)

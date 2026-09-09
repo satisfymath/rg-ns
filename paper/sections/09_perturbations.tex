@@ -137,15 +137,41 @@ and here the two differ precisely because the dust is being sourced:
   \left[\fsig\right]_{\rm RSD}=f_{\rm RSD}\,\sigma_8(z) .
 \end{keyresult}
 %
-The correction is not small: at the parameter values that fit the expansion
-history it suppresses $\fsig$ noticeably, which makes growth data an
-independent and rather sharp test of the model rather than a formality. This is
-reported in \cref{sec:observations}.
+The correction is not small, and its structure is the sharpest linear
+signature the model has. Working to first order in $g_c$ during matter
+domination, with $g_c\propto a^{p}$ inherited from the activation switch,
 
-For the gravitational potential, $\dd\ln\Phi/\dd\ln a=f_{\rm RSD}-1$, so $\Phi$
-already decays during matter domination at rate $\QV/(\Hub\rho_{\rm m})$: the
-integrated Sachs--Wolfe signal has the same sign as in $\LCDM$ but a larger
-amplitude.
+\begin{keyresult}{C}{eq:perturbations-growth-signature}
+  f_g=1+\frac{2p+3}{2p+5}\,g_c+\order{g_c^2},
+  \qquad
+  f_{\rm RSD}=1-\frac{2}{2p+5}\,g_c+\order{g_c^2} .
+\end{keyresult}
+
+The two move in \emph{opposite} directions: density growth is enhanced while
+the velocity field, and hence $\fsig$, is suppressed. The reason is that
+$\delta Q_{V,\rm com}=0$ makes overdense and underdense regions lose the same
+absolute energy density, so overdense regions lose the smaller fraction and
+$\delta_{\rm m}$ is boosted, while $\vartheta$ is not. A model that removed
+energy in proportion to the local density would suppress both. Our numerical
+solution reproduces \cref{eq:perturbations-growth-signature}: at $z=2$ in a
+representative fit, $f_g>1$ while $f_{\rm RSD}<1$.
+
+For the gravitational potential the relativistic Poisson equation gives
+$\dd\ln\Phi/\dd\ln a=f_{\rm RSD}-1$, so during matter domination
+%
+\begin{keyresult}{C}{eq:perturbations-isw}
+  \left.\frac{\dd\ln\Phi}{\dd\ln a}\right|_{\rm MD}
+  =-\frac{2}{2p+5}\,\frac{\bar \QV}{\Hub\bar\rho_{\rm m}}<0 ,
+\end{keyresult}
+%
+whereas in $\LCDM$ the potential is exactly constant then. The integrated
+Sachs--Wolfe contributions therefore start earlier than in $\LCDM$ and add to
+the late-time one rather than cancelling it. It is worth resisting the natural
+shortcut here: one might expect $\Phi$ to decay at the full rate
+$\bar \QV/(\Hub\bar\rho_{\rm m})$, since that is the rate at which the matter
+is drained, but that answer holds only if $\delta_{\rm m}$ is frozen. Including
+the back-reaction of the drain on the growth reduces it by the factor
+$2/(2p+5)$.
 
 \subsection{No large-scale instability}\label{sec:perturbations-stability}
 

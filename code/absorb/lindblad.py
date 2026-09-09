@@ -306,7 +306,7 @@ class ClosureScaling:
     slope: float
     """Least-squares slope of ``log(error)`` against ``log(N)``."""
     intercept: float
-    method: str
+    engine: str
     """``"master"`` (full Liouvillian) or ``"dicke"`` (birth chain)."""
 
     @property
@@ -321,7 +321,7 @@ def closure_error_scaling(
     *,
     Gamma0: float = 1.0,
     alpha: float = 1.0,
-    method: Literal["master", "dicke"] = "master",
+    engine: Literal["master", "dicke"] = "master",
     **kwargs,
 ) -> ClosureScaling:
     """Measure how the mean-field closure error decays with ``N``.
@@ -331,12 +331,18 @@ def closure_error_scaling(
     compared with `mean_field` on the same grid; the maximum absolute difference
     is regressed against ``N`` on a log-log scale.  A slope of ``-1`` is the
     signature of a genuine ``O(1/N)`` closure error.
+
+    ``engine`` selects which exact solver provides ``<fhat>``: ``"master"``
+    builds the full ``4^N`` Liouvillian (so ``N <= 8``), ``"dicke"`` uses the
+    permutation-symmetric birth chain (so ``N`` can reach ``10^4``).  Extra
+    keyword arguments are forwarded to the chosen solver, e.g.
+    ``method="BDF"`` for the stiff large-``N`` chains.
     """
     t_grid = np.asarray(t_grid, dtype=float)
     f_mf = mean_field(t_grid, Gamma0=Gamma0, alpha=alpha)
     errs = []
     for N in N_values:
-        if method == "master":
+        if engine == "master":
             f_exact = solve_master(
                 N, t_grid, Gamma0=Gamma0, alpha=alpha, **kwargs
             ).f
@@ -348,7 +354,7 @@ def closure_error_scaling(
     slope, intercept = np.polyfit(np.log(N_arr), np.log(err_arr), 1)
     return ClosureScaling(
         N=N_arr, error=err_arr, slope=float(slope), intercept=float(intercept),
-        method=method,
+        engine=engine,
     )
 
 
@@ -401,20 +407,28 @@ def dicke_master(
     particular the physical ``k = 0`` state), and its cost is ``O(N)`` per
     right-hand side rather than ``O(4^N)``, which is what lets the ``O(1/N)``
     closure error be tracked up to ``N ~ 10^4``.
+
+    Stiffness.  The fastest rate is ``~ N Gamma_0 e^{alpha}`` while the
+    interesting dynamics lasts ``O(1/Gamma_0)``, so the explicit default
+    ``DOP853`` needs ``O(N)`` steps and becomes the bottleneck beyond
+    ``N ~ 10^3``.  Passing ``method="BDF"`` (or ``"Radau"``) hands the solver
+    the *exact* sparse bidiagonal Jacobian and removes the step-size
+    restriction; that is the recommended setting for the large-``N`` runs.
     """
     t_grid = np.asarray(t_grid, dtype=float)
     r = dicke_rates(N, Gamma0, alpha)
+    # Lower-bidiagonal generator: gain from k-1, loss from k.
+    gen = sps.diags([r[:-1], -r], offsets=[-1, 0], format="csr")
 
     def rhs(_t: float, p: np.ndarray) -> np.ndarray:
-        out = -r * p
-        out[1:] += r[:-1] * p[:-1]
-        return out
+        return gen @ p
 
     p0 = np.zeros(N + 1)
     p0[k0] = 1.0
+    extra = {"jac": gen} if method in ("BDF", "Radau") else {}
     sol = solve_ivp(
         rhs, (0.0, float(t_grid[-1])), p0, method=method, t_eval=t_grid,
-        rtol=rtol, atol=atol,
+        rtol=rtol, atol=atol, **extra,
     )
     if not sol.success:
         raise RuntimeError(f"solve_ivp failed: {sol.message}")
