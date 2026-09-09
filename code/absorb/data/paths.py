@@ -25,13 +25,18 @@ def raw_path(name: str) -> Path:
     return p
 
 
-def check_covariance(C: np.ndarray, name: str, sym_tol: float = 1e-8) -> np.ndarray:
+def check_covariance(C: np.ndarray, name: str, sym_tol: float = 1e-5) -> np.ndarray:
     """Validate a covariance matrix and return it symmetrised.
 
-    Raises if it is not square, not symmetric to ``sym_tol`` (relative to its
-    diagonal), or not positive definite.  Symmetrising afterwards removes the
-    last-bit asymmetry of the published ASCII files, which would otherwise
-    make ``cholesky`` non-deterministic.
+    Raises if it is not square, not symmetric to ``sym_tol`` (measured
+    relative to sqrt(C_ii C_jj)), or not positive definite.  Symmetrising
+    afterwards removes the residual asymmetry of the published ASCII files,
+    which would otherwise make ``cholesky`` depend on which triangle it
+    reads.  The default tolerance is set by the Pantheon+ release, whose
+    covariance is written with eight decimals: off-diagonal entries as small
+    as 2e-4 therefore differ between the two triangles by up to 3e-8
+    absolute, i.e. ~1.4e-6 relative.  That is pure ASCII round-off, not a
+    corrupted file.
     """
     C = np.asarray(C, dtype=float)
     if C.ndim != 2 or C.shape[0] != C.shape[1]:
