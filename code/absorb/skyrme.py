@@ -407,9 +407,14 @@ def solve_hedgehog(
     xf = np.geomspace(x_min, x_max, 20_000)
     Ff, Fpf = sol.sol(xf)
 
-    # F ~ pi - s x near the origin: read s off the innermost decade.
-    inner = xf < 10.0 * x_min
-    slope = float(np.mean((np.pi - Ff[inner]) / xf[inner]))
+    # Regular series at the origin, F = pi - s x + c x^3 + O(x^5).  Fitting
+    # both terms at once removes the leading curvature bias.  The window starts
+    # well above x_min because pinning F(x_min) = pi (rather than pi - s x_min)
+    # injects a little of the singular solution phi ~ x^-2, which has died away
+    # by x ~ 30 x_min.
+    x_fit = np.geomspace(max(30.0 * x_min, 1.0e-3), 0.1, 400)
+    design = np.vstack((x_fit, x_fit ** 3)).T
+    slope = float(np.linalg.lstsq(design, np.pi - sol.sol(x_fit)[0], rcond=None)[0][0])
 
     B = degree(Ff, xf)
     return Hedgehog(

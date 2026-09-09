@@ -28,7 +28,7 @@ from dataclasses import dataclass, field
 from typing import Callable, Mapping, Protocol, Sequence
 
 import numpy as np
-from scipy.linalg import cho_solve
+from scipy.linalg import cho_factor, cho_solve
 
 from . import early
 from .background import Background
@@ -37,6 +37,7 @@ from .data import desi as desi_data
 from .data import pantheon as pantheon_data
 from .data import planck_priors as planck_data
 from .data import rsd as rsd_data
+from .data.paths import check_covariance
 
 __all__ = [
     "Likelihood",
@@ -317,9 +318,6 @@ class RSDLikelihood:
         d = rsd_data.load_rsd()
         self._full = d
         z, value, cov = d.fs8_block()
-        from scipy.linalg import cho_factor
-        from .data.paths import check_covariance
-
         cov = check_covariance(cov, "DR16 f sigma_8 block")
         self._z = z
         self._value = value

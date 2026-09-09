@@ -107,10 +107,14 @@ def test_profile_shape_and_asymptotics(hedgehog: sk.Hedgehog) -> None:
     assert hedgehog.F[0] == pytest.approx(np.pi, abs=1e-6)
     assert hedgehog.slope > 0.0
     assert hedgehog.tail > 0.0
-    # F ~ pi - s x at small x
-    x_small = np.geomspace(1e-4, 1e-3, 20)
+    # F ~ pi - s x at small x (the fit window excludes the innermost decade,
+    # where pinning F(x_min) = pi injects a little of the x^-2 solution)
+    x_small = np.geomspace(2e-3, 2e-2, 20)
     F_small = hedgehog.sol(x_small)[0]
-    assert np.allclose(F_small, np.pi - hedgehog.slope * x_small, atol=1e-6)
+    assert np.allclose(F_small, np.pi - hedgehog.slope * x_small, rtol=0.0, atol=1e-4)
+    # and F' is regular (finite, nearly constant) there
+    Fp_small = hedgehog.sol(x_small)[1]
+    assert np.allclose(Fp_small, -hedgehog.slope, rtol=2e-3)
     # F ~ C/x^2 at large x
     x_big = np.geomspace(20.0, 40.0, 20)
     F_big = hedgehog.sol(x_big)[0]
