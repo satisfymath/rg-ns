@@ -162,6 +162,11 @@ class BackgroundParams:
     p_act: float = 6.0
     log10_gamma_down: float | None = None
     switch: Literal["hard", "smooth"] = "smooth"
+    rate_tracks_H: bool = False
+    """If True the rate is Gamma = xi H rather than a constant floor, with
+    xi = 10**log10_gamma0.  Then df/dN = (1-f) xi S(a) is independent of the
+    expansion rate, which is what makes this family analytically solvable
+    (draft Sec. 8) and why it is used as the numerical benchmark."""
 
     # --- derived kinetic quantities -----------------------------------------
     @property
@@ -233,6 +238,16 @@ class Background:
         p = self.p
         return p.gamma0 * np.exp(p.alpha * f + p.beta * M) * self._switch(a)
 
+    def _gamma_over_E(self, a: ArrayLike, f: ArrayLike, M: ArrayLike,
+                      E: ArrayLike) -> ArrayLike:
+        """Gamma/H_100/E, the combination that enters df/dN.
+
+        For the xi-H family this is xi S(a) exp(...) with no explicit E, which
+        is the origin of the closed-form solutions of Sec. 8.
+        """
+        g = self._gamma(a, f, M)
+        return g if self.p.rate_tracks_H else g / E
+
     # -- Friedmann closure ---------------------------------------------------
     def _E2_from_state(self, N: ArrayLike, f: ArrayLike, omega_V: ArrayLike,
                        omega_D_extra: ArrayLike = 0.0) -> ArrayLike:
@@ -261,6 +276,8 @@ class Background:
             ap = a ** p.p_act
             sw = ap / (ap + p.a_act ** p.p_act)
         gam = p.gamma0 * math.exp(p.alpha * f + p.beta * M) * sw
+        if p.rate_tracks_H:
+            gam *= E                      # Gamma = xi H  =>  gamma/E = xi S
 
         df = (1.0 - f) * gam / E
         dM = (f - M) / (p.tau_hat * E) if p.tau_hat > 0 else 0.0
@@ -325,8 +342,8 @@ class Background:
 
         # Q_V from the ODE right-hand side (no finite differences), vectorised:
         # dV/dN = Q_V / (H_100 E) in reduced units.
-        gam = self._gamma(self.a, self.f_grid, self.M_grid)
-        df_dN = (1.0 - self.f_grid) * gam / self.E_grid
+        df_dN = (1.0 - self.f_grid) * self._gamma_over_E(
+            self.a, self.f_grid, self.M_grid, self.E_grid)
         dV_dN = p.eps * p.omega_c * self.a ** -3 * df_dN
         if p.gamma_down > 0.0:
             dV_dN = dV_dN - p.gamma_down * self.V_grid / self.E_grid
@@ -542,8 +559,7 @@ class Background:
         E = np.sqrt(E2)
         # f' and Dx' from the ODE right-hand side (no finite differences)
         Mm = self.memory(zz)
-        gam = self._gamma(a, f, Mm)
-        fp = (1.0 - f) * gam / E
+        fp = (1.0 - f) * self._gamma_over_E(a, f, Mm, E)
         Dxp = np.zeros_like(fp)
         if p.gamma_down > 0.0:
             Dxp = p.gamma_down * V / E * a ** 3
@@ -586,13 +602,13 @@ class Background:
             rI, rD, V, rb, rr, f, M = y
             a = np.exp(N)
             E = np.sqrt(max(rI + rD + V + rb + rr + float(omega_nu(a)), 1e-300))
-            gam = float(self._gamma(a, f, M))
-            return np.array([-3.0 * rI - gam * rI / E,
+            g_over_E = float(self._gamma_over_E(a, f, M, E))
+            return np.array([-3.0 * rI - g_over_E * rI,
                              -3.0 * rD,
-                             gam * rI / E,
+                             g_over_E * rI,
                              -3.0 * rb,
                              -4.0 * rr,
-                             (1.0 - f) * gam / E,
+                             (1.0 - f) * g_over_E,
                              (f - M) / (p.tau_hat * E)])
 
         sol = solve_ivp(rhs_b0, (N0, 0.0), y0, method="DOP853",
