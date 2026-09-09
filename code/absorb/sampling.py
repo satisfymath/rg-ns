@@ -165,6 +165,22 @@ def _priors_of(post: Posterior):
 
 
 # --------------------------------------------------------------------------- #
+# Worker plumbing
+# --------------------------------------------------------------------------- #
+#: Set before the process pool is created.  On Linux the pool is forked, so the
+#: workers inherit this object through the address space.  Passing the
+#: Posterior itself as the sampler callable would instead pickle its ~20 MB
+#: supernova covariance on every task, which costs two orders of magnitude
+#: more than the likelihood evaluation itself.
+_WORKER_POST = None
+
+
+def _log_prob(theta):
+    """Top-level, trivially picklable proxy for the worker posterior."""
+    return _WORKER_POST(theta)
+
+
+# --------------------------------------------------------------------------- #
 # emcee driver
 # --------------------------------------------------------------------------- #
 def run_mcmc(post: Posterior, dataset: str, *, n_walkers: int | None = None,
@@ -173,7 +189,15 @@ def run_mcmc(post: Posterior, dataset: str, *, n_walkers: int | None = None,
              progress: bool = False) -> tuple[np.ndarray, ChainSummary]:
     """Sample the posterior; return (flat chain, summary)."""
     import emcee
-    from multiprocessing import Pool
+    import multiprocessing as mp
+
+    # Python 3.14 defaults to the "forkserver" start method on Linux, which
+    # re-imports the module and pickles the callable for every task.  With a
+    # 20 MB supernova covariance attached to the posterior that costs two
+    # orders of magnitude more than the likelihood itself, so we request "fork"
+    # explicitly: the workers then inherit the posterior through the address
+    # space and send only the parameter vector.
+    ctx = mp.get_context("fork")
 
     os.environ.setdefault("OMP_NUM_THREADS", "1")
     if quick:
@@ -202,8 +226,10 @@ def run_mcmc(post: Posterior, dataset: str, *, n_walkers: int | None = None,
     t0 = time.time()
     old_tau = np.inf
     converged = False
-    with Pool(n_proc) as pool:
-        sampler = emcee.EnsembleSampler(n_walkers, ndim, post, pool=pool,
+    global _WORKER_POST
+    _WORKER_POST = post
+    with ctx.Pool(n_proc) as pool:
+        sampler = emcee.EnsembleSampler(n_walkers, ndim, _log_prob, pool=pool,
                                         moves=moves, backend=backend)
         for _ in sampler.sample(p0, iterations=max_steps, progress=progress):
             if sampler.iteration % CHECK_EVERY:
@@ -230,7 +256,7 @@ def run_mcmc(post: Posterior, dataset: str, *, n_walkers: int | None = None,
         tau_max=tau_max, acceptance=float(np.mean(sampler.acceptance_fraction)),
         converged=converged, seed=seed, runtime_s=runtime,
         chi2_min=float(post.chi2(best)),
-        n_data=int(getattr(post.likelihood, "n_data", 0)), n_params=ndim)
+        n_data=int(post.likelihood.n_data()), n_params=ndim)
     return flat, summary
 
 

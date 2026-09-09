@@ -1,4 +1,202 @@
 % 03_absorbing_process
-\section{Absorbing process with self-reinforcement and memory}\label{sec:absorbing-process}
+\section{Absorbing process with reinforcement and memory}
+\label{sec:absorbing-process}
 
-\TODO{not written yet}
+The dynamical content of this paper is a single kinetic law. This section
+states it as a finite-population jump process, derives the deterministic limit
+under explicit hypotheses, and establishes the two properties that distinguish
+it from a coupling written directly at the level of densities: the memory
+variable is not an extra postulate but the mean of an eliminated per-unit
+degree of freedom, and it makes the dynamics path dependent.
+
+\subsection{State, rate and memory}\label{sec:process-state}
+
+Consider a mesoscopic region containing $N$ labelled units, each either active
+or absorbed, and let $K_t$ be the number absorbed, $\fconv_N=K_t/N$. An event
+converts one unit and never returns it. The total intensity is
+%
+\begin{equation}\label{eq:process-intensity}
+  \lambda_k(\Mmem,t)=(N-k)\,\Gam(k/N,\Mmem,t),\qquad \lambda_N=0 ,
+\end{equation}
+%
+so that in a short interval the probability of a jump is
+$\lambda_k\Delta t+o(\Delta t)$. The rate is a conditional probability per unit
+time, not a probability: it is not bounded by one.
+
+\begin{definition}[Memory variable]\label{def:memory}
+  Along a flow line with proper time $\tau$,
+  %
+  \begin{equation}\label{eq:process-memory}
+    \tauM\,\odv{\Mmem}{\tau}=\fconv-\Mmem,\qquad \tauM>0 ,
+  \end{equation}
+  %
+  whose solution from $\tau_i$ is
+  %
+  \begin{equation}\label{eq:process-memory-solution}
+    \Mmem(\tau)=\Mmem_i e^{-(\tau-\tau_i)/\tauM}
+    +\frac{1}{\tauM}\int_{\tau_i}^{\tau}e^{-(\tau-s)/\tauM}\fconv(s)\,\dd s .
+  \end{equation}
+\end{definition}
+
+Only the past enters \cref{eq:process-memory-solution}, and the weights of
+$\Mmem_i$ and of the history sum to one, so $\Mmem$ stays in $[0,1]$ whenever
+$\fconv$ and $\Mmem_i$ do. The covariant form is $\tauM\,u^\mu\covd_\mu
+\Mmem=\fconv-\Mmem$; the choice of $\umu$ is physical input, fixed in
+\cref{sec:realizations}. A homogeneous reduction is a symmetry assumption, not
+a mechanism for superluminal communication: the rate at a point depends only on
+that point's causal past.
+
+The rate used throughout is
+%
+\begin{keyresult}{C}{eq:process-rate}
+  \Gam(\fconv,\Mmem)=\Gamz\,e^{\alpha \fconv+\beta \Mmem}\,\actS(a),
+  \qquad \alpha,\beta\ge0 ,
+\end{keyresult}
+%
+with the activation factor $\actS(a)$ introduced in
+\cref{sec:solvable-early}; on $[0,1]^2$ it is bounded,
+$\Gamz\actS\le\Gam\le\Gamz e^{\alpha+\beta}\actS$.
+
+\subsection{The memory law is derived, not postulated}\label{sec:process-memory-origin}
+
+\Cref{eq:process-memory} looks like an extra assumption. It is not.
+
+\begin{proposition}[Memory as an eliminated degree of freedom]
+  \label{prop:memory-origin}
+  Attach to each unit $i$ an internal variable $m_i\in[0,1]$ relaxing towards
+  that unit's own state $s_i\in\{0,1\}$,
+  $\tauM\dot m_i=s_i-m_i$. Then the population mean
+  $\Mmem=N^{-1}\sum_i m_i$ obeys \cref{eq:process-memory} exactly, for every
+  $N$ and every realisation.
+\end{proposition}
+
+\begin{proof}
+  The per-unit relaxation is linear in $(m_i,s_i)$, so averaging commutes with
+  it: $\tauM\,\dot{\overline{m}}=\overline{s}-\overline{m}$, and
+  $\overline{s}=\fconv$ by definition of the converted fraction.
+\end{proof}
+
+Two further readings of the same equation are worth recording, because they
+say what $\tauM$ would be in a microscopic completion. First, an exponential
+kernel is the one-mode Markovian embedding of a relaxation process: the pair
+$(\fconv,\Mmem)$ is Markov even though $\fconv$ alone is not. This
+distinguishes the construction from fractional-derivative
+models of dark energy, which are genuinely non-local and have no such
+embedding. Second, if conversion proceeds by nucleation and the influence of
+an event reaches other units only once a front has swept them, the swept
+fraction lags the event count, and $\tauM$ is the light-crossing time of the
+correlated patch. \Cref{sec:realizations} makes this concrete in the four-form
+realization.
+
+\subsection{Deterministic limit}\label{sec:process-limit}
+
+\begin{assumption}\label{asm:rate-regularity}
+  $\Gam$ is non-negative, bounded above by $G<\infty$, and uniformly Lipschitz
+  in $(\fconv,\Mmem)$ on $[0,1]^2$; the initial conditions converge in
+  probability.
+\end{assumption}
+
+\begin{theorem}[Law of large numbers]\label{thm:deterministic-limit}
+  Under \cref{asm:rate-regularity}, on every finite time interval the process
+  of \cref{eq:process-intensity} converges in probability to
+  %
+  \begin{keyresult}{C}{eq:process-deterministic}
+    \dot \fconv=(1-\fconv)\Gam(\fconv,\Mmem),
+    \qquad \tauM\dot \Mmem=\fconv-\Mmem .
+  \end{keyresult}
+\end{theorem}
+
+\begin{proof}
+  Write $\fconv_N(t)=\fconv_N(0)+\int_0^t F(\fconv_N,\Mmem_N)\,\dd s+\mathcal
+  M_N(t)$ with $F=(1-\fconv)\Gam$. The compensated jump term $\mathcal M_N$ is
+  a martingale whose predictable quadratic variation obeys
+  $\E\langle\mathcal M_N\rangle_T\le GT/N$, so Doob's maximal inequality gives
+  $\E\sup_{t\le T}|\mathcal M_N|^2\le 4GT/N$. Subtracting the integral
+  equations for $(\fconv_N,\Mmem_N)$ and $(\fconv,\Mmem)$ and using the
+  Lipschitz property,
+  $\sup_{s\le t}|X_N-X|\le|X_N(0)-X(0)|+\sup_{s\le t}|\mathcal M_N|
+  +L\int_0^t\sup_{r\le s}|X_N-X|\,\dd s$; Gronwall's inequality bounds the left
+  side by the first two terms times $e^{Lt}$, and both vanish in probability.
+\end{proof}
+
+The hypotheses are material. If collective jumps of macroscopic size occur, or
+if correlations do not decay with $N$, the limit can retain noise and
+\cref{eq:process-deterministic} fails. The fluctuations that do survive are
+Gaussian of relative size $N^{-1/2}$, with the diffusion amplitude
+$\sqrt{(1-\fconv)\Gam/N}$ read off the second infinitesimal moment; this is not
+the same as a noise term chosen for convenience, and near $\fconv=0$ a Gaussian
+approximation would produce negative excursions the jump process forbids.
+\Cref{sec:numerics-stochastic} verifies both the limit and the scaling by
+direct simulation.
+
+\subsection{Survival, acceleration, and what reinforcement does}
+\label{sec:process-survival}
+
+\begin{proposition}[Survival]\label{prop:survival}
+  For $\Gam\ge0$ locally integrable along the solution and $\fconv_i\in[0,1)$,
+  %
+  \begin{keyresult}{I}{eq:process-survival}
+    1-\fconv(t)=(1-\fconv_i)\exp\left[-\int_{t_i}^{t}\Gam(s)\,\dd s\right] ,
+  \end{keyresult}
+  %
+  so $\fconv_i\le \fconv(t)<1$ at every finite time, and $\fconv\to1$ if and
+  only if $\int^{\infty}\Gam\,\dd s$ diverges.
+\end{proposition}
+
+\begin{proof}
+  With $y=1-\fconv$, $\dot y=-\Gam y$; integrate. Uniqueness prevents any
+  solution from crossing the stationary boundary $y=0$.
+\end{proof}
+
+Differentiating \cref{eq:process-deterministic} gives the acceleration
+criterion in the form used later,
+%
+\begin{keyresult}{I}{eq:process-acceleration}
+  \ddot \fconv=(1-\fconv)\Gam\left[\odv{\log\Gam}{t}-\Gam\right] ,
+\end{keyresult}
+%
+so conversion accelerates precisely while $\dd\log\Gam/\dd t>\Gam$. For the
+memoryless case $\Gam=\Gamz e^{\alpha \fconv}$ this reads
+$\alpha(1-\fconv)>1$: reinforcement wins early and depletion wins late, and
+the exact solution is
+$t-t_i=\Gamz^{-1}e^{-\alpha}[\Ei(\alpha(1-\fconv_i))-\Ei(\alpha(1-\fconv))]$.
+With memory the criterion becomes
+$\alpha(1-\fconv)\Gam+\beta\tauM^{-1}(\fconv-\Mmem)>\Gam$, which depends on the
+initial memory state: $\beta>0$ alone does not guarantee earlier acceleration.
+
+\subsection{Hysteresis}\label{sec:process-hysteresis}
+
+The operational content of the memory variable is that the present state of the
+densities does not determine the future.
+
+\begin{theorem}[Hysteresis]\label{thm:hysteresis}
+  Let $\beta>0$ and let two histories reach the same converted fraction
+  $\fconv_*$ at the same time with different memory states
+  $\Mmem^{(1)}>\Mmem^{(2)}$. Then $\fconv^{(1)}(t)\ge \fconv^{(2)}(t)$ for all
+  later $t$, with strict inequality on a set of positive measure, and the
+  asymptotic converted fractions differ.
+\end{theorem}
+
+\begin{proof}
+  The system \cref{eq:process-deterministic} is cooperative: $\partial\dot
+  \fconv/\partial \Mmem=(1-\fconv)\beta\Gam\ge0$ and $\partial\dot
+  \Mmem/\partial \fconv=\tauM^{-1}>0$. The Kamke--Muller comparison theorem for
+  cooperative systems then gives componentwise ordering of the two solutions
+  from ordered initial data, and strictness follows because the vector fields
+  differ wherever $\Mmem^{(1)}\neq \Mmem^{(2)}$ and $\fconv<1$.
+\end{proof}
+
+No interaction written as $Q(\rho_{\rm dm},\rho_{\rm de},\Hub)$ has this
+property, including couplings whose sign switches with redshift: such a law
+fixes the entire future from the present densities. This is the sharpest way to
+state what is new here, and \cref{sec:cosmography} turns it into an observable
+by showing that $\beta$ and $\tauM$ enter the snap parameter while cancelling
+out of the jerk.
+
+\paragraph{What this section establishes.}
+A well-posed kinetic law with a controlled deterministic limit, a derived
+rather than postulated memory variable, and path dependence. What it does not
+establish is that any physical substrate realises this law: $\Gamz$, $\alpha$,
+$\beta$ and $\tauM$ are parameters of an effective description, and
+\cref{sec:realizations} exhibits candidate mechanisms without deriving their
+values.

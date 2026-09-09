@@ -28,7 +28,7 @@ from dataclasses import dataclass, field
 from typing import Callable, Mapping, Protocol, Sequence
 
 import numpy as np
-from scipy.linalg import cho_factor, cho_solve
+from scipy.linalg import cho_factor, cho_solve, solve_triangular
 
 from . import early
 from .background import Background
@@ -115,6 +115,7 @@ class PantheonLikelihood:
     def __post_init__(self) -> None:
         self.name = "SN(Pantheon+SH0ES)" if self.with_shoes else "SN(Pantheon+)"
         self._d = pantheon_data.load_pantheon(with_shoes=self.with_shoes)
+        self._marg_cache = None
 
     @property
     def data(self) -> pantheon_data.PantheonData:
@@ -140,12 +141,23 @@ class PantheonLikelihood:
         if not self.marginalize_MB:
             M_B = float((nuisance or {}).get("M_B", 0.0))
             return _chi2_cho(delta - M_B, d.cho)
-        ones = np.ones_like(delta)
-        Cinv_delta = cho_solve(d.cho, delta)
-        Cinv_one = cho_solve(d.cho, ones)
-        A = float(delta @ Cinv_delta)
+        # C^-1 1 and 1^T C^-1 1 do not depend on the cosmology, so they are
+        # cached on first use.  The remaining quadratic form is evaluated as
+        # ||L^-1 Delta||^2 with a single triangular solve, which is half the
+        # work of cho_solve and makes the supernova term cheap enough that the
+        # sampler is dominated by the background integration rather than by
+        # linear algebra.
+        cache = self._marg_cache
+        if cache is None:
+            ones = np.ones_like(delta)
+            Cinv_one = cho_solve(d.cho, ones)
+            cache = (Cinv_one, float(ones @ Cinv_one))
+            self._marg_cache = cache
+        Cinv_one, E0 = cache
+        L, lower = d.cho
+        y = solve_triangular(L, delta, lower=lower, check_finite=False)
+        A = float(y @ y)
         B = float(delta @ Cinv_one)
-        E0 = float(ones @ Cinv_one)
         return A - B * B / E0 + float(np.log(E0 / (2.0 * np.pi)))
 
     def best_fit_MB(self, bg: Background) -> float:
