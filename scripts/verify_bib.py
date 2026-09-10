@@ -183,6 +183,34 @@ def verify(entries: list[dict]) -> list[dict]:
     return rows
 
 
+#: pdflatex cannot typeset Greek or fancy punctuation coming from arXiv
+#: titles, so entries are sanitised on the way in.  Latin accents are fine
+#: (inputenc utf8 with T1 fonts handles them) and are left alone.
+NON_ASCII_MAP = {
+    "\u039b": r"$\\Lambda$", "\u03bb": r"$\\lambda$",
+    "\u03a9": r"$\\Omega$", "\u03c9": r"$\\omega$",
+    "\u03b1": r"$\\alpha$", "\u03b2": r"$\\beta$",
+    "\u03b3": r"$\\gamma$", "\u0393": r"$\\Gamma$",
+    "\u03b4": r"$\\delta$", "\u0394": r"$\\Delta$",
+    "\u03b5": r"$\\epsilon$", "\u03c3": r"$\\sigma$",
+    "\u03a3": r"$\\Sigma$", "\u03bc": r"$\\mu$", "\u03bd": r"$\\nu$",
+    "\u03c0": r"$\\pi$", "\u03c4": r"$\\tau$", "\u03c6": r"$\\phi$",
+    "\u03c7": r"$\\chi$", "\u03b8": r"$\\theta$", "\u03c1": r"$\\rho$",
+    "\u03b7": r"$\\eta$", "\u03be": r"$\\xi$", "\u03b6": r"$\\zeta$",
+    "\u03ba": r"$\\kappa$", "\u03c8": r"$\\psi$",
+    "\u03a6": r"$\\Phi$", "\u03a8": r"$\\Psi$",
+    "\u00d7": r"$\\times$", "\u2212": "-", "\u2013": "--", "\u2014": "---",
+    "\u2019": "'", "\u2018": "'", "\u201c": "``", "\u201d": "''",
+}
+
+
+def sanitise(text: str) -> str:
+    """Replace characters pdflatex cannot typeset."""
+    for k, v in NON_ASCII_MAP.items():
+        text = text.replace(k, v)
+    return text.replace("$$", "")
+
+
 BIB_TEMPLATE = """@article{{{key},
   author       = {{{authors}}},
   title        = {{{title}}},
@@ -222,11 +250,11 @@ def add_entries(ids: list[str]) -> int:
             extra += f"  journal      = {{{m['journal']}}},\n"
         extra += (f"  verified     = {{arXiv API "
                   f"{dt.date.today().isoformat()}}},\n")
-        chunks.append(BIB_TEMPLATE.format(
+        chunks.append(sanitise(BIB_TEMPLATE.format(
             key=make_key(m, base),
             authors=" and ".join(m["authors"]),
             title=m["title"], year=m.get("published", "")[:4],
-            eprint=base, extra=extra))
+            eprint=base, extra=extra)))
         print(f"  added: {base}  {m['title'][:70]}")
     if chunks:
         with BIB.open("a") as fh:

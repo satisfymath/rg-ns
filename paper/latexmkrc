@@ -2,8 +2,15 @@ $pdf_mode = 1;                 # pdflatex
 $out_dir  = 'build';
 $biber    = 'biber --output-directory=build %O %S';
 $bibtex_use = 2;
-$force_mode = 0;
 $max_repeat = 5;
 $recorder = 1;
 $clean_ext = "run.xml bcf synctex.gz bbl fls fdb_latexmk";
-$pdflatex = 'pdflatex -interaction=nonstopmode -halt-on-error -file-line-error %O %S';
+
+# Errors are detected by scripts/check_log.py, which reads build/main.log and
+# fails the build gate on undefined references, duplicate labels, missing
+# citations or any "!" line.  latexmk itself runs in force mode because it
+# otherwise caches a failed run in its .fdb database and then refuses to retry,
+# reporting "gave an error in previous invocation" even after the cause has
+# been fixed.
+$force_mode = 1;
+$pdflatex = 'pdflatex -interaction=nonstopmode -file-line-error %O %S';
