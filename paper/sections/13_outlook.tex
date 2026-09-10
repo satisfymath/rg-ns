@@ -113,9 +113,29 @@ The two have the same form, and in both cases the mean sector acquires
 something no individual mode carries. What follows from this is only that the
 inherited tensor's anisotropy depends on the background, so it need not be an
 isotropic bath. What does \emph{not} follow is a route from oscillations to
-negative pressure: an isotropic gas of high-frequency gravitational waves has
-$p=\rho/3$, and reaching $p=-\rho$ requires dynamics that we have not
-exhibited. Concentration phenomena in the continuum limit are suggestive of
+negative pressure, and this can be made quantitative rather than left as a
+caveat. For transverse oscillations $w=a\cos(\xi\cdot x+\varphi)$ with
+$a\cdot\xi=0$, the angular average gives
+$\avg{w_iw_j}=\tfrac12a_ia_j$, hence
+%
+\begin{equation}\label{eq:outlook-reynolds-eos}
+  p_{\rm eff}=\tfrac13\Tr\avg{w\otimes w}=\tfrac16\abs{a}^2,
+  \qquad
+  \varepsilon_{\rm kin}=\tfrac12\avg{\abs{w}^2}=\tfrac14\abs{a}^2,
+  \qquad
+  w_{\rm eff}=\frac{p_{\rm eff}}{\varepsilon_{\rm kin}}=\frac23 ,
+\end{equation}
+%
+exactly, and unchanged for any superposition of families with vanishing cross
+terms. This is the ideal monatomic-gas relation, and it is not an accident:
+$\avg{w\otimes w}$ is a sum of rank-one terms $\tfrac12 a\otimes a$ with
+positive weights, so it is positive semidefinite and its trace can never be
+negative. Measured instead against a total energy density including rest mass
+one gets $w_{\rm eff}=\avg{v^2}/3c^2\ge0$, the warm-dark-matter result. Both
+normalizations are strictly positive. An averaged quadratic stress of this kind
+therefore cannot approach $p=-\rho$ by any choice of amplitudes or number of
+modes; reaching it needs a different object, not a better average. The same
+computation for high-frequency gravitational waves gives $p=\rho/3$. Concentration phenomena in the continuum limit are suggestive of
 where a description of this kind would break down, but a singularity of a
 continuum equation says only that the solution leaves a regularity class; it
 does not say what replaces it, and it does not convert a singular region into a
