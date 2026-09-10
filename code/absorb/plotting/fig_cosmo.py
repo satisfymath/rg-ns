@@ -23,12 +23,24 @@ N_BAND = 300          # posterior draws used per band
 
 
 def _chain(model: str, dataset: str = "baseline") -> np.ndarray | None:
-    """Flattened chain, or None if it has not been run."""
+    """Equal-weight posterior samples, or ``None`` if the model has not been run.
+
+    Nested sampling is preferred over the ensemble chains wherever it is
+    available.  For the extended models the ensemble chains were not fit to
+    quote from -- they filled their priors along the directions that are
+    unidentified under the null instead of sampling them -- so a band drawn
+    from one would show the prior, not the posterior.  The chain remains the
+    fallback for a model that has only been sampled that way.
+    """
     import h5py
+    post = ROOT / "results" / "posteriors" / f"{model}_{dataset}.npz"
+    if post.exists():
+        with np.load(post, allow_pickle=False) as fh:
+            return np.asarray(fh["samples"])
     path = CHAINS / f"{model}_{dataset}.h5"
     if not path.exists():
         return None
-    with h5py.File(path, "r") as fh:
+    with h5py.File(path, "r", locking=False) as fh:
         it = int(fh["mcmc"].attrs["iteration"])
         if it < 200:
             return None
