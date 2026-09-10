@@ -46,5 +46,13 @@
     "mem_available_before_mb": 5699.69921875,
     "mem_available_after_mb": 2140.1015625,
     "notes": "profile likelihood in eps"
+  },
+  {
+    "name": "pancake_suite",
+    "seconds": 816.630339384079,
+    "peak_rss_mb": 44.0703125,
+    "mem_available_before_mb": 2196.65234375,
+    "mem_available_after_mb": 1962.953125,
+    "notes": "N=16384, 25000 graded steps"
   }
 ]

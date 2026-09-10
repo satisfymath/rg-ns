@@ -176,8 +176,9 @@ def merge_pancake(data: dict) -> dict:
         if tag in pk:
             out[f"{label}_exponent"] = grab(tag, "exp_rho_I_near", ".4f")
     if "A_none" in pk:
-        out["dust_residual"] = {
-            "value": max(v["dust_residual"] for v in pk.values()), "fmt": ".2e"}
+        res = [v["dust_residual"] for v in pk.values() if "dust_residual" in v]
+        if res:
+            out["dust_residual"] = {"value": max(res), "fmt": ".2e"}
         out["final_gap"] = grab("A_none", "final_gap", ".1e")
     data["pancake"] = out
     print(f"pancake: promoted {len(out)} numbers")

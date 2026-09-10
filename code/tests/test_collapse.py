@@ -295,3 +295,33 @@ def test_defect_channel_never_helps():
         assert tab["defect density"]["finite"] is False
         assert tab["defect column"]["finite"] is True
         assert tab["curvature invariant"]["finite"] is False
+
+
+def test_residual_density_has_a_boundary_layer():
+    """The mean-field limit describes f but not rho_I.
+
+    rho_I is proportional to 1 - f, whose relative fluctuation is
+    sqrt(p/(N(1-p))) and diverges as the caustic is approached, so the
+    N^{-1/2} statement does not transfer to the quantity the regularity
+    question is about.  The continuum description of rho_I fails once the
+    expected number of unconverted units drops below one, at s* = N^{-1/g}.
+    """
+    from absorb.collapse import (hazard_from_gap, mean_field_breakdown_gap,
+                                 residual_relative_fluctuation)
+    g = 1.5
+    for N in (10 ** 3, 10 ** 6, 10 ** 9):
+        s_star = mean_field_breakdown_gap(N, g)
+        assert np.isclose(s_star, N ** (-1.0 / g))
+        # at the breakdown gap the relative fluctuation is of order one
+        rel = residual_relative_fluctuation(N, hazard_from_gap(g, s_star))
+        assert 0.5 < rel < 2.0, (N, rel)
+        # and well inside it the fluctuation is large
+        deep = residual_relative_fluctuation(N, hazard_from_gap(g, s_star / 100))
+        assert deep > 5.0, (N, deep)
+    # while the converted fraction itself remains sharply determined
+    from absorb.collapse import binomial_law_in_hazard_time
+    from absorb.constants import SEED
+    rng = np.random.default_rng(SEED)
+    L = hazard_from_gap(g, 1e-6)
+    draws = binomial_law_in_hazard_time(10 ** 6, L, rng, size=2000)
+    assert draws.std() < 1e-4

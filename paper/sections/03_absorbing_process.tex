@@ -141,10 +141,12 @@ realization.
   side by the first two terms times $e^{Lt}$, and both vanish in probability.
 \end{proof}
 
-\begin{remark}[The boundedness hypothesis can be dropped]
+\begin{remark}[The boundedness hypothesis can be traded for a time change]
   \label{rem:hazard-time-change}
   \Cref{asm:rate-regularity} requires a bounded rate, which fails wherever the
-  rate is driven by a diverging compression. Nothing is lost. Let
+  rate is driven by a diverging compression. For the converted fraction
+  nothing is lost, though \cref{rem:residual-boundary-layer} shows that the
+  same is not true of the residual density. Let
   $\Lambda(t)=\int_{t_i}^{t}\Gam\,\dd s$ be the cumulative hazard and change
   time to $\Lambda$. If $\Gam$ does not depend on the state, every unit then
   carries an independent unit-rate exponential clock, so the converted count is
@@ -162,7 +164,33 @@ realization.
   every finite $N$, and the $N^{-1/2}$ law holds uniformly with no boundary
   layer where the rate diverges. For $\Gam=g/(T-t)$ one has
   $\Lambda=g\log[(T-t_i)/(T-t)]$, finite for every $t<T$ and divergent only at
-  $T$, where both the chain and its limit have $\fconv=1$.
+  $T$, where both the chain and its limit have $\fconv=1$. The hypothesis that
+  matters here is that $\Gam$ does not depend on the state; the reinforced law
+  \cref{eq:process-rate} does, so the statement applies to a
+  compression-driven channel and not to the reinforcement.
+\end{remark}
+
+\begin{remark}[But the residual density has a boundary layer]
+  \label{rem:residual-boundary-layer}
+  The deterministic limit describes $\fconv$; it does not describe
+  $1-\fconv$, and the precursor density is proportional to the latter. From
+  \cref{eq:process-binomial} the relative fluctuation of $1-\fconv$ is
+  $\sqrt{p/[N(1-p)]}$, which \emph{diverges} as $p\to1$. The continuum
+  description of $\rhoI$ therefore fails once the expected number of
+  unconverted units falls below one, at
+  %
+  \begin{keyresult}{C}{eq:process-breakdown-gap}
+    N e^{-\Lambda}=1
+    \qquad\Longleftrightarrow\qquad
+    s_*=N^{-1/g}
+    \quad\text{for }\Gam=g/(T-t) .
+  \end{keyresult}
+  %
+  Inside that layer the precursor is exhausted discretely rather than
+  continuously: the mean field returns an average over realisations in which
+  the density is typically exactly zero. Any statement about the regularity of
+  $\rhoI$ at a caustic is a statement about the continuum model, and holds only
+  outside $s_*$.
 \end{remark}
 
 The hypotheses that remain are material. If collective jumps of macroscopic

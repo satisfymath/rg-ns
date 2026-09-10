@@ -268,6 +268,31 @@ def binomial_law_in_hazard_time(N: int, hazard: float, rng=None,
     return rng.binomial(N, p, size=size) / N
 
 
+def residual_relative_fluctuation(N: int, hazard: float) -> float:
+    """Relative standard deviation of 1 - f, and hence of the precursor.
+
+    The deterministic limit describes the converted fraction, whose relative
+    fluctuation vanishes as p -> 1.  It does *not* describe the residual
+    density: rho_I is proportional to 1 - f, whose relative standard deviation
+    is sqrt(p / (N (1-p))) and diverges at the caustic.  So there is a boundary
+    layer after all, in exactly the quantity the regularity question is about.
+    """
+    q = np.exp(-hazard)
+    p = 1.0 - q
+    return float(np.sqrt(p / (N * q)))
+
+
+def mean_field_breakdown_gap(N: int, g: float, gap0: float = 1.0) -> float:
+    """The gap s* at which the expected number of unconverted units falls to one.
+
+    N e^{-Lambda} = 1 with Lambda = g ln(gap0/s) gives s* = gap0 N^{-1/g}.
+    Below it the precursor is exhausted discretely: the continuum value of
+    rho_I is smaller than one unit, so the mean field describes an average over
+    realisations in which the density is typically exactly zero.
+    """
+    return float(gap0 * N ** (-1.0 / g))
+
+
 def deterministic_fraction_in_hazard_time(hazard: float, f0: float = 0.0) -> float:
     """f = 1 - (1 - f0) exp(-Lambda); the solution of df/dLambda = 1 - f."""
     return 1.0 - (1.0 - f0) * np.exp(-hazard)

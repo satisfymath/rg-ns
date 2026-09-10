@@ -378,6 +378,48 @@
       "value": -1.0010063404514904
     }
   },
+  "pancake": {
+    "bounded_exponent": {
+      "fmt": ".4f",
+      "value": -0.9988740741593451
+    },
+    "bounded_peak": {
+      "fmt": ".4g",
+      "value": 3584.481699513739
+    },
+    "bounded_suppression": {
+      "fmt": ".0f",
+      "value": 273.9442921849125
+    },
+    "control_exponent": {
+      "fmt": ".4f",
+      "value": -0.9993253981698985
+    },
+    "control_peak": {
+      "fmt": ".4g",
+      "value": 981948.3020230634
+    },
+    "dust_residual": {
+      "fmt": ".1e",
+      "value": 4.5365045053813446e-11
+    },
+    "final_gap": {
+      "fmt": ".0e",
+      "value": 1.0000000000287557e-06
+    },
+    "kappa_half_exponent": {
+      "fmt": ".4f",
+      "value": -0.49917885160527764
+    },
+    "kappa_onepointfive_exponent": {
+      "fmt": ".4f",
+      "value": 0.5001711748746709
+    },
+    "kappa_three_exponent": {
+      "fmt": ".4f",
+      "value": 1.9991749812537472
+    }
+  },
   "skyrme": {
     "bound": {
       "fmt": ".3f",
