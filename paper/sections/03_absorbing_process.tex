@@ -141,9 +141,33 @@ realization.
   side by the first two terms times $e^{Lt}$, and both vanish in probability.
 \end{proof}
 
-The hypotheses are material. If collective jumps of macroscopic size occur, or
-if correlations do not decay with $N$, the limit can retain noise and
-\cref{eq:process-deterministic} fails. The fluctuations that do survive are
+\begin{remark}[The boundedness hypothesis can be dropped]
+  \label{rem:hazard-time-change}
+  \Cref{asm:rate-regularity} requires a bounded rate, which fails wherever the
+  rate is driven by a diverging compression. Nothing is lost. Let
+  $\Lambda(t)=\int_{t_i}^{t}\Gam\,\dd s$ be the cumulative hazard and change
+  time to $\Lambda$. If $\Gam$ does not depend on the state, every unit then
+  carries an independent unit-rate exponential clock, so the converted count is
+  \emph{exactly} binomial,
+  %
+  \begin{keyresult}{C}{eq:process-binomial}
+    K\sim\mathrm{Binomial}\!\left(N,\,1-e^{-\Lambda}\right),
+    \qquad
+    \E[\fconv_N]=1-e^{-\Lambda},
+    \qquad
+    \sqrt N\,\sigma(\fconv_N)=\sqrt{p(1-p)} ,
+  \end{keyresult}
+  %
+  with $p=1-e^{-\Lambda}$. The mean is the deterministic solution exactly, at
+  every finite $N$, and the $N^{-1/2}$ law holds uniformly with no boundary
+  layer where the rate diverges. For $\Gam=g/(T-t)$ one has
+  $\Lambda=g\log[(T-t_i)/(T-t)]$, finite for every $t<T$ and divergent only at
+  $T$, where both the chain and its limit have $\fconv=1$.
+\end{remark}
+
+The hypotheses that remain are material. If collective jumps of macroscopic
+size occur, or if correlations do not decay with $N$, the limit can retain
+noise and \cref{eq:process-deterministic} fails. The fluctuations that do survive are
 Gaussian of relative size $N^{-1/2}$, with the diffusion amplitude
 $\sqrt{(1-\fconv)\Gam/N}$ read off the second infinitesimal moment; this is not
 the same as a noise term chosen for convenience, and near $\fconv=0$ a Gaussian

@@ -148,6 +148,112 @@ being finite does not make an infinite string's energy finite. The texture
 above is genuinely three-dimensional and point-like, which is why it is the
 representative chosen here.
 
+\subsection{Caustics: what conversion can and cannot do}
+\label{sec:defects-caustics}
+
+The clock congruence of \cref{sec:realizations-clock} is pressureless and
+geodesic, so it forms caustics, and it is natural to ask whether conversion
+regularizes them: the transfer $\QV=(1-\bfrac)\Gam\rhoI$ diverges where $\rhoI$
+does, which looks like a runaway sink. An earlier version of this work
+conjectured that it was. It is not, and the reason is worth stating because it
+is elementary and general.
+
+Along a flow line with proper time $\tau$ and expansion $\expa$,
+%
+\begin{keyresult}{I}{eq:defects-local-exact}
+  \rhoI(\tau)=\rhoI(\tau_0)\,
+  \exp\left[-\int_{\tau_0}^{\tau}\left(\expa+\Gam\right)\dd s\right] .
+\end{keyresult}
+%
+Conversion enters only through the \emph{integral} of the rate.
+
+\begin{theorem}[Bounded rates cannot regularize a caustic]
+  \label{thm:bounded-rate-obstruction}
+  Let $0\le\Gam\le G<\infty$ on $[\tau_0,T)$ with $T-\tau_0$ finite, and let
+  the compression be non-integrable, $\int^{T}\expa\,\dd s=-\infty$. Then
+  $\rhoI\to\infty$.
+\end{theorem}
+
+\begin{proof}
+  $\int^{\tau}\Gam\,\dd s\le G(T-\tau_0)<\infty$, so the conversion factor lies
+  in $[e^{-G(T-\tau_0)},1]$ and is bounded below by a positive constant, while
+  the compression factor diverges.
+\end{proof}
+
+Under \cref{asm:activation} the rate obeys $\Gam\le\Gamz e^{\alpha+\beta}$, so
+\cref{thm:bounded-rate-obstruction} applies to the model as it stands. The
+error in the earlier conjecture was to confuse the diverging transfer per unit
+volume, $\QV$, with the fractional loss rate $\Gam$; only the latter appears in
+\cref{eq:defects-local-exact}, and only it is bounded.
+
+\paragraph{What a compression-driven rate would have to do.} Take
+$\expa=-c/(T-t)$ and $\Gam=g/(T-t)$ plus a bounded part. Then
+$\rhoI\sim(T-t)^{-(c-g)}$, and three separate conditions must hold, not one.
+The precursor is finite for $g\ge c$. The vacuum increment integrates
+$(T-t)^{g-c-1}$ and therefore needs $g>c$ \emph{strictly}: at $g=c$ the
+precursor is finite while the vacuum still diverges logarithmically. And the
+defect density obeys $\dot\rhoD=-\expa\rhoD+\bfrac\Gam\rhoI$, whose homogeneous
+part alone gives $\rhoD\sim(T-t)^{-c}$: the localized product is itself
+pressureless dust, compressed by the same $\expa$, so its density diverges for
+every $g$ whenever $\bfrac>0$. Its column density stays finite, which is the
+distinction between a finite mass and a finite density. Hence
+
+\begin{keyresult}{C}{eq:defects-regularity}
+  T_{\mu\nu}\ \text{finite at the caustic}
+  \iff g>c\ \ \text{and}\ \ \bfrac=0 .
+\end{keyresult}
+
+For $\Gam_{\rm collapse}=\kappa\,[-\expa]_+$ one has $g=\kappa c$, so the
+condition is the dimensionless statement $\kappa>1$, independent of the
+strength of the collapse; for a generic Zel'dovich pancake $c=1$.
+
+\paragraph{The covariant price.} Adding such a channel is not free.
+\Cref{eq:setup-vacuum-transfer} forces the transfer four-vector to be closed,
+and for a geodesic clock that means the transfer must be constant on comoving
+slices, which a rate depending on $\expa$ is not, precisely at a caustic.
+Transferring instead to a second pressureless sector is covariantly
+unconstrained, because two dust sectors sharing a congruence exchange energy
+with no integrability condition, but then the total dust obeys the unmodified
+continuity equation and the divergence is relocated rather than weakened.
+Keeping the exact vacuum requires a momentum transfer $q^\nu=-D^\nu \rhoV$,
+which makes the dust non-geodesic and whose force density itself diverges at
+the caustic. The sector that can absorb the divergence is the one that does not
+dilute, and that is exactly the sector whose transfer is constrained.
+
+\paragraph{What is not disturbed.} The candidate channel
+$\kappa[-\expa]_+$ vanishes identically on the open set $\{\expa>0\}$. An
+expanding background has $\expa=3\Hub>0$, and so does a neighbourhood of it, so
+every order of the perturbative expansion about FLRW vanishes, not
+merely the linear one. Nothing in
+\cref{sec:homogeneous-cosmology,sec:cosmography,sec:perturbations,sec:observations}
+changes.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\textwidth]{pancake.pdf}
+  \caption{One-dimensional Zel'dovich pancake with conversion, followed along
+    Lagrangian sheets. \emph{Left:} precursor density at the sheet that forms
+    the caustic, against the distance $s=1-D$ to it, with time running to the
+    right. With no conversion, and with the bounded rate of
+    \cref{eq:process-rate}, the density follows $s^{-1}$: the bounded rate
+    lowers the amplitude but not the exponent, which is
+    \cref{thm:bounded-rate-obstruction}. A compression-driven channel changes
+    the exponent to $s^{\kappa-1}$, so only $\kappa>1$ removes the divergence.
+    \emph{Right:} converted fraction and Jacobian across the pancake at the
+    final time, showing that conversion is concentrated where $|J|$ is
+    smallest.}
+  \label{fig:pancake}
+\end{figure}
+
+\paragraph{Numerical test.} \Cref{fig:pancake} reports a one-dimensional
+Zel'dovich pancake carrying the local sector along Lagrangian sheets, which
+avoids continuing a single-stream fluid past shell crossing. The measured
+exponents reproduce the analytic values, and the control case with no
+conversion reproduces $\rhoI=1/J$ to twelve digits. The bounded rate of the
+paper reduces the peak density by a large factor and leaves the exponent at
+$-1$, exactly as \cref{thm:bounded-rate-obstruction} requires; only $\kappa>1$
+changes it.
+
 \subsection{What would be needed for an abundance}\label{sec:defects-abundance}
 
 By \cref{eq:cosmology-survival}, $\rhoD a^3\to\rho_{D,\rm act}+\bfrac\rho_{I,\rm act}$,
