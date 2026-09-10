@@ -278,7 +278,11 @@ def run_mcmc(post: Posterior, dataset: str, *, n_walkers: int | None = None,
             while not np.isfinite(post.log_prior(p0[i])):
                 p0[i] = theta0 + 1e-3 * widths * rng.standard_normal(ndim)
     else:
-        p0 = None
+        # Resuming: emcee needs the last stored state explicitly.  A fresh
+        # sampler object has no memory of a previous session, so passing None
+        # would be interpreted as an empty initial state.
+        p0 = backend.get_last_sample()
+        print(f"  resuming from step {backend.iteration}")
 
     moves = [(emcee.moves.DEMove(), 0.8), (emcee.moves.DESnookerMove(), 0.2)]
     t0 = time.time()
