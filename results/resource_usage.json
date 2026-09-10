@@ -110,5 +110,13 @@
     "mem_available_before_mb": 11061.7109375,
     "mem_available_after_mb": 9777.73046875,
     "notes": "nlive=500"
+  },
+  {
+    "name": "nested_lcdm__baseline",
+    "seconds": 174.55138278007507,
+    "peak_rss_mb": 1588.51171875,
+    "mem_available_before_mb": 8470.5625,
+    "mem_available_after_mb": 8211.24609375,
+    "notes": "nlive=500"
   }
 ]

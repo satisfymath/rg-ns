@@ -30,6 +30,7 @@ SOURCES = [
     (ROOT / "results" / "chain_diagnostics.json", "diag"),
     (ROOT / "results" / "map.json", "map"),
     (ROOT / "results" / "prior_sensitivity.json", "priorsens"),
+    (ROOT / "results" / "theory_checks.json", "check"),
 ]
 
 HEADER = (
@@ -84,6 +85,10 @@ FORMATS = {
     "move_rate_late": ".4f",
     "outside_prior_fraction": ".3f",
     "tau_max": ".0f",
+    "median_ratio": ".2f",
+    "today": ".1e",
+    "z_of_max": ".0f",
+    "two_omega_r_today": ".2e",
     "length_in_tau": ".0f",
     "ln_bayes_full_prior": ".2f",
     "ln_bayes_span": ".2f",

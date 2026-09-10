@@ -92,3 +92,28 @@ def test_deficit_is_the_weighted_integral_of_the_transfer():
     q = bg.transfer_q()
     predicted = float(np.trapezoid(q * np.exp(3 * bg.N), bg.N))
     assert bg.derived()["matter_deficit"] == pytest.approx(predicted, rel=1e-4)
+
+
+def test_massive_neutrinos_only_strengthen_the_jerk_bound():
+    """The species the jerk theorem's hypotheses had omitted does not break it.
+
+    ``thm:jerk`` assumed pressureless matter, conserved radiation and an exact
+    vacuum, while every fit in the paper carries one massive neutrino
+    eigenstate, which is neither. Its contribution to the jerk is
+    -(3/2) dp_nu/dN / E^2, and because the pressure of a species going
+    non-relativistic falls monotonically, that contribution is non-negative:
+    the bound survives with room to spare rather than needing an error term.
+    """
+    from absorb.background import pressure_nu
+
+    m = MODELS["lcdm"]
+    bg = m.builder(m.to_dict([0.02237, 0.1177, 0.3266]))
+    z = np.linspace(0.0, 1500.0, 2000)
+    a = 1.0 / (1.0 + z)
+    dust, rad, nu, V = bg._omegas(z)
+    _, dpnu_dN = pressure_nu(a)
+    term = -1.5 * dpnu_dN / (dust + rad + nu + V)
+
+    assert np.all(term >= 0.0), "the neutrino term is negative somewhere"
+    # and it is not negligible at the precision the fits reach
+    assert term[0] > 1e-5

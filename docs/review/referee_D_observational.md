@@ -222,10 +222,14 @@ z_act     6.9709  8.5554
 ```
 
 so halving the `log10_xi` range to `[-2.5, -0.5]` and the `z_act` range to
-`[6.0, 20.85]` — both entirely defensible, both containing the whole ridge with
-room to spare — raises `ln Z(xi_h)` by up to `2 ln 2 = 1.386` and by nearly that
-if `p_B ~ 1`. That takes `ln B` from `-1.60` to about `-0.21`: from "five to
-one against" to no preference at all.
+`[6.0, 20.85]` — both entirely defensible, and both containing this ridge with
+room to spare — raises `ln Z(xi_h)` by up to `2 ln 2 = 1.386`, and by nearly
+that much if the posterior mass `p_B` inside the narrowed box is close to one.
+That would take `ln B` from `-1.60` to about `-0.21`: from "five to one against"
+to no preference at all. (The narrowing is in fact conservative: the true
+maximum-likelihood point found in M3 sits at `log10_xi = 1.0`, *outside* the
+narrowed box, so `p_B < 1` and the measured rise is a lower bound on how far
+`ln B` can be moved by a defensible change of prior.)
 
 **Measured, not argued.** I ran the narrowed prior through the same nested
 sampler (dynesty 3.1.0, `nlive=500`, `dlogz=0.1`, `bound='multi'`,
@@ -531,24 +535,39 @@ until they exceed fifty integrated autocorrelation times" is contradicted three
 paragraphs later by "Their posteriors are therefore taken from nested sampling".
 Rewrite 10.2 to say what was actually done for which model.
 
-### m5. "No number is typed by hand" is false, and `check_numbers.py` cannot catch the exceptions.
+### m5. `check_numbers.py` is blind to numbers written in maths mode, which is where the hand-typed ones were.
 
-`appF_numerics.tex:4-7` claims "no number is typed by hand ... a build check
-fails if the two ever disagree". Three counter-examples:
+When I began this review `10_observations.tex:154` read "acceptance $0.44$,
+length $157$ autocorrelation times", both hand-typed results (the macro for the
+first is `0.4386`; the second is `2000 / 12.7271 = 157.1` computed by hand from
+two other macros). Both were replaced by macros during the review, and the
+appendix's opening paragraph was rewritten to exempt "round figures used for
+orientation". The hole in the gate that let them through is still open, and one
+number is still in it:
 
-- `10_observations.tex:154`: "acceptance $0.44$, length $157$ autocorrelation
-  times". The macro for the same quantity is `0.4386`
-  (`\numDiagLcdmBaselineAcceptance`), and `157` is
-  `2000 / 12.7271 = 157.1` computed by hand from two other macros.
-- `appF_numerics.tex:30`: "one background solve costs about $11$~ms" — referee B
-  measured 16.6 ms, and the worker-sizing argument in `sampling.py` rests on the
-  11 ms figure.
+- `appF_numerics.tex:34`: "One background solve costs about $11$~ms." That is a
+  measurement of this code, not a round figure from the literature, and it is
+  model-dependent. Measured here single-threaded (with three other jobs on a
+  16-core machine, so if anything an over-estimate):
 
-The gate is blind to all three by construction: `check_numbers.py:31` strips
-`$...$` before looking for literals; `DECIMAL = \d+\.\d+` never matches an
-integer such as `157`; and `0.44` is on `docs/NUMBERS_WHITELIST.txt` as a
-`tabular` column width, so it would be exempt even in prose. Either expose these
-as macros or stop claiming the gate covers them.
+```
+  lcdm   background solve  1.07 ms   full posterior chi2   4.16 ms
+  xi_h   background solve 15.01 ms   full posterior chi2  29.82 ms
+```
+
+  `11 ms` is neither. The same paragraph's corollary in
+  `likelihoods.py:16-22` — "makes the supernova term cheap enough that the
+  sampler is dominated by the background integration rather than by linear
+  algebra" — is true for `xi_h` (15 of 30 ms) and false for LambdaCDM (1.1 of
+  4.2 ms). Worker sizing and runtime estimates elsewhere rest on the 11 ms
+  figure.
+
+The gate cannot catch this: `check_numbers.py:70` applies `MATH.sub(" ", text)`
+before scanning, so anything inside `$...$` is invisible; `DECIMAL =
+\d+\.\d+` never matches an integer; and `0.44` sits on
+`docs/NUMBERS_WHITELIST.txt` as a `tabular` column width, so it would have been
+exempt even in prose. Either scan inside maths mode with a narrower whitelist,
+or say in the appendix that the gate covers prose only.
 
 ### m6. The cosmic-chronometer covariance recipe is not quite MM20's, and it does not matter — say so rather than leaving it unexamined.
 
@@ -784,20 +803,24 @@ the neutrino term uses the same `omega_nu` convention as Aubourg's Eq. (16). The
 choice to feed it the *pre-activation* `omega_b + omega_c` is both correct for
 this model and clearly stated in three places.
 
-**C9. The `eps` profile really is a profile likelihood, and its stored numbers
-are reproducible.** Every prior is uniform and `Model.log_prior` returns `0.0`
-inside the box, so `-2 * post(theta)` is exactly `chi2` there. I recomputed
-`chi2` at all 17 stored `best_theta` vectors and reproduced every stored
-`delta_chi2` to `<1e-4`, with `chi2(eps=0) = 1436.5161`, which is the LambdaCDM
-minimum. The conclusion drawn from it — that `eps` is unbounded and the earlier
-limit was the end of the grid — is right, and stating it is to the paper's
-credit.
+**C9. What `run_profile.py` computes is a genuine profile *likelihood*, not a
+penalised posterior, and its bookkeeping is faithful.** Every prior is uniform
+and `Model.log_prior` returns `0.0` inside the box, so `-2 * post(theta)` is
+exactly `chi2` there — I confirm referee B's certification of this. I also
+recomputed `chi2` at all 17 stored `best_theta` vectors of the `eps` profile and
+reproduced every stored `delta_chi2` to `<1e-4`, with
+`chi2(eps=0) = 1436.5161`, which is the LambdaCDM minimum. The stored numbers
+are what the script says they are; the objection in M1 is that the optimiser
+behind them has not converged, not that the arithmetic is wrong.
 
-**C10. The `xi_h` best fit is genuinely better than LambdaCDM, by 0.859.**
-`chi2 = 1435.65690` at the profile's best point versus `1436.51609` at `eps = 0`.
-A `Delta chi2` of 0.86 for three extra parameters is, by any reckoning, no
-evidence at all — which supports the paper's qualitative verdict even though it
-undercuts the specific `ln B` (M2).
+**C10. The qualitative verdict survives everything I threw at it.** Even with
+the corrected maximum (M3), `xi_h` improves `chi2` by `1.636` for three extra
+parameters, two of which are exactly unidentified at the null. That is no
+evidence for conversion by any calibration — Wilks, Chernoff or Davies — so the
+paper's conclusion ("nothing in this data combination requires conversion") is
+right. My objections are to the *numbers* attached to it: the limit (M1), the
+`Delta chi2` (M3), the `ln B` and its error (M2, M6). The profile-likelihood
+statement is the robust one and should lead the paragraph.
 
 **C11. The cosmic-chronometer term is insensitive to the covariance recipe**
 (m6), the `np.interp` clamping beyond `z = 1.475` for the `z = 1.965` point is

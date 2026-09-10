@@ -12,7 +12,8 @@ background signature.
 
 \begin{theorem}[Jerk identity and bound]\label{thm:jerk}
   For a spatially flat universe containing pressureless matter, conserved
-  radiation and an exact vacuum that receives energy at rate $\QV$,
+  radiation, an exact vacuum that receives energy at rate $\QV$, and any
+  further conserved species whose pressure is non-increasing in time,
   %
   \begin{keyresult}{C}{eq:cosmography-jerk}
     \jerk=1+2\Omr+\varepsilon ,
@@ -26,6 +27,22 @@ background signature.
     \QV\ge0\ \Longrightarrow\ \jerk\ \ge\ 1+2\Omr .
   \end{keyresult}
 \end{theorem}
+
+\begin{remark}[Massive neutrinos strengthen the bound]\label{rem:jerk-neutrinos}
+  The last hypothesis is there because the fits of \cref{sec:observations}
+  carry one massive neutrino eigenstate, which is neither pressureless nor
+  conserved radiation, so a bound advertised as parameter-free must say what it
+  does with it. Such a species contributes $-\tfrac32\dot p/(2\Mpl^2\Hub^3)$ to
+  $\jerk$, and its pressure falls monotonically as it becomes non-relativistic,
+  so the contribution is non-negative and
+  \cref{eq:cosmography-jerk-bound} survives --- indeed with room to spare.
+  Measured on the $\LCDM$ best fit for a single $0.06\,\si{\electronvolt}$
+  eigenstate, the term is $\numCheckNeutrinoJerkTermToday$ today and rises to
+  $\numCheckNeutrinoJerkTermMax$ by $z=\numCheckNeutrinoJerkTermZOfMax$,
+  against $2\Omr=\numCheckNeutrinoJerkTermTwoOmegaRToday$ today. It is therefore not
+  negligible at the precision the fits reach, which is why it is carried in the
+  code and stated here rather than dropped.
+\end{remark}
 
 \begin{proof}
   The kinematic identity $\jerk=1-\dot p_{\rm tot}/(2\Mpl^2\Hub^3)$ follows from
@@ -72,9 +89,12 @@ checked it rather than assuming it, and the result is negative. The activation
 switch turns the transfer on at $\zact$, after which the rate falls relative to
 the expansion; $\mathsf q$ therefore \emph{peaks at the activation redshift} and
 declines from there, for every activation redshift and every rate we tried. The
-floor is correspondingly violated across the prior, with a median ratio
-$(j_0-1-2\Omega_{r0})/\Delta$ near $0.46$ where the bound requires at least
-$9/2$. \Cref{eq:cosmography-deficit-floor} is therefore a true statement about
+floor is correspondingly violated: over
+$\numCheckDeficitFloorNDrawsWithTransfer$ uniform prior draws with a non-zero
+deficit the hypothesis holds in $\numCheckDeficitFloorNHypothesisHolds$ of
+them, the floor fails in $\numCheckDeficitFloorNFloorViolated$, and the median
+ratio $(j_0-1-2\Omega_{r0})/\Delta$ is $\numCheckDeficitFloorMedianRatio$ where
+the bound requires $\numCheckDeficitFloorFloorCoefficient$.
 a class of transfer histories that this model does not realise, and nothing in
 this paper may be inferred from it. In particular a bound on the deficit does
 not bound the jerk excess: the relation runs the wrong way for that even when

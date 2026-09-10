@@ -1,0 +1,24 @@
+{
+  "deficit_floor": {
+    "floor_coefficient": 4.5,
+    "max_ratio": 125.1435821548361,
+    "median_ratio": 0.47570117982661425,
+    "min_ratio": 9.879492890526936e-05,
+    "model": "xi_h",
+    "n_draws_with_transfer": 400,
+    "n_floor_violated": 398,
+    "n_hypothesis_holds": 0
+  },
+  "neutrino_jerk_term": {
+    "max": 0.2527589608550244,
+    "min": 4.9350550060082356e-05,
+    "non_negative_everywhere": true,
+    "today": 4.9350550060082356e-05,
+    "two_omega_r_today": 0.00010582228318952393,
+    "z_of_max": 1500.0
+  },
+  "transfer_peak": {
+    "max_relative_offset_of_peak": 0.007151286394683654,
+    "n_activation_redshifts": 7
+  }
+}
