@@ -107,6 +107,16 @@ requires the chain to exceed the sampler's own tau criterion, reports the
 median as well as the percentile, notes any parameter that fills its prior, and
 fails rather than skipping when a chain cannot be checked.
 
+Run against the frozen chains, the new gate confirms the referee's diagnosis
+sharply. The **drift statistic still passes**: on `reinforce` the median and
+95th percentile of both derived quantities drift by 4–11% against a 25%
+tolerance. Every one of the new criteria fails instead — move rate 0.0170 →
+0.0087 and 0.0160 → 0.0064, both below the floor and both decelerating; chain
+lengths 24.6 and 25.4 tau against the 50 required — and the pinning note fires
+on `eps` (84% and 90% of its prior), `alpha_tot` (89%) and `z_act` (88%, 76%).
+So the old gate did not merely fail to catch this chain; the quantity it
+watched is insensitive to the failure by construction.
+
 ### Minor points
 
 **m1, the pancake convergence claim.** Accepted, and it goes further than the
