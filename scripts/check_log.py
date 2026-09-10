@@ -17,7 +17,15 @@ FATAL = [
      "duplicate label"),
     (re.compile(r"Package biblatex Warning: The following entry could not be found"),
      "missing bibliography entry"),
+    # pdflatex reports errors two ways.  Without -file-line-error they begin
+    # with "! "; with it (which this build uses) they are "file:line: message"
+    # and carry no exclamation mark at all.  Missing the second form let ten
+    # undefined control sequences through a "clean" report once.
     (re.compile(r"^! ", re.M), "LaTeX error"),
+    (re.compile(r"^[^\s:]+\.\w+:\d+: (?!LaTeX Warning)(.+)$", re.M),
+     "LaTeX error (file:line form)"),
+    (re.compile(r"Undefined control sequence", re.M), "undefined control sequence"),
+    (re.compile(r"Missing \\?\$ inserted", re.M), "math-mode error"),
 ]
 OVERFULL = re.compile(r"Overfull \\hbox \(([\d.]+)pt too wide\)")
 MAX_BAD_BOXES = 5

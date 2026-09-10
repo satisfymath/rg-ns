@@ -59,8 +59,30 @@ def parse_bib(text: str) -> list[dict]:
     return out
 
 
+#: Greek letters written as LaTeX macros must normalise back to the character
+#: the remote record carries, or the title comparison fails on a difference
+#: this script itself introduced.
+_MACRO_TO_CHAR = {
+    "lambda": "\u03bb", "Lambda": "\u039b", "omega": "\u03c9",
+    "Omega": "\u03a9", "alpha": "\u03b1", "beta": "\u03b2",
+    "gamma": "\u03b3", "Gamma": "\u0393", "delta": "\u03b4",
+    "Delta": "\u0394", "sigma": "\u03c3", "Sigma": "\u03a3",
+    "mu": "\u03bc", "nu": "\u03bd", "pi": "\u03c0", "tau": "\u03c4",
+    "phi": "\u03c6", "chi": "\u03c7", "theta": "\u03b8", "rho": "\u03c1",
+    "eta": "\u03b7", "xi": "\u03be", "zeta": "\u03b6", "kappa": "\u03ba",
+    "psi": "\u03c8", "Phi": "\u03a6", "Psi": "\u03a8", "times": "\u00d7",
+}
+
+
 def norm_title(s: str) -> str:
-    s = re.sub(r"[{}$\\]", "", s or "").lower()
+    """Normalise a title for comparison: undo our own LaTeX escaping, then
+    reduce to lowercase alphanumerics."""
+    s = s or ""
+    s = re.sub(r"\\ensuremath\s*\{\s*\\(\w+)\s*\}",
+               lambda m: _MACRO_TO_CHAR.get(m.group(1), m.group(1)), s)
+    s = re.sub(r"\\(\w+)",
+               lambda m: _MACRO_TO_CHAR.get(m.group(1), m.group(1)), s)
+    s = re.sub(r"[{}$\\]", "", s).lower()
     return re.sub(r"[^a-z0-9 ]+", " ", s).strip()
 
 
@@ -205,10 +227,16 @@ NON_ASCII_MAP = {
 
 
 def sanitise(text: str) -> str:
-    """Replace characters pdflatex cannot typeset."""
+    """Replace characters pdflatex cannot typeset, and escape TeX specials.
+
+    Replacements use \\ensuremath rather than bare dollar signs, because arXiv
+    titles frequently already wrap the character in math mode and nesting
+    delimiters silently produces an undefined control sequence.  Ampersands in
+    journal names (A&A) must also be escaped.
+    """
     for k, v in NON_ASCII_MAP.items():
         text = text.replace(k, v)
-    return text.replace("$$", "")
+    return re.sub(r"(?<![\\&])&", r"\\&", text)
 
 
 BIB_TEMPLATE = """@article{{{key},

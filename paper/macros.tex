@@ -117,6 +117,12 @@
 \newcommand{\dens}{\varrho}                  % density matrix
 \newcommand{\jump}{L}                        % jump operator
 \newcommand{\Hilb}{\mathscr{H}}
+% Dirac notation.  Defined here rather than loading physics.sty, which would
+% redefine \dd, \abs, \norm and \vec and clash with the definitions above.
+\newcommand{\ket}[1]{\lvert #1 \rangle}
+\newcommand{\bra}[1]{\langle #1 \rvert}
+\newcommand{\braket}[2]{\langle #1 \vert #2 \rangle}
+\newcommand{\ketbra}[2]{\lvert #1 \rangle\!\langle #2 \rvert}
 
 % ---- Defects ---------------------------------------------------------------
 \newcommand{\Fstar}{F_{*}}
