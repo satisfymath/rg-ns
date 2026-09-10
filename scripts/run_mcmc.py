@@ -79,6 +79,8 @@ def main() -> int:
     ap.add_argument("--map-only", action="store_true",
                     help="find the best fit without sampling")
     ap.add_argument("--max-steps", type=int, default=40000)
+    ap.add_argument("--workers", type=int, default=10,
+                    help="process pool size; the effective value is\nalso capped by available memory (see absorb.sampling.safe_n_proc)")
     ap.add_argument("--seed", type=int, default=SEED)
     args = ap.parse_args()
 
@@ -105,7 +107,8 @@ def main() -> int:
 
             flat, summary = run_mcmc(post, dname, seed=args.seed,
                                      quick=args.quick, resume=False,
-                                     max_steps=args.max_steps)
+                                     max_steps=args.max_steps,
+                                     n_proc=args.workers)
             ci = credible_intervals(flat, post.param_names)
             entry = summary.to_dict()
             entry["parameters"] = ci

@@ -64,10 +64,10 @@ from scipy.special import expi
 
 from .constants import SEED
 
-# Below this |z| = |beta (M_k - f)| the exponential factor
-# exp(z e^{-s/tau_M}) is 1 to within double precision over the whole interval,
-# so the constant-rate (exponential) waiting time is exact and no root find is
-# needed.  Chosen as ~100x the machine epsilon.
+# Below this |z| = |beta (M_k - f)| the factor exp(z e^{-s/tau_M}) equals 1 to
+# within double precision over the whole interval, so the constant-rate
+# (exponential) waiting time is exact and no root find is needed.  A few tens of
+# machine epsilons.
 _Z_EPS = 1.0e-14
 
 #: default tolerances of the mean-field integrator (DOP853)
@@ -693,19 +693,21 @@ def hysteresis_experiment(
         raise ValueError("require 0 < f_start_ratio < 1")
     a_fn = (lambda t: 1.0) if a is None else a
     a_inv3: Callable[[float], float] = lambda t: float(a_fn(t)) ** -3
+    f_b0 = f_start_ratio * f_start
 
     def evolve(
-        y0: list[float],
+        y0: list[float] | np.ndarray,
         t0: float,
         t1: float,
-        boost: Callable[[float], float],
+        factor: float = 1.0,
         t_eval: np.ndarray | None = None,
     ):
+        """Integrate on a segment where the rate multiplier is *constant*."""
         sol = solve_ivp(
             _mean_field_rhs,
             (t0, t1),
-            y0,
-            args=(params, boost, a_inv3),
+            list(y0),
+            args=(params, lambda _t: factor, a_inv3),
             method="DOP853",
             t_eval=t_eval,
             rtol=rtol,
@@ -715,18 +717,24 @@ def hysteresis_experiment(
             raise RuntimeError(f"solve_ivp failed: {sol.message}")
         return sol
 
+    def evolve_pulsed(amp: float):
+        """History B up to the checkpoint: pulse on, then pulse off.
+
+        The two segments are integrated separately so that the switch-off is a
+        solver *restart* rather than a discontinuity inside a step; that keeps
+        the checkpoint density accurate to the requested tolerance.
+        """
+        first = evolve([f_b0, f_b0, 0.0], 0.0, pulse_end, 1.0 + amp)
+        return evolve(first.y[:, -1], pulse_end, t_prepare, 1.0)
+
     # --- history A: the reference preparation ------------------------------
-    solA = evolve([f_start, f_start, 0.0], 0.0, t_prepare, _unit)
+    solA = evolve([f_start, f_start, 0.0], 0.0, t_prepare)
     f_c = float(solA.y[0, -1])
     M_A = float(solA.y[1, -1])
 
     # --- history B: same f at the checkpoint, reached through a pulse -------
-    f_b0 = f_start_ratio * f_start
-
     def miss(amp: float) -> float:
-        boost = lambda t: (1.0 + amp) if t <= pulse_end else 1.0
-        s = evolve([f_b0, f_b0, 0.0], 0.0, t_prepare, boost)
-        return float(s.y[0, -1]) - f_c
+        return float(evolve_pulsed(amp).y[0, -1]) - f_c
 
     if miss(0.0) >= 0.0:
         raise RuntimeError("history B is not behind history A at zero pulse")
@@ -738,15 +746,14 @@ def hysteresis_experiment(
                 "no pulse amplitude below amplitude_max reaches the checkpoint"
             )
     amp = brentq(miss, 0.0, hi, xtol=1e-14, rtol=8.9e-16, maxiter=200)
-    boost_B = lambda t: (1.0 + amp) if t <= pulse_end else 1.0
-    solB = evolve([f_b0, f_b0, 0.0], 0.0, t_prepare, boost_B)
+    solB = evolve_pulsed(amp)
     M_B = float(solB.y[1, -1])
     f_c_B = float(solB.y[0, -1])
 
     # --- identical forward evolution ---------------------------------------
     t = np.linspace(t_prepare, t_final, n_grid)
-    fwdA = evolve([f_c, M_A, 0.0], t_prepare, t_final, _unit, t_eval=t)
-    fwdB = evolve([f_c_B, M_B, 0.0], t_prepare, t_final, _unit, t_eval=t)
+    fwdA = evolve([f_c, M_A, 0.0], t_prepare, t_final, 1.0, t_eval=t)
+    fwdB = evolve([f_c_B, M_B, 0.0], t_prepare, t_final, 1.0, t_eval=t)
 
     V_A, V_B = float(fwdA.y[2, -1]), float(fwdB.y[2, -1])
     dV = V_A - V_B

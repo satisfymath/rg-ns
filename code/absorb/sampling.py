@@ -26,6 +26,41 @@ N_TAU = 50           # require chain length > N_TAU * tau
 TAU_TOL = 0.02       # and tau stable to 2% between checks
 CHECK_EVERY = 500
 
+#: Measured resident size of one worker after the data are loaded and one
+#: likelihood has been evaluated.  Most of it is copy-on-write shared with the
+#: parent under the fork start method, so this is a conservative upper bound.
+WORKER_RSS_MB = 260
+#: Never consume more than this fraction of the memory the OS reports as
+#: available; the machine is shared with other work.
+MEMORY_BUDGET_FRACTION = 0.5
+
+
+def available_memory_mb() -> float:
+    """Memory the OS reports as available, in MiB."""
+    try:
+        with open("/proc/meminfo") as fh:
+            for line in fh:
+                if line.startswith("MemAvailable:"):
+                    return float(line.split()[1]) / 1024.0
+    except OSError:                                            # pragma: no cover
+        pass
+    return float("inf")
+
+
+def safe_n_proc(requested: int | None = None) -> int:
+    """Worker count that fits in the memory budget as well as the core count.
+
+    Sampling is embarrassingly parallel, so it is tempting to use every core;
+    but each forked worker touches a few hundred MB of private pages, and
+    exhausting memory on a shared machine is a far worse outcome than a chain
+    that takes twice as long.
+    """
+    by_cores = os.cpu_count() or 4
+    by_memory = int(available_memory_mb() * MEMORY_BUDGET_FRACTION
+                    / WORKER_RSS_MB)
+    n = min(requested or by_cores, by_cores, max(1, by_memory))
+    return max(1, n)
+
 
 @dataclass
 class ChainSummary:
@@ -217,7 +252,9 @@ def run_mcmc(post: Posterior, dataset: str, *, n_walkers: int | None = None,
         max_steps = min(max_steps, 6000)
     ndim = post.ndim
     n_walkers = n_walkers or max(32, 4 * ndim + (-(4 * ndim) % 16))
-    n_proc = n_proc or min(os.cpu_count() or 4, 16)
+    n_proc = safe_n_proc(n_proc)
+    print(f"  sampling with {n_proc} workers "
+          f"({available_memory_mb():.0f} MB available)")
 
     CHAIN_DIR.mkdir(parents=True, exist_ok=True)
     path = CHAIN_DIR / f"{post.model_name}_{dataset}.h5"

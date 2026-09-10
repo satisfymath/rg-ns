@@ -178,3 +178,15 @@ def test_grid_convergence(bg_memory):
     z = np.linspace(0.01, 5.0, 200)
     assert np.max(np.abs(bg_memory.D_M(z) - fine.D_M(z)) / fine.D_M(z)) < 1e-6
     assert np.max(np.abs(bg_memory.E(z) - fine.E(z)) / fine.E(z)) < 1e-7
+
+
+def test_matter_deficit_vanishes_in_the_lcdm_limit(bg_lcdm):
+    """The deficit is the transferred comoving density and nothing else."""
+    assert abs(bg_lcdm.derived()["matter_deficit"]) < 1e-15
+
+
+def test_matter_deficit_equals_the_transferred_amount(bg_memory):
+    d = bg_memory.derived()
+    p = bg_memory.p
+    assert np.isclose(d["matter_deficit"],
+                      p.eps * p.omega_c * d["f0"] / d["h"] ** 2, rtol=1e-10)

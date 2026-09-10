@@ -516,10 +516,16 @@ class Background:
             "M0": float(self.memory(0.0)[0]),
             "q0": float(self.q(0.0)[0]),
             "j0": float(self.j(0.0)[0]),
-            "omega_m0": dust + nu,
+            # Comoving dust density before and after activation.  The
+            # neutrino contribution is the same at both ends and is excluded,
+            # so that the deficit is exactly the transferred amount and
+            # vanishes identically when eps = 0.
+            "omega_m0": dust,
             "omega_m_early": self.p.omega_b + self.p.omega_c,
             "V0_minus_Vact": float(self.V_grid[-1] - self.p.omega_V_act),
         }
+        # Delta = (rho_m^early - rho_m0)/rho_crit,0 = eps omega_c f0 / E0^2,
+        # the single number that sets the width of the sandwich bound.
         out["matter_deficit"] = (out["omega_m_early"] - out["omega_m0"]) / E0 ** 2
         # acceleration onset
         qz = self.q(self.z)
