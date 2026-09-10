@@ -23,6 +23,14 @@ ROOT = Path(__file__).resolve().parents[2]
 CHAIN_DIR = ROOT / "results" / "chains"
 
 N_TAU = 50           # require chain length > N_TAU * tau
+#: A chain can look converged in its sampled parameters and still give an
+#: unstable answer for a derived quantity.  For this model the raw parameters
+#: are strongly degenerate near the LambdaCDM boundary, where the rate and the
+#: convertible fraction both go to zero and the remaining parameters become
+#: unconstrained; what the paper actually quotes is the *derived* converted
+#: fraction, so the split-chain stability of its 95th percentile is checked
+#: alongside the autocorrelation criterion.
+SPLIT_TOL = 0.25     # allowed relative drift of the reported limit
 TAU_TOL = 0.02       # and tau stable to 2% between checks
 CHECK_EVERY = 500
 

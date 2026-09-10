@@ -83,6 +83,8 @@ def main() -> int:
     ap.add_argument("--max-steps", type=int, default=40000)
     ap.add_argument("--workers", type=int, default=10,
                     help="process pool size; the effective value is\nalso capped by available memory (see absorb.sampling.safe_n_proc)")
+    ap.add_argument("--resume", action="store_true",
+                    help="continue an existing chain instead of restarting")
     ap.add_argument("--seed", type=int, default=SEED)
     args = ap.parse_args()
 
@@ -108,7 +110,7 @@ def main() -> int:
                 continue
 
             flat, summary = run_mcmc(post, dname, seed=args.seed,
-                                     quick=args.quick, resume=False,
+                                     quick=args.quick, resume=args.resume,
                                      max_steps=args.max_steps,
                                      n_proc=args.workers)
             ci = credible_intervals(flat, post.param_names)

@@ -185,4 +185,50 @@ def fig_jerk() -> Path | None:
     return save_figure(fig, "jerk")
 
 
-ALL = (fig_background, fig_hubble, fig_bao, fig_jerk)
+def fig_growth() -> Path | None:
+    """f sigma_8 against the eBOSS DR16 measurements, and the sign signature.
+
+    The lower panel is the point of the figure: the model enhances the density
+    growth rate while suppressing the velocity growth rate that redshift-space
+    distortions measure.  A coupling that drained energy in proportion to the
+    local density would move both the same way.
+    """
+    from ..data import rsd as rsd_data
+    from ..growth import Growth
+    from ..datasets import SIGMA8_FIDUCIAL
+
+    bgs, ref = _backgrounds("memory", n=80), _backgrounds("lcdm", n=80)
+    if not bgs or not ref:
+        return None
+    z = np.linspace(0.0, 2.0, 60)
+    gm = [Growth(b) for b in bgs]
+    gl = [Growth(b) for b in ref]
+
+    fig, (a1, a2) = plt.subplots(2, 1, figsize=(WIDTH_HALF * 1.5, 3.8),
+                                 sharex=True,
+                                 gridspec_kw=dict(height_ratios=[1.2, 1.0]))
+    _band(a1, z, [g.f_sigma8(z, SIGMA8_FIDUCIAL) for g in gm],
+          COLORS["model"], "model")
+    _band(a1, z, [g.f_sigma8(z, SIGMA8_FIDUCIAL) for g in gl],
+          COLORS["lcdm"], r"$\Lambda$CDM", ls=":")
+    d = rsd_data.load_rsd()
+    zz, val, cov = d.fs8_block()
+    a1.errorbar(zz, val, yerr=np.sqrt(np.diag(cov)), fmt="D",
+                color=COLORS["data"], ms=3.5, lw=1.0, label="eBOSS DR16")
+    a1.set_ylabel(r"$f\sigma_8(z)$")
+    a1.legend(loc="lower right", fontsize=8)
+
+    _band(a2, z, [g.f_growth(z) for g in gm], COLORS["accent"],
+          r"$f_g$ (density)")
+    _band(a2, z, [g.f_rsd(z) for g in gm], COLORS["model"],
+          r"$f_{\rm RSD}$ (velocity)", ls="--")
+    a2.axhline(1.0, color=COLORS["grey"], lw=0.8, ls=":")
+    a2.set_ylabel("growth rate")
+    a2.set_xlabel(r"redshift $z$")
+    a2.legend(loc="lower right", fontsize=8)
+    a2.set_xlim(0, 2)
+    fig.tight_layout()
+    return save_figure(fig, "growth")
+
+
+ALL = (fig_background, fig_hubble, fig_bao, fig_jerk, fig_growth)
