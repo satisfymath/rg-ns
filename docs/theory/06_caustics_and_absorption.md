@@ -202,18 +202,36 @@ and until it is supplied the dichotomy of Theorem C stands.
 
 ## 4. The one good news: the new channel is invisible where the paper lives
 
-> **Theorem D (FLRW and its perturbations are untouched).** Let
+> **Theorem D (FLRW and its sup-norm perturbations are untouched).** Let
 > $\Gamma_{\rm collapse}=\kappa[-\Theta]_+$. On the open set $\{\Theta>0\}$
 > this vanishes identically. An expanding FLRW background has $\Theta=3H>0$,
-> and a neighbourhood of it in any reasonable perturbative topology still has
-> $\Theta>0$. Hence every term of the perturbative expansion about such a
-> background vanishes: the background, the linear theory, and every higher
-> order are exactly unchanged.
+> hence so does every perturbation with $\|\delta\Theta\|_\infty<3H$. For such
+> a perturbation every term of the expansion vanishes: the background, the
+> linear theory, and every higher order are exactly unchanged.
 
 This is stronger than "the correction is nonlinear". The correction is
-identically zero on an open set containing the background, so no order of
-perturbation theory sees it. What switches it on is not a large perturbation
-but a change of sign of the local expansion.
+identically zero on an $L^\infty$-ball around the background, so no order of
+perturbation theory sees it there. What switches it on is not a large
+perturbation but a change of sign of the local expansion.
+
+**The $L^\infty$ is not removable, and an earlier version of this note was
+wrong to say "any reasonable perturbative topology".** Two counterexamples,
+both computed:
+
+1. *Finite $p$ fails.* Take $\delta\Theta$ of amplitude $-4H$ on a set of
+   width $w$. Then $\|\delta\Theta\|_1=O(w)$ and $\|\delta\Theta\|_2=O(\sqrt
+   w)$, both arbitrarily small, while $\Theta<0$ on that set. At $w=10^{-3}$:
+   $\|\delta\Theta\|_1=2\times10^{-3}$, $\|\delta\Theta\|_2=6.3\times10^{-2}$.
+2. *Coarse-graining fails.* If $\Theta\sim\mathcal N(3H,\sigma^2)$ then
+   $\mathbb E[\kappa(-\Theta)_+]>0$ for every $\sigma>0$, since a Gaussian has
+   full support. It is suppressed as $e^{-9H^2/2\sigma^2}$, i.e.
+   non-perturbatively, not to zero: $8.332\times10^{-2}$ at $\sigma=3H$,
+   $7.392\times10^{-26}$ at $\sigma=0.3H$.
+
+The consequence for the paper is small but real: the perturbative sections are
+protected, because the perturbations they treat are small in sup norm; an
+averaged or stochastic treatment of the same channel after shell crossing is
+not protected, and would have to carry the non-perturbative term.
 
 ---
 

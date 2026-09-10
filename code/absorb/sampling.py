@@ -38,6 +38,10 @@ N_TAU = 50           # require chain length > N_TAU * tau
 SPLIT_TOL = 0.25     # allowed relative drift of the reported limit
 TAU_TOL = 0.02       # and tau stable to 2% between checks
 CHECK_EVERY = 500
+#: Likelihood evaluations allowed to the local maximiser, per sampled
+#: dimension.  A fixed total budget favours the smallest model, which is the
+#: null in every comparison the paper makes.
+MAP_BUDGET_PER_DIM = 300
 
 #: Resident size of one worker in a long run.  Immediately after forking it is
 #: about 260 MB, most of it copy-on-write shared with the parent; it settles
@@ -96,6 +100,17 @@ class ChainSummary:
     chi2_min: float
     n_data: int
     n_params: int
+    #: Acceptance and autocorrelation over the last tenth of the chain.  The
+    #: cumulative figures are flattered by the early transient, and for a chain
+    #: that is decelerating they hide exactly the pathology one is looking for.
+    acceptance_late: float = float("nan")
+    move_rate_early: float = float("nan")
+    move_rate_late: float = float("nan")
+    #: Number of likelihood evaluations the maximiser was allowed, per
+    #: dimension.  Recorded because a model comparison between two models
+    #: polished with different budgets is not a comparison of the models.
+    map_budget_per_dim: int = 0
+    parametrisation: str = "logit"
 
     @property
     def aic(self) -> float:
@@ -229,6 +244,77 @@ def _priors_of(post: Posterior):
 
 
 # --------------------------------------------------------------------------- #
+# Unbounded reparametrisation
+# --------------------------------------------------------------------------- #
+class LogitMap:
+    """Bijection between a box of uniform priors and all of R^n.
+
+    Every prior in this project is uniform on a finite interval, and the
+    ensemble move used by ``emcee`` is a difference vector between two walkers
+    with no knowledge of those edges.  Once the posterior is wide compared with
+    its prior in any direction -- which is exactly what happens here, because
+    the rate parameters are unconstrained under the null -- most proposals land
+    outside the box and are rejected on the prior alone, at a rate that *grows*
+    as the ensemble spreads.  Measured on the frozen ``xi_h`` chain, 57.1% of
+    proposals at the default scale left the box, and the move rate fell from
+    0.0150 to 0.0058 over the run.
+
+    Sampling the logit-transformed coordinate removes the edges: no proposal
+    can be invalid, so a rejection carries information about the posterior
+    rather than about the parametrisation.
+
+    This is a change of coordinates, not a change of prior.  With
+
+        u = (x - low) / (high - low),   z = log(u / (1 - u)),
+
+    the Jacobian is dx/dz = (high - low) u (1 - u), and adding its logarithm to
+    the target reproduces the original measure on ``x`` exactly.  The test
+    ``test_logit_map_preserves_the_prior`` samples the transformed target with
+    a constant likelihood and checks that the induced distribution of ``x`` is
+    uniform.
+    """
+
+    def __init__(self, lows: Sequence[float], highs: Sequence[float]) -> None:
+        self.low = np.asarray(lows, dtype=float)
+        self.high = np.asarray(highs, dtype=float)
+        self.width = self.high - self.low
+        if np.any(self.width <= 0):
+            raise ValueError("every prior must have positive width")
+
+    def to_z(self, x: np.ndarray) -> np.ndarray:
+        u = np.clip((np.asarray(x, float) - self.low) / self.width, 1e-12, 1 - 1e-12)
+        return np.log(u / (1.0 - u))
+
+    def to_x(self, z: np.ndarray) -> np.ndarray:
+        return self.low + self.width / (1.0 + np.exp(-np.asarray(z, float)))
+
+    def log_jacobian(self, z: np.ndarray) -> float:
+        """log|dx/dz| summed over coordinates, computed stably for large |z|."""
+        za = np.asarray(z, float)
+        # log u + log(1-u) = -|z| - 2 log(1 + e^-|z|), exact and overflow-free
+        a = np.abs(za)
+        return float(np.sum(np.log(self.width) - a - 2.0 * np.log1p(np.exp(-a))))
+
+
+class UnboundedPosterior:
+    """``Posterior`` seen through :class:`LogitMap`; the sampler's target."""
+
+    def __init__(self, post: "Posterior") -> None:
+        self.post = post
+        priors = _priors_of(post)
+        self.map = LogitMap([p.low for p in priors], [p.high for p in priors])
+        self.model_name = post.model_name
+        self.ndim = post.ndim
+
+    def __call__(self, z: Sequence[float]) -> float:
+        x = self.map.to_x(z)
+        lp = self.post(x)
+        if not np.isfinite(lp):
+            return -np.inf
+        return lp + self.map.log_jacobian(z)
+
+
+# --------------------------------------------------------------------------- #
 # Worker plumbing
 # --------------------------------------------------------------------------- #
 #: Set before the process pool is created.  On Linux the pool is forked, so the
@@ -275,16 +361,22 @@ def run_mcmc(post: Posterior, dataset: str, *, n_walkers: int | None = None,
     CHAIN_DIR.mkdir(parents=True, exist_ok=True)
     path = CHAIN_DIR / f"{post.model_name}_{dataset}.h5"
     backend = emcee.backends.HDFBackend(str(path))
+
+    # The sampler works in the unbounded coordinate; everything reported is
+    # transformed back.  See LogitMap for why.
+    target = UnboundedPosterior(post)
+    lmap = target.map
+    _write_chain_meta(path, post, lmap)
+
     if not resume or backend.iteration == 0:
         backend.reset(n_walkers, ndim)
-        theta0 = find_map(post, seed=seed)
+        theta0 = find_map(post, seed=seed, max_local=MAP_BUDGET_PER_DIM * ndim)
         rng = np.random.default_rng(seed)
-        widths = np.array([(p.high - p.low) for p in _priors_of(post)])
-        p0 = theta0 + 1e-3 * widths * rng.standard_normal((n_walkers, ndim))
-        # reject starting points outside the prior
+        z0 = lmap.to_z(theta0)
+        p0 = z0 + 1e-2 * rng.standard_normal((n_walkers, ndim))
         for i in range(n_walkers):
-            while not np.isfinite(post.log_prior(p0[i])):
-                p0[i] = theta0 + 1e-3 * widths * rng.standard_normal(ndim)
+            while not np.isfinite(target(p0[i])):
+                p0[i] = z0 + 1e-2 * rng.standard_normal(ndim)
     else:
         # Resuming: emcee needs the last stored state explicitly.  A fresh
         # sampler object has no memory of a previous session, so passing None
@@ -297,7 +389,7 @@ def run_mcmc(post: Posterior, dataset: str, *, n_walkers: int | None = None,
     old_tau = np.inf
     converged = False
     global _WORKER_POST
-    _WORKER_POST = post
+    _WORKER_POST = target
     with ctx.Pool(n_proc) as pool:
         sampler = emcee.EnsembleSampler(n_walkers, ndim, _log_prob, pool=pool,
                                         moves=moves, backend=backend)
@@ -316,18 +408,61 @@ def run_mcmc(post: Posterior, dataset: str, *, n_walkers: int | None = None,
     tau_max = float(np.max(tau))
     burn = int(3 * tau_max)
     thin = max(1, int(tau_max / 2))
-    flat = sampler.get_chain(discard=burn, thin=thin, flat=True)
+    flat_z = sampler.get_chain(discard=burn, thin=thin, flat=True)
     logp = sampler.get_log_prob(discard=burn, thin=thin, flat=True)
+    flat = lmap.to_x(flat_z)
     best = flat[int(np.argmax(logp))]
+    # One maximisation protocol for every model: the budget scales with the
+    # dimension, so a larger model is not polished less well than a smaller one.
+    best = find_map(post, x0=best, max_local=MAP_BUDGET_PER_DIM * ndim)
 
+    lp_all = sampler.get_log_prob()
+    early, late = _move_rates(lp_all)
     summary = ChainSummary(
         model=post.model_name, dataset=dataset, n_walkers=n_walkers,
         n_steps=int(sampler.iteration), burn_in=burn, thin=thin,
         tau_max=tau_max, acceptance=float(np.mean(sampler.acceptance_fraction)),
         converged=converged, seed=seed, runtime_s=runtime,
         chi2_min=float(post.chi2(best)),
-        n_data=int(post.likelihood.n_data()), n_params=ndim)
+        n_data=int(post.likelihood.n_data()), n_params=ndim,
+        acceptance_late=late, move_rate_early=early, move_rate_late=late,
+        map_budget_per_dim=MAP_BUDGET_PER_DIM)
     return flat, summary
+
+
+def _move_rates(log_prob: np.ndarray) -> tuple[float, float]:
+    """Fraction of steps at which a walker moved, over the first and last tenth.
+
+    A healthy chain has the two roughly equal.  A chain whose ensemble is
+    spreading faster than it mixes has the late rate well below the early one,
+    and its cumulative acceptance is then meaningless.
+    """
+    n = log_prob.shape[0]
+    if n < 20:
+        return float("nan"), float("nan")
+    moved = np.diff(log_prob, axis=0) != 0
+    w = max(1, n // 10)
+    return float(moved[:w].mean()), float(moved[-w:].mean())
+
+
+def _write_chain_meta(path: Path, post: "Posterior", lmap: "LogitMap") -> None:
+    """Record the coordinates the stored chain is in, next to the chain.
+
+    The HDF5 file holds the unbounded coordinate; anything reading it directly
+    needs this to get back to parameter values.
+    """
+    import json
+    meta = dict(parametrisation="logit", model=post.model_name,
+                params=list(post.param_names),
+                low=lmap.low.tolist(), high=lmap.high.tolist())
+    path.with_suffix(".meta.json").write_text(json.dumps(meta, indent=2))
+
+
+def load_chain_meta(path: Path) -> dict | None:
+    """Companion of :func:`_write_chain_meta`; ``None`` for legacy chains."""
+    import json
+    meta = Path(path).with_suffix(".meta.json")
+    return json.loads(meta.read_text()) if meta.exists() else None
 
 
 def credible_intervals(flat: np.ndarray, names: Sequence[str],

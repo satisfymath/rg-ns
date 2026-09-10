@@ -255,13 +255,37 @@ tensor, so the system is underdetermined without a closure. What the option
 achieves is to convert the obstruction into a precise requirement, and
 supplying such a closure is left open.
 
-\paragraph{What is not disturbed.} The candidate channel
+\paragraph{What is not disturbed, and in what sense.} The candidate channel
 $\kappa[-\expa]_+$ vanishes identically on the open set $\{\expa>0\}$. An
-expanding background has $\expa=3\Hub>0$, and so does a neighbourhood of it, so
-every order of the perturbative expansion about FLRW vanishes, not
-merely the linear one. Nothing in
+expanding background has $\expa=3\Hub>0$, so the background is untouched, and
+so is any perturbation small enough in the supremum norm that $\expa$ stays
+positive everywhere: for such a perturbation every order of the expansion
+vanishes, not merely the linear one. Nothing in
 \cref{sec:homogeneous-cosmology,sec:cosmography,sec:perturbations,sec:observations}
 changes.
+
+The qualification is not decorative. The statement is pointwise, and the
+topology has to be $L^\infty$: in $L^p$ with $p<\infty$ a perturbation can keep
+its amplitude while shrinking its support, so it is small in norm and still
+drives $\expa$ negative somewhere. The statement likewise fails for any
+coarse-grained description in which $\expa$ has a distribution with support
+below zero. If $\expa$ is Gaussian about $3\Hub$ with width $\sigma$, then
+$\avg{[-\expa]_+}$ is positive for every $\sigma$ and is suppressed only as
+$e^{-9\Hub^2/2\sigma^2}$: non-perturbative rather than zero, and numerically
+$8.3\times10^{-2}$ of $3\Hub$ at $\sigma=3\Hub$ but $7.4\times10^{-26}$ at
+$\sigma=0.3\Hub$. So once structure formation has produced collapsing regions,
+an averaged treatment of this channel is not exactly zero; what is exactly zero
+is its contribution wherever the local expansion is positive, which is what the
+observational sections use.
+
+\paragraph{A rate proportional to the expansion has no positive local
+extension.} The solvable family of \cref{sec:solvable-family} uses
+$\Gam=\xi_0\Hub$. Covariantizing it in the obvious way, $\Hub\to\expa/3$, gives
+a rate that is negative wherever $\expa<0$, which violates the non-negativity
+assumed throughout and in particular in \cref{prop:survival}. That family
+therefore has no unambiguous local extension into a collapsing region, and the
+kinetic law it belongs to has to be read as a statement about the homogeneous
+mode, as \cref{asm:geodesic} already requires.
 
 \begin{figure}[t]
   \centering
