@@ -270,3 +270,28 @@ def test_extension_is_exactly_lambda_cdm_at_zero_conversion(model, extra):
         assert post.chi2(base + [0.0, lx, za]) == ref, (
             f"conversion is off but {model} differs from LambdaCDM at "
             f"log10_xi={lx}, z_act={za}")
+
+
+def test_sound_horizon_recipe_is_immaterial_where_the_fit_lives():
+    """The two r_drag fitting formulae must agree where the posterior is.
+
+    Only one of the two implemented recipes is ever exercised, and a referee
+    pointed out that they diverge by about 1% across the omega_c prior, which
+    is a full DESI error bar on every distance ratio. That divergence is real
+    but it is at the edges: at the best-fit cosmologies the two agree to better
+    than 0.05%, and the difference moves the chi-square difference between
+    LambdaCDM and the extension by 0.14, against the 1.6 the comparison is
+    about. This test fails if that ceases to be true.
+    """
+    from absorb import early
+
+    for omega_b, omega_c in ((0.02237, 0.1177), (0.02244, 0.1188)):
+        a = early.r_drag(omega_b, omega_b + omega_c, method="aubourg")
+        b = early.r_drag(omega_b, omega_b + omega_c, method="brieden")
+        assert abs(b - a) / a < 5e-4, (omega_b, omega_c, a, b)
+
+    # and the divergence at the prior edges is real, so the agreement above is
+    # a statement about where the fit lives and not about the formulae
+    edge = early.r_drag(0.02237, 0.02237 + 0.20, method="aubourg")
+    edge_b = early.r_drag(0.02237, 0.02237 + 0.20, method="brieden")
+    assert abs(edge_b - edge) / edge > 5e-3

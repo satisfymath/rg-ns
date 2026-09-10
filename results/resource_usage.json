@@ -182,5 +182,21 @@
     "mem_available_before_mb": 10382.49609375,
     "mem_available_after_mb": 10869.05859375,
     "notes": "3 restarts"
+  },
+  {
+    "name": "map_memory__baseline",
+    "seconds": 84.59375739097595,
+    "peak_rss_mb": 634.046875,
+    "mem_available_before_mb": 10869.05859375,
+    "mem_available_after_mb": 10863.91015625,
+    "notes": "3 restarts"
+  },
+  {
+    "name": "map_track_b__baseline",
+    "seconds": 134.7064564228058,
+    "peak_rss_mb": 633.05078125,
+    "mem_available_before_mb": 10863.91015625,
+    "mem_available_after_mb": 10902.7109375,
+    "notes": "3 restarts"
   }
 ]
