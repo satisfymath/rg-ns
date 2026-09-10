@@ -38,5 +38,13 @@
     "mem_available_before_mb": 2915.59765625,
     "mem_available_after_mb": 2193.92578125,
     "notes": "N=16384, 25000 graded steps"
+  },
+  {
+    "name": "profile_xi_h",
+    "seconds": 374.19600915908813,
+    "peak_rss_mb": 607.2734375,
+    "mem_available_before_mb": 5699.69921875,
+    "mem_available_after_mb": 2140.1015625,
+    "notes": "profile likelihood in eps"
   }
 ]

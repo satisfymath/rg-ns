@@ -165,6 +165,41 @@ transfer four-vector. The left side is a gradient, so $Q^\nu$ must be closed.
 So the sector that can absorb the divergence is the one that does not dilute,
 and that is exactly the sector whose transfer is constrained.
 
+### 3b. A fourth option, and why it is not a repair
+
+The three options above are not exhaustive. Let the receiving sector carry a
+traceless spatial anisotropic stress in addition to the vacuum,
+
+$$
+T^{\mu\nu}_{\rm recv}=-Vg^{\mu\nu}+\Pi^{\mu\nu},
+\qquad \Pi^{\mu\nu}u_\nu=0,\quad \Pi^\mu{}_\mu=0 .
+$$
+
+Keeping the dust geodesic, total conservation becomes
+$\nabla_\mu\Pi^{\mu\nu}=Qu^\nu+\nabla^\nu V$. Its timelike part is $DV=Q$, the
+definition of the transfer, so the only new content is the spatial equation
+$\nabla_\mu\Pi^{\mu i}=D^iV$.
+
+This has three attractive properties.
+
+- **The background is untouched.** In FLRW $D^iV=0$ by homogeneity and isotropy
+  forbids a traceless spatial tensor, so $\Pi\equiv0$.
+- **The existing linear theory is untouched.** Under the geodesic realization
+  $\delta V_{\rm com}=0$, hence $D^iV=0$ on comoving slices and $\Pi\equiv0$
+  again. The channel switches on only where the vacuum is not comoving-uniform,
+  which is exactly where a $\Theta$-dependent rate acts.
+- **The equation of state is unchanged.** $\Pi$ is traceless, so the isotropic
+  part of the receiver is still $-V$: this is a pure shear, not a modification
+  of $p=-\rho$.
+
+It is nevertheless **not a repair**, because $\nabla_\mu\Pi^{\mu i}=D^iV$
+determines $\Pi$ only up to a divergence-free traceless tensor. The system is
+underdetermined without additional dynamics for $\Pi$. What the option does is
+convert the obstruction into a precise requirement: a closure for an
+anisotropic stress that vanishes identically wherever the vacuum is
+comoving-uniform. Supplying one is a construction this paper does not attempt,
+and until it is supplied the dichotomy of Theorem C stands.
+
 ## 4. The one good news: the new channel is invisible where the paper lives
 
 > **Theorem D (FLRW and its perturbations are untouched).** Let
