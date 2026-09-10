@@ -606,11 +606,20 @@ class Background:
         # Delta = (rho_m^early - rho_m0)/rho_crit,0 = eps omega_c f0 / E0^2,
         # the single number that sets the width of the sandwich bound.
         out["matter_deficit"] = (out["omega_m_early"] - out["omega_m_today"]) / E0 ** 2
-        # The jerk excess itself, which is what a cosmographic measurement
-        # would see.  Computed directly rather than inferred from the deficit,
-        # because the inequality relating them is a floor whose hypothesis this
-        # model's activation law does not satisfy; see transfer_diagnostics.
-        out["jerk_excess"] = out["j0"] - 1.0 - 2.0 * out["Omega_r0"]
+        # The model's contribution to the jerk, eps_0 = Q_V / (2 Mpl^2 H^3),
+        # computed directly rather than inferred from the deficit, because the
+        # inequality relating them is a floor whose hypothesis this model's
+        # activation law does not satisfy; see transfer_diagnostics.
+        #
+        # This is the transfer term alone, not j0 - 1 - 2 Omega_r0.  The latter
+        # also contains the massive-neutrino pressure term, which LambdaCDM has
+        # too and which is therefore not a signature of anything: with it
+        # included the quantity cannot reach zero even at zero conversion,
+        # where it equals 4.9e-5, so a profile in it has no null point and its
+        # limit is a limit on the wrong thing.
+        out["jerk_excess"] = 1.5 * float(self.Q_V(0.0)[0]) / E0 ** 3
+        out["jerk_neutrino_term"] = (out["j0"] - 1.0 - 2.0 * out["Omega_r0"]
+                                     - out["jerk_excess"])
         # acceleration onset
         qz = self.q(self.z)
         sign = np.sign(qz)

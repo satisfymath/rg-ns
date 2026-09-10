@@ -131,9 +131,18 @@ genuine one-sided limit,
   \Delta < \numProfileXiHBaselineMatterDeficitLimitNV \qquad (95\%),
 \end{equation}
 with the profile rising to $\Delta\chisq\simeq\numProfileXiHBaselineMatterDeficitMaxDeltaChiT$
-across the grid, so this is a constraint and not another flat direction. Barely
-more than one per cent of the critical density can have been moved from matter
-into vacuum since activation.
+across the grid, so this is a constraint and not another flat direction. About
+one per cent of the critical density is the most that can have been moved from
+matter into vacuum since activation. The constraint is imposed exactly rather
+than by a penalty: at each grid point every other parameter is free and
+$\epsilon$ is solved for so that the deficit takes the target value, which it
+does to a relative error of
+$\numProfileXiHBaselineMatterDeficitMaxTargetMissRel$, and the profile has
+$\numProfileXiHBaselineMatterDeficitNNonMonotoneSteps$ decreasing steps above
+its minimum. Those two diagnostics are reported because an earlier version of
+this analysis used a quadratic penalty too weak to hold the constraint: its
+grid points missed their targets by up to a factor of three and its profile was
+not monotone, and the limit it produced was not meaningful.
 
 This does \emph{not} bound the jerk excess through
 \cref{eq:cosmography-deficit-floor}, in either of the two ways one might hope.

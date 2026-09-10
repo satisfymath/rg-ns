@@ -126,5 +126,13 @@
     "mem_available_before_mb": 8211.24609375,
     "mem_available_after_mb": 8174.3046875,
     "notes": "nlive=500"
+  },
+  {
+    "name": "profile_xi_h_matter_deficit",
+    "seconds": 4017.1500039100647,
+    "peak_rss_mb": 732.609375,
+    "mem_available_before_mb": 7882.1796875,
+    "mem_available_after_mb": 8197.55078125,
+    "notes": "profile in a derived quantity"
   }
 ]

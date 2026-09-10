@@ -64,7 +64,7 @@ macro `\numProfileXiHBaselineMatterDeficitLimitNV` = `0.0126`.
 
 This is the same defect that referee B caught as M3 ("the 95% upper limit on
 `eps` was the right-hand end of the grid"), reappearing in the replacement
-statistic. Four independent demonstrations, all from the shipped JSON:
+statistic. Five demonstrations, the first four from the shipped JSON alone:
 
 **(a) The constrained fits do not reach their constraint.** The `achieved`
 column of the stored result, printed against `targets`:
@@ -153,15 +153,39 @@ plus a warm start along the grid, and `penalty = 1e9`
 The constraint is then met to `2.5e-7` or better at every point:
 
 ```
-     Delta      achieved     miss        chi2       Delta chi2
-   0.000000    2.08e-07   +2.1e-07   1436.5160       1.5959
-   0.002000    0.002000   +9.0e-08   1435.8174       0.8973
-   0.004000    0.004000   -9.3e-08   1434.9201       0.0000
-   0.006310    0.006309   -2.0e-07   1435.4773       0.5572
-   0.008000    0.008000   -2.9e-07   1436.3100       1.3899
-   0.010000    0.010000   -1.9e-07   1437.1620       2.2419
-   0.012589    0.012589   -2.5e-07   1438.3191       3.3990
+     target     achieved      miss        chi2      Delta chi2
+   0.000000    2.08e-07    +2.1e-07   1436.5160       1.5959
+   0.002000    0.002000    +9.0e-08   1435.8174       0.8973
+   0.004000    0.004000    -9.3e-08   1434.9201       0.0000
+   0.006310    0.006309    -2.0e-07   1435.4773       0.5572
+   0.008000    0.008000    -2.9e-07   1436.3100       1.3899
+   0.010000    0.010000    -1.9e-07   1437.1620       2.2419
+   0.012589    0.012589    -2.5e-07   1438.3191       3.3990
+   0.016000    0.016000    -3.1e-07   1440.2301       5.3100
+   0.020000    0.020000    -1.4e-07   1440.7460       5.8259
+   0.025119    0.025119    -1.5e-07   1442.1573       7.2372
+   0.032000    0.032000    -1.6e-07   1444.2867       9.3665
+   0.050118    0.050118    -3.0e-07   1451.2872      16.3671
 ```
+
+Monotone above the minimum at every step, unlike the shipped curve. Compared
+grid point by grid point, on the five targets the two runs share:
+
+```
+    target   shipped achieved  shipped chi2   my achieved    my chi2   shipped worse
+  0.000000        0.000195       1436.075      0.000000    1436.516      -0.441
+  0.006310        0.006206       1435.657      0.006310    1435.477      +0.180
+  0.012589        0.006802       1437.781      0.012589    1438.319      -0.538
+  0.025119        0.030197       1733.600      0.025119    1442.157    +291.443
+  0.050119        0.049600       1457.595      0.050119    1451.287      +6.308
+```
+
+The fourth row is a direct constructive counter-example: at the *same* target
+`0.025119` a feasible point exists with `chi2 = 1442.157`, while the shipped run
+reports `1733.600` at a point that is not even on the constraint surface. The
+fifth is a smaller one at a target the shipped run nearly reached. The two rows
+where the shipped run appears "better" are the two where it missed the
+constraint by the most — it is reporting a different `Delta`.
 
 Every point was re-evaluated independently through `Posterior.log_prior` to
 confirm it lies inside the prior box (`log_prior = 0.0` throughout). Three
@@ -197,10 +221,17 @@ should be quoting, and it is not what `results/profile.json` contains.
 
 **Also affected**: the text supports the limit with "the profile rising to
 `Delta chi2 ~ 1192` across the grid, so this is a constraint and not another
-flat direction". `1192` is the value at `target = 0.19953`, whose neighbours are
-`126.5` and `21.9` and which the optimiser missed by 17%. A curve that goes
+flat direction" (macro
+`\numProfileXiHBaselineMatterDeficitMaxDeltaChiT = 1.19e+03`). `1192` is the
+value at `target = 0.19953`, a target the optimiser missed by 17%, and its
+neighbours in the same array are `126.5` and `21.9`. A curve that reads
 `297.9, 21.9, 126.5, 1192` over four successive grid points is not measuring a
-profile.
+profile, and the one place I could check it directly the true value is `7.24`
+rather than `298`. Whatever the correct upper tail is, `1192` is not a number
+the manuscript can use to argue that the direction is constrained. The argument
+it is being used to make is better made by the corrected curve, which rises
+smoothly and monotonically to `16.37` at `Delta = 0.050` — that is a constraint,
+and it is a defensible one.
 
 **What would resolve it**:
 1. Impose the constraint exactly rather than by a soft penalty — solve for one
@@ -268,41 +299,54 @@ z_act     6.9709  8.5554
 ```
 
 so halving the `log10_xi` range to `[-2.5, -0.5]` and the `z_act` range to
-`[6.0, 20.85]` — both entirely defensible, and both containing this ridge with
-room to spare — raises `ln Z(xi_h)` by up to `2 ln 2 = 1.386`, and by nearly
-that much if the posterior mass `p_B` inside the narrowed box is close to one.
-That would take `ln B` from `-1.60` to about `-0.21`: from "five to one against"
-to no preference at all. (The narrowing is in fact conservative: the true
-maximum-likelihood point found in M3 sits at `log10_xi = 1.0`, *outside* the
-narrowed box, so `p_B < 1` and the measured rise is a lower bound on how far
-`ln B` can be moved by a defensible change of prior.)
+`[6.0, 20.85]` keeps this ridge comfortably inside, and by the identity can
+raise `ln Z(xi_h)` by up to `2 ln 2 = 1.386` — enough on its own to take `ln B`
+from `-1.60` to `-0.21`, from "five to one against" to no preference at all.
+(That narrowing is conservative in one respect: the true maximum-likelihood
+point of M3 sits at `log10_xi = 1.0`, outside the narrowed box, so `p_B < 1`.)
 
-**I tried to measure it, and the attempt is itself informative.** I ran the
-narrowed prior through the same nested sampler (dynesty 3.1.0, `nlive=500`,
-`dlogz=0.1`, `bound='multi'`, `sample='rwalk'`, 2 workers, same seed as the
-shipped run, `/tmp/.../scratchpad/prior_variant.py`):
+**Measured.** I ran two modified priors through the same nested sampler
+(dynesty 3.1.0, `nlive=500`, `dlogz=0.1`, `bound='multi'`, `sample='rwalk'`, 2
+workers, same seed as the shipped run,
+`/tmp/.../scratchpad/prior_variant.py`). Only `log10_xi` and `z_act` were
+changed; `eps` was left at `[0,1]` throughout, since it is a fraction and its
+range is forced.
 
 ```
-  xi_h, prior as published   ln Z = -733.748 +/- 0.207   (shipped run)
-  xi_h, prior as published   ln Z = -734.692 +/- 0.212   (my replicate, M6)
-  xi_h, log10_xi and z_act halved
-                             ln Z = -733.831 +/- 0.209
-                             ln(V_new/V_old) = -1.3863
+  prior on (log10_xi, z_act)          ln V/V_pub    ln Z(xi_h)        ln B vs lcdm
+  published  [-3,1] x [0.3,30]          0.0000    -733.748 +/- 0.207   -1.596
+  published, my replicate (seed 12345)  0.0000    -734.692 +/- 0.212   -2.455
+  halved     [-2.5,-0.5] x [6,20.85]   -1.3863    -733.831 +/- 0.209   -1.679
+  widened    [-5,1] x [0.3,59.7]       +1.0986    -732.932 +/- 0.200   -0.780
 ```
 
-The narrowed run sits `+0.861` above my own full-prior replicate and `-0.083`
-below the shipped one. In other words **the between-run scatter of `ln Z` (M6,
-0.94) is the same size as the entire prior effect being tested**, and this
-experiment cannot resolve the two. The rigorous statement survives regardless:
-the identity bounds the movement at `ln p_B + 1.386 <= 1.386`, so a factor-two
-change in two prior ranges can move `ln B` by up to `1.4`, comparable to
-`|ln B| = 1.6` itself; and the observed near-zero shift means either
-`p_B ~ 0.25` (a quarter of the posterior mass lies in the narrowed box, which is
-plausible since the best-fit basin at `log10_xi = 1.0` is excluded from it) or
-the sampler noise dominates. `prior_sensitivity.py` separates those two cleanly,
-because it gets `p_B` from the *same* run's samples and so cancels the sampler
-noise exactly — which is the whole point of writing it that way, and is another
-reason it should be run.
+(`ln B` against the shipped LambdaCDM `ln Z = -732.152` in each case, except the
+replicate row which uses my own `-732.237`.)
+
+Widening the log-prior on the rate downward by two decades and doubling the
+`z_act` range — two choices no referee could object to on physical grounds, and
+both of which *triple* the prior volume — moves `ln Z(xi_h)` **up** by `0.82`
+and `ln B` from `-1.60` to `-0.78`, i.e. from odds of 4.9:1 against the
+extension to 2.2:1. It moves up rather than down because the added slab
+`log10_xi in [-5,-3]` is where the model is closest to LambdaCDM and so fits
+*better* than the box average, which is precisely the "flat direction
+contributes its prior volume" mechanism the paper's own docstring appeals to,
+running in the direction the paper did not anticipate.
+
+Across three defensible priors and two seeds, `ln Z(xi_h)` spans
+
+```
+  -734.692 ... -732.932      range 1.76
+```
+
+which is larger than `|ln B| = 1.60` and eight times the `+/- 0.21` printed
+beside it. I cannot separate how much of that span is prior and how much is the
+sampler noise of M6 — and that is exactly the point: at the precision the
+manuscript quotes, `ln B` is not a determined quantity. Note that
+`prior_sensitivity.py` *does* separate the two cleanly, because it takes `p_B`
+from the same run's own samples so the sampler noise cancels in the identity.
+That is the whole reason it was written that way, and another reason it should
+be run.
 
 **The Method subsection states the opposite of the truth.** Section 10.2 says
 "Priors are uniform and identical across models wherever a parameter is shared,
@@ -333,8 +377,10 @@ one has.
 paper (not only in a JSON), and state the span of `ln B` over the narrowings in
 the same paragraph that quotes `ln B`. If the span exceeds `|ln B|` — and the
 number above says it does — then the honest headline is that the evidence does
-not distinguish the models, and the profile-likelihood statement (`Delta chi2`
-of 0.86 between the two best fits) is the robust one and should lead.
+not distinguish the models, and the profile-likelihood statement — a
+`Delta chi2` of 1.64 between the two best fits, with two of the three extra
+parameters exactly unidentified at the null — is the robust one and should
+lead.
 
 ### M3. The `Delta chi2` column of Table 1 mixes three incompatible maximisers, prints an impossible number, and understates the model's best fit by a factor of two.
 
@@ -377,7 +423,8 @@ enforced):
   breakdown  SN 1416.03  BAO 11.66  CC 6.31  CMB 0.885
 ```
 
-against the four values in circulation for the same quantity:
+against the four values already in circulation in the repository for the same
+quantity:
 
 ```
   paper/generated/tab_comparison.tex   1435.70   (Delta chi2 = -0.82)

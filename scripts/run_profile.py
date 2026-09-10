@@ -284,6 +284,12 @@ def main() -> int:
     ap.add_argument("--n-grid", type=int, default=17)
     ap.add_argument("--quantity", default=None,
                     help="profile a derived quantity instead of eps")
+    ap.add_argument("--log-range", type=float, nargs=2, default=None,
+                    metavar=("LO", "HI"),
+                    help="log10 range of the target grid; the default suits "
+                         "the matter deficit, and the jerk excess is an order "
+                         "of magnitude smaller, so a shared grid wastes most "
+                         "of its points on unreachable targets")
     args = ap.parse_args()
 
     print(f"MemAvailable {mem_available_mb():.0f} MB; single process")
@@ -294,7 +300,12 @@ def main() -> int:
         if args.quantity:
             key = f"{m}__{args.data}__{args.quantity}"
             with record(f"profile_{m}_{args.quantity}", "profile in a derived quantity"):
-                out[key] = profile_derived(m, args.data, args.quantity)
+                targets = None
+                if args.log_range:
+                    lo, hi = args.log_range
+                    targets = np.concatenate([[0.0], np.logspace(lo, hi, 12)])
+                out[key] = profile_derived(m, args.data, args.quantity,
+                                           targets=targets)
             r = out[key]
             msg = ("unbounded within the grid" if r["unbounded"]
                    else f"{r['limit_95']:.5f}")
