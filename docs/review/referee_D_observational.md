@@ -455,78 +455,6 @@ emitting it with a footnote. The footnote as written ("Not every `chi2_min`
 comes from the common maximisation protocol") does not warn the reader that one
 of the printed numbers is arithmetically impossible.
 
-### M6. `ln Z` for the extended models is not reproducible. An independent seed with identical settings moves `ln B` by 0.86, three times its quoted error.
-
-**Location**: `results/evidence.json`; `paper/generated/tab_comparison.tex`;
-`scripts/run_nested.py` docstring ("A stopping criterion of `dlogz = 0.1` is
-used so that the error on a difference of two evidences stays well below the
-scale that would change a qualitative verdict").
-
-I replicated both baseline runs with a different seed and otherwise identical
-settings — dynesty 3.1.0, `nlive=500`, `dlogz=0.1`, `bound='multi'`,
-`sample='rwalk'`, 2 workers, same `Posterior` and same likelihood object
-(`/tmp/.../scratchpad/rerun_nested.py`):
-
-```
-                 shipped (seed 20260909)     replicate (seed 12345)     shift
-  lcdm           -732.152 +/- 0.195          -732.237 +/- 0.196        -0.085
-  xi_h           -733.748 +/- 0.207          -734.692 +/- 0.212        -0.944
-  ln B(xi_h)       -1.596 +/- 0.284            -2.455 +/- 0.296        -0.859
-```
-
-LambdaCDM reproduces to 0.43 of its quoted error. The extension does not: two
-runs differing only in seed disagree by `0.944`, which is 4.5 times the
-per-run error and 3.2 combined `sigma`. `ln B` moves from `-1.60` (odds 4.9:1
-against) to `-2.46` (odds 11.6:1), i.e. the odds change by a factor of 2.4, and
-the shipped error bar `+/- 0.28` does not cover it.
-
-Changing the sampler's geometry as well as its seed (`bound='single'`,
-`sample='unif'`, seed 999) gives a third LambdaCDM value:
-
-```
-  lcdm, multi/rwalk, seed 20260909   -732.152 +/- 0.195   164982 evals
-  lcdm, multi/rwalk, seed 12345      -732.237 +/- 0.196   164719 evals
-  lcdm, single/unif, seed 999        -732.477 +/- 0.198    30220 evals
-```
-
-a spread of `0.325` across three runs of a well-behaved 3-parameter posterior,
-1.7 times the quoted error. So even the reference row of Table 1 is only good to
-about `0.2`-`0.3`, before the extension's `0.94` is taken into account. The
-matching `xi_h` run under `single`/`unif` had not terminated after an hour of
-wall time on two workers, against 87 seconds and 30 220 evaluations for
-LambdaCDM under the same settings — which is itself a measure of how much harder
-the extension's posterior is for a nested sampler, and a reason not to take a
-single run of it at face value.
-
-**The mechanism is visible in the same output.** Both runs report a best live
-point far from the model's actual maximum:
-
-```
-  chi2_min, shipped run       1436.2958
-  chi2_min, replicate         1436.3780
-  actual maximum (M3)         1434.8798
-```
-
-Neither nested run ever reached the ridge that carries the likelihood, and they
-failed by different amounts. That is the same razor-thin curved degeneracy that
-froze the ensemble chains; nested sampling is not immune to it, it merely fails
-more quietly. `nlive = 500` with dynesty's default `rwalk` in six dimensions is
-not enough to resolve a ridge whose `chi2` rises from `1434.88` to `33560` over
-half a decade in `log10_xi` at fixed neighbours.
-
-**Note also** that `dlogz` is a stopping criterion on the *remaining* evidence,
-not an error bar; the docstring conflates the two. The quoted errors are
-dynesty's `sqrt(H/nlive)`-type estimate (`H = 12.48` and `14.77` for the two
-models), which is a within-run estimate and demonstrably does not bound the
-between-run scatter here.
-
-**What would resolve it**: run every evidence at least three times with
-different seeds and quote the scatter, not `logzerr`; raise `nlive` (or use
-`sample='rslice'`/`'rwalk'` with an increased `walks`) until the scatter comes
-down below the differences being claimed; and verify that the sampler's best
-live point approaches the maximum found by `run_map.py` (M3) before trusting
-`ln Z`. Until then no `ln B` in Table 1 should be quoted to two decimals.
-
 ### M4. Section 10 promises four analyses that no results file contains.
 
 **Location**: `paper/sections/10_observations.tex`, Sec. 10.1 and the closing
@@ -633,6 +561,78 @@ marginalise over `kappa` with a prior of that width; (ii) report `r_drag`
 computed both ways for the baseline fit and state the shift in `ln Z`; (iii) add
 a test that fails if `kappa` evaluated at the edges of the `omega_c` prior moves
 `l_A` by more than half a `sigma`.
+
+### M6. `ln Z` for the extended models is not reproducible. An independent seed with identical settings moves `ln B` by 0.86, three times its quoted error.
+
+**Location**: `results/evidence.json`; `paper/generated/tab_comparison.tex`;
+`scripts/run_nested.py` docstring ("A stopping criterion of `dlogz = 0.1` is
+used so that the error on a difference of two evidences stays well below the
+scale that would change a qualitative verdict").
+
+I replicated both baseline runs with a different seed and otherwise identical
+settings — dynesty 3.1.0, `nlive=500`, `dlogz=0.1`, `bound='multi'`,
+`sample='rwalk'`, 2 workers, same `Posterior` and same likelihood object
+(`/tmp/.../scratchpad/rerun_nested.py`):
+
+```
+                 shipped (seed 20260909)     replicate (seed 12345)     shift
+  lcdm           -732.152 +/- 0.195          -732.237 +/- 0.196        -0.085
+  xi_h           -733.748 +/- 0.207          -734.692 +/- 0.212        -0.944
+  ln B(xi_h)       -1.596 +/- 0.284            -2.455 +/- 0.296        -0.859
+```
+
+LambdaCDM reproduces to 0.43 of its quoted error. The extension does not: two
+runs differing only in seed disagree by `0.944`, which is 4.5 times the
+per-run error and 3.2 combined `sigma`. `ln B` moves from `-1.60` (odds 4.9:1
+against) to `-2.46` (odds 11.6:1), i.e. the odds change by a factor of 2.4, and
+the shipped error bar `+/- 0.28` does not cover it.
+
+Changing the sampler's geometry as well as its seed (`bound='single'`,
+`sample='unif'`, seed 999) gives a third LambdaCDM value:
+
+```
+  lcdm, multi/rwalk, seed 20260909   -732.152 +/- 0.195   164982 evals
+  lcdm, multi/rwalk, seed 12345      -732.237 +/- 0.196   164719 evals
+  lcdm, single/unif, seed 999        -732.477 +/- 0.198    30220 evals
+```
+
+a spread of `0.325` across three runs of a well-behaved 3-parameter posterior,
+1.7 times the quoted error. So even the reference row of Table 1 is only good to
+about `0.2`-`0.3`, before the extension's `0.94` is taken into account. The
+matching `xi_h` run under `single`/`unif` had not terminated after an hour of
+wall time on two workers, against 87 seconds and 30 220 evaluations for
+LambdaCDM under the same settings — which is itself a measure of how much harder
+the extension's posterior is for a nested sampler, and a reason not to take a
+single run of it at face value.
+
+**The mechanism is visible in the same output.** Both runs report a best live
+point far from the model's actual maximum:
+
+```
+  chi2_min, shipped run       1436.2958
+  chi2_min, replicate         1436.3780
+  actual maximum (M3)         1434.8798
+```
+
+Neither nested run ever reached the ridge that carries the likelihood, and they
+failed by different amounts. That is the same razor-thin curved degeneracy that
+froze the ensemble chains; nested sampling is not immune to it, it merely fails
+more quietly. `nlive = 500` with dynesty's default `rwalk` in six dimensions is
+not enough to resolve a ridge whose `chi2` rises from `1434.88` to `33560` over
+half a decade in `log10_xi` at fixed neighbours.
+
+**Note also** that `dlogz` is a stopping criterion on the *remaining* evidence,
+not an error bar; the docstring conflates the two. The quoted errors are
+dynesty's `sqrt(H/nlive)`-type estimate (`H = 12.48` and `14.77` for the two
+models), which is a within-run estimate and demonstrably does not bound the
+between-run scatter here.
+
+**What would resolve it**: run every evidence at least three times with
+different seeds and quote the scatter, not `logzerr`; raise `nlive` (or use
+`sample='rslice'`/`'rwalk'` with an increased `walks`) until the scatter comes
+down below the differences being claimed; and verify that the sampler's best
+live point approaches the maximum found by `run_map.py` (M3) before trusting
+`ln Z`. Until then no `ln B` in Table 1 should be quoted to two decimals.
 
 ---
 
@@ -890,9 +890,10 @@ so the `D_H`-before-`D_M` ordering in the mean file is load-bearing and is
 respected. The covariance recovered from the file is block diagonal by tracer
 with within-pair correlations `-0.452, -0.395, -0.347, -0.398, -0.494, -0.431`,
 which is the structure of the Cobaya-packaged DESI Gaussian likelihood. The
-pairing of the last two rows is also unambiguous: row 12 has `sigma = 0.101`
-(1.17% of 8.632, a plausible `D_H/r_d` error) and row 13 `sigma = 0.532` (1.36%
-of 38.989); the reverse assignment would give the `D_H` point a 6% error.
+pairing of the last two rows is also unambiguous: the first of them has
+`sigma = 0.101` (1.17% of 8.632, a plausible `D_H/r_d` error) and the second
+`sigma = 0.532` (1.36% of 38.989); the reverse assignment would give the `D_H`
+point a 6% error.
 Nothing in the code would catch a covariance re-ordered relative to the mean
 file — the shape check only catches a wrong length — but the two SHA256 digests
 pin both files exactly, which is an adequate guard.
@@ -963,14 +964,22 @@ statement is the robust one and should lead the paragraph.
 **C11. The cosmic-chronometer term is insensitive to the covariance recipe**
 (m6), the `np.interp` clamping beyond `z = 1.475` for the `z = 1.965` point is
 immaterial, and the `check_covariance` symmetry/positive-definiteness gate with
-its `1e-5` relative tolerance is well argued and passes on all four matrices.
+its `1e-5` relative tolerance is well argued and passes on every matrix it is
+applied to (Pantheon+ 1590 x 1590, DESI DR2 13 x 13, both chronometer variants,
+the Planck priors, and the DR16 `f sigma_8` block).
 
-**C12. The compressed CMB likelihood correctly marginalises out `n_s`** by
-taking the `3 x 3` sub-block of the Chen, Huang & Wang covariance rather than
-conditioning on it, which is the right operation.
+**C12. The compressed CMB likelihood is assembled correctly from its quoted
+inputs.** `CORR * outer(SIGMA, SIGMA)` with the tabulated means, sigmas and
+correlations is symmetric and positive definite, is factorised once, and
+reproduces the Planck 2018 base-LambdaCDM best fit at `chi2 = 0.0064` on three
+data points. (I did not independently verify the published Chen, Huang & Wang
+numbers against the paper, having no network access; the digest-pinned raw files
+do not cover this likelihood, whose values are hard-coded in
+`code/absorb/data/planck_priors.py`. That is worth a line in the appendix: it is
+the one likelihood in the pipeline whose inputs are not checksummed.)
 
 **C13. `KAPPA_RS` is computed once and cached**, not re-derived per model, as
-claimed. The lazy `__getattr__` (PEP 562) is a correct implementation of that.
+claimed (`_KAPPA_CACHE`, module scope). The lazy `__getattr__` (PEP 562) is a correct implementation of that.
 
 **C14. The frozen chains are where the response letter says they are.**
 `results/chains/{xi_h,reinforce}_baseline_demove_frozen.h5` both exist and
