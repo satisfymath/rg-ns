@@ -222,5 +222,13 @@
     "mem_available_before_mb": 11698.02734375,
     "mem_available_after_mb": 10955.890625,
     "notes": "40 restarts"
+  },
+  {
+    "name": "profile_xi_h_jerk_excess",
+    "seconds": 2961.7885687351227,
+    "peak_rss_mb": 720.9453125,
+    "mem_available_before_mb": 11890.87890625,
+    "mem_available_after_mb": 10768.609375,
+    "notes": "profile in a derived quantity"
   }
 ]
