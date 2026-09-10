@@ -188,3 +188,54 @@ an unresolved tension rather than left for the reader to notice.
 breakdown gap `s* = N^{-1/g}` added to the code, the tests and the manuscript.
 
 **`test_pancake.py` was missing.** Written; nine tests.
+
+---
+
+## Found by us, after the reports
+
+Two defects we found while acting on the reports above, recorded here because
+both had already reached the manuscript.
+
+### The deficit-to-jerk floor does not apply to this model
+
+`eq:cosmography-deficit-floor`, `j0 - 1 >= 2 Omega_r0 + (9/2) Delta`, is proved
+under the hypothesis that the reduced transfer `q = Q_V/(3 Mpl^2 H0^2 H)` is
+non-decreasing up to today, and §7 said that hypothesis had to be checked for
+the activation profile in use. It had not been. Checked, it fails everywhere:
+the activation switch turns the transfer on at `z_act`, after which the rate
+falls relative to the expansion, so **q peaks exactly at the activation
+redshift** for every activation redshift and rate tried. The floor is violated
+in **399 of 400** uniform prior draws, median ratio **0.46** where the bound
+requires 4.5, and the hypothesis holds in **none** of them.
+
+Referee E separately caught that the abstract, §10 and §14 were using the
+relation *backwards* — inferring an upper bound on the jerk excess from an
+upper bound on the deficit, which a floor cannot give. Both faults are fixed at
+the source in §7, the jerk excess is now computed directly, and ten tests in
+`test_deficit_floor.py` hold the finding in place.
+
+### The derived-quantity profile was not imposing its constraint
+
+Worse, and ours alone. `profile_derived` imposed the target with a quadratic
+penalty of `1e6`. On a quantity of order `1e-2` that contributes about 1 to
+chi-square for a ten per cent miss, which is far too weak to hold a constraint.
+The consequences were visible in the stored output and had not been looked at:
+
+- grid points missed their targets by up to **250%** (target 1.0e-4, achieved
+  3.5e-4; target 0.0126, achieved 0.0068);
+- the profile was grossly **non-monotone** — Delta chi-square running 0.09,
+  0.67, 0.00, 2.12, **297.9**, 21.9, 126.5, 1192 — because each grid point was
+  really maximising a different function.
+
+**The published limit `Delta < 0.0126` was read off that curve and is
+therefore not trustworthy.** It appeared in the abstract, in
+`eq:observations-deficit-limit` and in the conclusions.
+
+The penalty is replaced by an exact constraint: both profiled quantities are
+strictly increasing in `eps` at fixed values of everything else and vanish at
+`eps = 0`, so `eps` is solved for by a bracketed root-find at each candidate
+point, and the target is hit to machine precision. Because most of the prior
+cannot reach a given target for any `eps`, candidates are screened for
+feasibility before the optimiser is started. The returned record now carries
+the worst target miss, the number of decreasing steps and the count of
+unreachable points, so this class of failure cannot be silent again.

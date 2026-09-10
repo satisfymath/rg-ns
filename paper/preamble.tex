@@ -26,6 +26,7 @@
 \usepackage[font=small,labelfont=bf,labelsep=period]{caption}
 \usepackage{subcaption}
 \graphicspath{{figures/}}
+\usepackage{ifthen}
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{longtable}
@@ -114,11 +115,25 @@
 %   P = phenomenological / fitted     S = speculative (Outlook only)
 % Usage:  \begin{keyresult}{C}{eq:jerk-bound} ... \end{keyresult}
 % ============================================================================
+% The level is printed in the margin beside the result.  It used to be
+% discarded, so a reader had to match labels against a table in an appendix to
+% learn whether a displayed result was an identity, a theorem or a conjecture;
+% a ladder invisible at the point of the claim does not do the job the
+% introduction claims for it.  The argument is also extracted from the source
+% by scripts/check_claims.py, which greps \begin{keyresult}{LEVEL}{label}.
+\newcommand{\claimlevel}[1]{%
+  \marginpar{\raggedright\scriptsize\sffamily\textbf{#1}\\[-1pt]%
+    \tiny\MakeLowercase{\claimlevelname{#1}}}}
+\newcommand{\claimlevelname}[1]{%
+  \ifthenelse{\equal{#1}{A}}{Postulate}{%
+  \ifthenelse{\equal{#1}{I}}{Identity}{%
+  \ifthenelse{\equal{#1}{C}}{Theorem}{%
+  \ifthenelse{\equal{#1}{N}}{Numerical}{%
+  \ifthenelse{\equal{#1}{P}}{Fitted}{%
+  \ifthenelse{\equal{#1}{S}}{Conjecture}{}}}}}}}
 \newenvironment{keyresult}[2]%
-  {\begin{equation}\label{#2}\begin{aligned}}%
+  {\claimlevel{#1}\begin{equation}\label{#2}\begin{aligned}}%
   {\end{aligned}\end{equation}}
-% The level argument #1 is not typeset; it is extracted from the source by
-% scripts/check_claims.py, which greps \begin{keyresult}{LEVEL}{label}.
 
 % ---- Draft helpers (removed before submission) ------------------------------
 \newcommand{\TODO}[1]{\textcolor{red}{\textbf{[TODO: #1]}}}

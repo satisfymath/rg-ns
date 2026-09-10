@@ -29,9 +29,15 @@ LADDER = ROOT / "docs" / "CLAIMS_LADDER.md"
 
 OUTLOOK = "13_outlook.tex"
 LEVELS = {
+    # A postulate follows from nothing prior, so it cannot be a "theorem of the
+    # model" -- stamping the paper's own defining assumption C was circular.
+    "A": "Postulate of the model",
     "I": "Identity or standard result",
     "C": "Theorem of the model",
-    "P": "Phenomenological (fitted)",
+    # A boundary-value problem solved numerically is not a number fitted to
+    # data, which is what P means.
+    "N": "Numerical solution of the stated equations",
+    "P": "Phenomenological (fitted to data)",
     "S": "Conjecture",
 }
 KEYRESULT = re.compile(r"\\begin\{keyresult\}\{(\w+)\}\{([^}]+)\}")

@@ -107,19 +107,27 @@ that no coupling written directly between densities can provide.
 \subsection{What is claimed, and at what level}\label{sec:intro-ladder}
 
 This paper is a framework, not a unification. To keep that distinction from
-eroding as the argument proceeds, every displayed result carries an explicit
-evidential level, and the classification is machine-checked as part of the
-build rather than asserted here.
+eroding as the argument proceeds, every displayed key result carries an
+explicit evidential level, printed in the margin beside it. A build check
+refuses an unclassified boxed result, and refuses a conjecture outside
+\cref{sec:outlook}. What the check enforces is the presence and the placement
+of a level, not its correctness: the assignment of a particular result to a
+particular level is ours, and a reader who disagrees with one is disagreeing
+with us and not with the software.
 
 \begin{center}
 \begin{tabular}{cL{0.75\textwidth}}
   \toprule
   Level & Meaning \\
   \midrule
+  A & Postulate. Defines the model; it follows from nothing prior in this
+      paper, and everything at level C follows from it. \\
   I & Identity, or a standard result restated. Follows from stated equations
       and definitions alone. \\
-  C & Theorem of the model. Follows from the new postulates together with the
+  C & Theorem of the model. Follows from the postulates together with the
       system specified; the hypotheses are named in the statement. \\
+  N & Numerical. A solution of the stated equations, obtained to a stated
+      tolerance by the archived code, with no data involved. \\
   P & Phenomenological. A number obtained by fitting to data, valid within the
       stated likelihood and priors. \\
   S & Conjecture. Requires a microscopic theory or a calculation not performed

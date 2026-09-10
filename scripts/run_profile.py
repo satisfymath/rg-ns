@@ -37,10 +37,51 @@ from absorb.sampling import Posterior                           # noqa: E402
 OUT = ROOT / "results" / "profile.json"
 
 
+def _solve_eps_for(post, quantity: str, target: float, theta, i_eps: int,
+                   lo: float, hi: float):
+    """Set ``eps`` so that the derived quantity hits ``target`` exactly.
+
+    Both quantities profiled here -- the matter deficit and the jerk excess --
+    are strictly increasing in ``eps`` at fixed values of everything else and
+    vanish at ``eps = 0``, so the constraint has at most one solution and a
+    bracketed root-find is exact.
+
+    This replaces a quadratic penalty, which did not work and did not fail
+    loudly.  A penalty of 1e6 on a quantity of order 1e-2 contributes about 1
+    to chi-square for a ten per cent miss, far too weak to hold the constraint:
+    grid points missed their targets by up to 250 per cent, and the resulting
+    profile was not monotone -- 0.09, then 298, then 22, then 127 -- because
+    each point was really maximising a different function.  A limit read off
+    such a curve means nothing.
+    """
+    from scipy.optimize import brentq
+
+    def value_at(e):
+        th = np.array(theta, dtype=float)
+        th[i_eps] = e
+        try:
+            bg = post.model.builder(post.model.to_dict(th[:post.model.ndim]))
+            return bg.derived()[quantity] - target
+        except Exception:                                       # noqa: BLE001
+            return np.nan
+
+    f_lo, f_hi = value_at(lo), value_at(hi)
+    if not (np.isfinite(f_lo) and np.isfinite(f_hi)):
+        return None
+    if f_lo == 0.0:
+        return float(lo)
+    if f_lo * f_hi > 0:
+        return None            # target unreachable at these parameters
+    try:
+        return float(brentq(value_at, lo, hi, xtol=1e-11))
+    except Exception:                                           # noqa: BLE001
+        return None
+
+
 def profile_derived(model: str, dataset: str, quantity: str = "matter_deficit",
-                    targets=None, n_restarts: int = 4,
-                    seed: int = 20260909, penalty: float = 1e6) -> dict:
-    """Profile the likelihood in a *derived* quantity.
+                    targets=None, n_restarts: int = 3,
+                    n_screen: int = 250, seed: int = 20260909) -> dict:
+    """Profile the likelihood in a derived quantity, imposing the target exactly.
 
     Profiling in eps alone is uninformative, and it is worth saying why: eps is
     the convertible fraction, not the converted one.  At any eps the optimiser
@@ -48,62 +89,120 @@ def profile_derived(model: str, dataset: str, quantity: str = "matter_deficit",
     likelihood is therefore flat in eps by construction, which is a statement
     about the parametrisation and not about the data.
 
-    The physically constrained direction is the amount actually converted,
-    measured here by the matter deficit
-    Delta = (rho_m^early - rho_m0)/rho_crit,0, or equivalently by f_0.  Each
-    grid point maximises the posterior subject to the derived quantity taking
-    the target value, imposed by a quadratic penalty.
+    The constrained directions are the amount actually converted, measured by
+    the matter deficit, and the jerk excess.  At each grid point every
+    parameter other than eps is free and eps is solved for so that the derived
+    quantity equals the target exactly; see :func:`_solve_eps_for`.  Points at
+    which no eps reaches the target are reported unreachable rather than
+    quietly filled with the nearest attainable value, and the returned record
+    carries the worst target miss and the number of decreasing steps, so a
+    failed optimisation cannot pass for a likelihood shape.
     """
     like = datasets.build(dataset)
     post = Posterior(model, like)
-    m = MODELS[model]
     names = list(post.param_names)
-    lows = np.array([p.low for p in post.model.priors()])
-    highs = np.array([p.high for p in post.model.priors()])
+    i_eps = names.index("eps")
+    priors = post.model.priors()
+    lows = np.array([p.low for p in priors])
+    highs = np.array([p.high for p in priors])
     rng = np.random.default_rng(seed)
     if targets is None:
         targets = np.concatenate([[0.0], np.logspace(-4, -0.7, 12)])
     targets = np.asarray(targets, dtype=float)
 
-    def derived_value(theta):
-        try:
-            return m.builder(m.to_dict(theta)).derived()[quantity]
-        except Exception:                                      # noqa: BLE001
-            return np.nan
+    free = [j for j in range(len(names)) if j != i_eps]
+    chi2 = np.full(len(targets), np.nan)
+    achieved = np.full(len(targets), np.nan)
+    best_theta = [None] * len(targets)
 
-    chi2 = np.empty(targets.size)
-    achieved = np.empty(targets.size)
     for k, target in enumerate(targets):
-        def neg(theta):
-            v = post(theta)
-            if not np.isfinite(v):
-                return 1e10
-            d = derived_value(theta)
-            if not np.isfinite(d):
-                return 1e10
-            return -2.0 * v + penalty * (d - target) ** 2
 
-        best, best_x = np.inf, None
-        for _ in range(n_restarts):
-            x0 = lows + rng.random(len(names)) * (highs - lows)
+        def neg(sub):
+            if np.any(sub < lows[free]) or np.any(sub > highs[free]):
+                return 1e10
+            th = np.empty(len(names))
+            th[free] = sub
+            th[i_eps] = 0.0
+            e = _solve_eps_for(post, quantity, target, th, i_eps,
+                               lows[i_eps], highs[i_eps])
+            if e is None:
+                return 1e10
+            th[i_eps] = e
+            v = post(th)
+            return 1e10 if not np.isfinite(v) else -2.0 * v
+
+        # Most of the prior cannot reach a given target for any eps, so a
+        # random start is almost always infeasible and Nelder-Mead sees a flat
+        # penalty in every direction.  Screen for feasibility first -- two
+        # background solves per candidate, since feasibility is just the sign
+        # of the constraint at the two ends of the eps interval -- and start
+        # only from points that admit a solution.
+        starts = []
+        if k > 0 and best_theta[k - 1] is not None:
+            starts.append(np.asarray(best_theta[k - 1])[free])
+        screen = lows[free] + rng.random((n_screen, len(free))) * (
+            highs[free] - lows[free])
+        feasible = []
+        for cand in screen:
+            th = np.empty(len(names))
+            th[free] = cand
+            th[i_eps] = 0.0
+            if _solve_eps_for(post, quantity, target, th, i_eps,
+                              lows[i_eps], highs[i_eps]) is not None:
+                feasible.append(cand)
+        if feasible:
+            vals = [neg(c) for c in feasible]
+            order = np.argsort(vals)
+            starts.extend(feasible[i] for i in order[:n_restarts])
+
+        best, best_sub = np.inf, None
+        for x0 in starts:
             res = minimize(neg, x0, method="Nelder-Mead",
-                           options=dict(maxfev=4000, xatol=1e-4, fatol=1e-4))
+                           options=dict(maxfev=4000, xatol=1e-5, fatol=1e-5))
             if res.fun < best:
-                best, best_x = res.fun, res.x
-        chi2[k] = -2.0 * post(best_x)
-        achieved[k] = derived_value(best_x)
-        print(f"  target {quantity}={target:9.5f}  achieved {achieved[k]:9.5f}"
-              f"  chi2={chi2[k]:10.3f}")
+                best, best_sub = res.fun, res.x
 
-    chi2 -= np.nanmin(chi2)
+        if best_sub is None or best >= 1e10:
+            print(f"  target {quantity}={target:11.6f}  unreachable")
+            continue
+        th = np.empty(len(names))
+        th[free] = best_sub
+        e = _solve_eps_for(post, quantity, target, th, i_eps,
+                           lows[i_eps], highs[i_eps])
+        th[i_eps] = e
+        chi2[k] = best
+        achieved[k] = post.model.builder(
+            post.model.to_dict(th[:post.model.ndim])).derived()[quantity]
+        best_theta[k] = th.tolist()
+        print(f"  target {quantity}={target:11.6f}  achieved {achieved[k]:11.6f}"
+              f"  eps={e:7.4f}  chi2={chi2[k]:10.3f}")
+
+    ok = np.isfinite(chi2)
+    base = {"model": model, "dataset": dataset, "quantity": quantity,
+            "targets": targets.tolist(), "achieved": achieved.tolist(),
+            "best_theta": best_theta, "param_names": names,
+            "n_unreachable": int((~ok).sum())}
+    if not ok.any():
+        base.update({"delta_chi2": chi2.tolist(), "limit_95": float("nan"),
+                     "unbounded": False, "all_unreachable": True})
+        return base
+
+    chi2 = chi2 - np.nanmin(chi2)
+    seq = chi2[ok]
+    non_monotone = int(np.sum(np.diff(seq) < -0.5))
+    miss = float(np.nanmax(np.abs(achieved[ok] - targets[ok])
+                           / np.maximum(np.abs(targets[ok]), 1e-12)))
+
     above = np.where(chi2 > 2.71)[0]
+    unbounded = not above.size
     limit = (float(np.interp(2.71, chi2[: above[0] + 1], targets[: above[0] + 1]))
              if above.size else float("nan"))
-    return {"model": model, "dataset": dataset, "quantity": quantity,
-            "targets": targets.tolist(), "achieved": achieved.tolist(),
-            "delta_chi2": chi2.tolist(), "limit_95": limit,
-            "max_delta_chi2": float(np.nanmax(chi2)),
-            "unbounded": bool(not above.size)}
+    base.update({"delta_chi2": chi2.tolist(), "limit_95": limit,
+                 "max_delta_chi2": float(np.nanmax(chi2)),
+                 "n_non_monotone_steps": non_monotone,
+                 "max_target_miss_rel": miss,
+                 "unbounded": bool(unbounded)})
+    return base
 
 
 def profile(model: str, dataset: str, n_grid: int = 17,
