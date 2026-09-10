@@ -154,18 +154,43 @@ independent of that choice.
     E^2_{\LCDM}\!\left(\Omega_{\mathrm{m}0}+\Delta,\ \Omega_{V0}-\Delta\right) ,
   \end{keyresult}
   %
-  where both comparison models are spatially flat and share the observed
-  $\Hz$, differing only by moving the amount $\Delta$ from the cosmological
-  constant to matter. Equality holds at $a=1$ on both sides.
+  where both comparison models are spatially flat, carry the same radiation
+  density, and share the observed $\Hz$, differing only by moving the amount
+  $\Delta$ from the cosmological constant to matter. Equality holds at $a=1$ on
+  both sides.
 \end{theorem}
 
 \begin{proof}
   Write $3\Mpl^2\Hub^2=m(t)a^{-3}+\rho_{\rm r0}a^{-4}+\rhoV(t)$ with
-  $m=\rhom a^3$, exact by the Friedmann constraint. Then $\dot m=-\QV a^3$ and
-  $\dot \rhoV=\QV$. Integrating backwards from today,
-  $3\Mpl^2[\Hub^2-\Hub^2_{\rm low}]=\int_t^{t_0}\QV[(a'/a)^3-1]\,\dd t'\ge0$
-  because $a'\ge a$ and $\QV\ge0$, which is the lower bound; the upper bound
-  follows from the same integral with the roles of the endpoints exchanged.
+  $m=\rhom a^3$, exact by the Friedmann constraint; both comparison models
+  carry the same radiation density $\rho_{\rm r0}$, which therefore cancels
+  from every difference below. From \cref{eq:cosmology-system},
+  $\dot m=-\QV a^3$ and $\dot \rhoV=\QV$.
+
+  For the lower bound, integrate both backwards from today:
+  $m(t)-\rho_{\rm m0}=\int_t^{t_0}\QV a'^3\,\dd t'$ and
+  $\rhoV(t)-V_0=-\int_t^{t_0}\QV\,\dd t'$, so
+  %
+  \begin{equation}\label{eq:positivity-sandwich-lower}
+    3\Mpl^2\left[\Hub^2-\Hub_{\rm low}^2\right]
+    =\int_t^{t_0}\QV\left[\left(\frac{a'}{a}\right)^{3}-1\right]\dd t'\ \ge\ 0 ,
+  \end{equation}
+  %
+  since $a'\ge a$ and $\QV\ge0$.
+
+  The upper bound is not the same integral with the endpoints exchanged; it has
+  a different structure, because the high comparison model is anchored at
+  $t_e$ while $\Hz$ is fixed today. Splitting the range at $t$,
+  %
+  \begin{equation}\label{eq:positivity-sandwich-upper}
+    3\Mpl^2\left[\Hub_{\rm high}^2-\Hub^2\right]
+    =\int_{t_e}^{t}\QV a'^3\left(a^{-3}-1\right)\dd t'
+    +\int_{t}^{t_0}\QV\left(1-a'^3\right)\dd t' ,
+  \end{equation}
+  %
+  and both terms are non-negative for $a\le1$, since $a'\le1$ throughout.
+  Equality holds at $a=1$ on both sides because both integrals then have
+  vanishing range or vanishing integrand.
 \end{proof}
 
 The practical content is that the model cannot mimic an arbitrary expansion
