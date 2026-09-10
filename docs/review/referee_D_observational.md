@@ -85,24 +85,42 @@ quantity; it cannot take two values 2.12 apart at two points 10% apart in
 fits is unconverged.
 
 **(c) The `2.71` crossing is located by `np.interp` on a non-monotone array.**
-`run_profile.py:100` calls
-`np.interp(2.71, chi2[:above[0]+1], targets[:above[0]+1])` with
-`xp = [0.419, 0.315, 0.292, 0.266, 0.163, 0.090, 0.668, 0.000, 2.124, 297.94]`,
-which is not increasing. `np.interp` documents `xp` as required to be
-increasing and returns nonsense otherwise. Referee B flagged this in m10 as a
-latent guard problem that "happens to lie outside the bracket so the answer is
-unaffected". In the derived-quantity profile it is no longer latent: it *is*
-the reported answer. The crossing is taken across a segment that jumps from
-2.124 to 297.943, so the interpolated value is pinned to the left node:
-`limit_95 = 0.012614` against `targets[8] = 0.0125893`, a difference of 0.2%.
-The grid is `np.logspace(-4, -0.7, 12)`, ratio `10**(3.3/11) = 1.99` between
-nodes, so the quoted "limit" is quantised in factors of two and would move by
-that much if the grid were redrawn — exactly the failure mode that was
-withdrawn for `eps`.
+
+```
+$ python3 -c "
+import json,numpy as np
+v=json.load(open('results/profile.json'))['xi_h__baseline__matter_deficit']
+c=np.array(v['delta_chi2']); t=np.array(v['targets'])
+a=np.where(c>2.71)[0]
+print('xp:',np.round(c[:a[0]+1],3))
+print('increasing?',bool(np.all(np.diff(c[:a[0]+1])>0)))
+print('reproduced limit',float(np.interp(2.71,c[:a[0]+1],t[:a[0]+1])),'stored',v['limit_95'])
+print('targets[8]',t[8],'ratio-1',float(np.interp(2.71,c[:a[0]+1],t[:a[0]+1]))/t[8]-1)
+print('grid ratio',t[2]/t[1])"
+xp: [0.419 0.315 0.292 0.266 0.163 0.09  0.668 0.    2.124 297.943]
+increasing? False
+reproduced limit 0.012614057233044198 stored 0.012614057233044198
+targets[8] 0.012589254117941675 ratio-1 0.0019701814635051385
+grid ratio 1.9952623149688786
+```
+
+`run_profile.py:100` calls `np.interp(2.71, chi2[:above[0]+1],
+targets[:above[0]+1])` with an `xp` that is not increasing; `np.interp`
+documents `xp` as required to be increasing and gives no warning otherwise.
+Referee B flagged this in m10 as a latent guard problem that "happens to lie
+outside the bracket so the answer is unaffected". In the derived-quantity
+profile it is no longer latent: it *is* the reported answer. The crossing is
+taken across a segment that jumps from `2.124` to `297.943`, so the interpolated
+value is pinned to the left node — `limit_95 = 0.0126141` against
+`targets[8] = 0.0125893`, 0.197% apart. The grid is
+`np.logspace(-4, -0.7, 12)`, ratio 1.995 between nodes, so the quoted "limit" is
+quantised in factors of two and would move by that much if the grid were
+redrawn. That is exactly the failure mode withdrawn for `eps`, with a
+logarithmic grid instead of a linear one.
 
 **(d) The penalty is soft enough for the fit to buy its way out.** With
-`penalty = 1e6` (`run_profile.py:42`), missing the target by `5.79e-3` costs
-`1e6 * (5.79e-3)**2 = 33.5` in the objective, and the optimiser accepted that
+`penalty = 1e6` (`run_profile.py:42`), missing the target by `5.787e-3` costs
+`1e6 * (5.787e-3)**2 = 33.495` in the objective, and the optimiser accepted that
 rather than move onto the constraint surface. This gives a dichotomy from which
 there is no escape: either a feasible point at `Delta = 0.0126` with
 `chi2 < chi2_min + 35.6` exists and the optimiser failed to find it, or no such

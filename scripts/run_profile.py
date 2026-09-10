@@ -79,8 +79,9 @@ def _solve_eps_for(post, quantity: str, target: float, theta, i_eps: int,
 
 
 def profile_derived(model: str, dataset: str, quantity: str = "matter_deficit",
-                    targets=None, n_restarts: int = 3,
-                    n_screen: int = 250, seed: int = 20260909) -> dict:
+                    targets=None, n_restarts: int = 2,
+                    n_screen: int = 200, maxfev: int = 800,
+                    seed: int = 20260909) -> dict:
     """Profile the likelihood in a derived quantity, imposing the target exactly.
 
     Profiling in eps alone is uninformative, and it is worth saying why: eps is
@@ -157,8 +158,13 @@ def profile_derived(model: str, dataset: str, quantity: str = "matter_deficit",
 
         best, best_sub = np.inf, None
         for x0 in starts:
+            # Each objective evaluation costs a root-find, measured at 12
+            # background solves and 160 ms, so the budget is set deliberately
+            # rather than left at a default: maxfev = 4000 would be seven hours
+            # for one profile. The warm start from the previous target does the
+            # work a larger budget would.
             res = minimize(neg, x0, method="Nelder-Mead",
-                           options=dict(maxfev=4000, xatol=1e-5, fatol=1e-5))
+                           options=dict(maxfev=maxfev, xatol=1e-5, fatol=1e-4))
             if res.fun < best:
                 best, best_sub = res.fun, res.x
 

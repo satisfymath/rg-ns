@@ -26,7 +26,7 @@
 \usepackage[font=small,labelfont=bf,labelsep=period]{caption}
 \usepackage{subcaption}
 \graphicspath{{figures/}}
-\usepackage{ifthen}
+
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{longtable}
@@ -115,24 +115,30 @@
 %   P = phenomenological / fitted     S = speculative (Outlook only)
 % Usage:  \begin{keyresult}{C}{eq:jerk-bound} ... \end{keyresult}
 % ============================================================================
-% The level is printed in the margin beside the result.  It used to be
-% discarded, so a reader had to match labels against a table in an appendix to
-% learn whether a displayed result was an identity, a theorem or a conjecture;
-% a ladder invisible at the point of the claim does not do the job the
+% The evidential level is printed with the result.  It used to be discarded,
+% so a reader had to match labels against a table in an appendix to learn
+% whether a displayed result was an identity, a theorem or a conjecture, and a
+% ladder invisible at the point of the claim does not do the job the
 % introduction claims for it.  The argument is also extracted from the source
 % by scripts/check_claims.py, which greps \begin{keyresult}{LEVEL}{label}.
-\newcommand{\claimlevel}[1]{%
-  \marginpar{\raggedright\scriptsize\sffamily\textbf{#1}\\[-1pt]%
-    \tiny\MakeLowercase{\claimlevelname{#1}}}}
+%
+% Built from \csname rather than nested \ifthenelse, and set as a flush-right
+% line rather than a \marginpar: the first version of this used both, and
+% pdflatex spent thirteen minutes on a single pass without finishing.
+\expandafter\def\csname claimlevel@A\endcsname{Postulate}
+\expandafter\def\csname claimlevel@I\endcsname{Identity}
+\expandafter\def\csname claimlevel@C\endcsname{Theorem of the model}
+\expandafter\def\csname claimlevel@N\endcsname{Numerical}
+\expandafter\def\csname claimlevel@P\endcsname{Fitted to data}
+\expandafter\def\csname claimlevel@S\endcsname{Conjecture}
 \newcommand{\claimlevelname}[1]{%
-  \ifthenelse{\equal{#1}{A}}{Postulate}{%
-  \ifthenelse{\equal{#1}{I}}{Identity}{%
-  \ifthenelse{\equal{#1}{C}}{Theorem}{%
-  \ifthenelse{\equal{#1}{N}}{Numerical}{%
-  \ifthenelse{\equal{#1}{P}}{Fitted}{%
-  \ifthenelse{\equal{#1}{S}}{Conjecture}{}}}}}}}
+  \ifcsname claimlevel@#1\endcsname\csname claimlevel@#1\endcsname\else#1\fi}
 \newenvironment{keyresult}[2]%
-  {\claimlevel{#1}\begin{equation}\label{#2}\begin{aligned}}%
+  {\par\nobreak\vspace{-2pt}%
+   {\raggedleft\scriptsize\sffamily\color{black!55}%
+    #1 --- \claimlevelname{#1}\par}%
+   \nobreak\vspace{-6pt}%
+   \begin{equation}\label{#2}\begin{aligned}}%
   {\end{aligned}\end{equation}}
 
 % ---- Draft helpers (removed before submission) ------------------------------
