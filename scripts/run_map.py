@@ -132,6 +132,12 @@ def main() -> int:
         with record(f"map_{tag}", f"{args.restarts} restarts"):
             out[tag] = best_fit(m, args.data, args.restarts, args.seed,
                                 n_screen=args.screen)
+        # Persist before reporting. The other order cost a validation run: a
+        # KeyError in the print discarded a completed maximisation, left the
+        # previous protocol's value in place, and the comparison that was
+        # supposed to check the new protocol compared the old answer with
+        # itself.
+        OUT.write_text(json.dumps(out, indent=2, sort_keys=True))
         e = out[tag]
         edge = (f", on the prior edge in {','.join(e['on_prior_edge'])}"
                 if e["on_prior_edge"] else "")
@@ -139,7 +145,6 @@ def main() -> int:
         print(f"  {tag:24s} chi2_min = {e['chi2_min']:.4f}  "
               f"({e['n_reaching_best']}/{e['n_refined']} refinements agreed, "
               f"polish gained {e['polish_gain']:.4f}{edge}){mark}", flush=True)
-        OUT.write_text(json.dumps(out, indent=2, sort_keys=True))
 
     ref = out.get(f"lcdm__{args.data}")
     if ref:

@@ -1,0 +1,20 @@
+{
+  "lcdm__baseline": {
+    "chi2_min": 1436.516088616481,
+    "n_restarts": 40,
+    "protocol": "brute force: 40 Nelder-Mead runs from uniform prior draws",
+    "runtime_note": "about 8.4 hours for five models"
+  },
+  "reinforce__baseline": {
+    "chi2_min": 1434.754774590462,
+    "n_restarts": 40,
+    "protocol": "brute force: 40 Nelder-Mead runs from uniform prior draws",
+    "runtime_note": "about 8.4 hours for five models"
+  },
+  "xi_h__baseline": {
+    "chi2_min": 1434.8789394676678,
+    "n_restarts": 40,
+    "protocol": "brute force: 40 Nelder-Mead runs from uniform prior draws",
+    "runtime_note": "about 8.4 hours for five models"
+  }
+}
