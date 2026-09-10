@@ -128,3 +128,55 @@ def test_growth_signature_is_measured_against_the_right_reference():
             f_rsd = float(np.atleast_1d(with_transfer.f_rsd(z))[0])
             assert f_g > f_ref, (z_act, eps, z, f_g, f_ref)
             assert f_rsd < f_ref, (z_act, eps, z, f_rsd, f_ref)
+
+
+def test_first_order_system_and_eliminated_equation_agree():
+    """Integrate (delta, theta) directly and compare with the second-order form.
+
+    The solver integrates the eliminated second-order equation. The paper
+    states both that and the first-order system it came from, and the
+    elimination is exactly the kind of step where a sign is lost -- this
+    sector already carried one error through a previous version.
+
+    Deriving it once more by hand, with u = theta/H and ' = d/dN:
+
+        delta' = -u + g delta
+        u'     = -(2 + E'/E) u - (3/2) Omega_m delta
+
+    Differentiating the first and substituting u = g delta - delta' gives
+
+        delta'' + (2 + E'/E - g) delta' - [(3/2)Omega_m + g' + (2+E'/E) g] delta = 0
+
+    which is what the solver implements. This integrates the first-order system
+    independently and checks the two agree.
+    """
+    import numpy as np
+    from scipy.integrate import solve_ivp
+    from scipy.interpolate import CubicSpline
+
+    from absorb.growth import Growth
+    from absorb.params import MODELS
+
+    m = MODELS["xi_h"]
+    bg = m.builder(m.to_dict([0.02237, 0.1177, 0.15, 0.6, -1.0, 5.0]))
+    g = Growth(bg)
+
+    EpoverE, Omega_m, gc = g._coeffs(g.N)
+    s_Ep, s_Om, s_g = (CubicSpline(g.N, x) for x in (EpoverE, Omega_m, gc))
+
+    def rhs(N, y):
+        d, u = y
+        return [-u + float(s_g(N)) * d,
+                -(2.0 + float(s_Ep(N))) * u - 1.5 * float(s_Om(N)) * d]
+
+    # growing mode in matter domination: delta ~ a, so u = -delta' + g delta
+    d0 = float(np.exp(g.N[0]))
+    u0 = -d0 + float(s_g(g.N[0])) * d0
+    sol = solve_ivp(rhs, (g.N[0], g.N[-1]), [d0, u0], method="DOP853",
+                    rtol=1e-10, atol=1e-14, t_eval=g.N)
+    assert sol.success
+
+    rel = np.abs(sol.y[0] - g.delta) / np.abs(g.delta)
+    assert np.max(rel) < 1e-6, (
+        f"the eliminated equation and the first-order system disagree by "
+        f"{np.max(rel):.3g}; the elimination of theta is wrong")
