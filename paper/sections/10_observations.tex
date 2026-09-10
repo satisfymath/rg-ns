@@ -251,6 +251,36 @@ over the prior rather than trying to walk along a degenerate ridge inside it.
 The diagnostic that failed to catch this has been rewritten and now does;
 \cref{app:numerics} records both.
 
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.49\textwidth]{hubble.pdf}\hfill
+  \includegraphics[width=0.49\textwidth]{bao.pdf}
+  \caption{The two geometric probes, each as a ratio to the $\LCDM$ best fit so
+    that the comparison is visible at all. \emph{Left:} $\Hub(z)$ against the
+    cosmic chronometers. \emph{Right:} the DESI DR2 distance ratios. Bands are
+    $68$ and $95$ per cent of the posterior for the full model. The model
+    tracks $\LCDM$ to well within the error bars over the whole range, which is
+    the graphical form of the null result: the data neither require the
+    extension nor exclude it.}
+  \label{fig:geometry}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.49\textwidth]{jerk.pdf}\hfill
+  \includegraphics[width=0.49\textwidth]{growth.pdf}
+  \caption{The two signatures the model predicts, at the amplitude the data
+    allow. \emph{Left:} the jerk against the bound $\jerk\ge1+2\Omr$ of
+    \cref{thm:jerk}. The posterior sits above the bound everywhere, as it must,
+    and the excess is bounded by \cref{eq:observations-jerk-limit} --- more than
+    an order of magnitude below what late-time cosmography resolves.
+    \emph{Right:} $\fsig$ against the eBOSS DR16 measurements. Including these
+    data moves $\ln B$ from $\numGrowthLnBayesBaseline$ to
+    $\numGrowthLnBayesWithGrowth$: the model's sharpest linear prediction does
+    not improve its standing.}
+  \label{fig:signatures}
+\end{figure}
+
 \subsection{Reading the result}\label{sec:observations-reading}
 
 Whatever the numbers, three things should be kept distinct.

@@ -318,5 +318,29 @@
     "mem_available_before_mb": 5040.171875,
     "mem_available_after_mb": 5054.9375,
     "notes": "8 restarts"
+  },
+  {
+    "name": "map_xi_h__baseline",
+    "seconds": 423.63126730918884,
+    "peak_rss_mb": 687.5625,
+    "mem_available_before_mb": 5054.62109375,
+    "mem_available_after_mb": 4741.34765625,
+    "notes": "8 restarts"
+  },
+  {
+    "name": "map_reinforce__baseline",
+    "seconds": 6970.321630477905,
+    "peak_rss_mb": 703.85546875,
+    "mem_available_before_mb": 4741.39453125,
+    "mem_available_after_mb": 6786.234375,
+    "notes": "8 restarts"
+  },
+  {
+    "name": "map_memory__baseline",
+    "seconds": 1368.470159292221,
+    "peak_rss_mb": 723.1328125,
+    "mem_available_before_mb": 6786.234375,
+    "mem_available_after_mb": 6949.07421875,
+    "notes": "8 restarts"
   }
 ]

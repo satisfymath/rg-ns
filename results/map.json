@@ -25,5 +25,120 @@
       0.11773260999990567,
       0.3266476980966394
     ]
+  },
+  "memory__baseline": {
+    "best_before_polish": 1434.891934477816,
+    "budget_evals": 2700,
+    "budget_per_dim": 300,
+    "chi2_min": 1434.8919344742055,
+    "chi2_spread": 1.6241583432972675,
+    "converged": false,
+    "dataset": "baseline",
+    "model": "memory",
+    "n_reaching_best": 1,
+    "n_refined": 10,
+    "n_screen": 3000,
+    "n_seeded_from_submodels": 2,
+    "ndim": 9,
+    "on_prior_edge": [
+      "omega_V_act",
+      "alpha_tot"
+    ],
+    "param_names": [
+      "omega_b",
+      "omega_c",
+      "omega_V_act",
+      "eps",
+      "log10_gamma0",
+      "alpha_tot",
+      "r_beta",
+      "log10_tau",
+      "z_act"
+    ],
+    "polish_gain": 3.610466592363082e-09,
+    "theta": [
+      0.02245165354307345,
+      0.1186254652923254,
+      2.3515819597877865e-12,
+      0.010927442311391644,
+      0.10946094504629782,
+      7.999999373627956,
+      2.8345581567434795e-06,
+      4.012465247322945e-05,
+      13.142966297145719
+    ]
+  },
+  "reinforce__baseline": {
+    "best_before_polish": 1435.0921162522063,
+    "budget_evals": 2100,
+    "budget_per_dim": 300,
+    "chi2_min": 1434.891943305615,
+    "chi2_spread": 5.765802684768914,
+    "converged": false,
+    "dataset": "baseline",
+    "model": "reinforce",
+    "n_reaching_best": 1,
+    "n_refined": 9,
+    "n_screen": 3000,
+    "n_seeded_from_submodels": 1,
+    "ndim": 7,
+    "on_prior_edge": [
+      "omega_V_act"
+    ],
+    "param_names": [
+      "omega_b",
+      "omega_c",
+      "omega_V_act",
+      "eps",
+      "log10_gamma0",
+      "alpha_tot",
+      "z_act"
+    ],
+    "polish_gain": 0.20017294659123763,
+    "theta": [
+      0.022451936720399954,
+      0.11862623470444678,
+      2.313437274303358e-12,
+      0.010927383385036755,
+      0.10946167404400324,
+      7.999987611396984,
+      13.142943856911932
+    ]
+  },
+  "xi_h__baseline": {
+    "best_before_polish": 1435.648827480276,
+    "budget_evals": 1800,
+    "budget_per_dim": 300,
+    "chi2_min": 1434.8937399874221,
+    "chi2_spread": 18.54366244117591,
+    "converged": false,
+    "dataset": "baseline",
+    "model": "xi_h",
+    "n_reaching_best": 1,
+    "n_refined": 9,
+    "n_screen": 3000,
+    "n_seeded_from_submodels": 1,
+    "ndim": 6,
+    "on_prior_edge": [
+      "omega_V_act",
+      "log10_xi"
+    ],
+    "param_names": [
+      "omega_b",
+      "omega_c",
+      "omega_V_act",
+      "eps",
+      "log10_xi",
+      "z_act"
+    ],
+    "polish_gain": 0.7550874928538178,
+    "theta": [
+      0.022431822947742486,
+      0.11889541784803126,
+      5.6735633404557236e-09,
+      0.015647427706023204,
+      0.9999999795104573,
+      3.3828292117659204
+    ]
   }
 }

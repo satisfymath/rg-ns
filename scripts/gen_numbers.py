@@ -32,6 +32,7 @@ SOURCES = [
     (ROOT / "results" / "prior_sensitivity.json", "priorsens"),
     (ROOT / "results" / "theory_checks.json", "check"),
     (ROOT / "results" / "prior_width_summary.json", "width"),
+    (ROOT / "results" / "growth_comparison.json", "growth"),
     (ROOT / "results" / "evidence_repeatability.json", "repeat"),
 ]
 
@@ -105,6 +106,7 @@ FORMATS = {
     "odds_widest": ".2f",
     "odds_baseline": ".2f",
     "ln_bayes_range": ".2f",
+    "ln_bayes_with_growth": ".2f",
     "ln_bayes_widest": ".2f",
     "ln_bayes_baseline": ".2f",
 }
