@@ -1,0 +1,10 @@
+[
+  {
+    "name": "pancake_smoke",
+    "seconds": 8.041020154953003,
+    "peak_rss_mb": 35.2109375,
+    "mem_available_before_mb": 2214.96484375,
+    "mem_available_after_mb": 2337.9296875,
+    "notes": "N=1024, three rate modes, to D=0.999"
+  }
+]
