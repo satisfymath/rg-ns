@@ -33,6 +33,7 @@ sys.path.insert(0, str(ROOT / "code"))
 import numpy as np                                              # noqa: E402
 
 from absorb.background import pressure_nu                       # noqa: E402
+from absorb.growth import Growth                                # noqa: E402
 from absorb.params import MODELS                                # noqa: E402
 
 OUT = ROOT / "results" / "theory_checks.json"
@@ -105,6 +106,70 @@ def neutrino_jerk_term(z_max: float = 1500.0) -> dict:
     }
 
 
+class _NoTransferGrowth(Growth):
+    """The same background, with the growth equation blind to the transfer.
+
+    ``g_c`` is what the transfer contributes to growth, so switching only it
+    off on an otherwise identical expansion history separates the transfer's
+    effect on the growth of structure from its effect on H(z).
+    """
+
+    def _coeffs(self, N):
+        EpoverE, Omega_m, gc = super()._coeffs(N)
+        return EpoverE, Omega_m, np.zeros_like(gc)
+
+
+def growth_signature(model: str = "xi_h", z: float = 2.0) -> dict:
+    """The opposite-sign growth signature, tested against the right reference.
+
+    Section 9 asserted that "at z = 2 in a representative fit" the density
+    growth rate exceeds unity while the redshift-space rate falls below it,
+    naming neither the fit nor the numbers. The comparison is also against the
+    wrong reference: ``eq:perturbations-growth-signature`` is an expansion
+    about matter domination, where the unperturbed rate is 1, and by z = 2 dark
+    energy has already pulled LambdaCDM's own rate down to about 0.96. Both
+    rates are then below 1 for reasons that have nothing to do with the
+    transfer, and the stated check fails while the physics it describes holds.
+
+    The reference that isolates the signature is the same background with
+    ``g_c`` removed from the growth equation. Against it the prediction is
+    reproduced: the density growth rate is raised and the redshift-space rate
+    lowered, at every parameter point and redshift tried.
+    """
+    m = MODELS[model]
+    theta = [0.02237, 0.1177, 0.15, 0.6, -1.0, 5.0]
+    bg = m.builder(m.to_dict(theta))
+    g, g0 = Growth(bg), _NoTransferGrowth(bg)
+
+    def at(gr, zz):
+        return float(np.atleast_1d(gr.f_growth(zz))[0])
+
+    f_g = at(g, z)
+    f_ref = at(g0, z)
+    f_rsd = float(np.atleast_1d(g.f_rsd(z))[0])
+
+    # and check it is not a one-point accident
+    ok = True
+    for za, eps, lx in ((5.0, 0.6, -1.0), (5.0, 0.3, -1.5), (10.0, 0.6, -1.0)):
+        b2 = m.builder(m.to_dict([0.02237, 0.1177, 0.15, eps, lx, za]))
+        ga, gb = Growth(b2), _NoTransferGrowth(b2)
+        for zz in (2.0, 1.0, 0.5):
+            ok &= (at(ga, zz) > at(gb, zz)
+                   and float(np.atleast_1d(ga.f_rsd(zz))[0]) < at(gb, zz))
+
+    return {
+        "model": model, "z": z,
+        "params": dict(zip(m.params, theta)),
+        "f_growth": f_g,
+        "f_growth_no_transfer": f_ref,
+        "f_rsd": f_rsd,
+        "raises_growth": bool(f_g > f_ref),
+        "lowers_rsd": bool(f_rsd < f_ref),
+        "holds_at_every_point_tried": bool(ok),
+        "n_points_tried": 9,
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--draws", type=int, default=400)
@@ -114,6 +179,7 @@ def main() -> int:
         "deficit_floor": deficit_floor(n_draws=args.draws),
         "transfer_peak": peak_at_activation(),
         "neutrino_jerk_term": neutrino_jerk_term(),
+        "growth_signature": growth_signature(),
     }
     f = out["deficit_floor"]
     print(f"  deficit floor: hypothesis holds in {f['n_hypothesis_holds']} of "
@@ -124,6 +190,11 @@ def main() -> int:
     print(f"  neutrino jerk term: {n['today']:.3e} today, max {n['max']:.3e} "
           f"at z = {n['z_of_max']:.0f}, non-negative: "
           f"{n['non_negative_everywhere']}")
+    g = out["growth_signature"]
+    print(f"  growth signature at z = {g['z']:.0f}: f_growth = {g['f_growth']:.4f} "
+          f"against {g['f_growth_no_transfer']:.4f} with no transfer, "
+          f"f_rsd = {g['f_rsd']:.4f}; holds at every point tried: "
+          f"{g['holds_at_every_point_tried']}")
     OUT.write_text(json.dumps(out, indent=2, sort_keys=True))
     print(f"wrote {OUT.relative_to(ROOT)}")
     return 0

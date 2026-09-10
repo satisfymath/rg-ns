@@ -90,3 +90,36 @@ def test_effective_exponent_of_the_growth_coefficient():
         gc = (bg.Q_V(z) / bg.E(z)) / (dust + nu)
         slope = np.diff(np.log(gc)) / np.diff(np.log(1.0 / (1.0 + z)))
         assert np.allclose(slope, expected, atol=0.1)
+
+
+def test_growth_signature_is_measured_against_the_right_reference():
+    """The transfer raises the density growth rate and lowers the RSD rate.
+
+    Section 9 previously checked this by asking whether f_g > 1 and
+    f_RSD < 1 at z = 2. That is the matter-domination reference, and by z = 2
+    dark energy has pulled even LambdaCDM's rate to about 0.96, so both rates
+    are below 1 for reasons unrelated to the transfer and the stated check
+    fails while the physics it describes holds. The reference that isolates the
+    signature is the same background with g_c removed from the growth equation.
+    """
+    import numpy as np
+
+    from absorb.growth import Growth
+    from absorb.params import MODELS
+
+    class NoTransfer(Growth):
+        def _coeffs(self, N):
+            e, om, gc = super()._coeffs(N)
+            return e, om, np.zeros_like(gc)
+
+    m = MODELS["xi_h"]
+    for z_act, eps, log10_xi in ((5.0, 0.6, -1.0), (5.0, 0.3, -1.5),
+                                 (10.0, 0.6, -1.0)):
+        bg = m.builder(m.to_dict([0.02237, 0.1177, 0.15, eps, log10_xi, z_act]))
+        with_transfer, without = Growth(bg), NoTransfer(bg)
+        for z in (2.0, 1.0, 0.5):
+            f_ref = float(np.atleast_1d(without.f_growth(z))[0])
+            f_g = float(np.atleast_1d(with_transfer.f_growth(z))[0])
+            f_rsd = float(np.atleast_1d(with_transfer.f_rsd(z))[0])
+            assert f_g > f_ref, (z_act, eps, z, f_g, f_ref)
+            assert f_rsd < f_ref, (z_act, eps, z, f_rsd, f_ref)

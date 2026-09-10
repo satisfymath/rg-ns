@@ -216,9 +216,21 @@ absolute energy density, so overdense regions lose the smaller fraction and
 $\delta_{\rm m}$ is boosted, while $\vartheta$ is not. A model that removed
 energy in proportion to the local density would suppress both, because the loss
 would then be larger where the density is larger, removing the boost while the
-drag on the velocity remains. Our numerical
-solution reproduces \cref{eq:perturbations-growth-signature}: at $z=2$ in a
-representative fit, $f_g>1$ while $f_{\rm RSD}<1$.
+drag on the velocity remains. Our numerical solution reproduces
+\cref{eq:perturbations-growth-signature}, but the comparison has to be made
+against the right reference and an earlier version of this paragraph did not
+make it. \Cref{eq:perturbations-growth-signature} expands about matter
+domination, where the unperturbed rate is $1$; by $z=2$ dark energy has already
+pulled even the $\LCDM$ rate below $1$, so comparing the two rates to unity
+there tests the expansion history and not the signature. Removing $g_c$ from
+the growth equation while keeping the same background isolates it. At $z=2$,
+for the parameters recorded with the check, the density growth rate is
+$\numCheckGrowthSignatureFGrowth$ against
+$\numCheckGrowthSignatureFGrowthNoTransfer$ with the transfer term switched
+off, while $f_{\rm RSD}$ is $\numCheckGrowthSignatureFRsd$: raised and lowered
+respectively, as predicted. The same holds at every one of the
+$\numCheckGrowthSignatureNPointsTried$ parameter and redshift combinations
+tried.
 
 For the gravitational potential the relativistic Poisson equation gives
 $\dd\ln\Phi/\dd\ln a=f_{\rm RSD}-1$, so during matter domination

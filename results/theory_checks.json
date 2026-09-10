@@ -9,6 +9,25 @@
     "n_floor_violated": 398,
     "n_hypothesis_holds": 0
   },
+  "growth_signature": {
+    "f_growth": 0.9309927475165709,
+    "f_growth_no_transfer": 0.8972941914343479,
+    "f_rsd": 0.8833032937654139,
+    "holds_at_every_point_tried": true,
+    "lowers_rsd": true,
+    "model": "xi_h",
+    "n_points_tried": 9,
+    "params": {
+      "eps": 0.6,
+      "log10_xi": -1.0,
+      "omega_V_act": 0.15,
+      "omega_b": 0.02237,
+      "omega_c": 0.1177,
+      "z_act": 5.0
+    },
+    "raises_growth": true,
+    "z": 2.0
+  },
   "neutrino_jerk_term": {
     "max": 0.2527589608550244,
     "min": 4.9350550060082356e-05,
