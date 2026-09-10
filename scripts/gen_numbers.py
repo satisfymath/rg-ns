@@ -74,6 +74,11 @@ FORMATS = {
     "max_delta_chi2": ".3g",
     "worst_identity_residual": ".2e",
     "bounded_suppression": ".1f",
+    # An uncertainty carries two significant figures by convention; the
+    # default four turned "68.38 +/- 0.30" into "68.38 +/- 0.2979".
+    "err": ".2g",
+    "err_hi": ".2g",
+    "err_lo": ".2g",
     "acceptance": ".4f",
     "move_rate_early": ".4f",
     "move_rate_late": ".4f",
@@ -124,7 +129,8 @@ def walk(node, prefix: str, out: dict[str, str],
             for extra in ("err", "err_lo", "err_hi"):
                 if extra in node:
                     put(camel(f"{prefix}_{extra}"),
-                        fmt(node[extra], node.get("fmt")), f"{prefix}_{extra}")
+                        fmt(node[extra], node.get("fmt") or FORMATS.get(extra)),
+                        f"{prefix}_{extra}")
             return
         for k, v in node.items():
             walk(v, f"{prefix}_{k}" if prefix else k, out, origin)
