@@ -54,7 +54,14 @@ class Growth:
         E = np.sqrt(E2)
         EpoverE = dE2 / (2.0 * E2)
         dust, rad, nu, V = bg._omegas(z)
-        omega_m = dust + nu                     # neutrinos cluster as dust here
+        # Massive neutrinos are counted with the clustering matter.  They are
+        # not sourced by the transfer, so including them in the denominator of
+        # g_c slightly dilutes it; at the redshifts probed here they are half a
+        # per cent of the matter budget and the effect on g_c is 0.5%, well
+        # below the precision of the growth data.  Treating them as fully
+        # clustering also overstates their contribution on small scales, which
+        # a Boltzmann treatment would resolve.
+        omega_m = dust + nu
         Omega_m = omega_m / E2
         # g_c/E = omega_V' / omega_m, with omega_V' = Q_V/E
         gc = (bg.Q_V(z) / E) / omega_m

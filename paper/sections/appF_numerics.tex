@@ -74,6 +74,18 @@ recombination is below $10^{-21}$ of the expansion rate, whereas $p=2$ leaves a
 rate nine orders of magnitude too large for the expansion-tracking form of
 \cref{eq:solvable-activation}.
 
+\subsection{Growth}\label{app:numerics-growth}
+
+\Cref{eq:perturbations-growth-N} is integrated from $z=100$ with the growing
+mode, using splined background coefficients so that $g_c'$ is analytic rather
+than finite-differenced inside the solver. Massive neutrinos are counted with
+the clustering matter. They are not sourced by the transfer, so including them
+in the denominator of $g_c$ dilutes it slightly; at the redshifts probed they
+are half a per cent of the matter budget and the effect on $g_c$ is of the same
+order, far below the precision of the growth data. Treating them as fully
+clustering also overstates their contribution on small scales, which only a
+Boltzmann treatment would resolve.
+
 \subsection{Likelihoods}\label{app:numerics-likelihoods}
 
 Supernova distances use the Pantheon+ compilation with the full statistical
