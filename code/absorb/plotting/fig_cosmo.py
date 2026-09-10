@@ -120,7 +120,7 @@ def fig_hubble() -> Path | None:
     _band(ax, z, [b.H_km_s_Mpc(z) / ref_med for b in ref], COLORS["lcdm"],
           r"$\Lambda$CDM", ls=":")
     err = np.sqrt(np.diag(d.cov))
-    ax.errorbar(d.z, d.Hz / ref_at_data, yerr=err / ref_at_data, fmt="o",
+    ax.errorbar(d.z, d.H / ref_at_data, yerr=err / ref_at_data, fmt="o",
                 color=COLORS["data"], ms=3.5, lw=1.0, label="cosmic chronometers")
     ax.set_xlabel(r"redshift $z$")
     ax.set_ylabel(r"$H(z)\,/\,H_{\Lambda\rm CDM}(z)$")
@@ -176,7 +176,7 @@ def fig_jerk() -> Path | None:
     _band(ax, z, [b.j(z) for b in bgs], COLORS["model"], "model")
     ax.plot(z, np.median([b.jerk_lambda_cdm_bound(z) for b in bgs], axis=0),
             color=COLORS["lcdm"], lw=1.4, ls="--",
-            label=r"bound $1+2\Omega_\gamma-\tfrac32 p'_\nu/E^2$")
+            label=r"bound $1+2\Omega_\gamma-\frac{3}{2}p_\nu^{\prime}/E^2$")
     ax.set_xlabel(r"redshift $z$")
     ax.set_ylabel(r"jerk $j(z)$")
     ax.set_xlim(0, 3)
