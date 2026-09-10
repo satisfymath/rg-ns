@@ -32,9 +32,47 @@ from absorb.sampling import (MAP_BUDGET_PER_DIM, Posterior,      # noqa: E402
 
 OUT = ROOT / "results" / "map.json"
 
+#: Which models contain which, as submodels. A model that contains another
+#: cannot fit worse than it, so the larger search is seeded with the smaller
+#: model's answer embedded. Without this the nine-parameter model returned a
+#: chi-square 1.55 *worse* than the seven-parameter model it contains, which is
+#: impossible and would have gone into the comparison table.
+CONTAINS = {
+    "xi_h": ["lcdm"],
+    "reinforce": ["lcdm"],
+    "memory": ["lcdm", "reinforce"],
+    "track_b": ["lcdm", "reinforce", "memory"],
+}
+
+#: Values that switch a parameter off, so that a larger model reduces to a
+#: smaller one when the extra parameters take them.
+NEUTRAL = {
+    "eps": 0.0, "r_beta": 0.0, "log10_tau": 0.0, "alpha_tot": 0.0,
+    "log10_gamma_down": None,          # None means "the bottom of its prior"
+}
+
+
+def embed(sub_names, sub_theta, model: str) -> np.ndarray:
+    """Put a submodel's best fit into the larger model's parameter vector."""
+    from absorb.params import MODELS, PRIORS
+
+    have = dict(zip(sub_names, sub_theta))
+    out = []
+    for name in MODELS[model].params:
+        if name in have:
+            out.append(have[name])
+        elif name in NEUTRAL:
+            v = NEUTRAL[name]
+            out.append(PRIORS[name].low if v is None else v)
+        else:
+            pr = PRIORS[name]
+            out.append(0.5 * (pr.low + pr.high))
+    return np.asarray(out, dtype=float)
+
 
 def best_fit(model: str, dataset: str, n_restarts: int, seed: int,
-             n_screen: int = 3000, n_polish: int = 8) -> dict:
+             n_screen: int = 3000, n_polish: int = 8,
+             known: dict | None = None) -> dict:
     """Best fit under one protocol: screen cheaply, then refine what is worth it.
 
     Three protocols have been tried here and two failed, so the history is
@@ -74,6 +112,17 @@ def best_fit(model: str, dataset: str, n_restarts: int, seed: int,
     order = np.argsort(values)
 
     starts = [screen[i] for i in order[:n_restarts]]
+    # Seed with every submodel's answer, embedded. This is what makes the
+    # chi-square column monotone in the nesting rather than accidentally so.
+    seeded = 0
+    for sub in CONTAINS.get(model, []):
+        entry = (known or {}).get(f"{sub}__{dataset}")
+        if entry is None:
+            continue
+        x = embed(entry["param_names"], entry["theta"], model)
+        if np.all(x >= lo) and np.all(x <= hi):
+            starts.insert(0, x)
+            seeded += 1
     best, best_x = np.inf, None
     reached = []
     for x0 in starts:
@@ -105,6 +154,7 @@ def best_fit(model: str, dataset: str, n_restarts: int, seed: int,
     return dict(model=model, dataset=dataset, ndim=post.ndim,
                 chi2_min=float(best), chi2_spread=spread,
                 n_screen=n_screen, n_refined=len(starts),
+                n_seeded_from_submodels=seeded,
                 n_reaching_best=n_at_best,
                 best_before_polish=best_refined,
                 polish_gain=polish_gain,
@@ -131,7 +181,7 @@ def main() -> int:
         tag = f"{m}__{args.data}"
         with record(f"map_{tag}", f"{args.restarts} restarts"):
             out[tag] = best_fit(m, args.data, args.restarts, args.seed,
-                                n_screen=args.screen)
+                                n_screen=args.screen, known=out)
         # Persist before reporting. The other order cost a validation run: a
         # KeyError in the print discarded a completed maximisation, left the
         # previous protocol's value in place, and the comparison that was
@@ -142,9 +192,12 @@ def main() -> int:
         edge = (f", on the prior edge in {','.join(e['on_prior_edge'])}"
                 if e["on_prior_edge"] else "")
         mark = "" if e["converged"] else "   [NOT CONVERGED]"
+        seed_note = (f", {e['n_seeded_from_submodels']} submodel seed(s)"
+                     if e.get("n_seeded_from_submodels") else "")
         print(f"  {tag:24s} chi2_min = {e['chi2_min']:.4f}  "
               f"({e['n_reaching_best']}/{e['n_refined']} refinements agreed, "
-              f"polish gained {e['polish_gain']:.4f}{edge}){mark}", flush=True)
+              f"polish gained {e['polish_gain']:.4f}{seed_note}{edge}){mark}",
+              flush=True)
 
     ref = out.get(f"lcdm__{args.data}")
     if ref:

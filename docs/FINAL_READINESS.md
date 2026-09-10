@@ -24,7 +24,9 @@ Working tree at the time of writing: see `git rev-parse HEAD`.
 | No missing posterior / empty table | **RED** | `[missing: no posterior for 'memory']` | `python3 scripts/check_numbers.py` |
 | Evidence reproducible between seeds | **RED** | not yet measured on `xi_h` | `scripts/evidence_repeatability.py` |
 | Prior sensitivity documented both ways | **RED** | narrowing done, widening not | `scripts/prior_width_evidence.py` |
-| Maximisation protocol reproducible in reasonable time | **AMBER** | 8.4 h replaced; validating | `scripts/run_map.py` |
+| Maximisation protocol reproducible in reasonable time | **AMBER** | 8.4 h -> ~30 min; lands 0.015 above the frozen reference | `scripts/run_map.py` |
+| Chi-square column monotone in the nesting | **AMBER** | was violated by 1.55; seeding added, re-running | `pytest code/tests/test_maximisation.py` |
+| Conservation identities across the prior | **green** | Friedmann 2e-16, jerk 4e-13 | `pytest code/tests/test_background.py` |
 | All figures regenerable and placed | **RED** | 5 cosmology figures skipped | `scripts/make_figures.py` |
 | `make reproduce` documented and tested | **RED** | does not exist | — |
 | Release archive + checksums | **RED** | does not exist | — |

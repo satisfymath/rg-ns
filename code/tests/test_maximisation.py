@@ -57,3 +57,32 @@ def test_reference_is_not_the_same_file_as_the_current_results():
     assert REFERENCE.name != CURRENT.name
     ref = _load(REFERENCE)
     assert all(v.get("protocol", "").startswith("brute force") for v in ref.values())
+
+
+@pytest.mark.parametrize("larger,smaller", [
+    ("xi_h", "lcdm"),
+    ("reinforce", "lcdm"),
+    ("memory", "reinforce"),
+    ("track_b", "memory"),
+])
+def test_a_model_never_fits_worse_than_one_it_contains(larger, smaller):
+    """Nesting is exact, so the chi-square column must be monotone in it.
+
+    It was not. The nine-parameter model's search returned a chi-square 1.55
+    *worse* than the seven-parameter model it contains, which is impossible:
+    evaluating the larger model at the smaller one's best fit reproduces the
+    smaller one's value exactly. The larger search had simply failed to find
+    it, and the number was on its way into the comparison table.
+
+    The maximiser now seeds each search with every submodel's answer embedded,
+    which makes this property hold by construction rather than by luck. This
+    test is what notices if that stops working.
+    """
+    cur = _load(CURRENT)
+    a, b = f"{larger}__baseline", f"{smaller}__baseline"
+    if a not in cur or b not in cur:
+        pytest.skip("one of the models has not been run")
+    assert cur[a]["chi2_min"] <= cur[b]["chi2_min"] + 1e-6, (
+        f"{larger} ({cur[a]['chi2_min']:.4f}) fits worse than {smaller} "
+        f"({cur[b]['chi2_min']:.4f}), which it contains as a submodel; the "
+        f"larger maximisation has failed")
