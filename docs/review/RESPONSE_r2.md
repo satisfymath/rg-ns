@@ -239,3 +239,105 @@ cannot reach a given target for any `eps`, candidates are screened for
 feasibility before the optimiser is started. The returned record now carries
 the worst target miss, the number of decreasing steps and the count of
 unreachable points, so this class of failure cannot be silent again.
+
+
+---
+
+## Referee E (claims and honesty)
+
+Eleven majors, fifteen minors, recommendation major revision. The report's
+closing observation is the one we have taken most seriously, so it goes first:
+
+> "the *mathematics* of this paper is more careful than its *summaries*. Every
+> one of my major points is a failure of §§00, 01, 10 or 14 to report
+> accurately what §§3–13 actually establish ... the gap is systematic rather
+> than random: in every instance I found, the overclaim runs in the direction
+> that flatters the model."
+
+We accept that, including the diagnosis. Every major below was a summary
+claiming more than a body section proves, and the corrections all move in the
+same direction.
+
+### The findings we consider most serious
+
+**An inequality used backwards, in three places (M2).** The deficit-to-jerk
+relation is a *floor*, so an upper limit on the deficit gives no upper bound on
+the jerk excess. One of the three places was added by us during the review
+while rewriting the conclusions, which is a fair illustration of the referee's
+point about summaries.
+
+Investigating it produced a worse result, which we now report rather than
+repair: **the floor's hypothesis fails for this model, always.** The bound needs
+the reduced transfer `q = Q_V/(3 Mpl^2 H0^2 H)` to be non-decreasing to today.
+The activation switch turns the transfer on at `z_act` and the rate then falls
+relative to the expansion, so **q peaks exactly at the activation redshift**
+for every activation redshift and rate tried. Over 400 uniform prior draws with
+a non-zero deficit, the hypothesis holds in **0**, the floor fails in **398**,
+and the median ratio is **0.48** where the bound requires **4.5**. It is a true
+theorem about a class of transfer histories this model does not realise, and
+nothing in the paper may now be inferred from it. Where the jerk excess is
+wanted it is computed. Ten tests hold the finding.
+
+**The growth signature was verified against the wrong reference (m5).** §9 said
+"at z = 2 in a representative fit, f_g > 1 while f_RSD < 1", naming neither fit
+nor numbers. Computed, both are below 1 — and f_g is below LambdaCDM's own rate
+— so the stated check does not pass. The signature is an expansion about matter
+domination, where the unperturbed rate is 1, and by z = 2 dark energy has
+already pulled LambdaCDM to 0.956. Against the reference that isolates it — the
+same background with `g_c` removed from the growth equation — the prediction
+holds at every one of nine parameter and redshift combinations: at z = 2,
+f_g = 0.9310 against 0.8973 with the transfer off, f_RSD = 0.8833.
+
+**A theorem with a hypothesis it could not satisfy (M7).** `thm:hysteresis`
+concluded that two histories accumulate different vacuum, which through the
+Friedmann constraint gives them different expansion histories — contradicting
+its own "along a common expansion history" in the coupled system it was invoked
+for. It is now stated for a prescribed `a(t)`, which is what the comparison
+argument needs and what the figure computes, with a remark saying why the
+hypothesis cannot be reworded away. The abstract and introduction had restated
+it as "identical densities"; the hypothesis is equal *converted fraction*, and
+the vacuum densities differ by the theorem's own conclusion.
+
+**A ladder that did less than advertised (M5, M6).** The check enforced only
+that no bare `\boxed` escaped, so unboxed displayed results and every numbered
+theorem went unclassified; the level argument was discarded by the environment,
+so the level was invisible at the point of the claim; and there was no level for
+a *postulate*, so the paper's own defining rate law was stamped "theorem of the
+model: follows from the new postulates", which is circular. Levels are now
+printed beside each result, the ladder has postulate and numerical levels, and
+the wording says what the check enforces — presence and placement, not
+correctness.
+
+### Answers to the referee's seven questions
+
+1. **Was `memory` fitted?** It had not been when the report was written. It has
+   now: `ln B = -2.01 ± 0.29` against LambdaCDM. Whether the memory parameters
+   are constrained is being read off the posterior; the sentence asserting they
+   are will be replaced by whatever the posterior shows, which on the evidence
+   of the other rate parameters we expect to be "they are not".
+2. **Was `track_b` fitted?** No, and two sections said it was. §5 is corrected,
+   and the run is queued.
+3. **Intended reading of the deficit floor in §10?** Neither reading: it does
+   not apply, for the reason above, and §10 no longer uses it.
+4. **`tab:parameters` is empty.** Because it drew on the `memory` chain, which
+   was not fit to quote from. It is now populated from the nested posterior.
+5. **Is `a(t)` prescribed in `thm:hysteresis`?** Prescribed. The theorem now
+   says so.
+6. **Does the `q` non-decreasing hypothesis hold for the fitted profile?** No,
+   and not for any activation profile of this family. See above.
+7. **Why no growth data?** No good reason: the fσ8 likelihood, the data and a
+   dataset combination including them were already implemented and had never
+   been run. The comparison is queued rather than disclaimed.
+
+### Also fixed
+
+`p_eff` denoted three different quantities — an exponent of the transfer, a
+different exponent of the growth coupling differing from it by exactly 3, and a
+Reynolds pressure — so a reader substituting one into the other's formula would
+have been wrong by tens of per cent. The jerk theorem's hypotheses omitted the
+massive neutrino every fit carries; its contribution is non-negative, so the
+bound survives, and the hypothesis list now admits it. Tipler's criterion was
+invoked with no reference; Tipler (1977) and Clarke–Królak (1985) are added,
+verified against Crossref. The "no number typed by hand" guarantee is narrowed
+to what the build actually enforces, and the numbers that motivated the
+narrowing are now generated instead.
