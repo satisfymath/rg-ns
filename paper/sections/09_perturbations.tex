@@ -23,7 +23,17 @@ This is a genuine constraint, not a definition: a scalar expression for $\QV$
 does not by itself define a consistent transfer. In the clock realization
 $u_\mu=-\partial_\mu \clock$, and \cref{eq:perturbations-integrability} is
 equivalent to $\dd \QV\wedge \dd \clock=0$, so that $\QV$ and $\rhoV$ are
-functions of $\clock$ alone wherever the clock is regular. On comoving
+functions of $\clock$ alone wherever the clock is regular. That proviso is not
+decorative, and it is worth saying exactly what it excludes. The constraint
+$(\partial \clock)^2=-1$ guarantees $\dd \clock\ne0$, so the only way the
+Frobenius step can fail is at a caustic of the congruence, where the level sets
+of $\clock$ self-intersect and $\clock$ ceases to be a coordinate. Caustics are
+therefore not a remote nonlinear question about the theory in general: they are
+precisely the locus on which \cref{eq:perturbations-com}, and with it every
+result of this section, is undefined. We proceed on the assumption that the
+congruence is caustic-free over the range of scales and redshifts probed by the
+data of \cref{sec:observations}, which is a physical assumption about when
+shell crossing first occurs and is not established here. On comoving
 hypersurfaces of constant $\clock$ this gives
 %
 \begin{equation}\label{eq:perturbations-com}
@@ -83,9 +93,15 @@ listed as such in \cref{sec:outlook}.
   squared is then negative and short-wavelength modes grow without bound.
 \end{proposition}
 
-So the geodesic choice is the one that keeps the theory viable, which is worth
-saying explicitly because it is also the choice made in the interacting-vacuum
-literature \parencite{wands2012_12036776,sebastianutti2023_231214123}.
+\Cref{prop:clumping-unstable} excludes one branch, not all alternatives: it says
+nothing about $\zeta<0$, which gives a positive effective sound speed and is not
+excluded, nor about the other completions the draft listed, namely allowing
+momentum transfer with a compensating acceleration of the donor, or giving the
+receiving sector its own dynamics and pressure. Those are different theories,
+not refuted ones. What can be said is that the geodesic branch is the one used
+in the interacting-vacuum literature
+\parencite{wands2012_12036776,sebastianutti2023_231214123} and the one for which
+the linear sector closes.
 
 \subsection{The branching ratio is invisible}\label{sec:perturbations-b}
 
@@ -221,10 +237,14 @@ energy component and a constant equation of state
 The instability arises when a dark-energy fluid is given a sound speed and a
 density perturbation of its own while being coupled; an exact vacuum has
 neither, and \cref{eq:perturbations-com} is precisely the statement that its
-perturbation is determined rather than assigned. This should not be confused
-with the separate and genuine problem that the clock congruence has vanishing
-sound speed and can form caustics: that is nonlinear, no linear analysis speaks
-to it, and \cref{sec:outlook} records it as open.
+perturbation is determined rather than assigned. 
+The scope of \cref{prop:no-instability} should not be inflated. The absence of a
+$k$-dependent coefficient is the same fact as the vanishing scalar sound speed
+recorded in \cref{sec:realizations-determined}: the scalar sector is degenerate
+rather than hyperbolic, with no restoring force at any wavelength. What the
+proposition establishes is the absence of the specific super-horizon instability
+of coupled fluids carrying a sound speed, and nothing about the ultraviolet
+behaviour of this sector or about caustics.
 
 \paragraph{What this section establishes.}
 A closed and stable linear system under \cref{asm:geodesic}, a theorem that the
