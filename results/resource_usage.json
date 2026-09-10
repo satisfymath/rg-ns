@@ -150,5 +150,29 @@
     "mem_available_before_mb": 10388.86328125,
     "mem_available_after_mb": 10226.06640625,
     "notes": "nlive=500"
+  },
+  {
+    "name": "nested_xi_h__rsd",
+    "seconds": 1818.510005235672,
+    "peak_rss_mb": 4780.69921875,
+    "mem_available_before_mb": 10225.97265625,
+    "mem_available_after_mb": 11271.359375,
+    "notes": "nlive=500"
+  },
+  {
+    "name": "map_lcdm__baseline",
+    "seconds": 5.618691921234131,
+    "peak_rss_mb": 251.60546875,
+    "mem_available_before_mb": 11413.375,
+    "mem_available_after_mb": 11240.38671875,
+    "notes": "3 restarts"
+  },
+  {
+    "name": "map_xi_h__baseline",
+    "seconds": 70.85714077949524,
+    "peak_rss_mb": 620.03125,
+    "mem_available_before_mb": 11240.38671875,
+    "mem_available_after_mb": 10382.49609375,
+    "notes": "3 restarts"
   }
 ]

@@ -1,0 +1,48 @@
+{
+  "lcdm__baseline": {
+    "budget_evals": 900,
+    "budget_per_dim": 300,
+    "chi2_min": 1436.5160913506734,
+    "chi2_spread": 1.1999200296486379e-05,
+    "dataset": "baseline",
+    "model": "lcdm",
+    "n_restarts": 3,
+    "ndim": 3,
+    "param_names": [
+      "omega_b",
+      "omega_c",
+      "omega_V_act"
+    ],
+    "theta": [
+      0.02251678448717937,
+      0.11773252436834453,
+      0.32664565678361757
+    ]
+  },
+  "xi_h__baseline": {
+    "budget_evals": 1800,
+    "budget_per_dim": 300,
+    "chi2_min": 1435.8069111827422,
+    "chi2_spread": 1.0409066568279286,
+    "dataset": "baseline",
+    "model": "xi_h",
+    "n_restarts": 3,
+    "ndim": 6,
+    "param_names": [
+      "omega_b",
+      "omega_c",
+      "omega_V_act",
+      "eps",
+      "log10_xi",
+      "z_act"
+    ],
+    "theta": [
+      0.022479901967493554,
+      0.1181713228011615,
+      0.014769951914856826,
+      0.12447070473020838,
+      -1.5214151899377848,
+      10.101837615321188
+    ]
+  }
+}
