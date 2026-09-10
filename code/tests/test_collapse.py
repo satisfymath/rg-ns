@@ -364,3 +364,37 @@ def test_residual_density_has_a_boundary_layer():
     L = hazard_from_gap(g, 1e-6)
     draws = binomial_law_in_hazard_time(10 ** 6, L, rng, size=2000)
     assert draws.std() < 1e-4
+
+
+@pytest.mark.parametrize("rho_D0", [0.1, 1.0])
+def test_zero_branching_does_not_make_the_defect_density_finite(rho_D0):
+    """b = 0 removes the source, not the compression of what is already there.
+
+    The regularity condition in the manuscript once read "g > c and b = 0". It
+    is incomplete: the defect equation's homogeneous part is
+    rho_D(t_0) |J_0/J|, which diverges as (T-t)^-c for any non-zero initial
+    defect density whatever b is. This test is the counterexample -- b is zero
+    throughout, g > c so the precursor and the vacuum are both regular, and the
+    defect density still diverges with exponent exactly -c.
+
+    It also closes an apparent escape from the obstruction: forming the defects
+    through an earlier channel does not save regularity, because defects
+    already present are dust on the collapsing sheet.
+    """
+    c, g, T = 1.0, 1.5, 1.0
+    sector = LocalSector(c=c, g=g, T=T, b=0.0, gamma_bounded=0.0)
+
+    distances = np.array([1e-4, 1e-5, 1e-6])
+    values = np.array([sector.integrate(T - s, y0=(1.0, rho_D0, 0.0)).y[1][-1]
+                       for s in distances])
+
+    # it grows without bound as the caustic is approached; the exponent below
+    # is the real statement, this only rules out a finite limit
+    assert values[-1] > 10.0 * values[0] > 0.0, "the defect density did not diverge"
+    slope = np.polyfit(np.log(distances), np.log(values), 1)[0]
+    assert abs(slope + c) < 1e-3, (
+        f"expected rho_D ~ (T-t)^-{c}, measured exponent {slope}")
+
+    # and with no defects present it stays exactly zero, which is the other half
+    clean = sector.integrate(T - distances[-1], y0=(1.0, 0.0, 0.0)).y[1][-1]
+    assert clean == 0.0

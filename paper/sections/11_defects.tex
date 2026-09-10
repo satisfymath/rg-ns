@@ -192,15 +192,18 @@ $\rhoI\sim(T-t)^{-(c-g)}$, and three separate conditions must hold, not one.
 The precursor is finite for $g\ge c$. The vacuum increment integrates
 $(T-t)^{g-c-1}$ and therefore needs $g>c$ \emph{strictly}: at $g=c$ the
 precursor is finite while the vacuum still diverges logarithmically. And the
-defect density obeys $\dot\rhoD=-\expa\rhoD+\bfrac\Gam\rhoI$, whose homogeneous
-part alone gives $\rhoD\sim(T-t)^{-c}$: the localized product is itself
-pressureless dust, compressed by the same $\expa$, so its density diverges for
-every $g$ whenever $\bfrac>0$. Its column density stays finite, which is the
-distinction between a finite mass and a finite density. Hence
+defect density obeys $\dot\rhoD=-\expa\rhoD+\bfrac\Gam\rhoI$. Its homogeneous
+part is $\rhoD(t_0)\abs{J_0/J}$, which diverges as $(T-t)^{-c}$ for \emph{any}
+non-zero initial defect density, whatever $\bfrac$ is: the localized product is
+pressureless dust and is compressed by the same $\expa$ as everything else.
+Setting $\bfrac=0$ removes the source, not that. Regularity therefore requires
+both that none be produced during the collapse and that none be present when it
+begins. Its column density stays finite either way, which is the distinction
+between a finite mass and a finite density. Hence
 
 \begin{keyresult}{C}{eq:defects-regularity}
   T_{\mu\nu}\ \text{finite at the caustic}
-  \iff g>c\ \ \text{and}\ \ \bfrac=0 .
+  \iff g>c\ \ \text{and}\ \ \bfrac=0\ \ \text{and}\ \ \rhoD(t_0)=0 .
 \end{keyresult}
 
 It is worth being careful about what that buys. Pointwise finiteness of the
@@ -219,16 +222,22 @@ For $\Gam_{\rm collapse}=\kappa\,[-\expa]_+$ one has $g=\kappa c$, so the
 condition is the dimensionless statement $\kappa>1$, independent of the
 strength of the collapse; for a generic Zel'dovich pancake $c=1$.
 
-The requirement $\bfrac=0$ sits awkwardly with the rest of this section, and
-the tension should be named rather than left for the reader. A finite relic
-abundance of defects needs $\bfrac>0$
-(\cref{sec:defects-abundance}); regularity at a caustic needs $\bfrac=0$. The
-two cannot both hold with a single constant branching ratio, so either the
-localized sector acquires pressure, in which case it is no longer the
-pressureless product of \cref{asm:closure} and its equation of state must be
-recomputed, or $\bfrac$ is not constant and switches off where the expansion
-does, which is an additional assumption with no independent motivation. We
-record this as an unresolved tension.
+The requirement sits awkwardly with the rest of this section, and the tension
+should be named rather than left for the reader. A finite relic abundance of
+defects needs $\bfrac>0$ (\cref{sec:defects-abundance}); regularity at a
+caustic needs $\bfrac=0$, and the third condition of
+\cref{eq:defects-regularity} makes the conflict sharper than a statement about
+$\bfrac$ alone. One might hope to separate the two channels --- form the
+defects earlier, by some other mechanism, and let the compression-driven
+channel feed only the vacuum --- but that does not help: defects already
+present on the collapsing sheet are pressureless dust, are compressed by the
+same $\expa$, and carry the divergence by themselves. Pointwise regularity of
+$T_{\mu\nu}$ at a fold caustic is therefore incompatible with the presence of
+\emph{any} localized product there, however it was made. Either the localized
+sector acquires pressure, in which case it is no longer the pressureless
+product of \cref{asm:closure} and its equation of state must be recomputed, or
+the collapsing sheets are free of defects for a reason this paper does not
+supply. We record this as an unresolved tension.
 
 \paragraph{The covariant price.} Adding such a channel is not free.
 \Cref{eq:setup-vacuum-transfer} forces the transfer four-vector to be closed,
