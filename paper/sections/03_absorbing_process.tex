@@ -127,7 +127,21 @@ $\sqrt{(1-\fconv)\Gam/N}$ read off the second infinitesimal moment; this is not
 the same as a noise term chosen for convenience, and near $\fconv=0$ a Gaussian
 approximation would produce negative excursions the jump process forbids.
 \Cref{sec:numerics-stochastic} verifies both the limit and the scaling by
-direct simulation.
+direct simulation (\cref{fig:gillespie}).
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\textwidth]{gillespie.pdf}
+  \caption{Convergence of the finite-population process to its deterministic
+    limit. \emph{Left:} deviation of the ensemble mean from the deterministic
+    solution, with $5$--$95\%$ bands, for four population sizes; the inset
+    shows the deterministic $\fconv(t)$ that has been subtracted. \emph{Right:}
+    the same ensembles' standard deviations multiplied by $\sqrt{N}$, which
+    collapse onto a single curve, confirming the $N^{-1/2}$ scaling of
+    \cref{thm:deterministic-limit}. Rate parameters as in
+    \cref{sec:numerics-stochastic}.}
+  \label{fig:gillespie}
+\end{figure}
 
 \subsection{Survival, acceleration, and what reinforcement does}
 \label{sec:process-survival}
@@ -185,6 +199,18 @@ densities does not determine the future.
   from ordered initial data, and strictness follows because the vector fields
   differ wherever $\Mmem^{(1)}\neq \Mmem^{(2)}$ and $\fconv<1$.
 \end{proof}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.62\textwidth]{hysteresis.pdf}
+  \caption{Hysteresis. Two histories are prepared to reach the same converted
+    fraction at the first plotted time while carrying different memory states.
+    Evolved thereafter under identical conditions they separate, and their
+    asymptotic vacuum densities differ by
+    $\numHysteresisRelativeDeltaVacuum$ in relative terms. In the memoryless
+    limit the two curves coincide to solver tolerance.}
+  \label{fig:hysteresis}
+\end{figure}
 
 No interaction written as $Q(\rho_{\rm dm},\rho_{\rm de},\Hub)$ has this
 property, including couplings whose sign switches with redshift: such a law
