@@ -90,7 +90,7 @@ def test_identities(kw):
     assert res["jerk"] < 1e-12, "the two independent routes to j must agree"
     assert res["continuity"] < 1e-4
     if "survival" in res:
-        assert res["survival"] < 1e-8, "Eq. (7.2) vs independent integration"
+        assert res["survival"] < 1e-10, "Eq. (7.2) vs independent integration"
         assert res["f_vs_full"] < 1e-6
         assert res["vacuum_vs_full"] < 1e-5
 
