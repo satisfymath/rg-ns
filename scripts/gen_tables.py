@@ -100,17 +100,34 @@ def comparison_table(chains: dict) -> str:
     if ref is None:
         return HEADER + "% no LambdaCDM evidence to compare against\n"
 
-    rows = []
+    # Chi-square comes from the single maximisation protocol where it exists.
+    # Neither of the other two sources is a maximum: a nested sampler's best
+    # *sample* is not one, which is why the seven-parameter model briefly
+    # appeared to fit worse than the three-parameter model it contains; and the
+    # chains were polished under budgets that differed by model.
+    mpath = ROOT / "results" / "map.json"
+    maps = _json.loads(mpath.read_text()) if mpath.exists() else {}
+
+    def chi2_of(name: str) -> tuple[float, str]:
+        key = f"{name}__baseline"
+        if key in maps:
+            return maps[key]["chi2_min"], "map"
+        if key in chains and "chi2_min" in chains[key]:
+            return chains[key]["chi2_min"], "chain"
+        return ev[key]["chi2_min"], "nested sample"
+
+    rows, sources = [], set()
+    c2_ref, src_ref = chi2_of("lcdm")
+    sources.add(src_ref)
     for name in MODEL_LABEL:
         e = ev.get(f"{name}__baseline")
         if e is None:
             continue
         lnb = e["logz"] - ref["logz"]
         err = (e["logz_err"] ** 2 + ref["logz_err"] ** 2) ** 0.5
-        c2 = chains.get(f"{name}__baseline", {}).get("chi2_min", e["chi2_min"])
-        rows.append((MODEL_LABEL[name], e["ndim"], c2,
-                     c2 - chains.get("lcdm__baseline", {}).get(
-                         "chi2_min", ref["chi2_min"]),
+        c2, src = chi2_of(name)
+        sources.add(src)
+        rows.append((MODEL_LABEL[name], e["ndim"], c2, c2 - c2_ref,
                      e["logz"], e["logz_err"], lnb, err))
     if not rows:
         return HEADER + "% no evidences available yet\n"
@@ -123,6 +140,9 @@ def comparison_table(chains: dict) -> str:
         lines.append(rf"{label} & {k} & {c2:.2f} & {dc2:+.2f} "
                      rf"& ${lnz:.2f}\pm{lnzerr:.2f}$ & {b} \\")
     lines += [r"\bottomrule", r"\end{tabular}"]
+    if sources - {"map"}:
+        lines.append(r"\\[2pt]{\footnotesize Not every $\chisq_{\min}$ comes "
+                     r"from the common maximisation protocol; see the text.}")
     return "\n".join(lines) + "\n"
 
 

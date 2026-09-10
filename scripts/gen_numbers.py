@@ -27,6 +27,8 @@ SOURCES = [
     (ROOT / "results" / "pancake.json", "pancake"),
     (ROOT / "results" / "evidence.json", "evidence"),
     (ROOT / "results" / "profile.json", "profile"),
+    (ROOT / "results" / "chain_diagnostics.json", "diag"),
+    (ROOT / "results" / "map.json", "map"),
 ]
 
 HEADER = (
@@ -71,6 +73,10 @@ FORMATS = {
     "max_delta_chi2": ".3g",
     "worst_identity_residual": ".2e",
     "bounded_suppression": ".1f",
+    "acceptance": ".4f",
+    "move_rate_early": ".4f",
+    "move_rate_late": ".4f",
+    "outside_prior_fraction": ".3f",
 }
 
 

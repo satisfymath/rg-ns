@@ -119,6 +119,35 @@ stabilised to two per cent. Chains are stored with the burn-in and thinning
 actually applied, and the number of workers is chosen from available memory as
 well as from the core count.
 
+\paragraph{Why the extended models are sampled differently.} An ensemble move
+is a difference between two walkers and knows nothing about the edges of a
+prior box. When a posterior is wide compared with its prior in some direction
+--- which is what happens here, because the rate parameters are unidentified
+along the $\LCDM$ boundary --- most proposals land outside the box and are
+rejected before the likelihood is evaluated. The rejection rate then
+\emph{grows} as the ensemble spreads, so the chain decelerates and running it
+longer makes it worse. Measured on the first attempt: cumulative acceptance
+$\numDiagXiHBaselineDemoveFrozenAcceptance$, move rate falling from
+$\numDiagXiHBaselineDemoveFrozenMoveRateEarly$ over the first tenth of the run
+to $\numDiagXiHBaselineDemoveFrozenMoveRateLate$ over the last, and a fraction
+$\numDiagXiHBaselineDemoveFrozenOutsidePriorFraction$ of replayed proposals
+outside the prior at the default step scale --- against acceptance
+$\numDiagLcdmBaselineAcceptance$ and no invalid proposals at all for $\LCDM$ on
+the same machinery. The chains that produced these numbers are kept, so the
+diagnosis can be repeated. Two changes follow. The sampler now works in a logit coordinate, so
+no proposal can be invalid; this is a change of variables and not of prior,
+with the Jacobian added to the target and a test that recovers a flat prior
+under a constant likelihood. And the posteriors quoted for the extended models
+come from nested sampling, which integrates over the prior rather than walking
+along a degenerate ridge inside it, and which supplies the evidence used in
+\cref{tab:comparison} directly. The convergence gate was rewritten at the same
+time, because the version in place had no power to fail: it watched the drift
+of a percentile pinned against a prior edge, which is insensitive to this
+failure by construction and passes the frozen chains even now. It additionally
+checks the move rate over the last tenth of the chain against the first, the
+chain length in autocorrelation times, and whether any parameter has simply
+filled its prior.
+
 \subsection{Stochastic sector}\label{sec:numerics-stochastic}
 
 The finite-population process is simulated exactly, not approximated. Because
