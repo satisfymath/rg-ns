@@ -79,32 +79,50 @@ def pm(entry: dict, fmt: str = ".4f") -> str:
 
 
 def comparison_table(chains: dict) -> str:
-    """chi^2, AIC and BIC relative to LambdaCDM."""
-    rows, ref = [], None
+    """Evidence relative to LambdaCDM, with chi-square alongside.
+
+    AIC and BIC used to be the headline here and are gone.  At eps = 0 the
+    larger models reduce to LambdaCDM identically for *any* value of their rate
+    parameters, so those parameters are unidentified under the null: that is
+    Davies' problem, the effective parameter count at the null is not the
+    sampled count, and both 2k and k ln n penalise a number that does not
+    describe the model at the point being tested.  The evidence needs no count.
+    A direction along which the likelihood is flat contributes its prior volume
+    and nothing more, which is the right accounting for a parameter the data do
+    not identify.
+    """
+    import json as _json
+    path = ROOT / "results" / "evidence.json"
+    if not path.exists():
+        return HEADER + "% results/evidence.json not present yet\n"
+    ev = _json.loads(path.read_text())
+    ref = ev.get("lcdm__baseline")
+    if ref is None:
+        return HEADER + "% no LambdaCDM evidence to compare against\n"
+
+    rows = []
     for name in MODEL_LABEL:
-        key = f"{name}__baseline"
-        if key not in chains:
+        e = ev.get(f"{name}__baseline")
+        if e is None:
             continue
-        c = chains[key]
-        if ref is None:
-            ref = c
-        rows.append((MODEL_LABEL[name], c["n_params"], c["chi2_min"],
-                     c["chi2_min"] - ref["chi2_min"],
-                     c["aic"] - ref["aic"], c["bic"] - ref["bic"],
-                     c["tau_max"], c["converged"]))
+        lnb = e["logz"] - ref["logz"]
+        err = (e["logz_err"] ** 2 + ref["logz_err"] ** 2) ** 0.5
+        c2 = chains.get(f"{name}__baseline", {}).get("chi2_min", e["chi2_min"])
+        rows.append((MODEL_LABEL[name], e["ndim"], c2,
+                     c2 - chains.get("lcdm__baseline", {}).get(
+                         "chi2_min", ref["chi2_min"]),
+                     e["logz"], e["logz_err"], lnb, err))
     if not rows:
-        return HEADER + "% no chains available yet\n"
-    lines = [HEADER, r"\begin{tabular}{lrrrrrr}", r"\toprule",
-             r"Model & $k$ & $\chisq_{\min}$ & $\Delta\chisq$ & $\Delta\AIC$ "
-             r"& $\Delta\BIC$ & $\tau$ \\", r"\midrule"]
-    for label, k, c2, dc2, daic, dbic, tau, conv in rows:
-        mark = "" if conv else r"$^{\dagger}$"
-        lines.append(rf"{label}{mark} & {k} & {c2:.2f} & {dc2:+.2f} "
-                     rf"& {daic:+.2f} & {dbic:+.2f} & {tau:.0f} \\")
+        return HEADER + "% no evidences available yet\n"
+
+    lines = [HEADER, r"\begin{tabular}{lrrrrr}", r"\toprule",
+             r"Model & $k$ & $\chisq_{\min}$ & $\Delta\chisq$ "
+             r"& $\ln Z$ & $\ln B$ \\", r"\midrule"]
+    for label, k, c2, dc2, lnz, lnzerr, lnb, err in rows:
+        b = "---" if abs(lnb) < 1e-12 else rf"${lnb:+.2f}\pm{err:.2f}$"
+        lines.append(rf"{label} & {k} & {c2:.2f} & {dc2:+.2f} "
+                     rf"& ${lnz:.2f}\pm{lnzerr:.2f}$ & {b} \\")
     lines += [r"\bottomrule", r"\end{tabular}"]
-    if any(not conv for *_, conv in rows):
-        lines.append(r"\\[2pt]{\footnotesize $^{\dagger}$ chain did not meet the "
-                     r"convergence criterion within the step budget; see the text.}")
     return "\n".join(lines) + "\n"
 
 

@@ -74,9 +74,16 @@ shape of the expansion history rather than by its low-order derivatives.
 \begin{table}[t]
   \centering
   \input{generated/tab_comparison}
-  \caption{Model comparison on the baseline combination. Differences are taken
-    with respect to $\LCDM$; $k$ is the number of sampled parameters. A
-    negative $\Delta\AIC$ or $\Delta\BIC$ favours the extension.}
+  \caption{Model comparison on the baseline combination, by Bayesian evidence.
+    Differences are taken with respect to $\LCDM$; $k$ is the number of sampled
+    parameters and a negative $\ln B$ favours $\LCDM$. The information criteria
+    are deliberately absent: at $\epsilon=0$ each extension reduces to $\LCDM$
+    identically for \emph{any} values of its rate parameters, so those
+    parameters are unidentified under the null and the effective parameter
+    count there is not $k$. Both $2k$ and $k\ln n$ would then penalise a number
+    that does not describe the model at the point being tested, and both would
+    do so in the direction of the conclusion drawn below. The evidence requires
+    no such count.}
   \label{tab:comparison}
 \end{table}
 
