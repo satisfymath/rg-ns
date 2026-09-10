@@ -158,7 +158,7 @@ def test_bao_uses_pre_activation_omega_c(bg):
                                       log10_gamma0=0.0, alpha_tot=1.0,
                                       z_act=1.0, p_act=6.0))
     assert hot.derived()["f0"] > 0.05          # the conversion really happened
-    assert hot.derived()["omega_m0"] < bg.derived()["omega_m0"]
+    assert hot.derived()["omega_m_today"] < bg.derived()["omega_m_today"]
     assert lk.r_drag(hot) == pytest.approx(lk.r_drag(bg), rel=1e-12)
 
 

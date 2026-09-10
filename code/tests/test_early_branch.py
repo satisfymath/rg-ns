@@ -77,4 +77,4 @@ def test_matter_deficit_is_non_negative():
     for p_act in (4.0, 6.0):
         d = _bg(p_act, False).derived()
         assert d["matter_deficit"] >= -1e-12
-        assert d["omega_m_early"] >= d["omega_m0"] - 1e-12
+        assert d["omega_m_early"] >= d["omega_m_today"] - 1e-12

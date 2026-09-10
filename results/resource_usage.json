@@ -86,5 +86,13 @@
     "mem_available_before_mb": 11387.734375,
     "mem_available_after_mb": 11267.01171875,
     "notes": "nlive=500"
+  },
+  {
+    "name": "profile_xi_h",
+    "seconds": 480.5659091472626,
+    "peak_rss_mb": 603.3203125,
+    "mem_available_before_mb": 9467.68359375,
+    "mem_available_after_mb": 7185.8046875,
+    "notes": "profile likelihood in eps"
   }
 ]

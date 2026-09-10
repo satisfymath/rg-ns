@@ -95,10 +95,70 @@ shape of the expansion history rather than by its low-order derivatives.
   \label{tab:parameters}
 \end{table}
 
-\Cref{tab:comparison,tab:parameters} report the fits. \TODO{Interpret once all
-chains have converged: whether the extensions improve the fit, whether
-$\epsilon$ is bounded away from zero, and what the posterior says about the
-matter deficit and the jerk excess.}
+\Cref{tab:comparison,tab:parameters} report the fits. Four things follow, and
+the first is that the pipeline reproduces the standard answer: on the baseline
+combination $\LCDM$ gives $\Hz=\numChainsLcdmBaselineDerivedHZ\pm
+\numChainsLcdmBaselineDerivedHZErrHi\,\si{\kilo\metre\per\second\per\mega\parsec}$
+and $\Omega_{\rm m0}=\numChainsLcdmBaselineDerivedOmegaMZ$, with the jerk
+identically unity to the precision of the integration.
+
+\paragraph{The convertible fraction is not measurable, for a reason.}
+Profiling the likelihood in $\epsilon$ over $[0,0.6]$ never raises $\chisq$ by
+more than $\numProfileXiHBaselineMaxDeltaChiT$ above its minimum, so the
+one-sided threshold $\Delta\chisq=2.71$ is never reached and there is no upper
+limit to quote. This is a statement about the parametrization rather than about
+the data, and the mechanism is worth naming because it recurs throughout this
+section: $\epsilon$ is the fraction available for conversion, not the fraction
+converted, so the optimizer can always send the rate to zero and recover
+$\LCDM$ exactly at any $\epsilon$. The same degeneracy appears geometrically in
+the posterior. The vacuum present at activation and the vacuum produced by
+conversion are two sources of one quantity, and the data constrain their sum:
+in the profile the activation vacuum $\omega_{V,\rm act}$ sits at zero for
+every $\epsilon>0$ and jumps to a third of the critical density at
+$\epsilon=0$, exactly compensating. An earlier version of this analysis
+reported a $95\%$ upper limit on $\epsilon$; it was the right-hand end of the
+grid, and it is withdrawn.
+
+\paragraph{What the data do constrain is the deficit.} The quantity with
+physical content is not how much substrate could convert but how much vacuum
+the conversion has actually produced, which is the matter deficit $\Delta$ of
+\cref{eq:positivity-deficit}. Profiling it rather than $\epsilon$ gives a
+genuine one-sided limit,
+\begin{equation}\label{eq:observations-deficit-limit}
+  \Delta < \numProfileXiHBaselineMatterDeficitLimitNV \qquad (95\%),
+\end{equation}
+with the profile rising to $\Delta\chisq\simeq\numProfileXiHBaselineMatterDeficitMaxDeltaChiT$
+across the grid, so this is a constraint and not another flat direction. Less
+than about one and a half per cent of the critical density can have been moved
+from matter into vacuum since activation. By
+\cref{eq:cosmography-deficit-floor} that bounds the jerk excess below what
+present late-time data can resolve, which is the honest statement of the
+model's current testability: the signature of \cref{thm:jerk} is real and
+is out of reach.
+
+\paragraph{$\LCDM$ is preferred, and by less than it first appeared.}
+\Cref{tab:comparison} gives the evidences. The extension is disfavoured, at
+odds of a few to one rather than decisively. We draw attention to the size of
+this number because an earlier version of this comparison, using AIC and BIC
+with the sampled parameter count, reported a far larger margin; those criteria
+are inapplicable here for the reason given in the caption, and both of their
+errors happened to favour the conclusion we were drawing. The result is a null
+one either way and is reported as such: nothing in this data combination
+requires conversion, and the model's free parameters are bounded rather than
+measured.
+
+\paragraph{One chain is quoted from and three are not.} The $\LCDM$ ensemble
+chain is healthy --- acceptance $0.44$, length $157$ autocorrelation times ---
+and is the source of the $\LCDM$ row. The chains for the extended models are
+not, and this is a consequence of the geometry just described rather than of
+insufficient running: with the rate parameters unidentified along the
+$\LCDM$ boundary the ensemble spread to fill its prior in those directions,
+after which most proposals fell outside the prior box and were rejected before
+the likelihood was consulted, so the move rate \emph{fell} as the run went on.
+Their posteriors are therefore taken from nested sampling, which integrates
+over the prior rather than trying to walk along a degenerate ridge inside it.
+The diagnostic that failed to catch this has been rewritten and now does;
+\cref{app:numerics} records both.
 
 \subsection{Reading the result}\label{sec:observations-reading}
 

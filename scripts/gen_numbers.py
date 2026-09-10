@@ -68,7 +68,7 @@ FORMATS = {
     "chi2_spread": ".4f",
     "chi2_at_zero": ".3f",
     "limit_95": ".4f",
-    "max_delta_chi2": ".1f",
+    "max_delta_chi2": ".3g",
     "worst_identity_residual": ".2e",
     "bounded_suppression": ".1f",
 }
@@ -90,28 +90,57 @@ def _tail(prefix: str) -> str:
                  if prefix.endswith(k)), "")
 
 
-def walk(node, prefix: str, out: dict[str, str]) -> None:
+def walk(node, prefix: str, out: dict[str, str],
+         origin: dict[str, str] | None = None) -> None:
+    """Flatten a results tree into macro name -> formatted value.
+
+    ``origin`` maps each macro name to the results path that produced it, so a
+    second path arriving at the same name can be reported instead of silently
+    overwriting.  See :func:`collect`.
+    """
+    def put(name: str, value: str, path: str) -> None:
+        if origin is not None and name in origin and origin[name] != path:
+            raise SystemExit(
+                f"macro name collision: \\{name} is produced by both "
+                f"'{origin[name]}' (= {out[name]}) and '{path}' (= {value}). "
+                f"camel() upper-cases each component, so keys differing only "
+                f"in case collide. Rename one of the results keys.")
+        out[name] = value
+        if origin is not None:
+            origin[name] = path
+
     if isinstance(node, dict):
         if "value" in node:
-            out[camel(prefix)] = fmt(node["value"], node.get("fmt"))
+            put(camel(prefix), fmt(node["value"], node.get("fmt")), prefix)
             for extra in ("err", "err_lo", "err_hi"):
                 if extra in node:
-                    out[camel(f"{prefix}_{extra}")] = fmt(node[extra], node.get("fmt"))
+                    put(camel(f"{prefix}_{extra}"),
+                        fmt(node[extra], node.get("fmt")), f"{prefix}_{extra}")
             return
         for k, v in node.items():
-            walk(v, f"{prefix}_{k}" if prefix else k, out)
+            walk(v, f"{prefix}_{k}" if prefix else k, out, origin)
     elif isinstance(node, (int, float, str, bool)):
-        out[camel(prefix)] = fmt(node, FORMATS.get(prefix.rsplit("_", 1)[-1])
-                                 or FORMATS.get(_tail(prefix)))
+        put(camel(prefix),
+            fmt(node, FORMATS.get(prefix.rsplit("_", 1)[-1])
+                or FORMATS.get(_tail(prefix))), prefix)
 
 
 def collect() -> dict[str, str]:
-    """Macros from every registered results file, keyed by its prefix."""
+    """Macros from every registered results file, keyed by its prefix.
+
+    Raises on a name collision.  ``camel`` upper-cases the first letter of each
+    path component, so ``Omega_m0`` and ``omega_m0`` -- the density parameter
+    and the physical density, differing by a factor of three -- both became
+    ``numChainsLcdmBaselineDerivedOmegaMZ``, and whichever came last silently
+    won. A wrong number in the manuscript is the worst failure this generator
+    can have, so a collision now stops the build.
+    """
     macros: dict[str, str] = {}
+    origin: dict[str, str] = {}
     for path, prefix in SOURCES:
         if not path.exists():
             continue
-        walk(json.loads(path.read_text()), prefix, macros)
+        walk(json.loads(path.read_text()), prefix, macros, origin)
     return macros
 
 

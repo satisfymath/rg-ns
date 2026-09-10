@@ -102,6 +102,7 @@ def profile_derived(model: str, dataset: str, quantity: str = "matter_deficit",
     return {"model": model, "dataset": dataset, "quantity": quantity,
             "targets": targets.tolist(), "achieved": achieved.tolist(),
             "delta_chi2": chi2.tolist(), "limit_95": limit,
+            "max_delta_chi2": float(np.nanmax(chi2)),
             "unbounded": bool(not above.size)}
 
 

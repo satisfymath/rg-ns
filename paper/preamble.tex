@@ -32,6 +32,8 @@
 \usepackage{tabularx}
 \usepackage{multirow}
 \usepackage[group-separator={,},group-minimum-digits=4,detect-all]{siunitx}
+% siunitx knows no astronomical units; the parsec is needed for H_0.
+\DeclareSIUnit{\parsec}{pc}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
