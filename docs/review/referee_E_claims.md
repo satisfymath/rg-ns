@@ -6,6 +6,11 @@ framework for vacuum, dark matter and localized structure
 classification, abstract-versus-body accounting)
 **Round**: 3
 **Date**: 2026-09-10
+**Version reviewed**: working tree of 2026-09-10. `14_conclusions.tex` and
+`10_observations.tex` were edited during this review; M3 and part of M4 below
+were written against the earlier text and are re-scored against the current
+one, which is stated in each case. Every other point was re-checked against the
+files as they now stand.
 
 ## Summary (3 lines)
 

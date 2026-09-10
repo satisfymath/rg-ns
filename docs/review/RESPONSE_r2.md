@@ -33,9 +33,11 @@ back uniform. Invalid proposals fall from 57.1% to zero.
 "razor-thin curved ridge" of aspect ratio ~10³, citing a transplant that raises
 chi-square from 1436.52 to 167 000. We reproduce that number exactly, and it is
 not what it appears to be. In the profile's own best fits, `omega_V_act` is
-0.327 at `eps = 0` and **0.000 at every `eps > 0`**: the two are the two
-sources of today's vacuum, so transplanting the `eps = 0.05` vector to
-`eps = 0` keeps `omega_V_act = 0` and thereby deletes the dark energy. Holding
+0.327 at `eps = 0` and **0.000 at every `eps > 0`**. That first figure is a
+physical density; as a density parameter it is `Omega_V_act = 0.699`, which is
+the *entire* present vacuum (`Omega_V0 = 0.699`). The two are the two sources
+of one quantity, so transplanting the `eps = 0.05` vector to `eps = 0` keeps
+`omega_V_act = 0` and thereby deletes the dark energy outright. Holding
 the nuisance parameters at the MAP instead and varying `eps` alone gives
 chi-square 1436.52, 1436.79, 1438.18, 1443.11, 1494.82 at
 `eps = 0, 0.02, 0.05, 0.1, 0.3` — a Δχ² of 6.6 at `eps = 0.1`, not 24 821. The
