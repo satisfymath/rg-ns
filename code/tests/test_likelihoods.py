@@ -241,3 +241,32 @@ def test_joint_sums_and_logl(bg):
     assert set(j.breakdown(bg)) == {p.name for p in parts}
     with pytest.raises(ValueError):
         JointLikelihood([])
+
+
+# --------------------------------------------------------------------------- #
+# The nesting the model comparison rests on
+# --------------------------------------------------------------------------- #
+@pytest.mark.parametrize("model,extra", [
+    ("xi_h", [(lx, za) for lx in (-3.0, 0.0, 1.0) for za in (0.3, 30.0)]),
+])
+def test_extension_is_exactly_lambda_cdm_at_zero_conversion(model, extra):
+    """At eps = 0 the extension must reproduce LambdaCDM bit for bit.
+
+    The comparison table's caption asserts this, and draws a statistical
+    conclusion from it: if the chi-square is identical for *every* value of the
+    rate parameters, those parameters are unidentified under the null, the
+    effective parameter count there is not the sampled count, and AIC and BIC
+    are inapplicable. The claim is therefore load-bearing and is pinned here
+    rather than left to be re-measured by a referee.
+    """
+    from absorb import datasets
+    from absorb.sampling import Posterior
+
+    like = datasets.build("baseline")
+    base = [0.02237, 0.1177, 0.3266]
+    ref = Posterior("lcdm", like).chi2(base)
+    post = Posterior(model, like)
+    for lx, za in extra:
+        assert post.chi2(base + [0.0, lx, za]) == ref, (
+            f"conversion is off but {model} differs from LambdaCDM at "
+            f"log10_xi={lx}, z_act={za}")

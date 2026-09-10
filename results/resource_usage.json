@@ -94,5 +94,13 @@
     "mem_available_before_mb": 9467.68359375,
     "mem_available_after_mb": 7185.8046875,
     "notes": "profile likelihood in eps"
+  },
+  {
+    "name": "nested_reinforce__baseline",
+    "seconds": 1027.4477581977844,
+    "peak_rss_mb": 614.65234375,
+    "mem_available_before_mb": 11271.625,
+    "mem_available_after_mb": 11061.7109375,
+    "notes": "nlive=500"
   }
 ]
