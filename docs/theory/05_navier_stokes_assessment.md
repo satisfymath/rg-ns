@@ -564,3 +564,56 @@ inheritance.
   (a "physics-informed neural network" OpenAI preprint) that directly contradicts the primary PDF; I
   discarded it. Treat every quoted reaction in §0.5 as needing re-checking against the primary source
   before it is repeated in print.
+
+---
+
+## Postscript: did this investigation strengthen the paper?
+
+Written after the caustic work was finished, and deliberately against interest.
+
+**What the Navier–Stokes result contributed to the manuscript: nothing.** Not a
+lemma, not a technique, not a citation. The paper mentions the compressible
+Navier–Stokes *system* once, in an appendix on hydrodynamic limits, which it did
+before this investigation began. Every theorem in the caustic section is proved
+from the local kinematics of a dust congruence and an ordinary differential
+inequality; none uses concentration, none uses a self-similar profile borrowed
+from fluid mechanics, none would change if the OpenAI manuscript were withdrawn
+tomorrow. The three "transferable techniques" identified above were transferable
+as *working practice* — pin the statement before proving it, check exact
+increments, flatten residuals — and we adopted them as such. That is not
+mathematical inheritance and the paper does not present it as any.
+
+**What the investigation contributed: a resolved conjecture, and the resolution
+went against us.** Section 13.3 of the draft conjectured that caustic
+concentration would enhance absorption enough to leave a finite localized
+product. Asking seriously whether a blow-up technique could establish that
+forced us to write down the local system exactly, and the exact solution
+answers the question in the negative for the model as published:
+
+- a rate bounded on the approach cannot change the exponent, only the
+  amplitude, and the model's rate is bounded, so the conjecture is **false** for
+  it;
+- a compression-driven rate can change the exponent, but needs $\kappa>1$ and
+  zero branching, and zero branching contradicts the branching the relic
+  abundance needs;
+- and any covariant realisation of such a rate runs into the dichotomy of
+  Theorem C, which we could not resolve.
+
+So the honest accounting is that the detour cost a long note and produced a
+negative result about our own model, which is a strengthening of the paper in
+the only sense that matters: a conjecture became a theorem with the opposite
+sign, and the Outlook now states an obstruction that can be checked rather than
+a hope that cannot.
+
+**What it nearly cost.** The temptation was to cite a one-day-old, unrefereed,
+not-arXived, priority-disputed manuscript as support, and to describe an
+analogy as an inheritance. Both would have been liabilities: the first because
+the citation may not survive, the second because a referee who knows fluid
+mechanics would have caught it in a paragraph. The stronger paper is the one
+that does not mention it, and that is the version we have.
+
+**Would we do it again?** For the mathematics, no — the same theorems would
+have come from asking "what exactly happens at a caustic?" without any of the
+reading. For the discipline of asking, yes. The value was entirely in taking
+our own conjecture seriously enough to try to break it, and the external result
+was the occasion, not the instrument.
