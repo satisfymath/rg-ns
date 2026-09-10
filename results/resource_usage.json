@@ -22,5 +22,13 @@
     "mem_available_before_mb": 2657.921875,
     "mem_available_after_mb": 2674.38671875,
     "notes": "step and sheet refinement"
+  },
+  {
+    "name": "pancake_convergence_N",
+    "seconds": 279.01958894729614,
+    "peak_rss_mb": 60.42578125,
+    "mem_available_before_mb": 2738.12890625,
+    "mem_available_after_mb": 2946.24609375,
+    "notes": "sheet refinement, control mode"
   }
 ]

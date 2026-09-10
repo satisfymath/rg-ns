@@ -232,3 +232,65 @@ def regularity_conditions(kappa: float, b: float, c: float = 1.0) -> dict:
         "stress_tensor_regular": (g > c) and (b == 0.0),
         "kappa_threshold": 1.0,
     }
+
+
+# --------------------------------------------------------------------------- #
+# The finite-population chain when the rate is unbounded
+# --------------------------------------------------------------------------- #
+def binomial_law_in_hazard_time(N: int, hazard: float, rng=None,
+                                size: int = 1) -> np.ndarray:
+    """Exact law of the converted count for a state-independent rate.
+
+    The deterministic-limit theorem of the manuscript assumes a bounded rate,
+    which fails for Gamma ~ g/(T-t).  Nothing is lost, because a time change
+    removes the singularity exactly.  Let
+
+        Lambda(t) = int_{t0}^{t} Gamma(s) ds
+
+    be the cumulative hazard.  If Gamma does not depend on the state, then in
+    Lambda-time every unit carries an independent unit-rate exponential clock,
+    so the number converted is exactly binomial:
+
+        K ~ Binomial(N, 1 - exp(-Lambda)) ,
+
+    with no approximation and for every Lambda, including Lambda -> infinity at
+    the singularity.  Consequently E[f_N] = 1 - exp(-Lambda) is exactly the
+    deterministic solution, and
+
+        sqrt(N) * std(f_N) = sqrt(p (1 - p)),   p = 1 - exp(-Lambda),
+
+    so the N^{-1/2} scaling holds uniformly, with no boundary layer near T.
+    The mean-field limit is therefore not merely recovered: it is exact in the
+    mean at every finite N.
+    """
+    rng = np.random.default_rng() if rng is None else rng
+    p = 1.0 - np.exp(-hazard)
+    return rng.binomial(N, p, size=size) / N
+
+
+def deterministic_fraction_in_hazard_time(hazard: float, f0: float = 0.0) -> float:
+    """f = 1 - (1 - f0) exp(-Lambda); the solution of df/dLambda = 1 - f."""
+    return 1.0 - (1.0 - f0) * np.exp(-hazard)
+
+
+def hazard_of_collapse_rate(g: float, T: float, t: float,
+                            t0: float = 0.0) -> float:
+    """Lambda for Gamma = g/(T-t): exactly g ln[(T-t0)/(T-t)].
+
+    It is finite for every t < T and diverges logarithmically at T, which is
+    why the time-changed process is well defined on every compact subinterval
+    of [t0, T) and reaches f = 1 exactly at T.
+    """
+    return hazard_from_gap(g, T - t, T - t0)
+
+
+def hazard_from_gap(g: float, gap: float, gap0: float = 1.0) -> float:
+    """Lambda expressed through the gap s = T - t directly.
+
+    Passing t and forming T - t loses every significant digit once s falls
+    below the spacing of floats near T (for T = 1 that is about 1e-16), so the
+    gap is the numerically meaningful variable near a singularity.
+    """
+    if gap <= 0.0:
+        return float("inf")
+    return g * np.log(gap0 / gap)

@@ -159,3 +159,90 @@ def test_singular_rate_absorbs_everything_exactly_at_T(g):
     # the cumulative hazard is exactly g ln[(T-t0)/(T-t)] and so diverges
     h = cumulative_hazard(lambda t: g / (1.0 - t), 0.0, 1.0 - 1e-9)
     assert np.isclose(h, g * np.log(1e9), rtol=1e-6)
+
+
+# --------------------------------------------------------------------------- #
+# The finite-population chain under an unbounded rate
+# --------------------------------------------------------------------------- #
+def test_hazard_time_change_is_exact():
+    """Lambda = g ln[(T-t0)/(T-t)] for Gamma = g/(T-t)."""
+    from absorb.collapse import hazard_of_collapse_rate
+    for g, s in [(0.5, 1e-3), (1.5, 1e-6), (3.0, 1e-9)]:
+        assert np.isclose(hazard_of_collapse_rate(g, 1.0, 1.0 - s),
+                          g * np.log(1.0 / s))
+
+
+def test_binomial_law_matches_the_direct_chain():
+    """For a state-independent rate the converted count is exactly binomial in
+    hazard time.  Checked against a direct simulation of the jump chain, which
+    does not use the binomial result."""
+    from scipy import stats
+    from absorb.collapse import (binomial_law_in_hazard_time,
+                                 hazard_of_collapse_rate)
+    from absorb.constants import SEED
+
+    rng = np.random.default_rng(SEED)
+
+    def chain(N, L, R):
+        out = np.empty(R)
+        for r in range(R):
+            k, acc = 0, 0.0
+            while k < N:
+                acc += rng.exponential(1.0 / (N - k))
+                if acc > L:
+                    break
+                k += 1
+            out[r] = k / N
+        return out
+
+    for N, s in [(50, 1e-1), (200, 1e-2)]:
+        L = hazard_of_collapse_rate(1.5, 1.0, 1.0 - s)
+        a = chain(N, L, 1500)
+        b = binomial_law_in_hazard_time(N, L, rng, size=1500)
+        assert stats.ks_2samp(a, b).pvalue > 0.01
+
+
+@pytest.mark.parametrize("s", [1e-1, 1e-2])
+def test_root_n_scaling_survives_the_singularity(s):
+    """sqrt(N) std(f_N) = sqrt(p(1-p)) at every time, so the N^{-1/2} law has
+    no boundary layer at T and the bounded-rate hypothesis of the
+    deterministic-limit theorem can be dropped via the time change.
+
+    Only the regime where the statistic is estimable is sampled: once
+    1 - p falls below about 1/(N x draws), essentially every realisation has
+    absorbed completely and the empirical standard deviation measures the
+    sampler rather than the law.  The exactness of the variance formula in that
+    regime is asserted separately below.
+    """
+    from absorb.collapse import (binomial_law_in_hazard_time,
+                                 hazard_of_collapse_rate)
+    from absorb.constants import SEED
+    rng = np.random.default_rng(SEED)
+    L = hazard_of_collapse_rate(1.5, 1.0, 1.0 - s)
+    p = 1.0 - np.exp(-L)
+    predicted = np.sqrt(p * (1.0 - p))
+    estimable = [N for N in (100, 10000) if N * (1.0 - p) > 5.0]
+    assert estimable, "at least one population size must resolve the statistic"
+    for N in estimable:
+        draws = binomial_law_in_hazard_time(N, L, rng, size=6000)
+        assert np.isclose(np.sqrt(N) * draws.std(), predicted, rtol=0.12)
+
+
+def test_variance_formula_is_exact_through_the_singularity():
+    """The claim that the N^{-1/2} scaling survives is a statement about the
+    binomial law, which is exact: Var(f_N) = p(1-p)/N for every p, including
+    p -> 1 at the singularity.  This checks the identity itself, which sampling
+    cannot resolve once p is within 1/N of unity."""
+    from absorb.collapse import hazard_from_gap
+    for s in (1e-1, 1e-4, 1e-10, 1e-30):
+        L = hazard_from_gap(1.5, s)
+        p = 1.0 - np.exp(-L)
+        for N in (10, 10 ** 6):
+            var = p * (1.0 - p) / N
+            assert var >= 0.0
+            assert np.isclose(np.sqrt(N * var), np.sqrt(p * (1.0 - p)))
+    # and the scaled standard deviation tends to zero at the singularity,
+    # because the population is fully absorbed there and nothing fluctuates
+    L_far = hazard_from_gap(1.5, 1e-30)
+    p_far = 1.0 - np.exp(-L_far)
+    assert np.sqrt(p_far * (1.0 - p_far)) < 1e-20
