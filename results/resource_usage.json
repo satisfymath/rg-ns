@@ -174,5 +174,13 @@
     "mem_available_before_mb": 11240.38671875,
     "mem_available_after_mb": 10382.49609375,
     "notes": "3 restarts"
+  },
+  {
+    "name": "map_reinforce__baseline",
+    "seconds": 125.2912483215332,
+    "peak_rss_mb": 637.05078125,
+    "mem_available_before_mb": 10382.49609375,
+    "mem_available_after_mb": 10869.05859375,
+    "notes": "3 restarts"
   }
 ]

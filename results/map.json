@@ -19,6 +19,34 @@
       0.32664565678361757
     ]
   },
+  "reinforce__baseline": {
+    "budget_evals": 2100,
+    "budget_per_dim": 300,
+    "chi2_min": 1436.444632688265,
+    "chi2_spread": 0.07309687821998523,
+    "dataset": "baseline",
+    "model": "reinforce",
+    "n_restarts": 3,
+    "ndim": 7,
+    "param_names": [
+      "omega_b",
+      "omega_c",
+      "omega_V_act",
+      "eps",
+      "log10_gamma0",
+      "alpha_tot",
+      "z_act"
+    ],
+    "theta": [
+      0.022499846992962383,
+      0.11795974645070065,
+      0.12008127140936395,
+      0.22665403200445128,
+      -1.565630241151553,
+      0.300444523274933,
+      26.973284691351388
+    ]
+  },
   "xi_h__baseline": {
     "budget_evals": 1800,
     "budget_per_dim": 300,
