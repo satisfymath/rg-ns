@@ -4,6 +4,11 @@ Every reference number is either an exact closed form derived in the module
 docstrings (trial energy, Bogomolny bound) or the literature value for the
 B = 1 Skyrmion expressed in this module's units.
 """
+# covers: eq:defects-solved, prop:derrick
+#   Machine-readable link from tests to the claims they cover, read by
+#   scripts/claim_ledger.py. A claim quoted in the abstract or the
+#   conclusions with nothing testing it is what the ledger exists to find.
+
 from __future__ import annotations
 
 import math

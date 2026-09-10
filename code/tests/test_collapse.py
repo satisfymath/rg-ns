@@ -5,6 +5,11 @@ conjecture: whether conversion regularizes a shell crossing.  They are written
 so that each one fails loudly if the corresponding statement in the paper is
 weakened or strengthened.
 """
+# covers: thm:bounded-rate-obstruction, eq:defects-local-exact, eq:defects-regularity, rem:hazard-time-change, rem:residual-boundary-layer
+#   Machine-readable link from tests to the claims they cover, read by
+#   scripts/claim_ledger.py. A claim quoted in the abstract or the
+#   conclusions with nothing testing it is what the ledger exists to find.
+
 from __future__ import annotations
 
 import numpy as np

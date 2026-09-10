@@ -4,6 +4,11 @@ These check the *model identities* against numerics that do not assume them,
 and the numerics against an external reference (astropy) and against the
 closed-form solutions of the analytically solvable family.
 """
+# covers: eq:cosmology-survival, thm:jerk, thm:snap, thm:memory-fingerprint, eq:cosmography-jerk, eq:cosmography-snap, rem:jerk-neutrinos
+#   Machine-readable link from tests to the claims they cover, read by
+#   scripts/claim_ledger.py. A claim quoted in the abstract or the
+#   conclusions with nothing testing it is what the ledger exists to find.
+
 from __future__ import annotations
 
 import numpy as np

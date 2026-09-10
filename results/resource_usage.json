@@ -230,5 +230,13 @@
     "mem_available_before_mb": 11890.87890625,
     "mem_available_after_mb": 10768.609375,
     "notes": "profile in a derived quantity"
+  },
+  {
+    "name": "map_reinforce__baseline",
+    "seconds": 15133.724274158478,
+    "peak_rss_mb": 719.4609375,
+    "mem_available_before_mb": 10955.890625,
+    "mem_available_after_mb": 11552.43359375,
+    "notes": "40 restarts"
   }
 ]

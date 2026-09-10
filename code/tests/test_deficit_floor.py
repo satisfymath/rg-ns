@@ -18,6 +18,11 @@ correspondingly violated across the prior, with a median ratio near 0.46 where
 the bound claims at least 4.5. These tests hold that finding in place, so that
 the manuscript cannot quietly start using the floor again.
 """
+# covers: eq:cosmography-deficit-floor, thm:jerk
+#   Machine-readable link from tests to the claims they cover, read by
+#   scripts/claim_ledger.py. A claim quoted in the abstract or the
+#   conclusions with nothing testing it is what the ledger exists to find.
+
 from __future__ import annotations
 
 import numpy as np

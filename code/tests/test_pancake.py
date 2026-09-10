@@ -6,6 +6,11 @@ compression-driven channel switches itself off at the crossing.  Both are
 properties of the construction, not bugs, but they bound what the experiment
 can be said to show.
 """
+# covers: thm:bounded-rate-obstruction, eq:defects-local-exact
+#   Machine-readable link from tests to the claims they cover, read by
+#   scripts/claim_ledger.py. A claim quoted in the abstract or the
+#   conclusions with nothing testing it is what the ledger exists to find.
+
 from __future__ import annotations
 
 import numpy as np

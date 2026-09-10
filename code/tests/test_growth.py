@@ -1,4 +1,9 @@
 """Tests of the linear growth solver."""
+# covers: thm:b-independence, eq:perturbations-growth, eq:perturbations-growth-signature, cor:b-invisible
+#   Machine-readable link from tests to the claims they cover, read by
+#   scripts/claim_ledger.py. A claim quoted in the abstract or the
+#   conclusions with nothing testing it is what the ledger exists to find.
+
 from __future__ import annotations
 
 import numpy as np

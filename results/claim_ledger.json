@@ -1,0 +1,1514 @@
+{
+  "asm:activation": {
+    "claim_id": "asm:activation",
+    "file": "06_solvable_early.tex",
+    "in_summary": [
+      "01_intro.tex"
+    ],
+    "kind": "assumption",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "01_intro.tex",
+      "03_absorbing_process.tex",
+      "10_observations.tex",
+      "11_defects.tex",
+      "appB_proofs.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_early_branch.py"
+    ],
+    "text": "Replace the floor by a switch, % \\begin{keyresult}{A}{eq:solvable-activation} \\Gam(a,\\fconv,\\Mmem)=\\Gamz\\,\\actS(a)\\,e^{\\alpha \\fconv+\\beta \\Mmem}, \\qquad \\actS(a)=\\frac{a^{p}}{a^{p}+\\aact^{p}} , \\end{keyresult} % with the exponent $p$ constrained by \\cref{prop:activation} below.",
+    "title": "Activation"
+  },
+  "asm:closure": {
+    "claim_id": "asm:closure",
+    "file": "04_homogeneous_cosmology.tex",
+    "in_summary": [],
+    "kind": "assumption",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "05_positivity_ide.tex",
+      "08_realizations.tex",
+      "11_defects.tex",
+      "12_quantum.tex",
+      "13_outlook.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "Space is flat and FLRW. The precursor $\\rhoI$ and the localized product $\\rhoD$ are pressureless, the third product is an exact vacuum with $p_V=-\\rhoV$, and baryons and radiation are separately conserved. A fraction $\\bfrac\\in[0,1]$ of the converted energy feeds the localized product and the rest feeds the vacuum. No other sector of negative pressure is present.",
+    "title": "Homogeneous closure"
+  },
+  "asm:geodesic": {
+    "claim_id": "asm:geodesic",
+    "file": "09_perturbations.tex",
+    "in_summary": [],
+    "kind": "assumption",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "08_realizations.tex",
+      "11_defects.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "The theory is \\emph{defined} by imposing \\cref{eq:perturbations-integrability} with a geodesic clock, so that the volumetric transfer is spatially uniform on comoving hypersurfaces, \\cref{eq:perturbations-com}. Equivalently, the local conversion rate anti-correlates exactly with the local precursor density, $\\delta\\Gam/\\bar\\Gam=-\\delta_I$. The kinetic variables $(\\fconv,\\Mmem)$ are then \\emph{diag",
+    "title": "Geodesic realization"
+  },
+  "asm:rate-regularity": {
+    "claim_id": "asm:rate-regularity",
+    "file": "03_absorbing_process.tex",
+    "in_summary": [],
+    "kind": "assumption",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "$\\Gam$ is non-negative, bounded above by $G<\\infty$, and uniformly Lipschitz in $(\\fconv,\\Mmem)$ on $[0,1]^2$; the initial conditions converge in probability.",
+    "title": ""
+  },
+  "cor:b-invisible": {
+    "claim_id": "cor:b-invisible",
+    "file": "09_perturbations.tex",
+    "in_summary": [],
+    "kind": "corollary",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_growth.py"
+    ],
+    "text": "Every linear observable built from $\\delta_{\\rm m}$, $\\vartheta$ and the metric potentials depends on the model only through $\\Hub(a)$ and $\\gamma_c(a)$. In particular $\\bfrac$, and the split of the dark sector into precursor and defects, cannot be measured by any linear probe.",
+    "title": ""
+  },
+  "cor:memory-invisible": {
+    "claim_id": "cor:memory-invisible",
+    "file": "05_positivity_ide.tex",
+    "in_summary": [],
+    "kind": "corollary",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "The memory parameters $(\\beta,\\tauM)$ affect \\cref{eq:positivity-no-sign-flip} only through the scalar $\\Gam\\ge0$. They can change the magnitude of $\\delta_{\\rm eff}$ by a bounded factor and shift the epoch at which it peaks, but they cannot change its sign.",
+    "title": "Memory does not enter the sign"
+  },
+  "cor:one-transition": {
+    "claim_id": "cor:one-transition",
+    "file": "04_homogeneous_cosmology.tex",
+    "in_summary": [],
+    "kind": "corollary",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "With $\\rhom=\\rhoI+\\rhoD+\\rhob$ and $\\mathcal A=\\ddot a/a$, % \\begin{keyresult}{I}{eq:cosmology-monotone-acceleration} \\dot{\\mathcal A} =\\frac{3\\QV+3\\Hub\\rhom+8\\Hub\\rhor}{6\\Mpl^2}\\ge0 , \\end{keyresult} % strictly when matter or radiation is present. A solution that begins decelerating and satisfies \\cref{thm:de-sitter} therefore crosses $\\mathcal A=0$ exactly once. A history requiring several late ",
+    "title": "At most one transition"
+  },
+  "def:memory": {
+    "claim_id": "def:memory",
+    "file": "03_absorbing_process.tex",
+    "in_summary": [],
+    "kind": "definition",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "Along a flow line with proper time $\\tau$, % \\begin{equation}\\label{eq:process-memory} \\tauM\\,\\odv{\\Mmem}{\\tau}=\\fconv-\\Mmem,\\qquad \\tauM>0 , \\end{equation} % whose solution from $\\tau_i$ is % \\begin{equation}\\label{eq:process-memory-solution} \\Mmem(\\tau)=\\Mmem_i e^{-(\\tau-\\tau_i)/\\tauM} +\\frac{1}{\\tauM}\\int_{\\tau_i}^{\\tau}e^{-(\\tau-s)/\\tauM}\\fconv(s)\\,\\dd s . \\end{equation}",
+    "title": "Memory variable"
+  },
+  "eq:appb-absorption": {
+    "claim_id": "eq:appb-absorption",
+    "file": "appB_proofs.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:appb-moments": {
+    "claim_id": "eq:appb-moments",
+    "file": "appB_proofs.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:appc-circulation": {
+    "claim_id": "eq:appc-circulation",
+    "file": "appC_quantum_hydro.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:appc-madelung": {
+    "claim_id": "eq:appc-madelung",
+    "file": "appC_quantum_hydro.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:appd-constitutive": {
+    "claim_id": "eq:appd-constitutive",
+    "file": "appD_hydrodynamics.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:appd-telegraph": {
+    "claim_id": "eq:appd-telegraph",
+    "file": "appD_hydrodynamics.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:cosmography-deficit-floor": {
+    "claim_id": "eq:cosmography-deficit-floor",
+    "file": "07_cosmography.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [
+      "10_observations.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_deficit_floor.py"
+    ],
+    "text": "",
+    "title": ""
+  },
+  "eq:cosmography-fingerprint": {
+    "claim_id": "eq:cosmography-fingerprint",
+    "file": "07_cosmography.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:cosmography-jerk": {
+    "claim_id": "eq:cosmography-jerk",
+    "file": "07_cosmography.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_background.py"
+    ],
+    "text": "",
+    "title": ""
+  },
+  "eq:cosmography-jerk-bound": {
+    "claim_id": "eq:cosmography-jerk-bound",
+    "file": "07_cosmography.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [
+      "10_observations.tex",
+      "13_outlook.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:cosmography-snap": {
+    "claim_id": "eq:cosmography-snap",
+    "file": "07_cosmography.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_background.py"
+    ],
+    "text": "",
+    "title": ""
+  },
+  "eq:cosmography-snap-explicit": {
+    "claim_id": "eq:cosmography-snap-explicit",
+    "file": "07_cosmography.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:cosmology-bounds": {
+    "claim_id": "eq:cosmology-bounds",
+    "file": "04_homogeneous_cosmology.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [
+      "08_realizations.tex",
+      "appB_proofs.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:cosmology-dVdf": {
+    "claim_id": "eq:cosmology-dVdf",
+    "file": "04_homogeneous_cosmology.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [
+      "03_absorbing_process.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:cosmology-desitter": {
+    "claim_id": "eq:cosmology-desitter",
+    "file": "04_homogeneous_cosmology.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:cosmology-monotone-acceleration": {
+    "claim_id": "eq:cosmology-monotone-acceleration",
+    "file": "04_homogeneous_cosmology.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:cosmology-survival": {
+    "claim_id": "eq:cosmology-survival",
+    "file": "04_homogeneous_cosmology.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [
+      "09_perturbations.tex",
+      "11_defects.tex",
+      "appB_proofs.tex",
+      "appF_numerics.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_background.py"
+    ],
+    "text": "",
+    "title": ""
+  },
+  "eq:defects-bound": {
+    "claim_id": "eq:defects-bound",
+    "file": "11_defects.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [
+      "appE_skyrme.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:defects-local-exact": {
+    "claim_id": "eq:defects-local-exact",
+    "file": "11_defects.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_collapse.py",
+      "test_pancake.py"
+    ],
+    "text": "",
+    "title": ""
+  },
+  "eq:defects-regularity": {
+    "claim_id": "eq:defects-regularity",
+    "file": "11_defects.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_collapse.py"
+    ],
+    "text": "",
+    "title": ""
+  },
+  "eq:defects-solved": {
+    "claim_id": "eq:defects-solved",
+    "file": "11_defects.tex",
+    "in_summary": [
+      "01_intro.tex"
+    ],
+    "kind": "keyresult",
+    "level": "N",
+    "level_name": "numerical",
+    "referenced_in": [
+      "01_intro.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_skyrme.py"
+    ],
+    "text": "",
+    "title": ""
+  },
+  "eq:defects-trial": {
+    "claim_id": "eq:defects-trial",
+    "file": "11_defects.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [
+      "appE_skyrme.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:outlook-bridge": {
+    "claim_id": "eq:outlook-bridge",
+    "file": "13_outlook.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "S",
+    "level_name": "conjecture",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:outlook-spin": {
+    "claim_id": "eq:outlook-spin",
+    "file": "13_outlook.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "S",
+    "level_name": "conjecture",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:perturbations-frsd": {
+    "claim_id": "eq:perturbations-frsd",
+    "file": "09_perturbations.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:perturbations-growth": {
+    "claim_id": "eq:perturbations-growth",
+    "file": "09_perturbations.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_growth.py"
+    ],
+    "text": "",
+    "title": ""
+  },
+  "eq:perturbations-growth-N": {
+    "claim_id": "eq:perturbations-growth-N",
+    "file": "09_perturbations.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:perturbations-growth-signature": {
+    "claim_id": "eq:perturbations-growth-signature",
+    "file": "09_perturbations.tex",
+    "in_summary": [
+      "01_intro.tex",
+      "14_conclusions.tex"
+    ],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [
+      "01_intro.tex",
+      "10_observations.tex",
+      "13_outlook.tex",
+      "14_conclusions.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_growth.py"
+    ],
+    "text": "",
+    "title": ""
+  },
+  "eq:perturbations-integrability": {
+    "claim_id": "eq:perturbations-integrability",
+    "file": "09_perturbations.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:perturbations-isw": {
+    "claim_id": "eq:perturbations-isw",
+    "file": "09_perturbations.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:perturbations-system": {
+    "claim_id": "eq:perturbations-system",
+    "file": "09_perturbations.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:positivity-deficit": {
+    "claim_id": "eq:positivity-deficit",
+    "file": "05_positivity_ide.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [
+      "06_solvable_early.tex",
+      "10_observations.tex",
+      "appA_conventions.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:positivity-map": {
+    "claim_id": "eq:positivity-map",
+    "file": "05_positivity_ide.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:positivity-no-sign-flip": {
+    "claim_id": "eq:positivity-no-sign-flip",
+    "file": "05_positivity_ide.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:positivity-sandwich": {
+    "claim_id": "eq:positivity-sandwich",
+    "file": "05_positivity_ide.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:process-acceleration": {
+    "claim_id": "eq:process-acceleration",
+    "file": "03_absorbing_process.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:process-binomial": {
+    "claim_id": "eq:process-binomial",
+    "file": "03_absorbing_process.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:process-breakdown-gap": {
+    "claim_id": "eq:process-breakdown-gap",
+    "file": "03_absorbing_process.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:process-deterministic": {
+    "claim_id": "eq:process-deterministic",
+    "file": "03_absorbing_process.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [
+      "04_homogeneous_cosmology.tex",
+      "12_quantum.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:process-rate": {
+    "claim_id": "eq:process-rate",
+    "file": "03_absorbing_process.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "A",
+    "level_name": "postulate",
+    "referenced_in": [
+      "07_cosmography.tex",
+      "08_realizations.tex",
+      "09_perturbations.tex",
+      "11_defects.tex",
+      "12_quantum.tex",
+      "13_outlook.tex",
+      "appF_numerics.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:process-survival": {
+    "claim_id": "eq:process-survival",
+    "file": "03_absorbing_process.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [
+      "04_homogeneous_cosmology.tex",
+      "appB_proofs.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:quantum-collective-mean": {
+    "claim_id": "eq:quantum-collective-mean",
+    "file": "12_quantum.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:quantum-two-state": {
+    "claim_id": "eq:quantum-two-state",
+    "file": "12_quantum.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:realizations-clock": {
+    "claim_id": "eq:realizations-clock",
+    "file": "08_realizations.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:realizations-determined-V": {
+    "claim_id": "eq:realizations-determined-V",
+    "file": "08_realizations.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:realizations-four-form": {
+    "claim_id": "eq:realizations-four-form",
+    "file": "08_realizations.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:setup-conservation": {
+    "claim_id": "eq:setup-conservation",
+    "file": "02_covariant_setup.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [
+      "04_homogeneous_cosmology.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:setup-einstein": {
+    "claim_id": "eq:setup-einstein",
+    "file": "02_covariant_setup.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:setup-friedmann": {
+    "claim_id": "eq:setup-friedmann",
+    "file": "02_covariant_setup.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [
+      "07_cosmography.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:setup-vacuum-transfer": {
+    "claim_id": "eq:setup-vacuum-transfer",
+    "file": "02_covariant_setup.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:solvable-activation": {
+    "claim_id": "eq:solvable-activation",
+    "file": "06_solvable_early.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "A",
+    "level_name": "postulate",
+    "referenced_in": [
+      "13_outlook.tex",
+      "appF_numerics.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_early_branch.py"
+    ],
+    "text": "",
+    "title": ""
+  },
+  "eq:solvable-closed-form": {
+    "claim_id": "eq:solvable-closed-form",
+    "file": "06_solvable_early.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
+    "referenced_in": [
+      "appF_numerics.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:solvable-nogo": {
+    "claim_id": "eq:solvable-nogo",
+    "file": "06_solvable_early.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "prop:activation": {
+    "claim_id": "prop:activation",
+    "file": "06_solvable_early.tex",
+    "in_summary": [],
+    "kind": "proposition",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "Under \\cref{asm:activation} with $\\bfrac<1$, the limit $V_{\\rm early}=\\lim_{a\\to0^+}\\rhoV(a)$ exists and is finite, $\\rhoV$ is non-decreasing, and therefore $\\rhoV\\ge0$ on $(0,1]$ if and only if $V_{\\rm early}\\ge0$. The vacuum increment is $\\rhoV_0-V_{\\rm early}=(1-\\bfrac)\\int_0^1\\Gam\\rhoI\\,\\dd a/(a\\Hub)$, so with $\\rhoI\\propto a^{-3}$ and a radiation-dominated deep past the integrand behaves as $",
+    "title": "Convergence and positivity"
+  },
+  "prop:bridge": {
+    "claim_id": "prop:bridge",
+    "file": "08_realizations.tex",
+    "in_summary": [],
+    "kind": "remark",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "If each of $N$ precursor units per patch can nucleate once, and the $(k+1)$-th event has rate $\\Gam_k=\\Gam(h_0+k\\mathsf{q})$, then $K_t$ is exactly the chain of \\cref{eq:process-intensity} with $\\Gam(\\fconv)=\\Gam(h_0+\\fconv N\\mathsf{q})$. The exponential law \\cref{eq:process-rate} corresponds to $\\log\\Gam$ linear in $h$ over the relevant range, with $\\alpha=N\\mathsf{q}\\,\\dd\\log\\Gam/\\dd h$. Reinfor",
+    "title": "The event sequence is a reinforced birth process"
+  },
+  "prop:classical-reduction": {
+    "claim_id": "prop:classical-reduction",
+    "file": "12_quantum.tex",
+    "in_summary": [
+      "01_intro.tex"
+    ],
+    "kind": "proposition",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "01_intro.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_lindblad.py"
+    ],
+    "text": "With the jump operators \\cref{eq:quantum-collective}, which map each occupation basis state to a single basis state and have diagonal $\\jump_i^{\\dagger}\\jump_i$, populations decouple from coherences. The populations obey exactly the birth chain with rates $(N-k)\\Gamz e^{\\alpha k/(N-1)}$, and coherences decay at rate at least $\\Gam/2$.",
+    "title": "Exact classical reduction"
+  },
+  "prop:clock": {
+    "claim_id": "prop:clock",
+    "file": "08_realizations.tex",
+    "in_summary": [],
+    "kind": "proposition",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "On the branch with future-directed timelike gradient and $\\lagm\\ge0$, \\cref{eq:realizations-clock-action} gives % \\begin{keyresult}{I}{eq:realizations-clock} \\ulow=-\\partial_\\mu \\clock,\\quad u^\\mu u_\\mu=-1,\\quad \\Tmn=\\lagm\\, u_\\mu u_\\nu-V g_{\\mu\\nu}, \\end{keyresult} % together with $u^\\nu\\covd_\\nu \\umu=0$, $\\covd_\\mu(\\lagm \\umu)=-V_{,\\clock}$ and $\\covd_\\mu T_V^{\\mu\\nu}=V_{,\\clock}\\,u^\\nu$.",
+    "title": "Clock field equations"
+  },
+  "prop:clumping-unstable": {
+    "claim_id": "prop:clumping-unstable",
+    "file": "09_perturbations.tex",
+    "in_summary": [],
+    "kind": "proposition",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "If instead $\\delta \\rhoV_{\\rm com}=\\zeta\\,\\delta_I$ with $\\zeta>0$, the dust experiences a force $\\rhoI A^i=\\partial^i \\rhoV$, and the growth equation acquires a term $-k^2\\zeta\\delta/(a^2\\bar\\rho_I)$. The effective sound speed squared is then negative and short-wavelength modes grow without bound.",
+    "title": "A clumping vacuum is gradient-unstable"
+  },
+  "prop:derrick": {
+    "claim_id": "prop:derrick",
+    "file": "11_defects.tex",
+    "in_summary": [],
+    "kind": "proposition",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_skyrme.py"
+    ],
+    "text": "In three spatial dimensions let $E[\\phi]=E_2+E_0$ with $E_2=\\tfrac12\\int|\\nabla\\phi|^2$ and $E_0=\\int W(\\phi)$, both finite and $W\\ge0$ after subtracting the vacuum. Under $\\phi_\\sigma(\\mathbf x)=\\phi(\\sigma\\mathbf x)$ one has $E(\\sigma)=\\sigma^{-1}E_2+\\sigma^{-3}E_0$, so a non-trivial stationary point would require $E_2+3E_0=0$, impossible for $E_2>0$.",
+    "title": "Derrick scaling"
+  },
+  "prop:determined-V": {
+    "claim_id": "prop:determined-V",
+    "file": "08_realizations.tex",
+    "in_summary": [],
+    "kind": "proposition",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "Fix $(\\Gamz,\\alpha,\\beta,\\tauM,\\bfrac)$, the activation law, and initial data. By \\cref{thm:regular-future} the background is unique, so with $\\clock=t$, % \\begin{keyresult}{I}{eq:realizations-determined-V} V(\\clock)=V_0+(1-\\bfrac)\\int_{t_0}^{\\clock}\\Gam\\rhoI\\,\\dd t , \\qquad \\lagm=\\rhoI+\\rhoD , \\end{keyresult} % is a five-parameter family, monotone non-decreasing and bounded above by \\cref{eq:cosm",
+    "title": "Kinetically determined potential"
+  },
+  "prop:four-form": {
+    "claim_id": "prop:four-form",
+    "file": "08_realizations.tex",
+    "in_summary": [],
+    "kind": "proposition",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "Let $C_{\\mu\\nu\\rho}$ be a three-form potential with $\\fourform_{\\mu\\nu\\rho\\sigma}=4\\covd_{[\\mu}C_{\\nu\\rho\\sigma]}$ and % \\begin{equation}\\label{eq:realizations-four-form-action} \\Sact_4=-\\frac{1}{2\\cdot4!}\\int \\dd^4x\\,\\gdet\\, \\fourform_{\\alpha\\beta\\gamma\\delta}\\fourform^{\\alpha\\beta\\gamma\\delta} . \\end{equation} % In a connected source-free region the field equations imply % \\begin{keyresult}{I}{e",
+    "title": "Four-form vacuum"
+  },
+  "prop:ide-map": {
+    "claim_id": "prop:ide-map",
+    "file": "05_positivity_ide.tex",
+    "in_summary": [
+      "01_intro.tex",
+      "14_conclusions.tex"
+    ],
+    "kind": "proposition",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "01_intro.tex",
+      "08_realizations.tex",
+      "10_observations.tex",
+      "14_conclusions.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_likelihoods.py"
+    ],
+    "text": "With $\\rhodmeff=\\rhoI+\\rhoD$ and $s=\\rhoI/\\rhodmeff$, % \\begin{keyresult}{I}{eq:positivity-map} \\QV=\\xieff\\,\\Hub\\,\\rhodmeff , \\qquad \\xieff=\\frac{(1-\\bfrac)\\Gam s}{\\Hub}\\ \\ge 0 . \\end{keyresult} % The model reduces to the standard coupling $Q=\\xi \\Hub\\rho_{\\rm dm}$ with constant $\\xi$ if and only if $\\bfrac=0$ and $\\Gam=\\xi \\Hub$. It can never take the form $Q\\propto\\rho_{\\rm de}$.",
+    "title": "Exact map"
+  },
+  "prop:identities": {
+    "claim_id": "prop:identities",
+    "file": "04_homogeneous_cosmology.tex",
+    "in_summary": [],
+    "kind": "proposition",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "With $a_i=1$, constant $\\bfrac$ and $\\fconv_i<1$, the system \\cref{eq:cosmology-system} satisfies % \\begin{keyresult}{I}{eq:cosmology-survival} \\rhoI a^3=\\rho_{I,i}\\,\\frac{1-\\fconv}{1-\\fconv_i}, \\qquad \\rhoD a^3=\\rho_{D,i}+\\bfrac\\,\\rho_{I,i}\\,\\frac{\\fconv-\\fconv_i}{1-\\fconv_i} , \\end{keyresult} % and, wherever $\\dot \\fconv>0$, % \\begin{keyresult}{I}{eq:cosmology-dVdf} \\odv{\\rhoV}{\\fconv}=\\frac{(1-",
+    "title": "Survival and product identities"
+  },
+  "prop:memory-origin": {
+    "claim_id": "prop:memory-origin",
+    "file": "03_absorbing_process.tex",
+    "in_summary": [
+      "01_intro.tex",
+      "14_conclusions.tex"
+    ],
+    "kind": "proposition",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "01_intro.tex",
+      "14_conclusions.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_stochastic.py"
+    ],
+    "text": "Attach to each unit $i$ an internal variable $m_i\\in[0,1]$ relaxing towards that unit's own state $s_i\\in\\{0,1\\}$, $\\tauM\\dot m_i=s_i-m_i$. Then the population mean $\\Mmem=N^{-1}\\sum_i m_i$ obeys \\cref{eq:process-memory} exactly, for every $N$ and every realisation.",
+    "title": "Memory as an eliminated degree of freedom"
+  },
+  "prop:no-instability": {
+    "claim_id": "prop:no-instability",
+    "file": "09_perturbations.tex",
+    "in_summary": [],
+    "kind": "proposition",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "08_realizations.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "Under \\cref{asm:geodesic} the system \\cref{eq:perturbations-system} contains no independent dark-energy degree of freedom, no pressure perturbation, and no $k$-dependent coefficient. Its coefficients are of order $\\Hub$ and $\\Hub^2$, so $|\\delta_{\\rm m}|$ is bounded by a power of $a$ on every scale.",
+    "title": "Absence of the instability"
+  },
+  "prop:no-rolling": {
+    "claim_id": "prop:no-rolling",
+    "file": "08_realizations.tex",
+    "in_summary": [],
+    "kind": "proposition",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "For a canonical real scalar with $\\Lag=-\\tfrac12(\\covd\\phi)^2-W(\\phi)$ one has $\\rho_\\phi+p_\\phi=\\dot\\phi^2$. Hence $w_\\phi=-1$ exactly requires $\\dot\\phi=0$.",
+    "title": "No rolling exact vacuum"
+  },
+  "prop:recipient-proportional": {
+    "claim_id": "prop:recipient-proportional",
+    "file": "05_positivity_ide.tex",
+    "in_summary": [
+      "14_conclusions.tex"
+    ],
+    "kind": "proposition",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "14_conclusions.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_symbolic.py"
+    ],
+    "text": "Consider two sectors with $\\dot\\rho_1+3\\Hub\\rho_1=-Q$ and $\\dot\\rho_2+3\\Hub(1+w)\\rho_2=+Q$. If $Q=\\xi \\Hub\\rho_2$ with $\\xi>0$, then on the face $\\{\\rho_1=0\\}$ the field is $\\dot\\rho_1=-\\xi \\Hub\\rho_2<0$ whenever $\\rho_2>0$: the subtangent condition fails on a set of codimension one, and $\\rho_1$ is driven through zero. The same argument with the roles exchanged applies to $Q=\\xi \\Hub\\rho_1$ drain",
+    "title": "Recipient-proportional couplings are not positivity-safe"
+  },
+  "prop:survival": {
+    "claim_id": "prop:survival",
+    "file": "03_absorbing_process.tex",
+    "in_summary": [],
+    "kind": "proposition",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "11_defects.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "For $\\Gam\\ge0$ locally integrable along the solution and $\\fconv_i\\in[0,1)$, % \\begin{keyresult}{I}{eq:process-survival} 1-\\fconv(t)=(1-\\fconv_i)\\exp\\left[-\\int_{t_i}^{t}\\Gam(s)\\,\\dd s\\right] , \\end{keyresult} % so $\\fconv_i\\le \\fconv(t)<1$ at every finite time, and $\\fconv\\to1$ if and only if $\\int^{\\infty}\\Gam\\,\\dd s$ diverges.",
+    "title": "Survival"
+  },
+  "prop:unitary-obstruction": {
+    "claim_id": "prop:unitary-obstruction",
+    "file": "12_quantum.tex",
+    "in_summary": [],
+    "kind": "proposition",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_lindblad.py"
+    ],
+    "text": "Let $\\Hilb$ be finite-dimensional, $U(t)=e^{-iHt/\\hbar}$ unitary, and $\\mathcal A\\subset\\Hilb$ a subspace with $U(t)\\mathcal A\\subseteq\\mathcal A$ for all $t\\ge0$. Then $U(t)\\mathcal A=\\mathcal A$ and $U(t)\\mathcal A^{\\perp}=\\mathcal A^{\\perp}$, so the probability of occupying $\\mathcal A$ cannot increase by transfer from its complement.",
+    "title": "No absorption under unitary flow"
+  },
+  "rem:hazard-time-change": {
+    "claim_id": "rem:hazard-time-change",
+    "file": "03_absorbing_process.tex",
+    "in_summary": [],
+    "kind": "remark",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "appF_numerics.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_collapse.py"
+    ],
+    "text": "\\Cref{asm:rate-regularity} requires a bounded rate, which fails wherever the rate is driven by a diverging compression. For the converted fraction nothing is lost, though \\cref{rem:residual-boundary-layer} shows that the same is not true of the residual density. Let $\\Lambda(t)=\\int_{t_i}^{t}\\Gam\\,\\dd s$ be the cumulative hazard and change time to $\\Lambda$. If $\\Gam$ does not depend on the state,",
+    "title": "The boundedness hypothesis can be traded for a time change"
+  },
+  "rem:hysteresis-prescribed": {
+    "claim_id": "rem:hysteresis-prescribed",
+    "file": "03_absorbing_process.tex",
+    "in_summary": [],
+    "kind": "remark",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "The hypothesis is not cosmetic and cannot be removed by rewording. The comparison argument below compares two solutions of one system, so both must be driven by the same $a(t)$; and the conclusion is that they accumulate different vacuum, which through the Friedmann constraint would give them different $a(t)$. Stated for the coupled system the theorem would therefore contradict its own hypothesis.",
+    "title": "Why the expansion history is prescribed"
+  },
+  "rem:jerk-neutrinos": {
+    "claim_id": "rem:jerk-neutrinos",
+    "file": "07_cosmography.tex",
+    "in_summary": [],
+    "kind": "remark",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_background.py"
+    ],
+    "text": "The last hypothesis is there because the fits of \\cref{sec:observations} carry one massive neutrino eigenstate, which is neither pressureless nor conserved radiation, so a bound advertised as parameter-free must say what it does with it. Such a species contributes $-\\tfrac32\\dot p/(2\\Mpl^2\\Hub^3)$ to $\\jerk$, and its pressure falls monotonically as it becomes non-relativistic, so the contribution ",
+    "title": "Massive neutrinos strengthen the bound"
+  },
+  "rem:residual-boundary-layer": {
+    "claim_id": "rem:residual-boundary-layer",
+    "file": "03_absorbing_process.tex",
+    "in_summary": [],
+    "kind": "remark",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_collapse.py"
+    ],
+    "text": "The deterministic limit describes $\\fconv$; it does not describe $1-\\fconv$, and the precursor density is proportional to the latter. From \\cref{eq:process-binomial} the relative fluctuation of $1-\\fconv$ is $\\sqrt{p/[N(1-p)]}$, which \\emph{diverges} as $p\\to1$. The continuum description of $\\rhoI$ therefore fails once the expected number of unconverted units falls below one, at % \\begin{keyresult",
+    "title": "But the residual density has a boundary layer"
+  },
+  "rem:sandwich-naive": {
+    "claim_id": "rem:sandwich-naive",
+    "file": "05_positivity_ide.tex",
+    "in_summary": [],
+    "kind": "remark",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "The version of this statement one writes down first is false, so it is worth recording. Bracketing instead by the pair $(\\rho_{\\rm m}^{\\rm early},V_{\\rm early})$ does \\emph{not} give an upper bound: that model is a lower bound, and it does not share $\\Hz$.",
+    "title": "The naive bracketing is wrong"
+  },
+  "thm:b-independence": {
+    "claim_id": "thm:b-independence",
+    "file": "09_perturbations.tex",
+    "in_summary": [
+      "01_intro.tex",
+      "14_conclusions.tex"
+    ],
+    "kind": "theorem",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "01_intro.tex",
+      "08_realizations.tex",
+      "10_observations.tex",
+      "14_conclusions.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_growth.py"
+    ],
+    "text": "Under \\cref{asm:geodesic}, let $\\delta_{\\rm m}=\\sum_k\\bar\\rho_k\\delta_k/\\bar\\rho_{\\rm m}$ run over all pressureless species $k\\in\\{I,D,{\\rm b}\\}$ and let $\\vartheta$ be the perturbed expansion. Then for every $\\bfrac\\in[0,1]$ % \\begin{keyresult}{C}{eq:perturbations-system} \\dot\\delta_{\\rm m}=-\\vartheta+\\gamma_c\\delta_{\\rm m}, \\qquad \\dot\\vartheta+2\\Hub\\vartheta=-\\frac{\\bar\\rho_{\\rm m}}{2\\Mpl^2}\\de",
+    "title": "$\\bfrac$-independence of linear growth"
+  },
+  "thm:bounded-rate-obstruction": {
+    "claim_id": "thm:bounded-rate-obstruction",
+    "file": "11_defects.tex",
+    "in_summary": [
+      "14_conclusions.tex"
+    ],
+    "kind": "theorem",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "14_conclusions.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_collapse.py",
+      "test_pancake.py"
+    ],
+    "text": "Let $0\\le\\Gam\\le G<\\infty$ on $[\\tau_0,T)$ with $T-\\tau_0$ finite, and let the compression be non-integrable, $\\int^{T}\\expa\\,\\dd s=-\\infty$. Then $\\rhoI\\to\\infty$.",
+    "title": "Bounded rates cannot regularize a caustic"
+  },
+  "thm:de-sitter": {
+    "claim_id": "thm:de-sitter",
+    "file": "04_homogeneous_cosmology.tex",
+    "in_summary": [
+      "14_conclusions.tex"
+    ],
+    "kind": "theorem",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "07_cosmography.tex",
+      "14_conclusions.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_symbolic.py"
+    ],
+    "text": "Add to \\cref{thm:regular-future} either $V_i>0$, or $\\bfrac<1$ together with $\\rho_{I,i}>0$ and $\\int^\\infty\\Gam\\,\\dd t=\\infty$. Then $\\rhoV\\to \\Vinf>0$, all other densities tend to zero, % \\begin{keyresult}{C}{eq:cosmology-desitter} \\Hub(t)\\longrightarrow \\Hinf=\\sqrt{\\frac{\\Vinf}{3\\Mpl^2}}>0, \\qquad a(t)e^{-\\Hinf(t-t_i)}\\longrightarrow C\\in(0,\\infty) , \\end{keyresult} % and the expansion accelera",
+    "title": "\\dS attractor without superacceleration"
+  },
+  "thm:deterministic-limit": {
+    "claim_id": "thm:deterministic-limit",
+    "file": "03_absorbing_process.tex",
+    "in_summary": [
+      "01_intro.tex",
+      "14_conclusions.tex"
+    ],
+    "kind": "theorem",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "01_intro.tex",
+      "12_quantum.tex",
+      "14_conclusions.tex",
+      "appB_proofs.tex",
+      "appF_numerics.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_stochastic.py"
+    ],
+    "text": "Under \\cref{asm:rate-regularity}, on every finite time interval the process of \\cref{eq:process-intensity} converges in probability to % \\begin{keyresult}{C}{eq:process-deterministic} \\dot \\fconv=(1-\\fconv)\\Gam(\\fconv,\\Mmem), \\qquad \\tauM\\dot \\Mmem=\\fconv-\\Mmem . \\end{keyresult}",
+    "title": "Law of large numbers"
+  },
+  "thm:hysteresis": {
+    "claim_id": "thm:hysteresis",
+    "file": "03_absorbing_process.tex",
+    "in_summary": [
+      "01_intro.tex",
+      "14_conclusions.tex"
+    ],
+    "kind": "theorem",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "01_intro.tex",
+      "04_homogeneous_cosmology.tex",
+      "07_cosmography.tex",
+      "13_outlook.tex",
+      "14_conclusions.tex",
+      "appF_numerics.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_stochastic.py"
+    ],
+    "text": "Fix a scale factor $a(t)$ and let $\\beta>0$. Let two solutions of \\cref{eq:process-deterministic} driven by that $a(t)$ reach the same converted fraction $\\fconv_*$ at the same time with different memory states $\\Mmem^{(1)}>\\Mmem^{(2)}$. Then $\\fconv^{(1)}(t)\\ge \\fconv^{(2)}(t)$ at every later $t$, with strict inequality on a set of positive measure, and the vacuum accumulated through \\cref{eq:cos",
+    "title": "Hysteresis, along a prescribed expansion history"
+  },
+  "thm:jerk": {
+    "claim_id": "thm:jerk",
+    "file": "07_cosmography.tex",
+    "in_summary": [
+      "01_intro.tex",
+      "14_conclusions.tex"
+    ],
+    "kind": "theorem",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "01_intro.tex",
+      "10_observations.tex",
+      "14_conclusions.tex",
+      "appF_numerics.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_background.py",
+      "test_deficit_floor.py"
+    ],
+    "text": "For a spatially flat universe containing pressureless matter, conserved radiation, an exact vacuum that receives energy at rate $\\QV$, and any further conserved species whose pressure is non-increasing in time, % \\begin{keyresult}{C}{eq:cosmography-jerk} \\jerk=1+2\\Omr+\\varepsilon , \\qquad \\varepsilon\\eqdef\\frac{\\QV}{2\\Mpl^2\\Hub^3} , \\end{keyresult} % and therefore, whenever the transfer is towards",
+    "title": "Jerk identity and bound"
+  },
+  "thm:memory-fingerprint": {
+    "claim_id": "thm:memory-fingerprint",
+    "file": "07_cosmography.tex",
+    "in_summary": [
+      "01_intro.tex",
+      "14_conclusions.tex"
+    ],
+    "kind": "theorem",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "01_intro.tex",
+      "10_observations.tex",
+      "14_conclusions.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_background.py"
+    ],
+    "text": "At fixed $(\\Hz,q_0,j_0)$ the memory parameters are unconstrained by the jerk, and do enter the snap: % \\begin{keyresult}{C}{eq:cosmography-fingerprint} \\frac{\\partial j_0}{\\partial \\mathcal B}=0 , \\qquad \\frac{\\partial s_0}{\\partial \\mathcal B}=+\\varepsilon_0\\ \\ne 0 . \\end{keyresult} % The activation term of \\cref{eq:cosmography-snap-explicit}, however, enters the same bracket with the \\emph{same}",
+    "title": "Memory fingerprint, and what limits it"
+  },
+  "thm:no-go": {
+    "claim_id": "thm:no-go",
+    "file": "06_solvable_early.tex",
+    "in_summary": [
+      "01_intro.tex",
+      "14_conclusions.tex"
+    ],
+    "kind": "theorem",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "01_intro.tex",
+      "14_conclusions.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_early_branch.py"
+    ],
+    "text": "Suppose the solution exists with non-negative densities on $[a_i,1]$, that $\\Gam\\ge\\Gamz>0$ throughout, that $\\bfrac<1$ and $\\rho_{I0}>0$, and that $\\Hub$ is non-increasing. Then % \\begin{keyresult}{C}{eq:solvable-nogo} V_0-\\rhoV(a_i)\\ \\ge\\ c\\,(1-\\bfrac)\\Mpl^2\\,\\Gamz \\Hub_i , \\qquad \\Gamz\\ \\lesssim\\ \\frac{\\Hz^2}{\\Hub_i} , \\end{keyresult} % with $c=\\order{1}$ set by the precursor fraction at $a_i$.",
+    "title": "Rate-floor no-go"
+  },
+  "thm:no-sign-flip": {
+    "claim_id": "thm:no-sign-flip",
+    "file": "05_positivity_ide.tex",
+    "in_summary": [
+      "01_intro.tex",
+      "14_conclusions.tex"
+    ],
+    "kind": "theorem",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "01_intro.tex",
+      "10_observations.tex",
+      "13_outlook.tex",
+      "14_conclusions.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_symbolic.py"
+    ],
+    "text": "Define $\\delta_{\\rm eff}=\\dd\\ln(\\rhodmeff a^3)/\\dd\\ln a$. Under \\cref{asm:closure} with $\\rhodmeff>0$, % \\begin{keyresult}{C}{eq:positivity-no-sign-flip} \\delta_{\\rm eff}(a)=-\\frac{\\QV}{\\Hub\\rhodmeff}=-\\xieff(a)\\le0 \\qquad\\text{for every }a , \\end{keyresult} % for every admissible rate law, with equality only where $\\Gam\\rhoI=0$ or $\\bfrac=1$. The same holds for the total dust.",
+    "title": "No sign flip"
+  },
+  "thm:quasi-positivity": {
+    "claim_id": "thm:quasi-positivity",
+    "file": "05_positivity_ide.tex",
+    "in_summary": [
+      "01_intro.tex",
+      "14_conclusions.tex"
+    ],
+    "kind": "theorem",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "01_intro.tex",
+      "06_solvable_early.tex",
+      "14_conclusions.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_symbolic.py"
+    ],
+    "text": "Assume \\cref{asm:closure} with non-negative initial data, and let $\\Gam\\ge0$ be merely locally integrable along the solution: no lower bound, no upper bound, and no continuity are required. Then the non-negative orthant is forward invariant: every density in \\cref{eq:cosmology-system} remains non-negative for as long as the solution exists.",
+    "title": "Quasi-positivity"
+  },
+  "thm:regular-future": {
+    "claim_id": "thm:regular-future",
+    "file": "04_homogeneous_cosmology.tex",
+    "in_summary": [
+      "14_conclusions.tex"
+    ],
+    "kind": "theorem",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "06_solvable_early.tex",
+      "08_realizations.tex",
+      "14_conclusions.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_symbolic.py"
+    ],
+    "text": "Assume \\cref{asm:closure}; non-negative initial densities with positive sum; $a_i=1$, $\\fconv_i\\in[0,1)$, $\\Mmem_i\\in[0,1]$, $\\bfrac\\in[0,1]$, $\\tauM>0$; and $\\Gam$ locally Lipschitz with $0\\le\\Gam\\le G<\\infty$ on the physical domain. Then a unique solution exists for all finite future times, all densities remain non-negative, $\\fconv,\\Mmem\\in[0,1]$, $\\Hub>0$, and % \\begin{keyresult}{C}{eq:cosmolo",
+    "title": "Regular future"
+  },
+  "thm:sandwich": {
+    "claim_id": "thm:sandwich",
+    "file": "05_positivity_ide.tex",
+    "in_summary": [],
+    "kind": "theorem",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "10_observations.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_symbolic.py"
+    ],
+    "text": "Let the solution be defined and non-negative on $[a_e,1]$ with radiation exactly conserved, and define the matter deficit % \\begin{keyresult}{C}{eq:positivity-deficit} \\Delta\\eqdef\\frac{\\rho_{\\rm m}^{\\rm early}-\\rho_{\\rm m0}}{3\\Mpl^2\\Hz^2} =\\frac{1}{3\\Mpl^2\\Hz^2}\\int_{t_e}^{t_0}\\QV a^3\\,\\dd t\\ \\ge 0 , \\qquad \\rho_{\\rm m}^{\\rm early}\\eqdef\\rhom(t_e)\\,a_e^3 , \\end{keyresult} % both densities being c",
+    "title": "Sandwich"
+  },
+  "thm:sign-table": {
+    "claim_id": "thm:sign-table",
+    "file": "07_cosmography.tex",
+    "in_summary": [
+      "14_conclusions.tex"
+    ],
+    "kind": "theorem",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "14_conclusions.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_symbolic.py"
+    ],
+    "text": "Neglecting radiation, the competing late-time descriptions give % \\begin{center} \\begin{tabular}{lll} \\toprule Model & $\\jerk-1$ & Sign \\\\ \\midrule $\\LCDM$ & $0$ & zero \\\\ This model, one-way & $\\tfrac32(1-\\bfrac)(\\Gam/\\Hub)\\Omega_I$ & $>0$ \\\\ This model, reverse channel dominant & $\\varepsilon-\\Gamdn \\rhoV/(2\\Mpl^2\\Hub^3)$ & $<0$ \\\\ Running vacuum, $\\nu>0$ & $-3\\nu(1+\\decel)$ & $<0$ \\\\ CPL in the",
+    "title": "Sign table"
+  },
+  "thm:snap": {
+    "claim_id": "thm:snap",
+    "file": "07_cosmography.tex",
+    "in_summary": [
+      "01_intro.tex"
+    ],
+    "kind": "theorem",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "01_intro.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_background.py"
+    ],
+    "text": "With $\\snap=\\dot \\jerk/\\Hub-\\jerk(2+3\\decel)$ and $\\snap_{\\LCDM}(\\decel,\\Omr)=2\\Omr'-(1+2\\Omr)(2+3\\decel)$ its value at $\\QV=0$, evaluated at the same $\\decel$ and $\\Omr$, % \\begin{keyresult}{C}{eq:cosmography-snap} \\snap-\\snap_{\\LCDM}(\\decel,\\Omr) =\\varepsilon\\left[\\frac{\\dd\\ln\\Gam}{\\dd \\efold}-\\frac{\\Gam}{\\Hub}-2\\right] , \\end{keyresult} % which for the rate law \\cref{eq:process-rate} reads % \\b",
+    "title": "Snap"
+  }
+}

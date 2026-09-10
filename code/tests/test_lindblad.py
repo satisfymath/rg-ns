@@ -10,6 +10,11 @@ Three groups:
 * *closure*: the mean-field error decays as ``1/N``, measured first on the full
   Liouvillian (``N = 2..8``) and then, far beyond it, on the birth chain.
 """
+# covers: prop:classical-reduction, prop:unitary-obstruction
+#   Machine-readable link from tests to the claims they cover, read by
+#   scripts/claim_ledger.py. A claim quoted in the abstract or the
+#   conclusions with nothing testing it is what the ledger exists to find.
+
 from __future__ import annotations
 
 import math
