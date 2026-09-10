@@ -163,48 +163,48 @@ class Posterior:
 # --------------------------------------------------------------------------- #
 # MAP search
 # --------------------------------------------------------------------------- #
-def find_map(post: Posterior, n_starts: int = 4, seed: int = SEED,
-             x0: np.ndarray | None = None) -> np.ndarray:
-    """Best-fit parameters.
+def find_map(post: Posterior, n_screen: int = 400, seed: int = SEED,
+             x0: np.ndarray | None = None, max_local: int = 900) -> np.ndarray:
+    """Locate a good starting point for the sampler, cheaply.
 
-    If ``x0`` is given, normally the best sample of an existing chain, a single
-    local refinement is run from it: the chain has already located the mode, so
-    repeating a global search wastes more time than the chain itself took.
-    Otherwise a short multi-start Latin-hypercube search seeds the walkers.
-    The iteration caps matter, because an uncapped Powell run on a 13 ms
-    likelihood dominates the total runtime.
+    Two regimes.  With ``x0`` given -- normally the best sample of a finished
+    chain -- a single local refinement is run from it and the result is a
+    genuine maximum-a-posteriori estimate.  Without it, the routine screens a
+    Latin hypercube and refines only the best point.
+
+    The screening design matters for cost.  A full multi-start Powell search
+    over the prior volume spends most of its budget in regions where the
+    background integration is several times slower than at the best fit,
+    because large rates and strong reinforcement stiffen the system; measured
+    over random prior draws the cost per evaluation rises from about 20 ms to
+    as much as 80 ms.  Running such a search to convergence took roughly twenty
+    minutes per model and produced a starting point no better, for the purpose
+    of placing a walker ball, than the one below.
     """
     from scipy.optimize import minimize
     from scipy.stats import qmc
-
-    lows = np.array([p.low for p in _priors_of(post)])
-    highs = np.array([p.high for p in _priors_of(post)])
-    if x0 is not None:
-        starts = np.atleast_2d(np.asarray(x0, dtype=float))
-    else:
-        starts = qmc.LatinHypercube(d=post.ndim, seed=seed).random(n_starts)
-        starts = lows + starts * (highs - lows)
 
     def neg(theta):
         v = post(theta)
         return 1e10 if not np.isfinite(v) else -v
 
-    best, best_val = None, np.inf
-    for start in starts:
-        try:
-            r = minimize(neg, start, method="Powell",
-                         options=dict(maxiter=40, maxfev=4000,
-                                      xtol=1e-4, ftol=1e-6))
-            r = minimize(neg, r.x, method="Nelder-Mead",
-                         options=dict(maxiter=1500, maxfev=1500,
-                                      xatol=1e-5, fatol=1e-6))
-        except Exception:                                          # pragma: no cover
-            continue
-        if r.fun < best_val:
-            best, best_val = r.x, r.fun
-    if best is None:                                               # pragma: no cover
-        raise RuntimeError("MAP search failed from every start")
-    return np.asarray(best, dtype=float)
+    if x0 is not None:
+        r = minimize(neg, np.asarray(x0, dtype=float), method="Nelder-Mead",
+                     options=dict(maxfev=2 * max_local, xatol=1e-5, fatol=1e-6))
+        return np.asarray(r.x, dtype=float)
+
+    lows = np.array([p.low for p in _priors_of(post)])
+    highs = np.array([p.high for p in _priors_of(post)])
+    design = qmc.LatinHypercube(d=post.ndim, seed=seed).random(n_screen)
+    candidates = lows + design * (highs - lows)
+    values = np.array([neg(c) for c in candidates])
+    best = candidates[int(np.argmin(values))]
+    if not np.isfinite(values.min()) or values.min() >= 1e10:
+        # nothing in the screen was admissible; fall back to the prior centre
+        return 0.5 * (lows + highs)
+    r = minimize(neg, best, method="Nelder-Mead",
+                 options=dict(maxfev=max_local, xatol=1e-4, fatol=1e-5))
+    return np.asarray(r.x if r.fun < values.min() else best, dtype=float)
 
 
 def _priors_of(post: Posterior):
