@@ -86,24 +86,31 @@ positivity and a decoherence rate; it does not supply new kinetics.
 \subsection{How good is the mean-field closure?}\label{sec:quantum-closure}
 
 Replacing $\avg{(1-n_i)e^{\alpha\hat \fconv_{\neg i}}}$ by
-$(1-\fconv)e^{\alpha \fconv}$ discards correlations. Integrating the full
-Liouvillian for $N\le8$ and the permutation-symmetric chain far beyond that, the
+$(1-\fconv)e^{\alpha \fconv}$ discards correlations. Two computations bound the
+cost. Integrating the full Liouvillian, which is tractable only to $N=8$, the
 maximum discrepancy between the exact $\avg{\hat \fconv}$ and the mean-field
-solution scales as a power of $N$ with fitted exponent
-$\numLindbladClosureSlope$, consistent with the expected $\order{N^{-1}}$
-(\cref{fig:lindblad}). The closure is therefore controlled, and its error is
-subleading to the $\order{N^{-1/2}}$ fluctuations of
+solution falls with a fitted exponent $\numLindbladClosureSlopeFull$. That
+number should not be quoted on its own: over so short a range it is still
+contaminated by small-$N$ curvature. Because the jump operators preserve
+permutation symmetry, the same quantity can be computed exactly from the
+$(N+1)$-state symmetric chain, which reaches $N=\numLindbladClosureNMax$; there
+the fitted exponent is $\numLindbladClosureSlopeDicke$ and the local slope at
+the largest $N$ is $\numLindbladClosureSlopeLocal$
+(\cref{fig:lindblad}). The closure is therefore $\order{N^{-1}}$, and its error
+is subleading to the $\order{N^{-1/2}}$ fluctuations of
 \cref{thm:deterministic-limit}.
 
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.55\textwidth]{lindblad.pdf}
-  \caption{Mean-field closure error of the collective Lindblad dynamics. Points
-    are the maximum over time of the difference between the exact
-    $\avg{\hat \fconv}$ and the mean-field solution, for $N=2$ to $8$; the
-    dashed line is a power-law fit and the dotted line is $N^{-1}$. The
-    closure error is subleading to the intrinsic $N^{-1/2}$ fluctuations of the
-    jump process.}
+  \caption{Mean-field closure error of the collective Lindblad dynamics: the
+    maximum over time of the difference between the exact $\avg{\hat \fconv}$
+    and the mean-field solution. Filled circles are the full Liouvillian, which
+    is tractable only to $N=8$ and whose fitted slope is still bent by
+    small-$N$ curvature; open squares are the exact permutation-symmetric chain,
+    which reaches $N=\numLindbladClosureNMax$ and tracks the dotted $N^{-1}$
+    reference. The closure error is subleading to the intrinsic $N^{-1/2}$
+    fluctuations of the jump process.}
   \label{fig:lindblad}
 \end{figure}
 

@@ -298,11 +298,11 @@
   "hysteresis": {
     "delta_memory": {
       "fmt": ".5f",
-      "value": 0.04164490634198608
+      "value": 0.041644906341994976
     },
     "delta_vacuum": {
       "fmt": ".5f",
-      "value": 0.0053985998673569124
+      "value": 0.005398599867457166
     },
     "f_checkpoint": {
       "fmt": ".5f",
@@ -314,11 +314,11 @@
     },
     "memory_B": {
       "fmt": ".5f",
-      "value": 0.016689144490846353
+      "value": 0.016689144490837457
     },
     "relative_delta_vacuum": {
       "fmt": ".4f",
-      "value": 0.007346213586121571
+      "value": 0.007346213586257992
     },
     "vacuum_A": {
       "fmt": ".5f",
@@ -326,17 +326,28 @@
     },
     "vacuum_B": {
       "fmt": ".5f",
-      "value": 0.7294833640270662
+      "value": 0.7294833640269659
     }
   },
   "lindblad": {
+    "closure_N_max": {
+      "value": 512
+    },
     "closure_error_N8": {
       "fmt": ".2e",
-      "value": 0.007283707928452121
+      "value": 0.007283800909815619
     },
-    "closure_slope": {
+    "closure_slope_dicke": {
       "fmt": ".3f",
-      "value": -1.1904384066166303
+      "value": -1.0108792385331582
+    },
+    "closure_slope_full": {
+      "fmt": ".3f",
+      "value": -1.1903835872498805
+    },
+    "closure_slope_local": {
+      "fmt": ".3f",
+      "value": -1.0010063404514904
     }
   },
   "skyrme": {

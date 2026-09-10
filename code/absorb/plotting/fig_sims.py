@@ -140,14 +140,17 @@ def fig_lindblad() -> Path:
     """Mean-field closure error of the collective Lindblad dynamics."""
     d = _load("lindblad.npz")
     N, err = d["N"], d["error"]
-    slope, intercept = np.polyfit(np.log(N), np.log(err), 1)
-    fig, ax = plt.subplots(figsize=(WIDTH_HALF * 1.25, 2.3))
-    ax.loglog(N, err, "o", color=COLORS["model"], ms=4.5, label="exact vs mean field")
-    grid = np.linspace(N.min(), N.max(), 50)
-    ax.loglog(grid, np.exp(intercept) * grid ** slope, color=COLORS["lcdm"],
-              lw=1.2, ls="--", label=rf"fit, slope ${slope:.2f}$")
-    ax.loglog(grid, err[0] * (grid / N[0]) ** -1.0, color=COLORS["grey"],
-              lw=0.9, ls=":", label=r"$N^{-1}$")
+    Nd, errd = d["N_dicke"], d["error_dicke"]
+    sl_full = np.polyfit(np.log(N), np.log(err), 1)[0]
+    sl_dicke = np.polyfit(np.log(Nd), np.log(errd), 1)[0]
+    fig, ax = plt.subplots(figsize=(WIDTH_HALF * 1.35, 2.4))
+    ax.loglog(N, err, "o", color=COLORS["model"], ms=4.5,
+              label=rf"full Liouvillian, slope ${sl_full:.2f}$")
+    ax.loglog(Nd, errd, "s", color=COLORS["alt"], ms=4.0, mfc="none",
+              label=rf"Dicke chain, slope ${sl_dicke:.2f}$")
+    grid = np.logspace(np.log10(N.min()), np.log10(Nd.max()), 60)
+    ax.loglog(grid, errd[0] * (grid / Nd[0]) ** -1.0, color=COLORS["grey"],
+              lw=1.0, ls=":", label=r"$N^{-1}$")
     ax.set_xlabel(r"units $N$")
     ax.set_ylabel(r"$\max_t\,|\langle \hat f\rangle - f_{\rm MF}|$")
     ax.legend(fontsize=7.5)

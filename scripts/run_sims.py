@@ -98,14 +98,31 @@ def run_convergence() -> dict:
 
 
 def run_lindblad() -> dict:
+    """Mean-field closure error against N, two ways.
+
+    The full Liouvillian is only tractable to N = 8, and over that range the
+    fitted exponent is still contaminated by small-N curvature.  The
+    permutation-symmetric (Dicke) chain is exact for the symmetric initial
+    states used here and reaches N = 512, which is what actually demonstrates
+    the O(1/N) law; both are reported rather than only the convenient one.
+    """
     print("lindblad: mean-field closure error versus N ...")
-    t = np.linspace(0.0, 4.0, 200)
-    sc = lindblad.closure_error_scaling((2, 3, 4, 5, 6, 7, 8), t)
-    np.savez(SIMS / "lindblad.npz", N=sc.N, error=sc.error)
-    print(f"  fitted slope of log(error) vs log(N): {sc.slope:.4f}  (expected -1)")
+    t = np.linspace(0.0, 4.0, 300)
+    full = lindblad.closure_error_scaling(tuple(range(2, 9)), t, engine="master")
+    dicke = lindblad.closure_error_scaling(
+        (8, 16, 32, 64, 128, 256, 512), t, engine="dicke")
+    local = np.diff(np.log(dicke.error)) / np.diff(np.log(dicke.N))
+    np.savez(SIMS / "lindblad.npz", N=full.N, error=full.error,
+             N_dicke=dicke.N, error_dicke=dicke.error)
+    print(f"  full Liouvillian, N = 2..8   : slope {full.slope:.4f}")
+    print(f"  Dicke chain,      N = 8..512 : slope {dicke.slope:.4f} "
+          f"(local slope at the largest N: {local[-1]:.4f})")
     return {
-        "closure_slope": {"value": float(sc.slope), "fmt": ".3f"},
-        "closure_error_N8": {"value": float(sc.error[-1]), "fmt": ".2e"},
+        "closure_slope_full": {"value": float(full.slope), "fmt": ".3f"},
+        "closure_slope_dicke": {"value": float(dicke.slope), "fmt": ".3f"},
+        "closure_slope_local": {"value": float(local[-1]), "fmt": ".3f"},
+        "closure_error_N8": {"value": float(full.error[-1]), "fmt": ".2e"},
+        "closure_N_max": {"value": int(dicke.N[-1])},
     }
 
 
