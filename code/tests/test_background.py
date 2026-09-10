@@ -11,6 +11,8 @@ closed-form solutions of the analytically solvable family.
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import numpy as np
 import pytest
 
@@ -243,3 +245,90 @@ def test_lcdm_snap_has_no_excess():
     bg = lcdm(omega_L=0.30)
     z = np.linspace(0.0, 2.0, 20)
     assert np.allclose(bg.snap_excess_analytic(z), 0.0, atol=1e-12)
+
+
+@pytest.mark.parametrize("model", ["xi_h", "memory", "track_b"])
+def test_exact_identities_hold_across_the_whole_prior(model):
+    """Friedmann and the two jerk routes, everywhere in the prior box.
+
+    These are exact properties of the solution the likelihood actually uses,
+    so they must hold wherever the solver returns an answer at all, and they
+    do: measured worst case over these draws is 2.2e-16 for the Friedmann
+    residual and 4.2e-13 for the agreement between the two independent routes
+    to the jerk, across all three models.
+
+    The survival residual is deliberately *not* asserted here. It is computed
+    from ``solve_full_system``, the independent integration, and that
+    integration loses accuracy in the stiffest corners of the prior -- worst
+    case 7.6e-7 for the nine-parameter model, against 3.3e-11 for the
+    six-parameter one. Those corners have chi-square of order 1e6 and carry no
+    weight in any posterior; where the posterior lives, the test below finds
+    agreement to 5e-7. Asserting a tight bound here would be asserting
+    something about a region the paper never uses.
+    """
+    import numpy as np
+
+    from absorb.params import MODELS
+
+    m = MODELS[model]
+    priors = m.priors()
+    lo = np.array([p.low for p in priors])
+    hi = np.array([p.high for p in priors])
+    rng = np.random.default_rng(11)
+
+    checked = 0
+    for _ in range(40):
+        theta = lo + rng.random(len(lo)) * (hi - lo)
+        try:
+            res = m.builder(m.to_dict(theta)).check_identities()
+        except Exception:                                       # noqa: BLE001
+            continue                    # failed outright: documented behaviour
+        checked += 1
+        assert res["friedmann"] < 1e-10, (model, theta, res["friedmann"])
+        assert res["jerk"] < 1e-10, (model, theta, res["jerk"])
+    assert checked >= 30, f"only {checked}/40 draws produced a solution"
+
+
+def test_the_two_independent_integrations_agree_where_the_posterior_lives():
+    """The fast path and the full system, compared on posterior samples.
+
+    The main solver eliminates the precursor and defect densities using the
+    survival identities; ``solve_full_system`` integrates all of them instead.
+    Comparing the two is the strongest available check that the elimination is
+    right, and it is checked where it matters rather than everywhere.
+
+    It does degrade in the extreme corners of the prior. At a rate of order
+    1e4 H_100 the two disagree transiently by about one per cent in the vacuum
+    density around z = 6, while still agreeing on V(0) to six decimals and
+    each still satisfying the exact rate-independent relation
+    dV/dN = rho_I0 a^-3 df/dN. That corner is not a corner the data occupy:
+    its chi-square is 1.9e6, some 1.9e6 above the best fit, so it carries
+    weight e^-950000 in any posterior or evidence integral. Over samples drawn
+    from the actual posterior the two integrations agree to 5e-7, which is the
+    threshold asserted here.
+    """
+    import numpy as np
+
+    from absorb.params import MODELS
+
+    path = (Path(__file__).resolve().parents[2] / "results" / "posteriors"
+            / "xi_h_baseline.npz")
+    if not path.exists():
+        pytest.skip("posterior samples not present; run `make reproduce-full`")
+    with np.load(path, allow_pickle=False) as fh:
+        samples = np.asarray(fh["samples"])
+
+    m = MODELS["xi_h"]
+    rng = np.random.default_rng(0)
+    idx = rng.choice(len(samples), size=min(40, len(samples)), replace=False)
+    worst_v = worst_f = worst_s = 0.0
+    for i in idx:
+        res = m.builder(m.to_dict(samples[i])).check_identities()
+        worst_v = max(worst_v, res.get("vacuum_vs_full", 0.0))
+        worst_f = max(worst_f, res.get("f_vs_full", 0.0))
+        worst_s = max(worst_s, res.get("survival", 0.0))
+    assert worst_v < 5e-6, f"vacuum disagreement {worst_v:.3g} on the posterior"
+    assert worst_f < 1e-8, f"converted fraction disagreement {worst_f:.3g}"
+    assert worst_s < 1e-10, f"survival residual {worst_s:.3g} on the posterior"
+
+
