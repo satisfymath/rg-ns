@@ -70,3 +70,23 @@ def test_signature_vanishes_before_activation():
     g = Growth(bg)
     assert np.isclose(float(g.f_growth(20.0)[0]), 1.0, atol=2e-3)
     assert np.isclose(float(g.f_rsd(20.0)[0]), 1.0, atol=2e-3)
+
+
+def test_effective_exponent_of_the_growth_coefficient():
+    """g_c inherits the switch exponent plus 3/2 for a constant rate.
+
+    Because g_c = Q_V/(H rho_m) carries an explicit 1/H, the exponent that
+    enters the growth signature is p + 3/2 in matter domination for the fitted
+    rate law, and p for the expansion-tracking one.  Getting this wrong changes
+    the ISW amplitude by about a sixth at p = 6.
+    """
+    for tracks, expected in ((False, 7.5), (True, 6.0)):
+        bg = Background(BackgroundParams(
+            omega_b=0.02237, omega_c=0.14, omega_V_act=0.20, eps=0.35,
+            log10_gamma0=-0.5, alpha_tot=2.0, r_beta=0.5, log10_tau=-0.3,
+            z_act=1.0, p_act=6.0, rate_tracks_H=tracks))
+        z = np.array([8.0, 6.0, 5.0, 4.0])
+        dust, rad, nu, V = bg._omegas(z)
+        gc = (bg.Q_V(z) / bg.E(z)) / (dust + nu)
+        slope = np.diff(np.log(gc)) / np.diff(np.log(1.0 / (1.0 + z)))
+        assert np.allclose(slope, expected, atol=0.1)
