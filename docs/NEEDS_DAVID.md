@@ -30,11 +30,30 @@ manuscript attached.
 
 ## Judgement calls where the work is done either way
 
-**The title.** Two options are recorded in the plan: the omnibus one and the
-narrower phenomenology one. The narrower one is more defensible and the
-manuscript as it now stands --- a null result, three obstructions recorded, and
-a cosmographic bound shown not to apply --- fits it better. Worth deciding
-after reading the current abstract rather than before.
+**The title, and a tension in the current one.** It reads
+
+> Self-reinforced geometric absorption: a memory-dependent kinetic framework
+> for vacuum, dark matter and localized structure
+
+while the abstract says, in as many words, "we do not claim that the defects
+are the dark matter". A title offering a framework *for* dark matter and an
+abstract disclaiming exactly that is the kind of mismatch a referee notices on
+the first page, and it is the same failure mode --- summary claiming more than
+body --- that referee E found running through the manuscript. No referee raised
+it, which is not evidence that no referee will.
+
+Three ways out, in decreasing order of how much they concede:
+
+1. Drop "dark matter" from the title: *...a memory-dependent kinetic framework
+   for the dark sector*. One word, no other change, tension gone.
+2. Take the narrower phenomenology title recorded in the plan, which fits the
+   manuscript as it now stands --- a null result, three obstructions recorded,
+   and a cosmographic bound shown not to apply --- better than the omnibus one
+   does.
+3. Keep it and rely on the abstract's disclaimer. Defensible, but it spends the
+   reader's goodwill in the first two lines.
+
+Worth deciding after reading the current abstract rather than before.
 
 **Track A versus Track B as the headline.** The data do not select between
 them; LambdaCDM is preferred over both. The paper currently presents the
