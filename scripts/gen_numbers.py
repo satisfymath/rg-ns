@@ -29,6 +29,7 @@ SOURCES = [
     (ROOT / "results" / "profile.json", "profile"),
     (ROOT / "results" / "chain_diagnostics.json", "diag"),
     (ROOT / "results" / "map.json", "map"),
+    (ROOT / "results" / "prior_sensitivity.json", "priorsens"),
 ]
 
 HEADER = (
@@ -77,6 +78,8 @@ FORMATS = {
     "move_rate_early": ".4f",
     "move_rate_late": ".4f",
     "outside_prior_fraction": ".3f",
+    "ln_bayes_full_prior": ".2f",
+    "ln_bayes_span": ".2f",
 }
 
 
