@@ -260,12 +260,23 @@ changes.
 
 \paragraph{Numerical test.} \Cref{fig:pancake} reports a one-dimensional
 Zel'dovich pancake carrying the local sector along Lagrangian sheets, which
-avoids continuing a single-stream fluid past shell crossing. The measured
-exponents reproduce the analytic values, and the control case with no
-conversion reproduces $\rhoI=1/J$ to twelve digits. The bounded rate of the
-paper reduces the peak density by a large factor and leaves the exponent at
-$-1$, exactly as \cref{thm:bounded-rate-obstruction} requires; only $\kappa>1$
-changes it.
+avoids continuing a single-stream fluid past shell crossing; the trajectories
+are prescribed by the Zel'dovich map, so the test isolates the effect of
+conversion from the gravitational back-reaction, and it is not a
+self-consistent solution.
+
+The measured exponents reproduce the analytic values. With no conversion the
+central density follows $\numPancakeControlExponent$ and with the bounded rate
+of \cref{eq:process-rate} it follows $\numPancakeBoundedExponent$: the same
+exponent, with the amplitude lowered by a factor of
+$\numPancakeBoundedSuppression$. That is
+\cref{thm:bounded-rate-obstruction} made visible. The compression-driven
+channel gives $\kappa-1$, measured as $\numPancakeKappaHalfExponent$,
+$\numPancakeKappaOnepointfiveExponent$ and $\numPancakeKappaThreeExponent$ for
+$\kappa=0.5$, $1.5$ and $3$, and the exponent is independent of the branching
+ratio, the memory time and the reinforcement strengths, as the analysis
+requires. The two exact survival identities hold to
+$\numPancakeDustResidual$ across the suite.
 
 \subsection{What would be needed for an abundance}\label{sec:defects-abundance}
 
