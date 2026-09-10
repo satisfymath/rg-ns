@@ -203,9 +203,31 @@ distinction between a finite mass and a finite density. Hence
   \iff g>c\ \ \text{and}\ \ \bfrac=0 .
 \end{keyresult}
 
+It is worth being careful about what that buys. Pointwise finiteness of the
+stress tensor is not a criterion for the absence of a spacetime singularity,
+and a generic fold caustic of a dust congruence is not a strong curvature
+singularity in the sense of Tipler: the double integral of
+$R_{\mu\nu}k^\mu k^\nu$ along a causal geodesic converges, and the spacetime is
+expected to be extendible through it. What the conditions above control is
+therefore the divergence of the source in the field equations, not the
+existence of a genuine singularity. That makes the result useful for deciding
+whether the effective description of \cref{asm:closure} remains applicable, and
+not for any claim about singularity avoidance.
+
 For $\Gam_{\rm collapse}=\kappa\,[-\expa]_+$ one has $g=\kappa c$, so the
 condition is the dimensionless statement $\kappa>1$, independent of the
 strength of the collapse; for a generic Zel'dovich pancake $c=1$.
+
+The requirement $\bfrac=0$ sits awkwardly with the rest of this section, and
+the tension should be named rather than left for the reader. A finite relic
+abundance of defects needs $\bfrac>0$
+(\cref{sec:defects-abundance}); regularity at a caustic needs $\bfrac=0$. The
+two cannot both hold with a single constant branching ratio, so either the
+localized sector acquires pressure, in which case it is no longer the
+pressureless product of \cref{asm:closure} and its equation of state must be
+recomputed, or $\bfrac$ is not constant and switches off where the expansion
+does, which is an additional assumption with no independent motivation. We
+record this as an unresolved tension.
 
 \paragraph{The covariant price.} Adding such a channel is not free.
 \Cref{eq:setup-vacuum-transfer} forces the transfer four-vector to be closed,
@@ -258,12 +280,20 @@ changes.
   \label{fig:pancake}
 \end{figure}
 
-\paragraph{Numerical test.} \Cref{fig:pancake} reports a one-dimensional
-Zel'dovich pancake carrying the local sector along Lagrangian sheets, which
-avoids continuing a single-stream fluid past shell crossing; the trajectories
-are prescribed by the Zel'dovich map, so the test isolates the effect of
-conversion from the gravitational back-reaction, and it is not a
-self-consistent solution.
+\paragraph{Numerical test, and what it does not cover.}
+\Cref{fig:pancake} reports a one-dimensional Zel'dovich pancake carrying the
+local sector along Lagrangian sheets. Three limitations should be stated before
+the numbers. The trajectories are prescribed by the Zel'dovich map, so the test
+isolates the effect of conversion from the gravitational back-reaction and is
+not a self-consistent solution. The runs approach the caustic but do not cross
+it: with the fiducial profile the Jacobian is $J=1-D\cos kq>0$ for $D<1$, so
+the caustic sits at $D=1$ and the multi-stream region beyond it is untested.
+And, most importantly for the mechanism, after a crossing the Jacobian grows
+again, so $\expa$ turns positive and $\kappa[-\expa]_+$ \emph{switches itself
+off} exactly where it was meant to act. What the compression-driven channel can
+do, it must therefore do on the approach; the integrated hazard
+$\kappa\log(1/\abs{J})$ does diverge there, which is why the exponents below are
+well defined, but nothing here describes the multi-stream regime.
 
 The measured exponents reproduce the analytic values. With no conversion the
 central density follows $\numPancakeControlExponent$ and with the bounded rate
