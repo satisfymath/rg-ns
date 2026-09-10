@@ -23,18 +23,33 @@ Planck compressed distance priors are fitted to a family of models in which a
 convertible fraction of the dark matter is converted into vacuum after an
 activation redshift. The paper reports that nothing in the data requires the
 conversion, quotes a Bayes factor of about five to one against the extension,
-and quotes a 95% upper limit on the derived matter deficit. The likelihoods are
-correct; the two headline *numbers* — the Bayes factor and the deficit limit —
-are not supported by what the code actually computes.
+and quotes a 95% upper limit on the derived matter deficit. I could not break
+the likelihoods; I could break every headline number attached to them — the
+`Delta chi2`, the limit, and the Bayes factor and its error bar all fail to
+reproduce, in ways that do not cancel.
 
 ## Recommendation
 
 [ ] Accept  [ ] Minor revision  [X] Major revision  [ ] Reject
 
-The data handling is, with the exceptions in M5, of a standard I could not
-break (see the certification section). The revision required is to the two
-quoted results and to the several analyses the section promises but does not
-contain, not to the pipeline.
+The data handling is, with the exception of M5, of a standard I could not break
+(see the certification section) — the likelihoods, the covariances, the
+selections and the provenance are all correct, and I say so in detail because it
+took real work to confirm. What needs revision is the layer above them: every
+number in Section 10's Results subsection is either wrong (`Delta chi2`), not
+what it claims to be (the deficit limit), or not reproducible at the precision
+quoted (`ln Z`, `ln B`). None of that changes the paper's conclusion, which is a
+null result and survives; it changes what may be printed in support of it.
+
+Concretely, the four numbers I would not let through as they stand:
+
+```
+                                 manuscript      this report
+  Delta chi2 (xi_h vs LCDM)         -0.82          -1.636          M3
+  Delta < ... (95%)                  0.0126         0.0110         M1
+  ln Z(xi_h)                      -733.75+/-0.21  -734.69+/-0.21   M6
+  ln B(xi_h)                        -1.60+/-0.28    -2.46+/-0.30   M6
+```
 
 ---
 
@@ -42,7 +57,7 @@ contain, not to the pipeline.
 
 ### M1. The quoted limit `Delta < 0.0126` is not a profile-likelihood value. It is a grid node, produced by an interpolation whose contract is violated, from constrained fits that do not satisfy their own constraint.
 
-**Location**: `scripts/run_profile.py:40-106` (`profile_derived`),
+**Location**: `scripts/run_profile.py`, `profile_derived()`,
 `results/profile.json["xi_h__baseline__matter_deficit"]`,
 `paper/sections/10_observations.tex` Eq. `eq:observations-deficit-limit`,
 macro `\numProfileXiHBaselineMatterDeficitLimitNV` = `0.0126`.
@@ -104,7 +119,7 @@ targets[8] 0.012589254117941675 ratio-1 0.0019701814635051385
 grid ratio 1.9952623149688786
 ```
 
-`run_profile.py:100` calls `np.interp(2.71, chi2[:above[0]+1],
+`profile_derived` calls `np.interp(2.71, chi2[:above[0]+1],
 targets[:above[0]+1])` with an `xp` that is not increasing; `np.interp`
 documents `xp` as required to be increasing and gives no warning otherwise.
 Referee B flagged this in m10 as a latent guard problem that "happens to lie
@@ -119,35 +134,66 @@ redrawn. That is exactly the failure mode withdrawn for `eps`, with a
 logarithmic grid instead of a linear one.
 
 **(d) The penalty is soft enough for the fit to buy its way out.** With
-`penalty = 1e6` (`run_profile.py:42`), missing the target by `5.787e-3` costs
+`penalty = 1e6` (the `profile_derived` default), missing the target by `5.787e-3` costs
 `1e6 * (5.787e-3)**2 = 33.495` in the objective, and the optimiser accepted that
-rather than move onto the constraint surface. This gives a dichotomy from which
-there is no escape: either a feasible point at `Delta = 0.0126` with
+rather than move onto the constraint surface. That leaves a dichotomy with no
+escape: either a feasible point at `Delta = 0.0126` with
 `chi2 < chi2_min + 35.6` exists and the optimiser failed to find it, or no such
-point exists and the true profile at `Delta = 0.0126` is above `chi2_min + 35.6`
-— in which case `0.0126` is not the 95% limit but far beyond it. In neither
-case is `Delta < 0.0126` a 95% upper limit.
+point exists and the true profile there is above `chi2_min + 35.6`, in which
+case `0.0126` is not the 95% limit but far beyond it. Part (e) settles which:
+the first. A feasible point at `Delta = 0.0126` exists with `chi2` only `3.40`
+above the minimum, so the shipped fit missed it by more than 30 in the objective
+it was minimising.
 
-**(e) The zero point is wrong too: the shipped profile never found the model's
-minimum.** I re-ran the same constrained fit with one background solve per
+**(e) Redone properly, the limit is different and the curve is a different
+shape.** I re-ran the same constrained fit with one background solve per
 objective evaluation instead of two, Nelder-Mead *and* Powell, five restarts
-plus a warm start, and `penalty = 1e9`. The constraint is then met to 1e-7 at
-every point, and the fits are much better than the shipped ones:
+plus a warm start along the grid, and `penalty = 1e9`
+(`/tmp/.../scratchpad/reprofile.py`, ~14 min per grid point, single process).
+The constraint is then met to `2.5e-7` or better at every point:
 
 ```
-  target=0.000000  achieved=2.08e-07  chi2=1436.5160    <- exactly the LCDM minimum
-  target=0.002000  achieved=0.002000  chi2=1435.8174
-  target=0.004000  achieved=0.004000  chi2=1434.9201    <- 0.737 BELOW the shipped
-                                                           profile's own minimum
+     Delta      achieved     miss        chi2       Delta chi2
+   0.000000    2.08e-07   +2.1e-07   1436.5160       1.5959
+   0.002000    0.002000   +9.0e-08   1435.8174       0.8973
+   0.004000    0.004000   -9.3e-08   1434.9201       0.0000
+   0.006310    0.006309   -2.0e-07   1435.4773       0.5572
+   0.008000    0.008000   -2.9e-07   1436.3100       1.3899
+   0.010000    0.010000   -1.9e-07   1437.1620       2.2419
+   0.012589    0.012589   -2.5e-07   1438.3191       3.3990
 ```
 
-Each was re-evaluated independently through `Posterior.log_prior` to confirm it
-lies inside the prior box (`log_prior = 0.0` at all three). The shipped
-`profile_derived` reports its minimum as `1435.65690` (the value the whole
-`delta_chi2` column is referred to); a plain re-run finds `1434.9201` at
-`Delta = 0.004`. Every `Delta chi2` in `results/profile.json` is therefore
-referred to a point that is 0.74 too high, and the same applies to the `eps`
-profile, which shares the minimum. See M3 for how far this goes.
+Every point was re-evaluated independently through `Posterior.log_prior` to
+confirm it lies inside the prior box (`log_prior = 0.0` throughout). Three
+things follow, and none of them agrees with the shipped result:
+
+- **The profile minimum is 0.737 lower.** The shipped `profile_derived` reports
+  its minimum as `1435.65690`, the value its whole `delta_chi2` column is
+  referred to; a plain re-run finds `1434.9201`. Every `Delta chi2` in
+  `results/profile.json` is referred to a point that is `0.74` too high, and so
+  is the `eps` profile, which shares that minimum.
+- **The 95% limit is tighter, not looser.** Interpolating the `2.71` crossing on
+  the bracketing segment (`0.010`, `Delta chi2 = 2.242`) to
+  (`0.012589`, `3.399`) gives
+
+  ```
+    corrected 95% one-sided limit   Delta < 0.0110
+    as quoted in the manuscript     Delta < 0.0126
+  ```
+
+  a 12% difference — small in absolute terms, but the manuscript's number is
+  not an approximation to it, it is a coincidence of the grid.
+- **The minimum is interior and `Delta = 0` is mildly disfavoured**, at
+  `Delta chi2 = 1.596` (`1.26 sigma`), against `0.419` in the shipped run. That
+  is still no evidence for conversion, but it is a different statement from the
+  one the paper makes, and it is the statement that makes `Delta chi2 = 2.71`
+  the appropriate threshold (an interior maximum, so no boundary correction is
+  needed).
+
+This curve is smooth, monotone on each side of a single interior minimum, and
+its constraint is satisfied everywhere. It is one run and I do not claim it is
+the last word; but a profile with those three properties is what the manuscript
+should be quoting, and it is not what `results/profile.json` contains.
 
 **Also affected**: the text supports the limit with "the profile rising to
 `Delta chi2 ~ 1192` across the grid, so this is a constraint and not another
@@ -202,7 +248,7 @@ ln B = 1.636/2 - ln(V_extra,prior / V_extra,post)
 `V_extra,prior = 1 x 4 x 29.7 = 118.8` in units of
 (`eps`) x (decades of `log10_xi`) x (`z_act`), so the implied posterior extent
 of the three unidentified directions is `V_extra,post = 10.6`. Every one of the
-three prior factors is a free choice made in `code/absorb/params.py:52-62`, and
+three prior factors is a free choice made in the `PRIORS` table in `code/absorb/params.py`, and
 `ln B` moves one-for-one with the logarithm of their product. Nothing in the
 data fixes any of them: `eps` is a fraction, so `[0,1]` is forced, but the four
 decades of `log10_xi` and the range `z_act in [0.3, 30]` are conventions.
@@ -231,11 +277,32 @@ maximum-likelihood point found in M3 sits at `log10_xi = 1.0`, *outside* the
 narrowed box, so `p_B < 1` and the measured rise is a lower bound on how far
 `ln B` can be moved by a defensible change of prior.)
 
-**Measured, not argued.** I ran the narrowed prior through the same nested
-sampler (dynesty 3.1.0, `nlive=500`, `dlogz=0.1`, `bound='multi'`,
-`sample='rwalk'`, 2 workers, `/tmp/.../scratchpad/prior_variant.py`):
+**I tried to measure it, and the attempt is itself informative.** I ran the
+narrowed prior through the same nested sampler (dynesty 3.1.0, `nlive=500`,
+`dlogz=0.1`, `bound='multi'`, `sample='rwalk'`, 2 workers, same seed as the
+shipped run, `/tmp/.../scratchpad/prior_variant.py`):
 
-<!--PRIOR_VARIANT-->
+```
+  xi_h, prior as published   ln Z = -733.748 +/- 0.207   (shipped run)
+  xi_h, prior as published   ln Z = -734.692 +/- 0.212   (my replicate, M6)
+  xi_h, log10_xi and z_act halved
+                             ln Z = -733.831 +/- 0.209
+                             ln(V_new/V_old) = -1.3863
+```
+
+The narrowed run sits `+0.861` above my own full-prior replicate and `-0.083`
+below the shipped one. In other words **the between-run scatter of `ln Z` (M6,
+0.94) is the same size as the entire prior effect being tested**, and this
+experiment cannot resolve the two. The rigorous statement survives regardless:
+the identity bounds the movement at `ln p_B + 1.386 <= 1.386`, so a factor-two
+change in two prior ranges can move `ln B` by up to `1.4`, comparable to
+`|ln B| = 1.6` itself; and the observed near-zero shift means either
+`p_B ~ 0.25` (a quarter of the posterior mass lies in the narrowed box, which is
+plausible since the best-fit basin at `log10_xi = 1.0` is excluded from it) or
+the sampler noise dominates. `prior_sensitivity.py` separates those two cleanly,
+because it gets `p_B` from the *same* run's samples and so cancels the sampler
+noise exactly — which is the whole point of writing it that way, and is another
+reason it should be run.
 
 **The Method subsection states the opposite of the truth.** Section 10.2 says
 "Priors are uniform and identical across models wherever a parameter is shared,
@@ -271,7 +338,7 @@ of 0.86 between the two best fits) is the robust one and should lead.
 
 ### M3. The `Delta chi2` column of Table 1 mixes three incompatible maximisers, prints an impossible number, and understates the model's best fit by a factor of two.
 
-**Location**: `paper/generated/tab_comparison.tex`; `scripts/gen_tables.py:108-117`;
+**Location**: `paper/generated/tab_comparison.tex`; `scripts/gen_tables.py`, `chi2_of()`;
 `scripts/run_map.py` (never run — `results/map.json` absent).
 
 The committed table reads
@@ -294,8 +361,7 @@ $ OMP_NUM_THREADS=1 PYTHONPATH=code python3 -c "...(see certification C5)..."
 `results/map.json` missing, LambdaCDM and `xi_h` take their `chi2_min` from
 `results/results.json` (a Nelder-Mead polish of an ensemble chain) while
 `reinforce` and `memory` take theirs from `results/evidence.json` (dynesty's
-best *sample*, which is not a maximum). The code comment at
-`gen_tables.py:105-108` says this in as many words and `run_map.py` exists to
+best *sample*, which is not a maximum). The code comment just above `chi2_of()` says this in as many words and `run_map.py` exists to
 fix it; it has simply not been run.
 
 **No maximiser in this repository has ever found the `xi_h` best fit.** Starting
@@ -365,6 +431,19 @@ per-run error and 3.2 combined `sigma`. `ln B` moves from `-1.60` (odds 4.9:1
 against) to `-2.46` (odds 11.6:1), i.e. the odds change by a factor of 2.4, and
 the shipped error bar `+/- 0.28` does not cover it.
 
+Changing the sampler's geometry as well as its seed (`bound='single'`,
+`sample='unif'`, seed 999) gives a third LambdaCDM value:
+
+```
+  lcdm, multi/rwalk, seed 20260909   -732.152 +/- 0.195   164982 evals
+  lcdm, multi/rwalk, seed 12345      -732.237 +/- 0.196   164719 evals
+  lcdm, single/unif, seed 999        -732.477 +/- 0.198    30220 evals
+```
+
+a spread of `0.325` across three runs of a well-behaved 3-parameter posterior,
+1.7 times the quoted error. So even the reference row of Table 1 is only good to
+about `0.2`-`0.3`, before the extension's `0.94` is taken into account.
+
 **The mechanism is visible in the same output.** Both runs report a best live
 point far from the model's actual maximum:
 
@@ -396,14 +475,15 @@ live point approaches the maximum found by `run_map.py` (M3) before trusting
 
 ### M4. Section 10 promises four analyses that no results file contains.
 
-**Location**: `paper/sections/10_observations.tex` lines 25-26, 41-43, and the
-closing paragraph; `code/absorb/datasets.py:20-30`.
+**Location**: `paper/sections/10_observations.tex`, Sec. 10.1 and the closing
+paragraph of Sec. 10.4; `appF_numerics.tex`, end of the Likelihoods subsection;
+`code/absorb/datasets.py` module docstring and `_fs8`.
 
 The section states, in order: "a variant including it [the SH0ES calibration] is
 reported separately"; "the late-time-only combination is reported alongside so
 the reader can see what the compressed likelihood is doing"; "Users who prefer
 to avoid the compressed likelihood can run the late-time-only combination, which
-is reported alongside" (`appF_numerics.tex:110-112`); and "the third [a Bayesian
+is reported alongside" (`appF_numerics.tex`, Likelihoods subsection); and "the third [a Bayesian
 evidence robust to prior choice] is reported with its prior sensitivity".
 
 ```
@@ -414,7 +494,7 @@ $ grep -o "nocmb\|__shoes\|__rsd\|bao_only" results/*.json | sort -u
 Every entry in `results/evidence.json`, `results/profile.json` and
 `results/results.json` is `__baseline`. `datasets.build` supports `shoes`,
 `nocmb`, `rsd` and `bao_only`; none has been run. Separately,
-`code/absorb/datasets.py:26` states "Section 10 reports the result both ways"
+`code/absorb/datasets.py`'s `_fs8` docstring states "Section 10 reports the result both ways"
 about holding `sigma_8` fixed in the RSD combination; Section 10 does not
 mention RSD at all.
 
@@ -424,9 +504,10 @@ not.
 
 ### M5. The constancy of the sound-horizon calibration factor `KAPPA_RS` is asserted, never tested, and the test that exists tests something else.
 
-**Location**: `code/absorb/early.py:290-360` (`recipe_offsets`, `kappa_rs`);
-`paper/sections/10_observations.tex` lines 45-50;
-`appF_numerics.tex:103-109`.
+**Location**: `code/absorb/early.py`, `recipe_offsets()` / `kappa_rs()`;
+`paper/sections/10_observations.tex`, the "Third, our semi-analytic recipe..."
+paragraph of Sec. 10.1; `appF_numerics.tex`, "One caveat is disclosed rather
+than buried".
 
 The argument is that the ~0.2% mismatch between the module's integrated sound
 horizon and a Boltzmann calculation "is a property of the recipe, not of the
@@ -470,10 +551,13 @@ covers, it is of order a per cent, i.e. tens of sigma of `l_A`.
 
 I state the caveat plainly: this probe cannot separate the drift of the module's
 integrator from the drift of EH98's own `z_drag` fit, so it does not by itself
-convict the code. It does show the constancy assumption is a testable statement
-that has not been tested, and that the CMB term is the single most constraining
-element of the baseline (`chi2 = 0.006` at the Planck point, versus 30.7 for
-BAO — see m8).
+convict the code. What it does show is that the constancy of `kappa` is a
+testable statement that has not been tested. That matters here more than it
+would elsewhere, because the compressed CMB term is what pins the geometry:
+`l_A` is measured to 0.03%, and refitting from the Planck point moves the CMB
+`chi2` from `0.006` to `2.95` while buying back `18.5` in BAO (m8). A systematic
+of `0.2 sigma` in `l_A` that varies with `omega_c` sits directly on top of the
+`Delta chi2 = 1.6` that the whole model comparison turns on.
 
 A second, related and cleanly measurable point: `DesiBAOLikelihood.method` is
 hard-wired to `"aubourg"` and the alternative implemented next to it is never
@@ -501,7 +585,7 @@ a test that fails if `kappa` evaluated at the edges of the `omega_c` prior moves
 
 ### m1. The reported `chi2` is not a `chi2`: it carries the `+9.325` Jacobian of the `M_B` marginalisation.
 
-`likelihoods.py:150` adds `log(E0 / 2 pi)` to the supernova `chi2`, which is
+`PantheonLikelihood.chi2` adds `log(E0 / 2 pi)` to the supernova `chi2`, which is
 correct as `-2 log L` and is documented. Measured:
 
 ```
@@ -516,7 +600,7 @@ and that only differences are meaningful.
 
 ### m2. `chi2_at_zero` in `results/profile.json` is a `Delta chi2`, not a `chi2`.
 
-`run_profile.py:169` writes it after `chi2 -= chi2.min()`. Referee B raised this
+`profile()` writes it after `chi2 -= chi2.min()`. Referee B raised this
 in m10; it is still there. Stored value `0.8592`; the actual `chi2` at `eps = 0`
 is `1436.5161`.
 
@@ -537,7 +621,8 @@ Rewrite 10.2 to say what was actually done for which model.
 
 ### m5. `check_numbers.py` is blind to numbers written in maths mode, which is where the hand-typed ones were.
 
-When I began this review `10_observations.tex:154` read "acceptance $0.44$,
+When I began this review the paragraph "One chain is quoted from and three are
+not" read "acceptance $0.44$,
 length $157$ autocorrelation times", both hand-typed results (the macro for the
 first is `0.4386`; the second is `2000 / 12.7271 = 157.1` computed by hand from
 two other macros). Both were replaced by macros during the review, and the
@@ -545,7 +630,7 @@ appendix's opening paragraph was rewritten to exempt "round figures used for
 orientation". The hole in the gate that let them through is still open, and one
 number is still in it:
 
-- `appF_numerics.tex:34`: "One background solve costs about $11$~ms." That is a
+- `appF_numerics.tex`, Background integration subsection: "One background solve costs about $11$~ms." That is a
   measurement of this code, not a round figure from the literature, and it is
   model-dependent. Measured here single-threaded (with three other jobs on a
   16-core machine, so if anything an over-estimate):
@@ -556,13 +641,13 @@ number is still in it:
 ```
 
   `11 ms` is neither. The same paragraph's corollary in
-  `likelihoods.py:16-22` — "makes the supernova term cheap enough that the
+  the `likelihoods.py` module docstring — "makes the supernova term cheap enough that the
   sampler is dominated by the background integration rather than by linear
   algebra" — is true for `xi_h` (15 of 30 ms) and false for LambdaCDM (1.1 of
   4.2 ms). Worker sizing and runtime estimates elsewhere rest on the 11 ms
   figure.
 
-The gate cannot catch this: `check_numbers.py:70` applies `MATH.sub(" ", text)`
+The gate cannot catch this: `check_numbers.py` applies `MATH.sub(" ", text)`
 before scanning, so anything inside `$...$` is invisible; `DECIMAL =
 \d+\.\d+` never matches an integer; and `0.44` sits on
 `docs/NUMBERS_WHITELIST.txt` as a `tabular` column width, so it would have been
@@ -571,7 +656,7 @@ or say in the appendix that the gate covers prose only.
 
 ### m6. The cosmic-chronometer covariance recipe is not quite MM20's, and it does not matter — say so rather than leaving it unexamined.
 
-`data/cc.py:120` builds `C = diag(errHz^2) + C_IMF + C_mod_ooo`. The published
+`code/absorb/data/cc.py`, `load_cc()`, builds `C = diag(errHz^2) + C_IMF + C_mod_ooo`. The published
 `errHz` is *not* the MM20 statistical error: it already contains the metallicity
 term, and not by simple quadrature.
 
@@ -597,7 +682,7 @@ prescription that is not exactly the one cited.
 
 ### m7. `profile_derived` solves the background twice per objective evaluation.
 
-`run_profile.py:78` calls `post(theta)` (one `Background`) and `:81`
+`profile_derived`'s inner `neg()` calls `post(theta)` (one `Background`) and then
 `derived_value(theta)` (a second `Background` from the same `theta`). The
 `maxfev = 4000` budget is therefore 2000 solves. Halving that cost is free and
 directly buys the convergence M1 asks for.
@@ -626,17 +711,17 @@ point, in the comparison table.
 
 ### m9. `run_profile.py`'s `lows`/`highs` omit nuisance parameters.
 
-`run_profile.py:61-62` and `:115-116` build the bounds from
+`run_profile.py` builds the bounds in both `profile_derived` and `profile` from
 `post.model.priors()` only, not `_priors_of(post)`. Harmless while
 `nuisance = ()`, a silent index bug the moment one is added. Referee B raised it
 in m10; still present.
 
 ### m10. "Less than about one and a half per cent".
 
-`10_observations.tex:134-135` glosses `Delta < 0.0126` as "less than about one
-and a half per cent of the critical density". 0.0126 is 1.26%. Rounding up is
-the conservative direction, but the rounding should not be done in prose at all
-(see m5).
+Section 10.3 glosses `Delta < 0.0126` as "less than about one and a half per
+cent of the critical density". 0.0126 is 1.26%; my corrected limit (M1) is
+1.10%. Rounding up is the conservative direction, but this is a result being
+rounded in prose, which is what m5 is about.
 
 ### m11. `RSDLikelihood` and three of the five dataset combinations are unexercised code.
 
@@ -650,28 +735,22 @@ but nothing tests it against a result.
 `docs/review/RESPONSE_r2.md` reports "**57.1%** land outside the prior box at the
 default scale (referee: 56.2%)". `results/chain_diagnostics.json`
 `xi_h_baseline_demove_frozen.outside_prior_fraction = 0.56225`, and that is what
-`appF_numerics.tex:133` will print. The letter asserts a measurement the archived
-results file does not contain.
+the macro in Appendix F will print. The letter asserts a measurement the
+archived results file does not contain; if the 57.1% came from a different
+replay (a different seed or step scale), say which, because the manuscript will
+print 0.562.
 
 ---
 
 ## Questions the authors must answer
 
 **Q1.** Is `logzerr` at `dlogz = 0.1` a fair estimate of the run-to-run scatter
-of `ln Z`? I replicated the LambdaCDM run with an independent seed and the same
-settings (`nlive=500`, `dlogz=0.1`, `bound='multi'`, `sample='rwalk'`, 2
-workers):
-
-No, not for the extended models. See M6 for the numbers: LambdaCDM reproduces
-to 0.43 of its quoted error, `xi_h` misses by 4.5 times its quoted error, and
-`ln B` shifts by 0.86. Report a replicate for every row of Table 1, or state
-that the quoted error is dynesty's within-run estimate and not a measured
-scatter. A run with `bound='single'`, `sample='unif'` was still in progress when
-this report was written; whether the method choice matters *more* than the seed
-is the natural follow-up and the authors should measure it.
-
-Report a replicate for every row of Table 1, or state that the quoted error is
-dynesty's `sqrt(H/nlive)` estimate and not a measured scatter.
+of `ln Z`? No, not for the extended models — see M6. LambdaCDM reproduces to
+0.43 of its quoted error under a seed change and to 1.7 times it under a change
+of bounding/sampling method; `xi_h` misses by 4.5 times its quoted error under a
+seed change alone, and `ln B` shifts by 0.86. Report a replicate for every row
+of Table 1, or state plainly that the quoted error is dynesty's within-run
+`sqrt(H/nlive)`-type estimate and not a measured scatter.
 
 **Q2.** `run_nested.py`'s docstring justifies `dlogz = 0.1` as chosen "so that
 the error on a difference of two evidences stays well below the scale that would
@@ -681,7 +760,7 @@ error on `ln B` is `0.28`-`0.30` before the between-run scatter of M6 is added.
 Please separate the two concepts in the docstring and in the appendix.
 
 **Q3.** `R = sqrt(omega_m) D_M(z_*) H_100 / c` is evaluated with the
-*pre-activation* `omega_m` (`likelihoods.py:253`). In LambdaCDM, where the Chen,
+*pre-activation* `omega_m` (`PlanckPriorLikelihood.model`). In LambdaCDM, where the Chen,
 Huang & Wang compression was derived, `omega_m` at recombination and today are
 the same number; in this model they differ by `Delta`. Which of the two does the
 compressed `R` actually constrain, and what is the induced error? A one-line

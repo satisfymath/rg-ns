@@ -118,5 +118,13 @@
     "mem_available_before_mb": 8470.5625,
     "mem_available_after_mb": 8211.24609375,
     "notes": "nlive=500"
+  },
+  {
+    "name": "nested_xi_h__baseline",
+    "seconds": 872.1482572555542,
+    "peak_rss_mb": 3917.47265625,
+    "mem_available_before_mb": 8211.24609375,
+    "mem_available_after_mb": 8174.3046875,
+    "notes": "nlive=500"
   }
 ]
