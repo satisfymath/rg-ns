@@ -48,6 +48,7 @@ from absorb.resources import record, require_workers            # noqa: E402
 from absorb.sampling import Posterior, WORKER_RSS_MB            # noqa: E402
 
 RESULTS = ROOT / "results" / "evidence.json"
+SAMPLE_DIR = ROOT / "results" / "posteriors"
 
 _POST: Posterior | None = None
 
@@ -88,6 +89,15 @@ def run(model: str, dataset: str, *, nlive: int, dlogz: float, seed: int,
     logzerr = float(res.logzerr[-1])
     samples = res.samples_equal(rstate=np.random.default_rng(seed))
     chi2_min = float(-2.0 * res.logl.max())
+
+    # Equal-weight posterior samples, for the figures and the parameter table.
+    # These replace the ensemble chains, which for these models were not fit to
+    # quote from; see docs/review/RESPONSE_r2.md.
+    SAMPLE_DIR.mkdir(parents=True, exist_ok=True)
+    np.savez_compressed(SAMPLE_DIR / f"{model}_{dataset}.npz",
+                        samples=samples, logl=res.logl,
+                        param_names=np.array(_POST.param_names))
+
     return dict(model=model, dataset=dataset, ndim=ndim, nlive=nlive,
                 dlogz_target=dlogz, logz=logz, logz_err=logzerr,
                 chi2_min=chi2_min, n_eval=int(res.ncall.sum()),

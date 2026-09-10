@@ -54,6 +54,26 @@ def camel(path: str) -> str:
     return out
 
 
+#: Default ``.4g`` is right for most quantities and badly wrong for a few.  A
+#: log-evidence of -732.152 becomes "-732.2", and a chi-square of 1436.5179
+#: becomes "1437"; both are quoted as *differences* between models, where the
+#: interesting digits are the ones ``.4g`` throws away.  Keyed by the last
+#: component of the results path.
+FORMATS = {
+    "logz": ".3f",
+    "logz_err": ".3f",
+    "ln_bayes_vs_lcdm": ".2f",
+    "ln_bayes_err": ".2f",
+    "chi2_min": ".4f",
+    "chi2_spread": ".4f",
+    "chi2_at_zero": ".3f",
+    "limit_95": ".4f",
+    "max_delta_chi2": ".1f",
+    "worst_identity_residual": ".2e",
+    "bounded_suppression": ".1f",
+}
+
+
 def fmt(value, spec: str | None = None) -> str:
     if isinstance(value, bool):
         return r"\text{true}" if value else r"\text{false}"
@@ -62,6 +82,12 @@ def fmt(value, spec: str | None = None) -> str:
     if isinstance(value, float):
         return f"{value:{spec}}" if spec else f"{value:.4g}"
     return str(value)
+
+
+def _tail(prefix: str) -> str:
+    """Longest registered FORMATS key that ``prefix`` ends with."""
+    return next((k for k in sorted(FORMATS, key=len, reverse=True)
+                 if prefix.endswith(k)), "")
 
 
 def walk(node, prefix: str, out: dict[str, str]) -> None:
@@ -75,7 +101,8 @@ def walk(node, prefix: str, out: dict[str, str]) -> None:
         for k, v in node.items():
             walk(v, f"{prefix}_{k}" if prefix else k, out)
     elif isinstance(node, (int, float, str, bool)):
-        out[camel(prefix)] = fmt(node)
+        out[camel(prefix)] = fmt(node, FORMATS.get(prefix.rsplit("_", 1)[-1])
+                                 or FORMATS.get(_tail(prefix)))
 
 
 def collect() -> dict[str, str]:
