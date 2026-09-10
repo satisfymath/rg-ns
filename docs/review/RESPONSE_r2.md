@@ -341,3 +341,126 @@ invoked with no reference; Tipler (1977) and Clarke–Królak (1985) are added,
 verified against Crossref. The "no number typed by hand" guarantee is narrowed
 to what the build actually enforces, and the numbers that motivated the
 narrowing are now generated instead.
+
+
+---
+
+## Referee D (observational cosmology and statistics)
+
+Six majors, twelve minors, recommendation major revision, and fourteen items
+certified as unbroken. The report's own summary of where it leaves the paper is
+the fairest statement of it:
+
+> "The paper's qualitative conclusion --- nothing requires conversion ---
+> survives every attack; only the numbers attached to it fail."
+
+We accept that and have acted on it. Everything below we reproduced
+independently before changing anything, and in one case our own attempt at a
+cheap verification failed its own test and was discarded rather than reported.
+
+### M1. The deficit limit was not a profile value
+
+**Agreed, and found independently.** We had already diagnosed the same defect
+from the other end --- the constrained fits were not satisfying their
+constraint, because a quadratic penalty of `1e6` on a quantity of order `1e-2`
+contributes about 1 to chi-square for a ten per cent miss. The referee adds the
+detail that `np.interp` was then called on a non-monotone `xp`, which pinned
+the answer to a grid node.
+
+The constraint is now imposed exactly, by solving for `eps` at each candidate
+point, and the recomputed profile hits every target to a relative `8e-11` with
+**zero** decreasing steps. Our corrected limit is **`Delta < 0.0101`**; the
+referee, re-running independently, gets `0.0110`. The difference is grid and
+optimiser detail and both replace the `0.0126` that was published. We also
+confirm their finding that the minimum is interior, at `Delta ~ 0.003`, with
+`Delta = 0` disfavoured by `Delta chi2 = 1.52` (referee: 1.60).
+
+### M3. No maximiser in the repository had found the best fit
+
+**Confirmed to four decimals.** An independent search --- forty random starts,
+winner polished repeatedly --- gives `chi2 = 1434.8789` against the referee's
+`1434.880`, and `Delta chi2 = -1.6372` against their `-1.636`. The printed
+`-0.82` is wrong and the extension fits **twice as well** as the paper claimed.
+
+Our own "one maximisation protocol", written in response to referee B, was
+among the maximisers that failed: it returned `1435.807` and reported a spread
+over restarts of `1.04`, which is larger than the chi-square difference the
+comparison is about. The diagnostic caught it; the budget was too small. It now
+runs forty starts with iterated polishing and records how many independent
+starts reached the answer.
+
+One addition of ours. The maximum is **attained on two prior boundaries**:
+`log10_xi` at the top of its range and `omega_V_act` at the bottom of its own,
+so the preferred model converts hard and begins with almost no vacuum.
+Chi-square continues to fall past the rate boundary, though only by `0.065`
+over two further decades, so it is a plateau rather than a runaway --- but the
+reported maximum is a boundary value and the paper now says so.
+
+### M6. The evidence is not reproducible for the extended models
+
+**Accepted, and it corrects a claim of ours.** We had checked reproducibility on
+LambdaCDM, found `0.47 sigma`, and reported that as validating the error bar.
+That was the easy case. The referee tested the model that matters and finds
+`xi_h` shifting by `0.944` between seeds, `4.5` times its quoted per-run error,
+moving `ln B` from `-1.60` to `-2.46`. Their diagnosis of the mechanism is
+supported by their own output: neither nested run reaches the true maximum,
+missing it by about `1.4` in chi-square and by different amounts. It is the
+curved degeneracy that froze the ensemble chains; nested sampling fails at it
+more quietly.
+
+A three-seed scatter measurement on `xi_h`, not on LambdaCDM, is running.
+
+### M2. Prior sensitivity is larger than `ln B`, and had never been computed
+
+**Accepted.** The section promised it and no results file contained one,
+because `results/posteriors/` did not exist until the samples began to be
+saved. It exists now.
+
+Our first attempt to check the referee's *widening* result was wrong and is
+recorded as such. Rather than re-run the sampler we tried to add the widened
+slab with a prior Monte Carlo, and got the opposite sign. Testing the estimator
+instead of believing it: the single best draw of two thousand carried **100 per
+cent** of the sum and the answer scattered by **26 in the log** across four
+seeds. That is an estimate of the maximum of a sample, not of an integral. The
+numbers are discarded, the reason is recorded in the script so the shortcut is
+not tried again, and the measurement is queued the only way that works, at
+three prior widths and two seeds each.
+
+The narrowing direction we can report: centred on the posterior median,
+shrinking every unidentified direction by a factor of two moves `ln B` by about
+one unit.
+
+### M5. The sound-horizon calibration
+
+**Measured.** The two `r_drag` recipes do diverge by about a per cent across
+the `omega_c` prior, as reported. At both best-fit cosmologies they agree to
+better than `0.05` per cent, and switching recipes moves the chi-square
+difference the comparison turns on by `0.14`. A test now holds both facts, so
+the agreement is on the record as a statement about where the fit lives rather
+than about the formulae.
+
+### M4. Promised analyses that no results file contained
+
+**Accepted; three of the four now exist.** Prior sensitivity is computed; the
+growth combination is run --- see below; the reverse channel is fitted. The
+SH0ES and late-time-only variants are not, and the section no longer promises
+them.
+
+### The growth comparison, which answers referee E's seventh question too
+
+The fσ8 likelihood, the eBOSS data and a dataset combination including them had
+been implemented and never run. Run: `ln B = -1.83` with the growth data
+included, against `-1.61` without. The model's sharpest linear prediction,
+confronted with the growth data that exist, does not improve its standing and
+slightly worsens it. That is a measurement rather than the disclaimer we would
+otherwise have written.
+
+### Where this leaves the headline
+
+Combining the referee's seed scatter with the prior dependence, `ln B` carries
+an uncertainty of order one from each, on top of a central value near `-1.6`.
+The qualitative conclusion is unchanged and is the one the paper leads with:
+nothing in this data combination requires conversion. What is no longer
+defensible is quoting `ln B` to two decimal places, or describing the
+preference as though it were measured to `0.29`. The manuscript is being
+changed to say that.
