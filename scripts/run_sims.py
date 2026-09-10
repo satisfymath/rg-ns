@@ -147,9 +147,47 @@ def run_symbolic() -> dict:
     return {"n_checks": {"value": len(checks), "fmt": "d"}}
 
 
+def merge_pancake(data: dict) -> dict:
+    """Fold the caustic experiments into the results file, if they have run.
+
+    Only the handful of numbers the manuscript quotes are promoted; the rest
+    stay in results/pancake.json for inspection.
+    """
+    src = ROOT / "results" / "pancake.json"
+    if not src.exists():
+        print("pancake: results/pancake.json not present, skipping")
+        return data
+    pk = json.loads(src.read_text())
+    def grab(case, key, fmt=".4g"):
+        return {"value": float(pk[case][key]), "fmt": fmt}
+    out = {}
+    if "A_none" in pk:
+        out["control_exponent"] = grab("A_none", "exp_rho_I_near", ".4f")
+        out["control_peak"] = grab("A_none", "centre_rho_I", ".4g")
+    if "B_cosmo" in pk:
+        out["bounded_exponent"] = grab("B_cosmo", "exp_rho_I_near", ".4f")
+        out["bounded_peak"] = grab("B_cosmo", "centre_rho_I", ".4g")
+        out["bounded_suppression"] = {
+            "value": float(pk["A_none"]["centre_rho_I"]
+                           / pk["B_cosmo"]["centre_rho_I"]), "fmt": ".4g"}
+    for tag, label in (("C_collapse_k0p5", "kappa_half"),
+                       ("C_collapse_k1p5", "kappa_onepointfive"),
+                       ("C_collapse_k3p0", "kappa_three")):
+        if tag in pk:
+            out[f"{label}_exponent"] = grab(tag, "exp_rho_I_near", ".4f")
+    if "A_none" in pk:
+        out["dust_residual"] = {
+            "value": max(v["dust_residual"] for v in pk.values()), "fmt": ".2e"}
+        out["final_gap"] = grab("A_none", "final_gap", ".1e")
+    data["pancake"] = out
+    print(f"pancake: promoted {len(out)} numbers")
+    return data
+
+
 def main() -> int:
     SIMS.mkdir(parents=True, exist_ok=True)
     data = load()
+    data = merge_pancake(data)
     data["skyrme"] = run_skyrme()
     data["hysteresis"] = run_hysteresis()
     data["convergence"] = run_convergence()

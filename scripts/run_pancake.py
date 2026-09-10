@@ -54,10 +54,21 @@ def summarise(r) -> dict:
         "column_rho_D": float(r.column_rho_D[-1]),
         "integral_V": float(r.integral_V[-1]),
     }
-    # mass bookkeeping: dust lost must equal vacuum gained when b = 0
-    dust0 = float(r.total_mass[0])
-    out["mass_residual"] = abs(
-        (float(r.total_mass[-1]) + out["integral_V"]) - dust0) / dust0
+    # Conservation.  There is no conserved "dust mass plus vacuum integral":
+    # the vacuum is not diluted by the flow, so adding its integral to a
+    # comoving dust mass compares quantities carried by different measures.
+    # What is exact, per sheet, is the pair of survival identities
+    #     rho_I |J| = rho_I(0) (1 - f),     rho_D |J| = b rho_I(0) f,
+    # whose sum is the comoving dust (1 - f) + b f.  Those are the residuals
+    # reported.  The relative form of the first is dominated by catastrophic
+    # cancellation wherever f -> 1, so it is quoted in absolute terms.
+    J = np.abs(r.final["J"])
+    f = r.final["f"]
+    b = r.params.b
+    out["survival_residual"] = float(np.max(np.abs(r.final["rho_I"] * J - (1.0 - f))))
+    out["defect_residual"] = float(np.max(np.abs(r.final["rho_D"] * J - b * f)))
+    out["dust_residual"] = float(np.max(np.abs(
+        (r.final["rho_I"] + r.final["rho_D"]) * J - ((1.0 - f) + b * f))))
     for tag, (lo, hi) in {"far": (1e-3, 1e-2), "near": (1e-5, 1e-4)}.items():
         out[f"exp_rho_I_{tag}"] = fit_exponent(s, np.asarray(r.centre_rho_I), lo, hi)
         out[f"exp_rho_D_{tag}"] = fit_exponent(s, np.asarray(r.centre_rho_D), lo, hi)
@@ -116,10 +127,10 @@ def main() -> int:
 
     OUT.write_text(json.dumps(res, indent=2, sort_keys=True))
     print(f"\n{'case':22s} {'centre rho_I':>13} {'exp near':>9} {'centre V':>10} "
-          f"{'<f>':>7} {'mass resid':>11}")
+          f"{'<f>':>7} {'dust resid':>11}")
     for k, v in res.items():
         print(f"{k:22s} {v['centre_rho_I']:13.4e} {v['exp_rho_I_near']:+9.3f} "
-              f"{v['centre_V']:10.4f} {v['mean_f']:7.4f} {v['mass_residual']:11.2e}")
+              f"{v['centre_V']:10.4f} {v['mean_f']:7.4f} {v['dust_residual']:11.2e}")
     print(f"\nwrote {OUT.relative_to(ROOT)}")
     return 0
 

@@ -48,16 +48,22 @@ def fig_pancake() -> Path | None:
     a1.invert_xaxis()
     a1.legend(fontsize=7.5, loc="lower left")
 
-    d = data.get("C_collapse_k1p5") or data["B_cosmo"]
-    if d is not None:
-        a2.plot(d["q"], d["final_f"], color=COLORS["model"], lw=1.4,
-                label="converted fraction")
-        a2.plot(d["q"], np.clip(np.abs(d["final_J"]), 1e-8, None),
-                color=COLORS["grey"], lw=1.0, ls="--", label=r"$|J|$")
-        a2.set_yscale("log")
-        a2.set_xlabel(r"Lagrangian coordinate $q$")
-        a2.set_ylabel("profile at the final time")
-        a2.legend(fontsize=7.5, loc="lower right")
+    # Right panel: where the density sits at the final time.  Plotted against
+    # the Jacobian rather than the coordinate, because |J| is what measures
+    # proximity to the caustic and spans six decades across the sheet.
+    for tag, label, colour, ls in cases:
+        d = data[tag]
+        if d is None:
+            continue
+        J = np.abs(d["final_J"])
+        rho = d["final_rho_I"]
+        order = np.argsort(J)
+        m = (J[order] > 0) & (rho[order] > 0)
+        a2.loglog(J[order][m], rho[order][m], color=colour, ls=ls, lw=1.5,
+                  label=label)
+    a2.set_xlabel(r"$|J|$  (smaller is nearer the caustic)")
+    a2.set_ylabel(r"$\rho_I$ at the final time")
+    a2.legend(fontsize=7, loc="lower right")
     fig.tight_layout()
     return save_figure(fig, "pancake")
 

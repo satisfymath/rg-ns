@@ -30,5 +30,13 @@
     "mem_available_before_mb": 2738.12890625,
     "mem_available_after_mb": 2946.24609375,
     "notes": "sheet refinement, control mode"
+  },
+  {
+    "name": "pancake_suite",
+    "seconds": 708.2172186374664,
+    "peak_rss_mb": 43.7421875,
+    "mem_available_before_mb": 2915.59765625,
+    "mem_available_after_mb": 2193.92578125,
+    "notes": "N=16384, 25000 graded steps"
   }
 ]
