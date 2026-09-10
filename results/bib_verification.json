@@ -331,5 +331,23 @@
     "identifier": "arXiv:2511.07517",
     "fetched_title": "The Dark Energy Survey Supernova Program: A Reanalysis Of Cosmology Results And Evidence For Evolving Dark Energy With An Updated Type Ia Supernova Calibration",
     "author_ok": true
+  },
+  {
+    "key": "tipler1977_singularities",
+    "status": "OK",
+    "score": 1.0,
+    "source": "inspire",
+    "identifier": "doi:10.1016/0375-9601(77)90508-4",
+    "fetched_title": "Singularities in conformally flat spacetimes",
+    "author_ok": true
+  },
+  {
+    "key": "clarke1985_strongcurvature",
+    "status": "OK",
+    "score": 0.992,
+    "source": "crossref",
+    "identifier": "doi:10.1016/0393-0440(85)90012-9",
+    "fetched_title": "Conditions for the occurence of strong curvature singularities",
+    "author_ok": true
   }
 ]
