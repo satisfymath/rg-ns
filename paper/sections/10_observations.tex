@@ -66,8 +66,14 @@ not appear in the background separately from the combination $\epsilon$
 (\cref{prop:ide-map}) and cancels identically from linear growth
 (\cref{thm:b-independence}); it is therefore held fixed. And the memory
 parameters enter the jerk only through a factor degenerate with the rate
-normalisation (\cref{thm:memory-fingerprint}), so they are constrained by the
-shape of the expansion history rather than by its low-order derivatives.
+normalisation (\cref{thm:memory-fingerprint}), so any information about them
+must come from the shape of the expansion history rather than from its
+low-order derivatives. The posterior says there is none: of the nine sampled
+parameters of the full model, five have a $5$--$95$ range covering more than
+seventy per cent of their prior, and the two memory parameters are among them
+at $75\%$ and $87\%$. They are not measured here, and \cref{tab:parameters}
+should be read as a statement about which directions the data leave open rather
+than as a measurement of nine numbers.
 
 \subsection{Results}\label{sec:observations-results}
 
@@ -182,6 +188,43 @@ reason given in the caption, and both of their errors happened to favour the
 conclusion we were drawing. The result is a null one either way and is reported
 as such: nothing in this data combination requires conversion, and the model's
 free parameters are bounded rather than measured.
+
+\paragraph{How much of that is the prior.} Enough to matter, and the reason is
+structural rather than a matter of taste. The extension contains $\LCDM$ in two
+distinct ways: exactly, on the face $\epsilon=0$, and asymptotically, as the
+rate goes to zero at any $\epsilon$. The second means the region of parameter
+space in which the two models are observationally indistinguishable is
+unbounded below in $\log_{10}\xi$, so how much prior mass is assigned to it is a
+choice and not a datum. Widening that prior adds volume where the likelihood
+equals $\LCDM$'s, and the evidence rises. Measured, with two seeds at each
+width:
+
+\begin{center}
+\begin{tabular}{lrr}
+  \toprule
+  Prior on $\log_{10}\xi$ & $\ln B$ & odds against \\
+  \midrule
+  $[-3,1]$ (baseline) & $\numWidthLnBayesBaseline$ & $\numWidthOddsBaseline$:1 \\
+  $[-5,1]$            & $-0.80$ & $2.2$:1 \\
+  $[-7,1]$            & $\numWidthLnBayesWidest$ & $\numWidthOddsWidest$:1 \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+The range is $\numWidthLnBayesRange$ in $\ln B$, comparable to $\ln B$ itself.
+The verdict does not change sign anywhere in it --- $\LCDM$ is preferred under
+every prior we would defend --- but its strength is not determined by the data.
+That is a property of comparisons in which one model reaches the other as a
+limit over an unbounded range of a logarithmic parameter, and it is the reason
+this section reports the preference as modest and declines to quote $\ln B$ to
+two decimal places.
+
+By contrast the sampler's own noise is small: three independent seeds at the
+baseline prior give $\ln Z$ values whose standard deviation is
+$\numRepeatXiHBaselineLogzSpread$ against a reported error of
+$\numRepeatXiHBaselineLogzReportedError$, a ratio of
+$\numRepeatXiHBaselineRatioSpreadToReported$. The uncertainty in the comparison
+is the prior, not the sampling.
 
 Two features of the table are worth more than the headline. Adding parameters
 buys almost nothing: the nine-parameter model with memory is no better placed

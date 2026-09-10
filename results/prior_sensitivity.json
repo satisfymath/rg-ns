@@ -1,41 +1,125 @@
 {
-  "xi_h__baseline": {
+  "memory__baseline": {
     "about": "posterior",
     "dataset": "baseline",
-    "ln_bayes_full_prior": -1.6119663689116805,
-    "ln_bayes_span": 2.9320267387203103,
-    "ln_bayes_span_usable": 0.9706124031290528,
-    "model": "xi_h",
+    "ln_bayes_full_prior": -2.099937079071765,
+    "ln_bayes_span": Infinity,
+    "ln_bayes_span_usable": 1.4442294740280204,
+    "model": "memory",
     "rows": [
       {
-        "err": 0.2862415979651169,
-        "ln_bayes": -1.6119663689116805,
-        "logz": -733.8946368083507,
-        "n_in_box": 9608,
+        "err": 0.28611949381993756,
+        "ln_bayes": -2.099937079071765,
+        "logz": -734.3826075185108,
+        "n_in_box": 9724,
         "shrink": 1.0,
         "trustworthy": true
       },
       {
-        "err": 0.2898757917971712,
-        "ln_bayes": -2.5825787720407334,
-        "logz": -734.8652492114797,
-        "n_in_box": 455,
+        "err": 0.2886422031455219,
+        "ln_bayes": -0.6557076050437445,
+        "logz": -732.9383780444828,
+        "n_in_box": 644,
         "shrink": 0.5,
         "trustworthy": true
       },
       {
-        "err": 0.3134064694533053,
-        "ln_bayes": -2.5125607851384757,
-        "logz": -734.7952312245775,
-        "n_in_box": 61,
+        "err": NaN,
+        "ln_bayes": -Infinity,
+        "logz": -Infinity,
+        "n_in_box": 0,
+        "shrink": 0.25,
+        "trustworthy": false
+      },
+      {
+        "err": NaN,
+        "ln_bayes": -Infinity,
+        "logz": -Infinity,
+        "n_in_box": 0,
+        "shrink": 0.125,
+        "trustworthy": false
+      }
+    ]
+  },
+  "reinforce__baseline": {
+    "about": "posterior",
+    "dataset": "baseline",
+    "ln_bayes_full_prior": -2.154696910019652,
+    "ln_bayes_span": 2.175216859405964,
+    "ln_bayes_span_usable": 1.439510064427168,
+    "model": "reinforce",
+    "rows": [
+      {
+        "err": 0.28751398265633743,
+        "ln_bayes": -2.154696910019652,
+        "logz": -734.4373673494587,
+        "n_in_box": 9770,
+        "shrink": 1.0,
+        "trustworthy": true
+      },
+      {
+        "err": 0.288671382105668,
+        "ln_bayes": -1.3990603893670368,
+        "logz": -733.681730828806,
+        "n_in_box": 1300,
+        "shrink": 0.5,
+        "trustworthy": true
+      },
+      {
+        "err": 0.29794817704055415,
+        "ln_bayes": -0.7151868455924841,
+        "logz": -732.9978572850315,
+        "n_in_box": 161,
         "shrink": 0.25,
         "trustworthy": true
       },
       {
-        "err": 1.040110653955739,
-        "ln_bayes": -4.543993107631991,
-        "logz": -736.826663547071,
-        "n_in_box": 1,
+        "err": 0.36080601948500446,
+        "ln_bayes": 0.020519949386311964,
+        "logz": -732.2621504900527,
+        "n_in_box": 21,
+        "shrink": 0.125,
+        "trustworthy": false
+      }
+    ]
+  },
+  "xi_h__baseline": {
+    "about": "posterior",
+    "dataset": "baseline",
+    "ln_bayes_full_prior": -3.4953052955095245,
+    "ln_bayes_span": Infinity,
+    "ln_bayes_span_usable": 0.5885222294809864,
+    "model": "xi_h",
+    "rows": [
+      {
+        "err": 0.2873293940498957,
+        "ln_bayes": -3.4953052955095245,
+        "logz": -735.7779757349485,
+        "n_in_box": 1359,
+        "shrink": 1.0,
+        "trustworthy": true
+      },
+      {
+        "err": 0.2917024500554771,
+        "ln_bayes": -2.906783066028538,
+        "logz": -735.1894535054676,
+        "n_in_box": 306,
+        "shrink": 0.5,
+        "trustworthy": true
+      },
+      {
+        "err": 0.3630734712315938,
+        "ln_bayes": -3.555194352747094,
+        "logz": -735.8378647921861,
+        "n_in_box": 20,
+        "shrink": 0.25,
+        "trustworthy": false
+      },
+      {
+        "err": NaN,
+        "ln_bayes": -Infinity,
+        "logz": -Infinity,
+        "n_in_box": 0,
         "shrink": 0.125,
         "trustworthy": false
       }
