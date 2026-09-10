@@ -214,5 +214,13 @@
     "mem_available_before_mb": 12103.77734375,
     "mem_available_after_mb": 11698.02734375,
     "notes": "40 restarts"
+  },
+  {
+    "name": "map_xi_h__baseline",
+    "seconds": 900.5928785800934,
+    "peak_rss_mb": 603.328125,
+    "mem_available_before_mb": 11698.02734375,
+    "mem_available_after_mb": 10955.890625,
+    "notes": "40 restarts"
   }
 ]

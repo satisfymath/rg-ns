@@ -75,6 +75,13 @@ shape of the expansion history rather than by its low-order derivatives.
   \centering
   \input{generated/tab_comparison}
   \caption{Model comparison on the baseline combination, by Bayesian evidence.
+    The $\chisq_{\min}$ column is $-2\ln\mathcal L$ at the best fit, and
+    includes the Jacobian $\ln(\mathbf 1^{\mathsf T}\mathsf C^{-1}\mathbf
+    1/2\pi)=\numCheckMarginalisationJacobianBaseline$ of the analytic
+    marginalisation over the supernova absolute
+    magnitude. It is therefore not a $\chisq$ and a $\chisq$ per degree of
+    freedom formed from it would be wrong by that amount; only differences
+    between rows are meaningful, and the Jacobian cancels from them.
     Differences are taken with respect to $\LCDM$; $k$ is the number of sampled
     parameters and a negative $\ln B$ favours $\LCDM$. The information criteria
     are deliberately absent: at $\epsilon=0$ each extension reduces to $\LCDM$

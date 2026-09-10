@@ -181,6 +181,26 @@ def growth_signature(model: str = "xi_h", z: float = 2.0) -> dict:
     }
 
 
+def marginalisation_jacobian() -> dict:
+    """The constant the reported -2 log L carries from marginalising over M_B.
+
+    Correct as -2 log L, and it cancels from every difference, but it means the
+    quantity is not a chi-square. The comparison table's caption says so and
+    quotes this number, so this is where the number comes from.
+    """
+    from scipy.linalg import cho_solve
+
+    from absorb.data import pantheon
+
+    out = {}
+    for label, sh0es in (("baseline", False), ("with_sh0es", True)):
+        d = pantheon.load_pantheon(sh0es)
+        ones = np.ones(d.n)
+        e0 = float(ones @ cho_solve(d.cho, ones))
+        out[label] = float(np.log(e0 / (2.0 * np.pi)))
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--draws", type=int, default=400)
@@ -191,6 +211,7 @@ def main() -> int:
         "transfer_peak": peak_at_activation(),
         "neutrino_jerk_term": neutrino_jerk_term(),
         "growth_signature": growth_signature(),
+        "marginalisation_jacobian": marginalisation_jacobian(),
     }
     f = out["deficit_floor"]
     print(f"  deficit floor: hypothesis holds in {f['n_hypothesis_holds']} of "
@@ -206,6 +227,9 @@ def main() -> int:
           f"against {g['f_growth_no_transfer']:.4f} with no transfer, "
           f"f_rsd = {g['f_rsd']:.4f}; holds at every point tried: "
           f"{g['holds_at_every_point_tried']}")
+    j = out["marginalisation_jacobian"]
+    print(f"  M_B marginalisation Jacobian: {j['baseline']:.4f} "
+          f"(with SH0ES {j['with_sh0es']:.4f})")
     OUT.write_text(json.dumps(out, indent=2, sort_keys=True))
     print(f"wrote {OUT.relative_to(ROOT)}")
     return 0

@@ -31,6 +31,10 @@
     "raises_growth": true,
     "z": 2.0
   },
+  "marginalisation_jacobian": {
+    "baseline": 9.325075582234462,
+    "with_sh0es": 9.34501443928475
+  },
   "neutrino_jerk_term": {
     "max": 0.2527589608550244,
     "min": 4.9350550060082356e-05,

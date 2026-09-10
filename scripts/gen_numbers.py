@@ -88,6 +88,8 @@ FORMATS = {
     "tau_max": ".0f",
     "median_ratio": ".2f",
     "ratio_p05": ".2g",
+    "baseline": ".2f",
+    "with_sh0es": ".2f",
     "ratio_p95": ".2f",
     "logz_spread": ".3f",
     "logz_reported_error": ".3f",

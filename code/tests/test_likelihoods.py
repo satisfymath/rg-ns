@@ -295,3 +295,22 @@ def test_sound_horizon_recipe_is_immaterial_where_the_fit_lives():
     edge = early.r_drag(0.02237, 0.02237 + 0.20, method="aubourg")
     edge_b = early.r_drag(0.02237, 0.02237 + 0.20, method="brieden")
     assert abs(edge_b - edge) / edge > 5e-3
+
+
+def test_marginalisation_jacobian_is_the_known_constant():
+    """The reported -2 log L carries a fixed +9.33 from marginalising M_B.
+
+    It is correct as -2 log L and cancels from every difference, but it means
+    the number is not a chi-square: a reader forming chi-square per degree of
+    freedom from the comparison table would be wrong by this much. The table
+    caption says so, and this pins the value the caption quotes.
+    """
+    import numpy as np
+    from scipy.linalg import cho_solve
+
+    from absorb.data import pantheon
+
+    d = pantheon.load_pantheon(False)
+    ones = np.ones(d.n)
+    e0 = float(ones @ cho_solve(d.cho, ones))
+    assert np.log(e0 / (2.0 * np.pi)) == pytest.approx(9.3251, abs=5e-4)
