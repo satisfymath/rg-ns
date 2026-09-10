@@ -246,3 +246,52 @@ def test_variance_formula_is_exact_through_the_singularity():
     L_far = hazard_from_gap(1.5, 1e-30)
     p_far = 1.0 - np.exp(-L_far)
     assert np.sqrt(p_far * (1.0 - p_far)) < 1e-20
+
+
+# --------------------------------------------------------------------------- #
+# Self-similar scaling: what may diverge and what must not
+# --------------------------------------------------------------------------- #
+def test_energy_criterion_is_the_sum_of_length_exponents():
+    """E_core ~ s^{Q-p} with Q the sum of the three length exponents, so a
+    divergent density carries finite energy iff Q >= p.  A mass-conserving
+    collapse has p = Q exactly, which is why 'divergent density, finite mass'
+    is automatic rather than a mechanism."""
+    from absorb.collapse import SelfSimilarScaling
+    for p, q in [(3.0, (1, 1, 1)), (1.0, (1, 0, 0)), (2.0, (1, 0.5, 0.5))]:
+        sc = SelfSimilarScaling(p=p, q=q)
+        assert sc.verdict()["mass_conserving"], (p, q)
+        assert sc.energy_exponent == pytest.approx(0.0)
+    assert SelfSimilarScaling(p=4.0, q=(1, 1, 1)).verdict()["energy_finite"] is False
+    assert SelfSimilarScaling(p=2.0, q=(1, 1, 1)).verdict()["energy_vanishes"] is True
+
+
+def test_planar_table_agrees_with_the_local_solution():
+    """The table's exponents must reproduce the exponents of LocalSector."""
+    from absorb.collapse import planar_scaling_table
+    for kappa in (0.0, 0.5, 1.5, 3.0):
+        tab = planar_scaling_table(kappa, b=0.0, c=1.0)
+        assert tab["precursor density"]["exponent"] == pytest.approx(kappa - 1.0)
+        assert tab["precursor column"]["exponent"] == pytest.approx(kappa)
+        assert tab["vacuum increment"]["finite"] is (kappa > 1.0)
+        assert tab["curvature invariant"]["finite"] is (kappa > 1.0)
+
+
+def test_expansion_always_diverges():
+    """The point most easily missed: Theta diverges in every case, including
+    those where the stress tensor is finite.  What conversion can remove is the
+    gravitational effect of the caustic, not the caustic of the congruence."""
+    from absorb.collapse import planar_scaling_table
+    for kappa in (0.0, 0.5, 1.5, 3.0, 10.0):
+        for b in (0.0, 0.25):
+            tab = planar_scaling_table(kappa, b=b, c=1.0)
+            assert tab["expansion Theta"]["finite"] is False
+
+
+def test_defect_channel_never_helps():
+    """With b > 0 the curvature diverges however strong the conversion is."""
+    from absorb.collapse import planar_scaling_table
+    for kappa in (1.5, 5.0, 50.0):
+        tab = planar_scaling_table(kappa, b=0.25, c=1.0)
+        assert tab["defect density"]["finite"] is False
+        assert tab["defect column"]["finite"] is True
+        assert tab["curvature invariant"]["finite"] is False

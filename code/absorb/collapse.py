@@ -294,3 +294,86 @@ def hazard_from_gap(g: float, gap: float, gap0: float = 1.0) -> float:
     if gap <= 0.0:
         return float("inf")
     return g * np.log(gap0 / gap)
+
+
+# --------------------------------------------------------------------------- #
+# Self-similar scaling: which quantities may diverge, and which must not
+# --------------------------------------------------------------------------- #
+@dataclass(frozen=True)
+class SelfSimilarScaling:
+    """Exponents of an anisotropically contracting core.
+
+    Write s = T - t and posit
+        rho ~ s^{-p},        l_i ~ s^{q_i}   (i = 1, 2, 3),
+    so that the proper volume of the core is  s^{q_1+q_2+q_3}.  Then
+
+        E_core = int rho sqrt(gamma) d^3 x ~ s^{Q - p},   Q = sum_i q_i ,
+
+    and the integrated energy of the core is finite iff Q >= p and vanishes iff
+    Q > p.  This is the whole content of "a divergent density can carry a finite
+    mass": it is dimensional bookkeeping, not a dynamical mechanism, and it is
+    satisfied automatically by any collapse that conserves mass, for which
+    p = Q exactly.
+
+    For a planar (Zel'dovich) caustic one contracting direction gives
+    q_1 = c and q_2 = q_3 = 0, so Q = c.
+    """
+
+    p: float
+    q: tuple[float, float, float]
+
+    @property
+    def Q(self) -> float:
+        return float(sum(self.q))
+
+    @property
+    def energy_exponent(self) -> float:
+        """E_core ~ s^{Q - p}."""
+        return self.Q - self.p
+
+    def verdict(self) -> dict[str, bool]:
+        return {
+            "density_diverges": self.p > 0.0,
+            "energy_finite": self.energy_exponent >= 0.0,
+            "energy_vanishes": self.energy_exponent > 0.0,
+            "mass_conserving": abs(self.energy_exponent) < 1e-12,
+        }
+
+
+def planar_scaling_table(kappa: float, b: float, c: float = 1.0) -> dict[str, dict]:
+    """Exponents of every quantity at a planar caustic, for
+    Gamma_collapse = kappa [-Theta]_+ against Theta = -c/(T-t).
+
+    Each entry gives the exponent n in (T-t)^n and whether the quantity stays
+    finite.  Distinguishing these is the point: the density, the integrated
+    mass, the vacuum, the expansion and the curvature do not stand or fall
+    together.
+    """
+    g = kappa * c
+    rows = {
+        "precursor density":     -(c - g),
+        "precursor column":      g,
+        "defect density":        -c if b > 0 else float("inf"),
+        "defect column":         0.0 if b > 0 else float("inf"),
+        "vacuum increment":      (g - c) if g != c else 0.0,
+        "expansion Theta":       -1.0,
+        "velocity":              float("inf"),      # bounded
+        "core width":            c,
+    }
+    out = {}
+    for name, n in rows.items():
+        if name == "vacuum increment":
+            finite = g > c
+        elif name == "velocity":
+            finite = True
+        elif np.isinf(n):
+            finite = True                            # sector absent
+        else:
+            finite = n >= 0.0
+        out[name] = {"exponent": n, "finite": bool(finite)}
+    out["curvature invariant"] = {
+        "exponent": min(out["precursor density"]["exponent"],
+                        out["defect density"]["exponent"]),
+        "finite": bool((g > c) and (b == 0.0)),
+    }
+    return out
