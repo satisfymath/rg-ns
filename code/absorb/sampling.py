@@ -57,14 +57,8 @@ MEMORY_BUDGET_FRACTION = 0.5
 
 def available_memory_mb() -> float:
     """Memory the OS reports as available, in MiB."""
-    try:
-        with open("/proc/meminfo") as fh:
-            for line in fh:
-                if line.startswith("MemAvailable:"):
-                    return float(line.split()[1]) / 1024.0
-    except OSError:                                            # pragma: no cover
-        pass
-    return float("inf")
+    from .resources import mem_available_mb
+    return mem_available_mb()
 
 
 def safe_n_proc(requested: int | None = None) -> int:
@@ -74,12 +68,16 @@ def safe_n_proc(requested: int | None = None) -> int:
     but each forked worker touches a few hundred MB of private pages, and
     exhausting memory on a shared machine is a far worse outcome than a chain
     that takes twice as long.
+
+    There used to be two budgets in this project, and the largest consumer --
+    this one -- used the weaker of them: half of MemAvailable with no floor at
+    all, which at 5 GB available would start three workers and leave 2.8 GB,
+    below the 3 GB ``resources`` exists to reserve.  There is now one budget,
+    and it is the strict one.  It refuses rather than proceeding when nothing
+    fits.
     """
-    by_cores = os.cpu_count() or 4
-    by_memory = int(available_memory_mb() * MEMORY_BUDGET_FRACTION
-                    / WORKER_RSS_MB)
-    n = min(requested or by_cores, by_cores, max(1, by_memory))
-    return max(1, n)
+    from .resources import require_workers
+    return require_workers(WORKER_RSS_MB, requested, what="the sampler")
 
 
 @dataclass
@@ -393,6 +391,14 @@ def run_mcmc(post: Posterior, dataset: str, *, n_walkers: int | None = None,
     with ctx.Pool(n_proc) as pool:
         sampler = emcee.EnsembleSampler(n_walkers, ndim, _log_prob, pool=pool,
                                         moves=moves, backend=backend)
+        # The sampler seeds itself from OS entropy unless told otherwise, so
+        # recording ``seed`` in the summary while leaving this out made the
+        # metadata claim a reproducibility the run did not have: the seed
+        # controlled only the MAP search and the initial ball.  Resumption is
+        # unaffected either way, since the backend stores the full generator
+        # state and emcee restores it.
+        if not resume or backend.iteration == 0:
+            sampler._random = np.random.RandomState(seed)
         for _ in sampler.sample(p0, iterations=max_steps, progress=progress):
             if sampler.iteration % CHECK_EVERY:
                 continue

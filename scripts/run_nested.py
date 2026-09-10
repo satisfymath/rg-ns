@@ -44,7 +44,7 @@ import numpy as np                                              # noqa: E402
 
 from absorb import datasets                                     # noqa: E402
 from absorb.constants import SEED                               # noqa: E402
-from absorb.resources import record, safe_workers               # noqa: E402
+from absorb.resources import record, require_workers            # noqa: E402
 from absorb.sampling import Posterior, WORKER_RSS_MB            # noqa: E402
 
 RESULTS = ROOT / "results" / "evidence.json"
@@ -108,7 +108,8 @@ def main() -> int:
     ap.add_argument("--seed", type=int, default=SEED)
     args = ap.parse_args()
 
-    n_proc = safe_workers(WORKER_RSS_MB, requested=args.workers)
+    n_proc = require_workers(WORKER_RSS_MB, requested=args.workers,
+                             what="nested sampling")
     print(f"nested sampling with {n_proc} workers")
 
     out = json.loads(RESULTS.read_text()) if RESULTS.exists() else {}
