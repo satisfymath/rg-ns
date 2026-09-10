@@ -50,6 +50,22 @@ DERIVED_LABEL = {
 }
 
 
+#: Quantities that vanish in the LambdaCDM limit and therefore pile up against
+#: their prior boundary.  For these a two-sided interval is misleading and a
+#: one-sided 95% upper limit is quoted instead.
+ONE_SIDED = {"eps", "f0", "matter_deficit", "V0_minus_Vact"}
+
+
+def upper_limit(samples_entry: dict, fmt: str = ".4f") -> str:
+    """95% upper limit, for quantities bounded below by zero."""
+    hi = samples_entry.get("hi95")
+    if hi is None:
+        v, e = samples_entry.get("value", samples_entry.get("median", 0.0)), \
+               samples_entry.get("err_hi", 0.0)
+        hi = v + 2.0 * e
+    return rf"$< {hi:{fmt}}$ (95\%)"
+
+
 def pm(entry: dict, fmt: str = ".4f") -> str:
     """Median with asymmetric 68% credible interval."""
     if "value" in entry:
@@ -74,16 +90,21 @@ def comparison_table(chains: dict) -> str:
             ref = c
         rows.append((MODEL_LABEL[name], c["n_params"], c["chi2_min"],
                      c["chi2_min"] - ref["chi2_min"],
-                     c["aic"] - ref["aic"], c["bic"] - ref["bic"]))
+                     c["aic"] - ref["aic"], c["bic"] - ref["bic"],
+                     c["tau_max"], c["converged"]))
     if not rows:
         return HEADER + "% no chains available yet\n"
-    lines = [HEADER, r"\begin{tabular}{lrrrrr}", r"\toprule",
+    lines = [HEADER, r"\begin{tabular}{lrrrrrr}", r"\toprule",
              r"Model & $k$ & $\chisq_{\min}$ & $\Delta\chisq$ & $\Delta\AIC$ "
-             r"& $\Delta\BIC$ \\", r"\midrule"]
-    for label, k, c2, dc2, daic, dbic in rows:
-        lines.append(rf"{label} & {k} & {c2:.2f} & {dc2:+.2f} & {daic:+.2f} "
-                     rf"& {dbic:+.2f} \\")
+             r"& $\Delta\BIC$ & $\tau$ \\", r"\midrule"]
+    for label, k, c2, dc2, daic, dbic, tau, conv in rows:
+        mark = "" if conv else r"$^{\dagger}$"
+        lines.append(rf"{label}{mark} & {k} & {c2:.2f} & {dc2:+.2f} "
+                     rf"& {daic:+.2f} & {dbic:+.2f} & {tau:.0f} \\")
     lines += [r"\bottomrule", r"\end{tabular}"]
+    if any(not conv for *_, conv in rows):
+        lines.append(r"\\[2pt]{\footnotesize $^{\dagger}$ chain did not meet the "
+                     r"convergence criterion within the step budget; see the text.}")
     return "\n".join(lines) + "\n"
 
 
@@ -95,13 +116,16 @@ def parameter_table(chains: dict, model: str = "memory") -> str:
     lines = [HEADER, r"\begin{tabular}{ll}", r"\toprule",
              r"Parameter & Posterior (median, 68\%) \\", r"\midrule"]
     for p, entry in c["parameters"].items():
-        lines.append(rf"{PARAM_LABEL.get(p, p)} & {pm(entry)} \\")
+        cell = upper_limit(entry) if p in ONE_SIDED else pm(entry)
+        lines.append(rf"{PARAM_LABEL.get(p, p)} & {cell} \\")
     lines.append(r"\midrule")
     lines.append(r"\multicolumn{2}{l}{\emph{derived}}\\")
     for p, label in DERIVED_LABEL.items():
         if p in c.get("derived", {}):
             fmt = ".2f" if p == "H0" else ".4f"
-            lines.append(rf"{label} & {pm(c['derived'][p], fmt)} \\")
+            entry = c["derived"][p]
+            cell = upper_limit(entry, fmt) if p in ONE_SIDED else pm(entry, fmt)
+            lines.append(rf"{label} & {cell} \\")
     lines += [r"\bottomrule", r"\end{tabular}"]
     return "\n".join(lines) + "\n"
 

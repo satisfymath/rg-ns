@@ -63,9 +63,11 @@ def derived_summary(model: str, flat: np.ndarray, n_max: int = 2000) -> dict:
         if col.size < 10:
             continue
         lo, hi = np.percentile(col, [16, 84])
-        out[k] = {"value": float(np.median(col)),
-                  "err_lo": float(np.median(col) - lo),
-                  "err_hi": float(hi - np.median(col))}
+        med = float(np.median(col))
+        out[k] = {"value": med, "err_lo": med - float(lo),
+                  "err_hi": float(hi) - med,
+                  "hi95": float(np.percentile(col, 95)),
+                  "lo95": float(np.percentile(col, 5))}
     return out
 
 

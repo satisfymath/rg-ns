@@ -312,7 +312,12 @@ def run_mcmc(post: Posterior, dataset: str, *, n_walkers: int | None = None,
 
 def credible_intervals(flat: np.ndarray, names: Sequence[str],
                        levels: Sequence[float] = (0.68, 0.95)) -> dict:
-    """Median and equal-tailed credible intervals for every column."""
+    """Median and equal-tailed credible intervals for every column.
+
+    Both 68 and 95 per cent levels are stored, because parameters that vanish
+    in the LambdaCDM limit pile up against their prior boundary and are
+    reported as one-sided upper limits rather than as intervals.
+    """
     out: dict[str, dict] = {}
     for i, name in enumerate(names):
         col = flat[:, i]
