@@ -38,6 +38,9 @@ from absorb.params import MODELS                                # noqa: E402
 
 OUT = ROOT / "results" / "theory_checks.json"
 FLOOR_COEFFICIENT = 4.5          # the 9/2 in the bound
+#: Deficits below this are numerically indistinguishable from zero and
+#: their ratio to the jerk excess is meaningless.
+MIN_DEFICIT = 1e-6
 
 
 def deficit_floor(model: str = "xi_h", n_draws: int = 400,
@@ -56,7 +59,10 @@ def deficit_floor(model: str = "xi_h", n_draws: int = 400,
             d = bg.derived()
         except Exception:                                       # noqa: BLE001
             continue
-        if d["matter_deficit"] <= 1e-10:
+        # A draw whose deficit is at the numerical floor has a ratio of
+        # nothing over nothing: the raw minimum over the prior came out as
+        # -4e-150, which is a roundoff artefact and not a physical extreme.
+        if d["matter_deficit"] <= MIN_DEFICIT:
             continue
         ratios.append(d["jerk_excess"] / d["matter_deficit"])
         held += int(bg.transfer_diagnostics()["q_nondecreasing"])
@@ -69,8 +75,13 @@ def deficit_floor(model: str = "xi_h", n_draws: int = 400,
         "n_hypothesis_holds": held,
         "n_floor_violated": violated,
         "median_ratio": float(np.median(ratios)),
+        # percentiles, not extremes: with 400 draws the extremes are single
+        # samples and move by orders of magnitude between seeds
+        "ratio_p05": float(np.percentile(ratios, 5)),
+        "ratio_p95": float(np.percentile(ratios, 95)),
         "min_ratio": float(ratios.min()),
         "max_ratio": float(ratios.max()),
+        "min_deficit_used": MIN_DEFICIT,
         "floor_coefficient": FLOOR_COEFFICIENT,
     }
 

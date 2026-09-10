@@ -92,9 +92,18 @@ declines from there, for every activation redshift and every rate we tried. The
 floor is correspondingly violated: over
 $\numCheckDeficitFloorNDrawsWithTransfer$ uniform prior draws with a non-zero
 deficit the hypothesis holds in $\numCheckDeficitFloorNHypothesisHolds$ of
-them, the floor fails in $\numCheckDeficitFloorNFloorViolated$, and the median
-ratio $(j_0-1-2\Omega_{r0})/\Delta$ is $\numCheckDeficitFloorMedianRatio$ where
-the bound requires $\numCheckDeficitFloorFloorCoefficient$.
+them, and the floor fails in
+$\numCheckDeficitFloorNFloorViolated$. The ratio $\varepsilon_0/\Delta$ has
+median $\numCheckDeficitFloorMedianRatio$ where the bound requires
+$\numCheckDeficitFloorFloorCoefficient$, and --- more to the point --- it is
+not a fixed number at all: over the same draws its central ninety per cent
+spans $\numCheckDeficitFloorRatioPZV$ to $\numCheckDeficitFloorRatioPNV$, and
+it reaches down to zero. The reason
+is visible in the kinetics. An early activation finishes its conversion long
+before today, leaving a large deficit and a transfer that has already switched
+off, so $\varepsilon_0$ is small; a late one has the opposite. The deficit and
+the jerk excess therefore measure different things, and neither bounds the
+other.
 a class of transfer histories that this model does not realise, and nothing in
 this paper may be inferred from it. In particular a bound on the deficit does
 not bound the jerk excess: the relation runs the wrong way for that even when

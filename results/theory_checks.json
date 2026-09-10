@@ -2,12 +2,15 @@
   "deficit_floor": {
     "floor_coefficient": 4.5,
     "max_ratio": 3.827602855798751,
-    "median_ratio": 0.4550124945948332,
+    "median_ratio": 0.45458329645165957,
+    "min_deficit_used": 1e-06,
     "min_ratio": -3.8441012832189353e-150,
     "model": "xi_h",
-    "n_draws_with_transfer": 400,
-    "n_floor_violated": 400,
-    "n_hypothesis_holds": 0
+    "n_draws_with_transfer": 399,
+    "n_floor_violated": 399,
+    "n_hypothesis_holds": 0,
+    "ratio_p05": 3.792072965146069e-08,
+    "ratio_p95": 1.3884698914851303
   },
   "growth_signature": {
     "f_growth": 0.9309927475165709,

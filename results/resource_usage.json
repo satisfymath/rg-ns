@@ -198,5 +198,21 @@
     "mem_available_before_mb": 10863.91015625,
     "mem_available_after_mb": 10902.7109375,
     "notes": "3 restarts"
+  },
+  {
+    "name": "profile_xi_h_jerk_excess",
+    "seconds": 4338.6684646606445,
+    "peak_rss_mb": 731.8984375,
+    "mem_available_before_mb": 8286.1953125,
+    "mem_available_after_mb": 11491.11328125,
+    "notes": "profile in a derived quantity"
+  },
+  {
+    "name": "map_lcdm__baseline",
+    "seconds": 44.80806040763855,
+    "peak_rss_mb": 242.68359375,
+    "mem_available_before_mb": 12103.77734375,
+    "mem_available_after_mb": 11698.02734375,
+    "notes": "40 restarts"
   }
 ]

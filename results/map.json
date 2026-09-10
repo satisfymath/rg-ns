@@ -2,21 +2,24 @@
   "lcdm__baseline": {
     "budget_evals": 900,
     "budget_per_dim": 300,
-    "chi2_min": 1436.5160913506734,
-    "chi2_spread": 1.1999200296486379e-05,
+    "chi2_min": 1436.516088616481,
+    "chi2_spread": 29800.620832996665,
+    "converged": true,
     "dataset": "baseline",
     "model": "lcdm",
-    "n_restarts": 3,
+    "n_reaching_best": 39,
+    "n_restarts": 40,
     "ndim": 3,
+    "on_prior_edge": [],
     "param_names": [
       "omega_b",
       "omega_c",
       "omega_V_act"
     ],
     "theta": [
-      0.02251678448717937,
-      0.11773252436834453,
-      0.32664565678361757
+      0.02251682742494211,
+      0.11773259478463431,
+      0.3266477328825641
     ]
   },
   "memory__baseline": {

@@ -87,6 +87,8 @@ FORMATS = {
     "outside_prior_fraction": ".3f",
     "tau_max": ".0f",
     "median_ratio": ".2f",
+    "ratio_p05": ".2g",
+    "ratio_p95": ".2f",
     "logz_spread": ".3f",
     "logz_reported_error": ".3f",
     "ratio_spread_to_reported": ".2f",

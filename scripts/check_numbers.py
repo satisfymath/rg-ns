@@ -58,7 +58,19 @@ def main() -> int:
     for tex in sorted(SECTIONS.glob("*.tex")):
         for m in re.finditer(r"\\(num[A-Za-z]+)\b", tex.read_text()):
             used.setdefault(m.group(1), str(tex.relative_to(ROOT)))
+    # A macro whose value is nan or inf will typeset happily and print
+    # nonsense: the manuscript rendered "j_0 - 1 - 2 Omega_r0 < nan" and every
+    # gate passed it, because "nan" is a valid expansion. A profile that finds
+    # no limit is supposed to say so in words, not to hand a NaN to the text.
+    bad_values = dict(re.findall(
+        r"\\newcommand\{\\(num[A-Za-z]+)\}\{(nan|-?inf|None)\\xspace\}",
+        after or ""))
     for name, where in sorted(used.items()):
+        if name in bad_values:
+            failures.append(
+                f"{where}: \\{name} expands to {bad_values[name]!r}, which "
+                f"would print as-is. A quantity with no value must be reported "
+                f"in words, not quoted through a macro.")
         if name not in defined:
             failures.append(f"{where}: \\{name} is used but no results file "
                             f"defines it (invented macro name, or a results "
