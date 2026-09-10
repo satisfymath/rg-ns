@@ -1,4 +1,89 @@
 % appA_conventions
 \section{Conventions, dimensions and domain of validity}\label{app:conventions}
 
-\TODO{not written yet}
+\subsection{Symbols}\label{app:conventions-symbols}
+
+The draft version of this work reused several symbols for unrelated objects.
+The table below is the manuscript's single source of truth. Where a clash was
+inherited it is listed explicitly with its resolution, so that a reader
+comparing the two versions is not misled.
+
+\begin{center}
+\begin{tabular}{llL{0.44\textwidth}r}
+  \toprule
+  Symbol & Name & Meaning & Dim. \\
+  \midrule
+  \multicolumn{4}{l}{\emph{Geometry and gravity}}\\
+  $g_{\mu\nu}$ & metric & signature $(-+++)$ & $0$\\
+  $\Mpl$ & Planck mass & reduced, $\Mpl^2=(8\pi G)^{-1}$ & $1$\\
+  $\Tmn$ & stress tensor & total; sector tensors carry a label & $4$\\
+  $\umu$ & four-velocity & of the precursor/clock congruence & $0$\\
+  $\clock$ & clock field & constrained scalar of \cref{eq:realizations-clock-action} & $-1$\\
+  $\lagm$ & multiplier & enforces the clock constraint & $4$\\
+  $\fourform$ & four-form & field strength of the three-form potential & $2$\\
+  \midrule
+  \multicolumn{4}{l}{\emph{Densities}}\\
+  $\rhoI$ & precursor & pressureless, converted away & $4$\\
+  $\rhoD$ & defects & pressureless, produced & $4$\\
+  $\rhoV$ & vacuum & $p_V=-\rhoV$ exactly & $4$\\
+  $\rhom$ & total dust & $\rhoI+\rhoD+\rhob$ & $4$\\
+  $\rhodmeff$ & effective dark matter & $\rhoI+\rhoD$ & $4$\\
+  $\omega_X$ & reduced density & $\rho_X/(3\Mpl^2H_{100}^2)$ & $0$\\
+  \midrule
+  \multicolumn{4}{l}{\emph{Kinetics}}\\
+  $\fconv$ & converted fraction & $\dot \fconv=(1-\fconv)\Gam$ & $0$\\
+  $\Mmem$ & memory & $\tauM\dot \Mmem=\fconv-\Mmem$ & $0$\\
+  $\Gam$ & rate & $\Gamz \actS(a)e^{\alpha \fconv+\beta \Mmem}$ & $1$\\
+  $\bfrac$ & branching ratio & share of converted energy to defects & $0$\\
+  $\epsilon$ & convertible fraction & $(1-\bfrac)\rho_{I,\rm act}/\omega_c$ & $0$\\
+  $\QV$ & transfer & $(1-\bfrac)\Gam\rhoI$ & $5$\\
+  $\Delta$ & matter deficit & \cref{eq:positivity-deficit} & $0$\\
+  \midrule
+  \multicolumn{4}{l}{\emph{Expansion}}\\
+  $\Hub$, $E$ & expansion rate & $E=\Hub/H_{100}$, $E(a{=}1)=h$ & $1$, $0$\\
+  $\efold$ & time variable & $\ln a$, used throughout & $0$\\
+  $\decel,\jerk,\snap$ & cosmography & deceleration, jerk, snap & $0$\\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Clashes resolved.} The conversion rate keeps $\Gam$, and Christoffel
+symbols are written with their indices, $\Gamma^{\rho}{}_{\mu\nu}$, appearing
+only in \cref{sec:covariant-setup}. The memory variable keeps $\Mmem$ and the
+Planck mass is always written $\Mpl$. The branching ratio keeps $\bfrac$ while
+baryons carry a roman subscript. The clock keeps $\clock$ while the stress
+tensor always carries indices. Where the draft used $A$ for three different
+objects, $\ddot a/a$ is written out, the four-acceleration is $A^\mu$ and the
+gauge field is $A_\mu$.
+
+\subsection{What each result requires}\label{app:conventions-domain}
+
+Results in this paper hold on different domains, and they do not transfer
+automatically between them.
+
+\begin{itemize}
+  \item The kinetic results of \cref{sec:absorbing-process} concern a
+    finite population and its deterministic limit. They assume a bounded,
+    Lipschitz rate and no collective jumps; they say nothing about a spatially
+    extended process.
+  \item The cosmological theorems of
+    \cref{sec:homogeneous-cosmology,sec:positivity-ide} assume exact homogeneity
+    and isotropy, and hold to the future of activation. They are statements
+    about ordinary differential equations, not about the Einstein equations
+    with inhomogeneities, caustics or collapse.
+  \item The perturbative results of \cref{sec:perturbations} are linear and
+    assume the geodesic realization. They do not address nonlinear structure
+    formation, and the compressed CMB likelihood used in
+    \cref{sec:observations} is a geometric summary rather than a Boltzmann
+    calculation.
+  \item The defect results of \cref{sec:defects} are classical and static, in
+    flat space, within the hedgehog ansatz.
+  \item The quantum results of \cref{sec:quantum} concern a finite-dimensional
+    open system with a specified generator.
+\end{itemize}
+
+A rate is a probability per unit time, not a probability: the chance of a
+conversion in an interval $\dd t$ is $\Gam\,\dd t+o(\dd t)$. A nucleation rate
+per unit four-volume must be multiplied by a volume before it can be compared
+with $\Gam$. Finally, the branch $\fconv_i=1$ is degenerate and is excluded
+throughout by taking $\fconv_i<1$, so that the normalised identities apply.
