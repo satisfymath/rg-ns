@@ -147,9 +147,17 @@ def comparison_table(chains: dict) -> str:
 
 
 def parameter_table(chains: dict, model: str = "memory") -> str:
+    """Posterior for one model, or a visible placeholder saying it is missing.
+
+    It used to emit a bare comment, which LaTeX renders as nothing at all: the
+    manuscript carried a numbered table with a caption describing a posterior
+    and no posterior under it, and nothing in the build objected. A missing
+    input should be loud.
+    """
     key = f"{model}__baseline"
     if key not in chains:
-        return HEADER + "% chain not available yet\n"
+        return (HEADER + r"\textbf{[missing: no posterior for model '"
+                + model + r"' in results.json]}" + "\n")
     c = chains[key]
     lines = [HEADER, r"\begin{tabular}{ll}", r"\toprule",
              r"Parameter & Posterior (median, 68\%) \\", r"\midrule"]

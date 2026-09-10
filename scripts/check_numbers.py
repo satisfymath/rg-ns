@@ -76,6 +76,14 @@ def main() -> int:
                             f"defines it (invented macro name, or a results "
                             f"file missing from gen_numbers.SOURCES)")
 
+    # A generated table that says it is missing its input must not ship.
+    gen = ROOT / "paper" / "generated"
+    for tex in sorted(gen.glob("tab_*.tex")):
+        body = tex.read_text()
+        if "[missing:" in body:
+            failures.append(f"{tex.relative_to(ROOT)}: table has no data "
+                            f"(its results entry is absent)")
+
     allowed = load_whitelist()
     for tex in sorted(SECTIONS.glob("*.tex")):
         text = tex.read_text()
