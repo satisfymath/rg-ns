@@ -190,23 +190,23 @@ and here the two differ precisely because the dust is being sourced:
 %
 The correction is not small, and its structure is the sharpest linear
 signature the model has. Work to first order in $g_c$ during matter domination
-and write $g_c\propto a^{p_{\rm eff}}$ near the onset of conversion. The
+and write $g_c\propto a^{p_g}$ near the onset of conversion. The exponent $p_g$ is not the $p_{\rm eff}$ of \cref{sec:cosmography-jerk}: that one is defined through $\mathsf q=\QV/(3\Mpl^2\Hz^2\Hub)$ and this one through $g_c=\QV/(\Hub\rho_{\rm m})$, and in matter domination the two differ by exactly $3$. Substituting one into a formula written for the other is an error of tens of per cent. The
 effective exponent is not the switch exponent: since
 $g_c=\bar \QV/(\Hub\bar\rho_{\rm m})$ carries an explicit factor of $\Hub^{-1}$,
 %
 \begin{equation}\label{eq:perturbations-peff}
-  p_{\rm eff}=p+\tfrac32 \quad\text{for }\Gam=\Gamz\actS e^{\alpha \fconv+\beta \Mmem},
+  p_g=p+\tfrac32 \quad\text{for }\Gam=\Gamz\actS e^{\alpha \fconv+\beta \Mmem},
   \qquad
-  p_{\rm eff}=p \quad\text{for }\Gam=\xi_0\Hub\actS e^{\alpha \fconv+\beta \Mmem},
+  p_g=p \quad\text{for }\Gam=\xi_0\Hub\actS e^{\alpha \fconv+\beta \Mmem},
 \end{equation}
 %
 in matter domination, which we have checked directly against the numerical
 solution. With that identification,
 %
 \begin{keyresult}{C}{eq:perturbations-growth-signature}
-  f_g=1+\frac{2p_{\rm eff}+3}{2p_{\rm eff}+5}\,g_c+\order{g_c^2},
+  f_g=1+\frac{2p_g+3}{2p_g+5}\,g_c+\order{g_c^2},
   \qquad
-  f_{\rm RSD}=1-\frac{2}{2p_{\rm eff}+5}\,g_c+\order{g_c^2} .
+  f_{\rm RSD}=1-\frac{2}{2p_g+5}\,g_c+\order{g_c^2} .
 \end{keyresult}
 
 The two move in \emph{opposite} directions: density growth is enhanced while
@@ -223,7 +223,7 @@ $\dd\ln\Phi/\dd\ln a=f_{\rm RSD}-1$, so during matter domination
 %
 \begin{keyresult}{C}{eq:perturbations-isw}
   \left.\frac{\dd\ln\Phi}{\dd\ln a}\right|_{\rm MD}
-  =-\frac{2}{2p_{\rm eff}+5}\,\frac{\bar \QV}{\Hub\bar\rho_{\rm m}}<0 ,
+  =-\frac{2}{2p_g+5}\,\frac{\bar \QV}{\Hub\bar\rho_{\rm m}}<0 ,
 \end{keyresult}
 %
 whereas in $\LCDM$ the potential is exactly constant then. The integrated
@@ -233,7 +233,7 @@ shortcut here: one might expect $\Phi$ to decay at the full rate
 $\bar \QV/(\Hub\bar\rho_{\rm m})$, since that is the rate at which the matter
 is drained, but that answer holds only if $\delta_{\rm m}$ is frozen. Including
 the back-reaction of the drain on the growth reduces it by the factor
-$2/(2p_{\rm eff}+5)$, which for the fitted rate law and $p=6$ is about one
+$2/(2p_g+5)$, which for the fitted rate law and $p=6$ is about one
 seventh.
 
 \subsection{No large-scale instability}\label{sec:perturbations-stability}

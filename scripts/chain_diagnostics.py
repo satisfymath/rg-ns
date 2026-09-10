@@ -66,6 +66,13 @@ def diagnose(path: Path) -> dict | None:
         last = np.array(g["chain"][it - 1])
     n_walk = log_prob.shape[1]
     moved = np.diff(log_prob, axis=0) != 0
+    try:
+        from emcee.autocorr import integrated_time
+        with h5py.File(path, "r", locking=False) as fh:
+            chain = np.array(fh["mcmc"]["chain"][:it])
+        tau = float(np.max(integrated_time(chain, tol=0)))
+    except Exception:                                           # noqa: BLE001
+        tau = float("nan")
     w = max(1, moved.shape[0] // 10)
 
     priors = MODELS[model].priors()
@@ -83,6 +90,8 @@ def diagnose(path: Path) -> dict | None:
             last[:, :len(priors)], low, high, gamma),
         "de_gamma": float(gamma),
         "n_nonfinite_log_prob": int((~np.isfinite(log_prob)).sum()),
+        "tau_max": tau,
+        "length_in_tau": float(it / tau) if tau == tau and tau > 0 else float("nan"),
     }
 
 

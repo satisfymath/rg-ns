@@ -83,6 +83,8 @@ FORMATS = {
     "move_rate_early": ".4f",
     "move_rate_late": ".4f",
     "outside_prior_fraction": ".3f",
+    "tau_max": ".0f",
+    "length_in_tau": ".0f",
     "ln_bayes_full_prior": ".2f",
     "ln_bayes_span": ".2f",
 }

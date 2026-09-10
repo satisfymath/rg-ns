@@ -191,20 +191,21 @@ reported.
 
 **The Occam factor is the whole of `ln B`, and it is a choice.** Decompose the
 reported number to Laplace accuracy, with the shared-parameter volumes
-cancelling between numerator and denominator. The best fit of `xi_h` improves
-`chi2` by `0.859` over LambdaCDM (C10), so
+cancelling between numerator and denominator. The `xi_h` maximum likelihood is
+`1.636` better in `chi2` than LambdaCDM's (M3), so
 
 ```
-ln B = 0.859/2 - ln(V_extra,prior / V_extra,post)
-     = +0.430  - 2.026                            = -1.596
+ln B = 1.636/2 - ln(V_extra,prior / V_extra,post)
+     = +0.818  - 2.414                            = -1.596
 ```
 
 `V_extra,prior = 1 x 4 x 29.7 = 118.8` in units of
 (`eps`) x (decades of `log10_xi`) x (`z_act`), so the implied posterior extent
-of the three unidentified directions is `V_extra,post = 15.7` — consistent with
-the ridge measured below. Every one of the three prior factors is a free choice
-made in `code/absorb/params.py:52-62`, and `ln B` moves one-for-one with the
-logarithm of their product.
+of the three unidentified directions is `V_extra,post = 10.6`. Every one of the
+three prior factors is a free choice made in `code/absorb/params.py:52-62`, and
+`ln B` moves one-for-one with the logarithm of their product. Nothing in the
+data fixes any of them: `eps` is a fraction, so `[0,1]` is forced, but the four
+decades of `log10_xi` and the range `z_act in [0.3, 30]` are conventions.
 
 **How far the verdict moves.** The identity the repository's own
 `prior_sensitivity.py` is built on,
@@ -293,16 +294,40 @@ best *sample*, which is not a maximum). The code comment at
 `gen_tables.py:105-108` says this in as many words and `run_map.py` exists to
 fix it; it has simply not been run.
 
-The size of the error is not negligible. The true `xi_h` minimum, recovered by
-re-evaluating the stored profile solutions, is
+**No maximiser in this repository has ever found the `xi_h` best fit.** Starting
+from the solution my re-profile turned up at `Delta = 0.004` and polishing with
+Nelder-Mead, Powell and Nelder-Mead again (6000 evaluations each, bounds
+enforced):
 
 ```
-$ OMP_NUM_THREADS=1 PYTHONPATH=code python3 -c "...(see certification C10)..."
-  chi2(xi_h, best profile point) = 1435.65690   vs  dynesty best sample 1436.2958
+  xi_h maximum likelihood found : chi2 = 1434.87980
+  LambdaCDM, same protocol      : chi2 = 1436.51609
+  Delta chi2                    :        -1.63629
+  at eps=0.01361, log10_xi=1.000, z_act=3.589, omega_V_act=0, f0=1.000, Delta=0.00342
+  breakdown  SN 1416.03  BAO 11.66  CC 6.31  CMB 0.885
 ```
 
-i.e. the nested sampler's best live point misses the maximum likelihood by
-`0.64` in `chi2`. The `memory` evidence completed at 01:19 with
+against the four values in circulation for the same quantity:
+
+```
+  paper/generated/tab_comparison.tex   1435.70   (Delta chi2 = -0.82)
+  results/results.json (frozen chain)  1435.6982
+  results/profile.json (eps profile)   1435.65690
+  results/evidence.json (nested best)  1436.2958
+  this report                          1434.87980  (Delta chi2 = -1.63629)
+```
+
+The printed `Delta chi2 = -0.82` is half the true value. The improvement is
+physically coherent rather than a solver artefact: it comes almost entirely from
+the compressed CMB term (2.95 -> 0.89) and the BAO term (12.20 -> 11.66), paid
+for with 0.9 in the supernovae — that is, the model is relieving the
+DESI-versus-Planck pull (m8), which is exactly the mechanism a reader would want
+to see discussed. LambdaCDM's own number is unaffected (1436.51609 under the
+same protocol), so the whole discrepancy is in the extension.
+
+The nested sampler's best live point misses this by `1.42` in `chi2`
+(`1436.2958` vs `1434.8798`), which is worth knowing when the same run supplies
+`ln Z`. The `memory` evidence completed at 01:19 with
 `chi2_min = 1436.4939`, from the same unreliable source, and will enter the
 table on the same footing. **What would resolve it**: run `run_map.py` for all
 four models before regenerating the table, and have `gen_tables.py` *refuse* to
@@ -310,6 +335,60 @@ emit a `Delta chi2` column when any row's source is not `"map"`, rather than
 emitting it with a footnote. The footnote as written ("Not every `chi2_min`
 comes from the common maximisation protocol") does not warn the reader that one
 of the printed numbers is arithmetically impossible.
+
+### M6. `ln Z` for the extended models is not reproducible. An independent seed with identical settings moves `ln B` by 0.86, three times its quoted error.
+
+**Location**: `results/evidence.json`; `paper/generated/tab_comparison.tex`;
+`scripts/run_nested.py` docstring ("A stopping criterion of `dlogz = 0.1` is
+used so that the error on a difference of two evidences stays well below the
+scale that would change a qualitative verdict").
+
+I replicated both baseline runs with a different seed and otherwise identical
+settings — dynesty 3.1.0, `nlive=500`, `dlogz=0.1`, `bound='multi'`,
+`sample='rwalk'`, 2 workers, same `Posterior` and same likelihood object
+(`/tmp/.../scratchpad/rerun_nested.py`):
+
+```
+                 shipped (seed 20260909)     replicate (seed 12345)     shift
+  lcdm           -732.152 +/- 0.195          -732.237 +/- 0.196        -0.085
+  xi_h           -733.748 +/- 0.207          -734.692 +/- 0.212        -0.944
+  ln B(xi_h)       -1.596 +/- 0.284            -2.455 +/- 0.296        -0.859
+```
+
+LambdaCDM reproduces to 0.43 of its quoted error. The extension does not: two
+runs differing only in seed disagree by `0.944`, which is 4.5 times the
+per-run error and 3.2 combined `sigma`. `ln B` moves from `-1.60` (odds 4.9:1
+against) to `-2.46` (odds 11.6:1), i.e. the odds change by a factor of 2.4, and
+the shipped error bar `+/- 0.28` does not cover it.
+
+**The mechanism is visible in the same output.** Both runs report a best live
+point far from the model's actual maximum:
+
+```
+  chi2_min, shipped run       1436.2958
+  chi2_min, replicate         1436.3780
+  actual maximum (M3)         1434.8798
+```
+
+Neither nested run ever reached the ridge that carries the likelihood, and they
+failed by different amounts. That is the same razor-thin curved degeneracy that
+froze the ensemble chains; nested sampling is not immune to it, it merely fails
+more quietly. `nlive = 500` with dynesty's default `rwalk` in six dimensions is
+not enough to resolve a ridge whose `chi2` rises from `1434.88` to `33560` over
+half a decade in `log10_xi` at fixed neighbours.
+
+**Note also** that `dlogz` is a stopping criterion on the *remaining* evidence,
+not an error bar; the docstring conflates the two. The quoted errors are
+dynesty's `sqrt(H/nlive)`-type estimate (`H = 12.48` and `14.77` for the two
+models), which is a within-run estimate and demonstrably does not bound the
+between-run scatter here.
+
+**What would resolve it**: run every evidence at least three times with
+different seeds and quote the scatter, not `logzerr`; raise `nlive` (or use
+`sample='rslice'`/`'rwalk'` with an increased `walks`) until the scatter comes
+down below the differences being claimed; and verify that the sampler's best
+live point approaches the maximum found by `run_map.py` (M3) before trusting
+`ln Z`. Until then no `ln B` in Table 1 should be quoted to two decimals.
 
 ### M4. Section 10 promises four analyses that no results file contains.
 
@@ -564,18 +643,13 @@ of `ln Z`? I replicated the LambdaCDM run with an independent seed and the same
 settings (`nlive=500`, `dlogz=0.1`, `bound='multi'`, `sample='rwalk'`, 2
 workers):
 
-```
-                                   ln Z         quoted err   information H
-  as shipped (seed 20260909)   -732.152        +/- 0.195        --
-  replicate  (seed 12345)      -732.237        +/- 0.196       12.48
-  difference                     -0.085
-```
-
-The replicate sits 0.43 of the quoted error away, so for LambdaCDM the error is
-not obviously understated (`sqrt(H/nlive) = sqrt(12.48/500) = 0.158`, and
-dynesty quotes 0.196 after adding the live-point term). For the extension:
-
-<!--RERUN_XIH-->
+No, not for the extended models. See M6 for the numbers: LambdaCDM reproduces
+to 0.43 of its quoted error, `xi_h` misses by 4.5 times its quoted error, and
+`ln B` shifts by 0.86. Report a replicate for every row of Table 1, or state
+that the quoted error is dynesty's within-run estimate and not a measured
+scatter. A run with `bound='single'`, `sample='unif'` was still in progress when
+this report was written; whether the method choice matters *more* than the seed
+is the natural follow-up and the authors should measure it.
 
 Report a replicate for every row of Table 1, or state that the quoted error is
 dynesty's `sqrt(H/nlive)` estimate and not a measured scatter.
@@ -583,9 +657,9 @@ dynesty's `sqrt(H/nlive)` estimate and not a measured scatter.
 **Q2.** `run_nested.py`'s docstring justifies `dlogz = 0.1` as chosen "so that
 the error on a difference of two evidences stays well below the scale that would
 change a qualitative verdict". `dlogz` is a stopping criterion on the *remaining*
-evidence, not an error bar; the reported errors are `0.195`-`0.209` each, so the
-error on `ln B` is `0.28`, which is 18% of `|ln B|`. Please separate the two
-concepts in the docstring and in the appendix.
+evidence, not an error bar; the reported errors are `0.195`-`0.212` each, so the
+error on `ln B` is `0.28`-`0.30` before the between-run scatter of M6 is added.
+Please separate the two concepts in the docstring and in the appendix.
 
 **Q3.** `R = sqrt(omega_m) D_M(z_*) H_100 / c` is evaluated with the
 *pre-activation* `omega_m` (`likelihoods.py:253`). In LambdaCDM, where the Chen,

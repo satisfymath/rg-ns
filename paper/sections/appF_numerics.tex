@@ -1,10 +1,14 @@
 % appF_numerics
 \section{Numerical methods and reproducibility}\label{app:numerics}
 
-Every number quoted in this paper is produced by the archived code from public
-data, and no number is typed by hand: the analysis scripts write a single
-results file from which the manuscript's macros and tables are generated, and
-a build check fails if the two ever disagree.
+Every number in this paper that comes out of a fit, a simulation or a solver is
+produced by the archived code from public data and is not typed by hand: the
+analysis scripts write results files from which the manuscript's macros and
+tables are generated, and a build check fails if the two disagree, if a macro
+is used that no results file defines, or if a decimal literal appears in the
+prose outside a short whitelist. Round figures used for orientation --- an
+order of magnitude, a quoted error bar from the literature, a fraction written
+in words --- are not covered by that machinery, and are not results of ours.
 
 \subsection{Background integration}\label{app:numerics-background}
 
