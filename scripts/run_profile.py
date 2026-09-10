@@ -37,6 +37,74 @@ from absorb.sampling import Posterior                           # noqa: E402
 OUT = ROOT / "results" / "profile.json"
 
 
+def profile_derived(model: str, dataset: str, quantity: str = "matter_deficit",
+                    targets=None, n_restarts: int = 4,
+                    seed: int = 20260909, penalty: float = 1e6) -> dict:
+    """Profile the likelihood in a *derived* quantity.
+
+    Profiling in eps alone is uninformative, and it is worth saying why: eps is
+    the convertible fraction, not the converted one.  At any eps the optimiser
+    can send the rate to zero, recover LambdaCDM exactly, and pay nothing.  The
+    likelihood is therefore flat in eps by construction, which is a statement
+    about the parametrisation and not about the data.
+
+    The physically constrained direction is the amount actually converted,
+    measured here by the matter deficit
+    Delta = (rho_m^early - rho_m0)/rho_crit,0, or equivalently by f_0.  Each
+    grid point maximises the posterior subject to the derived quantity taking
+    the target value, imposed by a quadratic penalty.
+    """
+    like = datasets.build(dataset)
+    post = Posterior(model, like)
+    m = MODELS[model]
+    names = list(post.param_names)
+    lows = np.array([p.low for p in post.model.priors()])
+    highs = np.array([p.high for p in post.model.priors()])
+    rng = np.random.default_rng(seed)
+    if targets is None:
+        targets = np.concatenate([[0.0], np.logspace(-4, -0.7, 12)])
+    targets = np.asarray(targets, dtype=float)
+
+    def derived_value(theta):
+        try:
+            return m.builder(m.to_dict(theta)).derived()[quantity]
+        except Exception:                                      # noqa: BLE001
+            return np.nan
+
+    chi2 = np.empty(targets.size)
+    achieved = np.empty(targets.size)
+    for k, target in enumerate(targets):
+        def neg(theta):
+            v = post(theta)
+            if not np.isfinite(v):
+                return 1e10
+            d = derived_value(theta)
+            if not np.isfinite(d):
+                return 1e10
+            return -2.0 * v + penalty * (d - target) ** 2
+
+        best, best_x = np.inf, None
+        for _ in range(n_restarts):
+            x0 = lows + rng.random(len(names)) * (highs - lows)
+            res = minimize(neg, x0, method="Nelder-Mead",
+                           options=dict(maxfev=4000, xatol=1e-4, fatol=1e-4))
+            if res.fun < best:
+                best, best_x = res.fun, res.x
+        chi2[k] = -2.0 * post(best_x)
+        achieved[k] = derived_value(best_x)
+        print(f"  target {quantity}={target:9.5f}  achieved {achieved[k]:9.5f}"
+              f"  chi2={chi2[k]:10.3f}")
+
+    chi2 -= np.nanmin(chi2)
+    above = np.where(chi2 > 2.71)[0]
+    limit = (float(np.interp(2.71, chi2[: above[0] + 1], targets[: above[0] + 1]))
+             if above.size else float("nan"))
+    return {"model": model, "dataset": dataset, "quantity": quantity,
+            "targets": targets.tolist(), "achieved": achieved.tolist(),
+            "delta_chi2": chi2.tolist(), "limit_95": limit,
+            "unbounded": bool(not above.size)}
+
+
 def profile(model: str, dataset: str, n_grid: int = 17,
             n_restarts: int = 3, seed: int = 20260909) -> dict:
     like = datasets.build(dataset)
@@ -97,16 +165,27 @@ def main() -> int:
     ap.add_argument("--models", nargs="+", default=["xi_h"])
     ap.add_argument("--data", default="baseline")
     ap.add_argument("--n-grid", type=int, default=17)
+    ap.add_argument("--quantity", default=None,
+                    help="profile a derived quantity instead of eps")
     args = ap.parse_args()
 
     print(f"MemAvailable {mem_available_mb():.0f} MB; single process")
     out = json.loads(OUT.read_text()) if OUT.exists() else {}
     for m in args.models:
         print(f"\n=== profile in eps: {m} / {args.data} ===")
-        with record(f"profile_{m}", "profile likelihood in eps"):
-            out[f"{m}__{args.data}"] = profile(m, args.data, args.n_grid)
-        r = out[f"{m}__{args.data}"]
-        print(f"  95% upper limit on eps: {r['eps_limit_95']:.4f}")
+        if args.quantity:
+            key = f"{m}__{args.data}__{args.quantity}"
+            with record(f"profile_{m}_{args.quantity}", "profile in a derived quantity"):
+                out[key] = profile_derived(m, args.data, args.quantity)
+            r = out[key]
+            msg = ("unbounded within the grid" if r["unbounded"]
+                   else f"{r['limit_95']:.5f}")
+            print(f"  95% upper limit on {args.quantity}: {msg}")
+        else:
+            key = f"{m}__{args.data}"
+            with record(f"profile_{m}", "profile likelihood in eps"):
+                out[key] = profile(m, args.data, args.n_grid)
+            print(f"  95% upper limit on eps: {out[key]['eps_limit_95']:.4f}")
         OUT.write_text(json.dumps(out, indent=2))
     print(f"\nwrote {OUT.relative_to(ROOT)}")
     return 0
