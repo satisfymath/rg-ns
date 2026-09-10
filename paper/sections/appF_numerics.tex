@@ -166,9 +166,16 @@ These simulations verify the deterministic limit of
 of \cref{eq:process-rate}, the maximum discrepancy between the ensemble mean
 and the deterministic solution falls from \numConvergenceLlnErrorNOZZ\ at
 $N=100$ to \numConvergenceLlnErrorNOZZZZ\ at $N=10^4$, while
-$\sqrt{N}\,\mathrm{std}(\fconv_N)$ stays within a few per cent of
-\numConvergenceScaledStdNOZZZ\ across three decades in $N$, confirming the
-$N^{-1/2}$ law.
+$\sqrt{N}\,\mathrm{std}(\fconv_N)$ takes the values
+\numConvergenceScaledStdNOZZ, \numConvergenceScaledStdNOZZZ\ and
+\numConvergenceScaledStdNOZZZZ\ at $N=10^2$, $10^3$ and $10^4$. That is
+numerical evidence for the $N^{-1/2}$ law under the reinforced rate, and not a
+demonstration of it: the exact binomial result of
+\cref{rem:hazard-time-change} requires a state-independent rate, which
+\cref{eq:process-rate} is not, and the three values drift upwards by about five
+per cent over the range rather than sitting on a constant. Whether that drift
+is a slowly vanishing correction or a different exponent is not settled by
+three decades.
 
 The hysteresis experiment of \cref{thm:hysteresis} is run in the same
 framework: two histories are prepared to reach the same converted fraction
