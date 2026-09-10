@@ -4,7 +4,7 @@ These check the *model identities* against numerics that do not assume them,
 and the numerics against an external reference (astropy) and against the
 closed-form solutions of the analytically solvable family.
 """
-# covers: eq:cosmology-survival, thm:jerk, thm:snap, thm:memory-fingerprint, eq:cosmography-jerk, eq:cosmography-snap, rem:jerk-neutrinos
+# covers: eq:cosmology-survival, thm:jerk, thm:snap, eq:cosmography-snap-excess, thm:memory-fingerprint, eq:cosmography-jerk, eq:cosmography-snap, rem:jerk-neutrinos
 #   Machine-readable link from tests to the claims they cover, read by
 #   scripts/claim_ledger.py. A claim quoted in the abstract or the
 #   conclusions with nothing testing it is what the ledger exists to find.
@@ -202,14 +202,12 @@ def test_matter_deficit_equals_the_transferred_amount(bg_memory):
 # --------------------------------------------------------------------------- #
 # Snap: the closed form must match numerical differentiation of the jerk
 # --------------------------------------------------------------------------- #
-def test_snap_closed_form_matches_differentiated_jerk(bg_memory):
-    """The analytic snap excess is checked against a spline derivative of j.
+def test_lambda_cdm_snap_matches_its_closed_form(bg_memory):
+    """The LambdaCDM reference snap against its algebraic expression.
 
-    The two routes are independent: one differentiates the jerk numerically,
-    the other evaluates eps*[dlnGamma/dN - Gamma/H - 2] from the rate law.  An
-    earlier version of the manuscript dropped the activation contribution
-    p*(1 - S_act) from dlnGamma/dN, which reverses the sign of the bracket once
-    the switch is still opening; this test pins it.
+    This is a check of the reference curve only. The independent check of the
+    model's snap *excess* is the next test; this one used to carry that name
+    and did not do it.
     """
     z = np.array([0.0, 0.3, 0.5, 1.0, 2.0])
     s_lcdm = bg_memory.snap_lambda_cdm(z)
@@ -217,6 +215,42 @@ def test_snap_closed_form_matches_differentiated_jerk(bg_memory):
     Om_r = bg_memory._omegas(z)[1] / bg_memory.E(z) ** 2
     closed = 4.0 * Om_r * (q - 1.0) - (1.0 + 2.0 * Om_r) * (2.0 + 3.0 * q)
     assert np.max(np.abs(s_lcdm - closed)) < 5e-3
+
+
+def test_snap_excess_matches_a_numerical_derivative_of_the_jerk():
+    """The closed form for s - s_LambdaCDM against finite differences of j.
+
+    This is the check the snap needs and did not have. The snap is where a
+    sign error survived an earlier round of review: the activation
+    contribution p (1 - S_act) had been dropped from dlnGamma/dN, which
+    reverses the sign of the bracket exactly where the effect is largest.
+
+    The two routes share nothing. One evaluates
+    eps [dlnGamma/dN - Gamma/H - 2] from the rate law; the other forms
+    s = dj/dN - j(2 + 3q) by differencing the jerk in e-folds and subtracts the
+    LambdaCDM reference. They agree to 2e-6, limited by the difference stencil.
+
+    The sign structure is asserted separately, because that is what went wrong
+    before: the excess is negative today and positive by z = 1.
+    """
+    p = BackgroundParams(omega_b=0.02237, omega_c=0.14, omega_V_act=0.20,
+                         eps=0.35, log10_gamma0=0.0, alpha_tot=2.0, r_beta=0.5,
+                         log10_tau=-0.3, z_act=1.0, p_act=6.0)
+    bg = Background(p)
+    z = np.array([0.0, 0.3, 0.5, 1.0, 1.5, 2.0, 3.0])
+
+    h = 1e-4
+    N = np.log(1.0 / (1.0 + z))
+    dj = (bg.j(np.expm1(-(N + h))) - bg.j(np.expm1(-(N - h)))) / (2.0 * h)
+    s_numeric = dj - bg.j(z) * (2.0 + 3.0 * bg.q(z))
+    excess_numeric = s_numeric - bg.snap_lambda_cdm(z)
+    excess_analytic = bg.snap_excess_analytic(z)
+
+    assert np.max(np.abs(excess_analytic - excess_numeric)) < 2e-6
+
+    # the sign reversal the dropped term caused
+    assert excess_analytic[0] < 0.0, "the excess must be negative today"
+    assert excess_analytic[3] > 0.0, "and positive by z = 1"
 
 
 def test_activation_term_dominates_the_snap_bracket():

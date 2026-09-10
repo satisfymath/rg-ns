@@ -294,5 +294,13 @@
     "mem_available_before_mb": 4120.83984375,
     "mem_available_after_mb": 3979.71875,
     "notes": "8 restarts"
+  },
+  {
+    "name": "nested_reinforce__baseline",
+    "seconds": 2499.5819783210754,
+    "peak_rss_mb": 1518.4609375,
+    "mem_available_before_mb": 4669.2578125,
+    "mem_available_after_mb": 5972.12109375,
+    "notes": "nlive=500"
   }
 ]

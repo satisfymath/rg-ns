@@ -146,3 +146,7 @@ found independently.
 | `thm:sandwich` | theorem | — | 05_positivity_ide.tex | — | symbolic |
 | `thm:sign-table` | theorem | — | 07_cosmography.tex | 14_conclusions.tex | symbolic |
 | `thm:snap` | theorem | — | 07_cosmography.tex | 01_intro.tex | background |
+
+## Test markers naming a label the manuscript does not define
+
+- `test_background.py` claims to cover `eq:cosmography-snap-excess`, which is not a label in the sources
