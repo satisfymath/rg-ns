@@ -4,12 +4,12 @@
 
 A recent survey of interacting dark energy models found that in seven of eight
 standard couplings the energy densities become negative somewhere in the
-physical domain, and that this happens specifically when energy is taken to
-flow from dark matter to dark energy
+physical domain
 \parencite{westhuizen2025_250904495,westhuizen2025_250904494,westhuizen2025_250904496}.
-Our model transfers energy in exactly that direction. This section shows why it
-is nevertheless immune, what corner of the standard parametrizations it
-occupies, and what it predicts that cannot be fitted away.
+This section identifies the structural reason, which is not the direction of
+the flow but the choice of what the transfer is proportional to, shows why the
+present model is immune, maps it onto the standard parametrizations, and states
+what it predicts that cannot be fitted away.
 
 \subsection{Positivity is structural}\label{sec:positivity-structural}
 
@@ -33,11 +33,23 @@ occupies, and what it predicts that cannot be fitted away.
 
 The mechanism is visible in the proof and is worth naming, because it is what
 the pathological models lack: \emph{every outflow is proportional to the
-density of the sector it leaves}. A coupling of the form $Q\propto\rho_{\rm de}$
-that drains dark matter, or $Q\propto\rho_{\rm dm}$ that drains dark energy,
-does not have this property, and can therefore push a sector through zero while
-its own source term remains finite. Here the precursor is a reservoir that
-empties, and an empty reservoir supplies nothing.
+density of the sector it leaves}. The converse half of the dichotomy is what
+makes the comparison informative, and it is equally elementary.
+
+\begin{proposition}[Recipient-proportional couplings are not positivity-safe]
+  \label{prop:recipient-proportional}
+  Consider two sectors with $\dot\rho_1+3\Hub\rho_1=-Q$ and
+  $\dot\rho_2+3\Hub(1+w)\rho_2=+Q$. If $Q=\xi \Hub\rho_2$ with $\xi>0$, then on
+  the face $\{\rho_1=0\}$ the field is $\dot\rho_1=-\xi \Hub\rho_2<0$ whenever
+  $\rho_2>0$: the subtangent condition fails on a set of codimension one, and
+  $\rho_1$ is driven through zero. The same argument with the roles exchanged
+  applies to $Q=\xi \Hub\rho_1$ draining $\rho_2$.
+\end{proposition}
+
+So the diagnostic is \emph{donor versus recipient}, not the direction of the
+flow: a coupling whose magnitude is set by the sector \emph{receiving} energy
+keeps draining a donor that has already run out. Here the precursor is a
+reservoir that empties, and an empty reservoir supplies nothing.
 
 Two consequences should be recorded immediately. First,
 \cref{thm:quasi-positivity} is a statement about the future. It is not
@@ -110,10 +122,11 @@ by adjusting parameters: a robust detection of $\delta_{\rm eff}>0$ falsifies
 it, independently of $\bfrac$, $\alpha$, $\beta$, $\tauM$ and the activation
 profile. Two qualifications belong alongside that statement, and neither is a
 defence of the model. The current preference is weak and is entangled with the
-choice of coupling; and by \cref{sec:positivity-structural} some of the
-parametrizations carrying that preference are precisely the ones that admit
-negative densities, which argues for repeating such analyses with a
-quasi-positive coupling rather than for dismissing the result. If the
+choice of coupling; and by \cref{prop:recipient-proportional} some of the
+parametrizations carrying that preference are recipient-proportional and
+therefore admit negative densities somewhere in their own parameter space,
+which argues for repeating such analyses with a donor-proportional coupling
+rather than for dismissing the result. If the
 preference strengthens, the disciplined response is the reverse channel of
 \cref{sec:positivity-track-b}, which is a different model, not a
 reparametrization of this one.

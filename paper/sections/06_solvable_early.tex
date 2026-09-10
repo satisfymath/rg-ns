@@ -86,40 +86,69 @@ large, so the converted fraction is astronomically small: a rate with a
 positive floor either violates positivity in the past or converts nothing at
 all. The rate law of the draft therefore has no viable early universe, and the
 hypothesis $\Gam\ge g>0$ used in its convergence theorems cannot be assumed
-back to early times. \Cref{thm:regular-future,thm:de-sitter} are restated here
-for $t\ge t_{\rm act}$, which is all they are used for.
+back to early times. This is why \cref{thm:regular-future} was stated above
+with the weak hypothesis $0\le\Gam\le G$ rather than the draft's
+$0<g\le\Gam\le G$: the activation law satisfies the former everywhere and the
+latter nowhere in the past. \Cref{thm:de-sitter} needs one condition that the
+floor supplied for free, namely $\int^{\infty}\Gam\,\dd t=\infty$, and that is
+why it appears there as an explicit hypothesis rather than as a consequence.
+Neither theorem needs a restriction of its time domain; what changes is which
+hypothesis does the work.
 
 \subsection{The activation law}\label{sec:solvable-activation}
 
 \begin{assumption}[Activation]\label{asm:activation}
-  Replace the floor by a switch that tracks the expansion,
+  Replace the floor by a switch,
   %
   \begin{keyresult}{C}{eq:solvable-activation}
     \Gam(a,\fconv,\Mmem)=\Gamz\,\actS(a)\,e^{\alpha \fconv+\beta \Mmem},
     \qquad
-    \actS(a)=\frac{a^{p}}{a^{p}+\aact^{p}},
-    \qquad p>3 .
+    \actS(a)=\frac{a^{p}}{a^{p}+\aact^{p}} ,
   \end{keyresult}
+  %
+  with the exponent $p$ constrained by \cref{prop:activation} below.
 \end{assumption}
 
 The reinforcement and memory structure is untouched; only the floor is
-replaced. All results of \cref{sec:positivity-ide,sec:cosmography,sec:perturbations}
-survive verbatim, because each needs only $\Gam\ge0$.
+replaced. All results of
+\cref{sec:positivity-ide,sec:cosmography,sec:perturbations} survive verbatim,
+because each needs only $\Gam\ge0$.
+
+Two rate laws are in play in this paper and the required exponent differs
+between them, so it is worth separating them explicitly.
+\Cref{eq:solvable-activation} is the law used for the fits of
+\cref{sec:observations}: $\Gamz$ is a constant rate. The solvable family of
+\cref{sec:solvable-family} instead has the rate track the expansion,
+$\Gam=\xi_0\Hub\actS(a)e^{\alpha \fconv+\beta \Mmem}$, and is fitted separately
+as a benchmark; $\xi_0$ denotes its dimensionless amplitude.
 
 \begin{proposition}[Convergence and positivity]\label{prop:activation}
   Under \cref{asm:activation} with $\bfrac<1$, the limit
   $V_{\rm early}=\lim_{a\to0^+}\rhoV(a)$ exists and is finite, $\rhoV$ is
   non-decreasing, and therefore $\rhoV\ge0$ on $(0,1]$ if and only if
-  $V_{\rm early}\ge0$. A sufficient condition explicit in the parameters is
+  $V_{\rm early}\ge0$. The vacuum increment is
+  $\rhoV_0-V_{\rm early}=(1-\bfrac)\int_0^1\Gam\rhoI\,\dd a/(a\Hub)$, so with
+  $\rhoI\propto a^{-3}$ and a radiation-dominated deep past the integrand
+  behaves as $\actS(a)a^{-2}$ for a constant rate and as $\actS(a)a^{-4}$ for
+  the expansion-tracking rate. Convergence therefore requires
+  %
+  \begin{equation}\label{eq:solvable-exponent}
+    p>1\quad\text{for }\Gam=\Gamz\actS e^{\alpha \fconv+\beta \Mmem},
+    \qquad
+    p>3\quad\text{for }\Gam=\xi_0\Hub\actS e^{\alpha \fconv+\beta \Mmem} .
+  \end{equation}
+  %
+  In the second case a sufficient condition explicit in the parameters is
   $\xi_0\,\mathcal I_{\actS}\le\Omega_{V0}(1-\fconv_0)/[(1-\bfrac)e^{\alpha+\beta}\Omega_{I0}]$
-  with $\mathcal I_{\actS}=\int_0^1\actS(a)a^{-4}\dd a$, which for the switch
-  above obeys
-  $\mathcal I_{\actS}\simeq\left[(p-3)^{-1}+\tfrac13\right]\aact^{-3}$.
+  with $\mathcal I_{\actS}=\int_0^1\actS(a)a^{-4}\dd a
+  \simeq\left[(p-3)^{-1}+\tfrac13\right]\aact^{-3}$.
 \end{proposition}
 
-The exponent condition $p>3$ is exactly the requirement that the integral
-generating the vacuum converge; it is the analytic content of the repair. Two
-sub-models follow. In the \emph{fully generated} case $V_{\rm early}=0$, the
+\Cref{eq:solvable-exponent} is the analytic content of the repair: the switch
+must close faster than the donor dilutes. Note that it is a weaker requirement
+for the constant-rate law, which is the one fitted here; we nevertheless adopt
+$p=6$ throughout, which satisfies both and puts the conversion rate at
+recombination far below anything that could matter. Two sub-models follow. In the \emph{fully generated} case $V_{\rm early}=0$, the
 matter deficit of \cref{eq:positivity-deficit} would have to equal the entire
 present vacuum density, which is excluded unless activation is pushed to
 redshifts where it is unobservable. In the \emph{partially generated} case
@@ -129,9 +158,10 @@ regime studied in \cref{sec:observations}.
 Numerically, with $p=6$ and activation at $z_{\rm act}=1$ the conversion rate
 at recombination is below $10^{-21}$ of the expansion rate, so nucleosynthesis,
 recombination and the sound horizon are untouched, and the vacuum density
-generated after activation is a minority of its present value. A switch with
-$p=2$ fails this test for the expansion-tracking form of the rate, by nine
-orders of magnitude: the exponent is not cosmetic.
+generated after activation is a minority of its present value. The exponent is
+not cosmetic: with $p=2$ the expansion-tracking law leaves a rate at
+recombination nine orders of magnitude larger, and by
+\cref{eq:solvable-exponent} its vacuum integral does not converge at all.
 
 \paragraph{What this section establishes.}
 A closed-form benchmark, a proof that the original rate law cannot be extended

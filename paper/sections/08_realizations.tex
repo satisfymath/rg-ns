@@ -132,15 +132,15 @@ it here as an existence proof for the background of
 The standard objection to \cref{eq:realizations-clock-action} is that
 $V(\clock)$ can be reverse-engineered to reproduce almost any expansion
 history, so the construction explains nothing
-\parencite{chamseddine2014_14033961}. That objection does not apply here, and
-the reason is worth stating as a proposition.
+\parencite{chamseddine2014_14033961}. We do not claim to answer it. What can be
+said is weaker and worth stating precisely.
 
 \begin{proposition}[Kinetically determined potential]\label{prop:determined-V}
   Fix $(\Gamz,\alpha,\beta,\tauM,\bfrac)$, the activation law, and initial
   data. By \cref{thm:regular-future} the background is unique, so with
   $\clock=t$,
   %
-  \begin{keyresult}{C}{eq:realizations-determined-V}
+  \begin{keyresult}{I}{eq:realizations-determined-V}
     V(\clock)=V_0+(1-\bfrac)\int_{t_0}^{\clock}\Gam\rhoI\,\dd t ,
     \qquad
     \lagm=\rhoI+\rhoD ,
@@ -150,10 +150,28 @@ the reason is worth stating as a proposition.
   \cref{eq:cosmology-bounds}.
 \end{proposition}
 
-The content is that $V$ is an output of the kinetics rather than a free
-function: the model has as many parameters as the rate law, not as many as a
-function space. That is what makes the fits of \cref{sec:observations}
-meaningful and the prediction of \cref{sec:cosmography} falsifiable.
+\Cref{eq:realizations-determined-V} is simply the integral of the third line of
+\cref{eq:cosmology-system}; the content is in what it is being integrated
+against. The kinetic law is an additional postulate imposed from outside the
+action, so the action still does not constrain $V$, and the mimetic objection
+stands. What has been gained is that the ansatz for $V$ has five parameters
+rather than the freedom of a function space, is monotone non-decreasing and
+bounded above by \cref{eq:cosmology-bounds}, carries a specified early-time
+cutoff, and was not chosen by looking at any dataset. That is a statement about
+naturalness and about the number of free functions, not a derivation, and it is
+what makes the fits of \cref{sec:observations} interpretable and the prediction
+of \cref{sec:cosmography} falsifiable.
+
+One further consequence of the same limitation should be recorded here rather
+than left for the reader to notice. The matter tensor of
+\cref{eq:realizations-clock} is $\lagm u_\mu u_\nu-\rhoV g_{\mu\nu}$ with
+$\lagm=\rhoI+\rhoD$: the action distinguishes the dust sector from the vacuum,
+but nothing in it distinguishes the precursor from the defects. Since $\bfrac$
+is also degenerate with $\epsilon$ at background level (\cref{prop:ide-map})
+and cancels from linear growth (\cref{thm:b-independence}), the split of the
+dark sector into $\rhoI$ and $\rhoD$ is bookkeeping at every level this paper
+computes. It acquires content only through the defect sector of
+\cref{sec:defects}, and only if those objects are real.
 
 Two known problems of this class of theories remain and must be stated. The
 scalar sound speed vanishes identically, so there is no scalar sound horizon;
@@ -183,7 +201,7 @@ remnants are candidates for the defect sector of \cref{sec:defects}; particle-li
 remnants of exactly this kind have been constructed in three-form sectors
 \parencite{khan2026_260403363}.
 
-\begin{proposition}[The event sequence is a reinforced birth process]
+\begin{remark}[The event sequence is a reinforced birth process]
   \label{prop:bridge}
   If each of $N$ precursor units per patch can nucleate once, and the
   $(k+1)$-th event has rate $\Gam_k=\Gam(h_0+k\mathsf{q})$, then $K_t$ is
@@ -193,19 +211,45 @@ remnants of exactly this kind have been constructed in three-form sectors
   relevant range, with
   $\alpha=N\mathsf{q}\,\dd\log\Gam/\dd h$. Reinforcement, $\alpha>0$, holds if
   and only if the upward tunnelling exponent decreases with accumulated flux.
-\end{proposition}
 
-This is a genuine constraint rather than a decoration, because the sign is not
-free: the required behaviour is that of upward tunnelling in \dS space, where
-the ratio of up to down rates is governed by the difference of horizon
-entropies, $S=24\pi^2\Mpl^4/V$, which does increase with $V$. The honest
-caveat is equally sharp. At vacuum densities of order the observed one these
-rates are astronomically small, so the mechanism can only be relevant if the
-nucleation is not thermal but driven by the precursor, which is precisely what
-\cref{asm:closure} assumes and does not derive. We therefore record
-\cref{prop:bridge} as a conditional statement about the structure of the
-process, and the claim that this mechanism operates in nature as a conjecture,
-listed as such in \cref{sec:outlook}.
+  The identification is immediate once each unit may nucleate at most once: the
+  number of units still able to nucleate after $k$ events is $N-k$, and each
+  carries the common rate $\Gam(h_0+k\mathsf q)$, so the total intensity is
+  $\lambda_k=(N-k)\Gam(h_0+k\mathsf q)$, which is
+  \cref{eq:process-intensity} with $\fconv=k/N$. The exponential form
+  \cref{eq:process-rate} is then the statement that $\log\Gam$ is linear in $h$
+  over the range swept, with the stated identification of $\alpha$. We label
+  this a remark rather than a proposition because the premises -- one
+  nucleation per unit, a common rate, a flux that shifts by a fixed quantum --
+  are modelling choices, not consequences of the four-form dynamics.
+\end{remark}
+
+Whether this is a constraint or a picture turns on the sign, and the sign needs
+care. The \dS entropy is $S=8\pi^2\Mpl^2/\Hub^2=24\pi^2\Mpl^4/V$, which
+\emph{decreases} with $V$. An upward nucleation therefore lowers the horizon
+entropy and is exponentially suppressed relative to the downward one,
+$\Gam_\uparrow/\Gam_\downarrow=e^{-\Delta S}$ with $\Delta S>0$: the naive
+reading, that accumulating flux is entropically favoured, is backwards. What
+survives is one order more delicate. The suppression of a single upward step,
+%
+\begin{equation}\label{eq:realizations-suppression}
+  \Delta S=S(V)-S(V+\mathsf q h)
+  \simeq 24\pi^2\Mpl^4\,\frac{\mathsf q h}{V^2} ,
+\end{equation}
+%
+itself decreases as $V$ grows, so the upward rate rises with accumulated flux
+even though it never overtakes the downward one. That is the behaviour
+$\alpha>0$ requires, and it is the corrected form of the argument.
+
+Two honest caveats accompany it. At vacuum densities of order the observed one
+these rates are astronomically small, so the mechanism can only be relevant if
+the nucleation is not thermal but driven by the precursor, which is precisely
+what \cref{asm:closure} assumes and does not derive. And the bridge covers
+$\alpha$ and $\bfrac$ but not the memory sector: nothing in this subsection
+produces $\beta$ or $\tauM$. We therefore record \cref{prop:bridge} as a
+conditional statement about the structure of the process, and the claim that
+this mechanism operates in nature as a conjecture, listed as such in
+\cref{sec:outlook}.
 
 The same bridge identifies what the reverse channel of
 \cref{sec:positivity-ide} would be: an ordinary downward nucleation, returning
