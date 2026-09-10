@@ -13,7 +13,15 @@ The reinforced rate \cref{eq:process-rate} and the activation law
 \Cref{sec:realizations-bridge} proposed that a nucleation event in a four-form
 sector is an absorption event, which would fix $\bfrac$ as a ratio of energies
 and make $\alpha>0$ equivalent to the upward tunnelling exponent decreasing
-with accumulated flux. Turning that into a derivation requires a computation
+with accumulated flux. Stated as the conjecture it is:
+%
+\begin{keyresult}{S}{eq:outlook-bridge}
+  \alpha=N\mathsf{q}\,\odv{\log\Gam}{h}>0 ,
+  \qquad
+  \bfrac=\frac{E_{\rm wall}}{\epsilon} ,
+\end{keyresult}
+%
+for nucleation driven by the precursor rather than thermally. Turning that into a derivation requires a computation
 this paper does not contain: the critical configuration, its action, the
 prefactor, and the conversion from a rate per four-volume to a rate per
 correlated region. The same computation would decide whether the memory time
@@ -43,8 +51,14 @@ The clock congruence is pressureless and geodesic, so it forms caustics
 \parencite{babichev2017_170403367}, and no linear analysis speaks to their
 fate. Because the transfer is proportional to the precursor density, conversion
 is enhanced exactly where the density diverges. The conjecture is that defect
-formation is not merely compatible with caustics but is what replaces them: the
-caustic is regulated by the sector it produces. A concrete test exists and is
+formation is not merely compatible with caustics but is what replaces them, the
+caustic being regulated by the sector it produces:
+%
+\begin{keyresult}{S}{eq:outlook-caustics}
+  \QV\propto\rhoI\ \text{diverges at shell crossing}
+  \quad\Longrightarrow\quad
+  \rhoI\ \text{remains finite there.}
+\end{keyresult} A concrete test exists and is
 cheap: evolve a one-dimensional Zel'dovich pancake with the rate law and
 compare the converted fraction in the caustic with that in smooth flow, then
 check whether the resulting $\rhoD(x)$ is biased towards the collapsed regions.
@@ -54,7 +68,15 @@ We have not done this.
 
 The topological charge of \cref{sec:defects} is not a spin operator. Since
 $\pi_4(S^3)=\Int_2$, a Finkelstein--Rubinstein quantisation in which the
-soliton is a fermion is permitted, but establishing it requires showing that
+soliton is a fermion is permitted,
+%
+\begin{keyresult}{S}{eq:outlook-spin}
+  \pi_4(S^3)=\Int_2
+  \quad\Longrightarrow\quad
+  \text{the }\degB=1\text{ sector admits a fermionic quantisation,}
+\end{keyresult}
+%
+but establishing it requires showing that
 the $2\pi$ rotation loop is non-contractible in configuration space and
 choosing a representation of the fundamental group. Even granting that, a
 $\Int_2$ label is not a Standard-Model fermion: reproducing one would need a

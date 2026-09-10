@@ -68,9 +68,12 @@ with the activation factor $\actS(a)$ introduced in
 \cref{sec:solvable-early}; on $[0,1]^2$ it is bounded,
 $\Gamz\actS\le\Gam\le\Gamz e^{\alpha+\beta}\actS$.
 
-\subsection{The memory law is derived, not postulated}\label{sec:process-memory-origin}
+\subsection{Where the memory law comes from}\label{sec:process-memory-origin}
 
-\Cref{eq:process-memory} looks like an extra assumption. It is not.
+\Cref{eq:process-memory} looks like an extra assumption at the population
+level. It is one; what the following shows is that it is equivalent to a
+microscopically local assumption, which is a different and more useful
+statement than saying it has been derived.
 
 \begin{proposition}[Memory as an eliminated degree of freedom]
   \label{prop:memory-origin}
@@ -86,6 +89,14 @@ $\Gamz\actS\le\Gam\le\Gamz e^{\alpha+\beta}\actS$.
   it: $\tauM\,\dot{\overline{m}}=\overline{s}-\overline{m}$, and
   $\overline{s}=\fconv$ by definition of the converted fraction.
 \end{proof}
+
+Averaging a linear equation does not derive that equation, and
+\cref{prop:memory-origin} should not be read as doing so: it assumes each unit
+carries an internal variable relaxing towards its own state with a
+\emph{common} time $\tauM$, which is if anything a stronger assumption than the
+population law. What it buys is that the population law is not an extra
+non-local postulate on top of a local dynamics; the two are the same
+assumption written at different levels.
 
 Two further readings of the same equation are worth recording, because they
 say what $\tauM$ would be in a microscopic completion. First, an exponential
