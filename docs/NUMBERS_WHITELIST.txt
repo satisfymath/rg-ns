@@ -1,0 +1,20 @@
+# Numerals allowed to appear literally in paper/sections/*.tex.
+#
+# scripts/check_numbers.py refuses any other decimal literal in prose, so that
+# every quoted result comes from results/results.json through a generated
+# macro.  Only two kinds of number belong here:
+#
+#   1. Layout constants: column widths in tabular specifications.
+#   2. Mathematical constants that are part of a definition, not a measurement.
+#
+# A physical result must never be added to this file.  If a number changes when
+# the analysis is rerun, it belongs in results.json.
+
+# --- layout ---------------------------------------------------------------
+0.75    # L{0.75\textwidth} in the claims-ladder table, Sec. 1
+0.44    # L{0.44\textwidth} in the symbol table, App. A
+0.42    # L{0.42\textwidth} in the generated claims table
+0.20    # L{0.20\textwidth} in the generated dataset table
+0.32    # L{0.32\textwidth} in the generated dataset table
+0.55    # figure width, Sec. 12
+0.62    # figure width, Sec. 3
