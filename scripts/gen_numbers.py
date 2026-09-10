@@ -31,6 +31,7 @@ SOURCES = [
     (ROOT / "results" / "map.json", "map"),
     (ROOT / "results" / "prior_sensitivity.json", "priorsens"),
     (ROOT / "results" / "theory_checks.json", "check"),
+    (ROOT / "results" / "evidence_repeatability.json", "repeat"),
 ]
 
 HEADER = (
@@ -86,6 +87,9 @@ FORMATS = {
     "outside_prior_fraction": ".3f",
     "tau_max": ".0f",
     "median_ratio": ".2f",
+    "logz_spread": ".3f",
+    "logz_reported_error": ".3f",
+    "ratio_spread_to_reported": ".2f",
     "today": ".1e",
     "z_of_max": ".0f",
     "two_omega_r_today": ".2e",

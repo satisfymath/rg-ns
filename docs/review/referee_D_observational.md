@@ -134,9 +134,9 @@ redrawn. That is exactly the failure mode withdrawn for `eps`, with a
 logarithmic grid instead of a linear one.
 
 **(d) The penalty is soft enough for the fit to buy its way out.** With
-`penalty = 1e6` (the `profile_derived` default), missing the target by `5.787e-3` costs
-`1e6 * (5.787e-3)**2 = 33.495` in the objective, and the optimiser accepted that
-rather than move onto the constraint surface. That leaves a dichotomy with no
+`penalty = 1e6` (the `profile_derived` default), missing the target by
+`5.787e-3` costs `1e6 * (5.787e-3)**2 = 33.495` in the objective, and the
+optimiser accepted that rather than move onto the constraint surface. That leaves a dichotomy with no
 escape: either a feasible point at `Delta = 0.0126` with
 `chi2 < chi2_min + 35.6` exists and the optimiser failed to find it, or no such
 point exists and the true profile there is above `chi2_min + 35.6`, in which
@@ -279,8 +279,9 @@ ln B = 1.636/2 - ln(V_extra,prior / V_extra,post)
 `V_extra,prior = 1 x 4 x 29.7 = 118.8` in units of
 (`eps`) x (decades of `log10_xi`) x (`z_act`), so the implied posterior extent
 of the three unidentified directions is `V_extra,post = 10.6`. Every one of the
-three prior factors is a free choice made in the `PRIORS` table in `code/absorb/params.py`, and
-`ln B` moves one-for-one with the logarithm of their product. Nothing in the
+three prior factors is a free choice made in the `PRIORS` table of
+`code/absorb/params.py`, and `ln B` moves one-for-one with the logarithm of
+their product. Nothing in the
 data fixes any of them: `eps` is a fraction, so `[0,1]` is forced, but the four
 decades of `log10_xi` and the range `z_act in [0.3, 30]` are conventions.
 
@@ -384,8 +385,8 @@ lead.
 
 ### M3. The `Delta chi2` column of Table 1 mixes three incompatible maximisers, prints an impossible number, and understates the model's best fit by a factor of two.
 
-**Location**: `paper/generated/tab_comparison.tex`; `scripts/gen_tables.py`, `chi2_of()`;
-`scripts/run_map.py` (never run — `results/map.json` absent).
+**Location**: `paper/generated/tab_comparison.tex`; `scripts/gen_tables.py`,
+`chi2_of()`; `scripts/run_map.py` (never run — `results/map.json` absent).
 
 The committed table reads
 
@@ -407,8 +408,9 @@ $ OMP_NUM_THREADS=1 PYTHONPATH=code python3 -c "...(see certification C5)..."
 `results/map.json` missing, LambdaCDM and `xi_h` take their `chi2_min` from
 `results/results.json` (a Nelder-Mead polish of an ensemble chain) while
 `reinforce` and `memory` take theirs from `results/evidence.json` (dynesty's
-best *sample*, which is not a maximum). The code comment just above `chi2_of()` says this in as many words and `run_map.py` exists to
-fix it; it has simply not been run.
+best *sample*, which is not a maximum). The code comment just above `chi2_of()`
+says this in as many words, and `run_map.py` exists to fix it; it has simply not
+been run.
 
 **No maximiser in this repository has ever found the `xi_h` best fit.** Starting
 from the solution my re-profile turned up at `Delta = 0.004` and polishing with
@@ -530,8 +532,9 @@ The section states, in order: "a variant including it [the SH0ES calibration] is
 reported separately"; "the late-time-only combination is reported alongside so
 the reader can see what the compressed likelihood is doing"; "Users who prefer
 to avoid the compressed likelihood can run the late-time-only combination, which
-is reported alongside" (`appF_numerics.tex`, Likelihoods subsection); and "the third [a Bayesian
-evidence robust to prior choice] is reported with its prior sensitivity".
+is reported alongside" (`appF_numerics.tex`, Likelihoods subsection); and "the
+third [a Bayesian evidence robust to prior choice] is reported with its prior
+sensitivity".
 
 ```
 $ grep -o "nocmb\|__shoes\|__rsd\|bao_only" results/*.json | sort -u
@@ -636,7 +639,13 @@ a test that fails if `kappa` evaluated at the edges of the `omega_c` prior moves
 correct as `-2 log L` and is documented. Measured:
 
 ```
-$ ...  E0 = 1^T C^-1 1 = 70470.7 ;  log(E0/2pi) = 9.3251   (with SH0ES: 9.3450)
+$ OMP_NUM_THREADS=1 PYTHONPATH=code python3 -c "
+import numpy as np
+from scipy.linalg import cho_solve
+from absorb.data import pantheon as P
+d=P.load_pantheon(False); o=np.ones(d.n)
+E0=float(o@cho_solve(d.cho,o)); print(E0, np.log(E0/(2*np.pi)))"
+70470.7   9.3251        (with SH0ES: E0 = 71889.9, log term 9.3450)
 ```
 
 So `results/results.json` `chi2_breakdown["SN(Pantheon+)"] = 1415.10` is
@@ -647,8 +656,8 @@ and that only differences are meaningful.
 
 ### m2. `chi2_at_zero` in `results/profile.json` is a `Delta chi2`, not a `chi2`.
 
-`profile()` writes it after `chi2 -= chi2.min()`. Referee B raised this
-in m10; it is still there. Stored value `0.8592`; the actual `chi2` at `eps = 0`
+`profile()` writes it after `chi2 -= chi2.min()`. Referee B raised this in m10;
+it is still there. Stored value `0.8592`; the actual `chi2` at `eps = 0`
 is `1436.5161`.
 
 ### m3. The dataset table describes the release, not the selection.
@@ -669,17 +678,16 @@ Rewrite 10.2 to say what was actually done for which model.
 ### m5. `check_numbers.py` is blind to numbers written in maths mode, which is where the hand-typed ones were.
 
 When I began this review the paragraph "One chain is quoted from and three are
-not" read "acceptance $0.44$,
-length $157$ autocorrelation times", both hand-typed results (the macro for the
-first is `0.4386`; the second is `2000 / 12.7271 = 157.1` computed by hand from
-two other macros). Both were replaced by macros during the review, and the
+not" read "acceptance $0.44$, length $157$ autocorrelation times", both
+hand-typed results (the macro for the first is `0.4386`; the second is
+`2000 / 12.7271 = 157.1`, computed by hand from two other macros). Both were replaced by macros during the review, and the
 appendix's opening paragraph was rewritten to exempt "round figures used for
 orientation". The hole in the gate that let them through is still open, and one
 number is still in it:
 
-- `appF_numerics.tex`, Background integration subsection: "One background solve costs about $11$~ms." That is a
-  measurement of this code, not a round figure from the literature, and it is
-  model-dependent. Measured here single-threaded (with three other jobs on a
+- `appF_numerics.tex`, Background-integration subsection: "One background solve
+  costs about $11$~ms." That is a measurement of this code, not a round figure
+  from the literature, and it is model-dependent. Measured here single-threaded (with three other jobs on a
   16-core machine, so if anything an over-estimate):
 
 ```
@@ -687,11 +695,10 @@ number is still in it:
   xi_h   background solve 15.01 ms   full posterior chi2  29.82 ms
 ```
 
-  `11 ms` is neither. The same paragraph's corollary in
-  the `likelihoods.py` module docstring — "makes the supernova term cheap enough that the
-  sampler is dominated by the background integration rather than by linear
-  algebra" — is true for `xi_h` (15 of 30 ms) and false for LambdaCDM (1.1 of
-  4.2 ms). Worker sizing and runtime estimates elsewhere rest on the 11 ms
+  `11 ms` is neither. The corollary in the `likelihoods.py` module docstring —
+  "makes the supernova term cheap enough that the sampler is dominated by the
+  background integration rather than by linear algebra" — is true for `xi_h`
+  (15 of 30 ms) and false for LambdaCDM (1.1 of 4.2 ms). Worker sizing and runtime estimates elsewhere rest on the 11 ms
   figure.
 
 The gate cannot catch this: `check_numbers.py` applies `MATH.sub(" ", text)`

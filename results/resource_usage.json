@@ -134,5 +134,13 @@
     "mem_available_before_mb": 7882.1796875,
     "mem_available_after_mb": 8197.55078125,
     "notes": "profile in a derived quantity"
+  },
+  {
+    "name": "nested_track_b__baseline",
+    "seconds": 2531.4091017246246,
+    "peak_rss_mb": 3975.55859375,
+    "mem_available_before_mb": 8353.703125,
+    "mem_available_after_mb": 10218.3046875,
+    "notes": "nlive=500"
   }
 ]
