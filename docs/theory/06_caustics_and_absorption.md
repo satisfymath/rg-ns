@@ -182,6 +182,46 @@ but a change of sign of the local expansion.
 
 ---
 
+## 4b. Self-similar scaling: which quantities may diverge
+
+Posit $\rho\sim s^{-p}$ and $\ell_i\sim s^{q_i}$ for the three principal
+directions, $s=T-t$. The proper volume of the core is $s^{Q}$ with
+$Q=\sum_i q_i$, so
+
+$$
+E_{\rm core}=\int\rho\sqrt{\gamma}\,d^3x\ \sim\ s^{Q-p},
+\qquad\text{finite}\iff Q\ge p,\qquad\text{vanishing}\iff Q>p .
+$$
+
+This is the entire content of "a divergent density can carry a finite mass". It
+is dimensional bookkeeping, and any mass-conserving collapse satisfies it with
+$p=Q$ exactly. It is not a mechanism, and nothing is gained by dressing it up
+as one. For a planar caustic one direction contracts, $q_1=c$, and the other
+two do not, so $Q=c$.
+
+The point of the table below is that quantities usually spoken of together do
+not stand or fall together.
+
+| Quantity | Exponent in $s$ | Finite? |
+|---|---|---|
+| precursor density | $\kappa-1$ | iff $\kappa\ge1$ |
+| precursor column density | $\kappa$ | always, and $\to0$ |
+| defect density ($b>0$) | $-1$ | never |
+| defect column density ($b>0$) | $0$ | always |
+| vacuum increment | $\kappa-1$ | iff $\kappa>1$ |
+| expansion $\Theta$ | $-1$ | **never** |
+| velocity | bounded | always |
+| core width | $+1$ | always |
+| curvature invariant | $\min$ of the density exponents | iff $\kappa>1$ and $b=0$ |
+
+Two entries deserve emphasis. The **expansion scalar diverges in every case**,
+including those where the stress tensor is finite: what conversion can remove is
+the gravitational effect of the caustic, not the caustic of the congruence. A
+congruence singularity is not a spacetime singularity, and the two must not be
+conflated. And the **defect channel never helps**: with $b>0$ the curvature
+diverges however strong the conversion, because the product is dust and is
+compressed by the same $\Theta$.
+
 ## 5. Summary table
 
 | Quantity | Bounded rate | $g<c$ | $g=c$ | $g>c$, $b>0$ | $g>c$, $b=0$ |
