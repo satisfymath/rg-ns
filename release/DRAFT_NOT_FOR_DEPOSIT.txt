@@ -1,0 +1,7 @@
+This archive was assembled with --force and is not shippable.
+
+- paper/generated/tab_parameters.tex:2 contains '[missing:'
+- paper/main.tex:10 contains '\\TODO{'
+- paper/sections/99_acknowledgments.tex:26 contains '\\TODO{'
+- paper/sections/appF_numerics.tex:208 contains '\\TODO{'
+- paper/generated/tab_parameters.tex is missing its results input

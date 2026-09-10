@@ -1,0 +1,140 @@
+% 12_quantum
+\section{Quantum absorption, memory and irreversibility}\label{sec:quantum}
+
+The kinetic law of \cref{sec:absorbing-process} is irreversible. Closed
+quantum evolution is not. This section states the obstruction precisely, gives
+an open-system realization that reproduces the classical chain exactly, and is
+explicit about what the quantum language adds and what it does not.
+
+\subsection{The obstruction}\label{sec:quantum-obstruction}
+
+\begin{proposition}[No absorption under unitary flow]\label{prop:unitary-obstruction}
+  Let $\Hilb$ be finite-dimensional, $U(t)=e^{-iHt/\hbar}$ unitary, and
+  $\mathcal A\subset\Hilb$ a subspace with $U(t)\mathcal A\subseteq\mathcal A$
+  for all $t\ge0$. Then $U(t)\mathcal A=\mathcal A$ and
+  $U(t)\mathcal A^{\perp}=\mathcal A^{\perp}$, so the probability of occupying
+  $\mathcal A$ cannot increase by transfer from its complement.
+\end{proposition}
+
+\begin{proof}
+  $U$ is invertible and $\mathcal A$ finite-dimensional, so an inclusion
+  between spaces of equal dimension is an equality. Unitarity preserves
+  orthogonality, hence the complement is preserved too.
+\end{proof}
+
+Equally, two orthogonal states cannot evolve unitarily into the same state,
+since inner products are preserved. Absorption of distinct configurations into
+one description therefore requires an environment, a restriction of the
+observables, or a limit not covered by these hypotheses. The proposition does
+not forbid effective irreversibility in open systems; it delimits what may be
+claimed about a closed finite system without adding a mechanism.
+
+\subsection{An open realization}\label{sec:quantum-lindblad}
+
+For a single unit with basis $\{\ket{I},\ket{A}\}$, take
+$\jump=\sqrt{\Gam}\,\ket{A}\!\bra{I}$ and
+$\dot\dens=\jump\dens \jump^{\dagger}-\tfrac12\{\jump^{\dagger}\jump,\dens\}$.
+This is a completely positive, trace-preserving semigroup, and its matrix
+elements give $\dot\dens_{II}=-\Gam\dens_{II}$,
+$\dot\dens_{AA}=\Gam\dens_{II}$ and
+$\dot\dens_{IA}=-\tfrac{\Gam}{2}\dens_{IA}$, so with $\fconv=\dens_{AA}$,
+%
+\begin{keyresult}{I}{eq:quantum-two-state}
+  \dot \fconv=\Gam(1-\fconv) .
+\end{keyresult}
+%
+The absorbing state is stationary for the reduced dynamics. This is not an
+analogy: \cref{eq:quantum-two-state} is the $N=1$ case of
+\cref{eq:process-deterministic}, obtained exactly from a specified open
+quantum model.
+
+Reinforcement is obtained without making quantum mechanics nonlinear. With
+$n_i=\ket{A_i}\!\bra{A_i}$ and
+$\hat \fconv_{\neg i}=(N-1)^{-1}\sum_{j\neq i}n_j$, take
+%
+\begin{equation}\label{eq:quantum-collective}
+  \jump_i=\ket{A_i}\!\bra{I_i}\otimes\sqrt{\Gamz e^{\alpha \hat \fconv_{\neg i}}} .
+\end{equation}
+%
+The generator remains linear in $\dens$. Since $\hat \fconv_{\neg i}$ commutes
+with the operators of unit $i$,
+%
+\begin{keyresult}{I}{eq:quantum-collective-mean}
+  \odv{}{t}\avg{n_i}
+  =\avg{(1-n_i)\,\Gamz e^{\alpha \hat \fconv_{\neg i}}} ,
+\end{keyresult}
+%
+which for diagonal states is a birth process whose rates depend on other
+occupations. The macroscopic nonlinearity of \cref{eq:process-rate} is a
+mean-field closure of \cref{eq:quantum-collective-mean}, not a modification of
+the underlying evolution.
+
+\begin{proposition}[Exact classical reduction]\label{prop:classical-reduction}
+  With the jump operators \cref{eq:quantum-collective}, which map each
+  occupation basis state to a single basis state and have diagonal
+  $\jump_i^{\dagger}\jump_i$, populations decouple from coherences. The
+  populations obey exactly the birth chain with rates
+  $(N-k)\Gamz e^{\alpha k/(N-1)}$, and coherences decay at rate at least
+  $\Gam/2$.
+\end{proposition}
+
+A consequence worth checking numerically, and which we do: the trajectory of
+$\avg{n_i}$ is identical for a diagonal initial state and for a coherent
+product state, to solver tolerance. The quantum structure supplies complete
+positivity and a decoherence rate; it does not supply new kinetics.
+
+\subsection{How good is the mean-field closure?}\label{sec:quantum-closure}
+
+Replacing $\avg{(1-n_i)e^{\alpha\hat \fconv_{\neg i}}}$ by
+$(1-\fconv)e^{\alpha \fconv}$ discards correlations. Two computations bound the
+cost. Integrating the full Liouvillian, which is tractable only to $N=8$, the
+maximum discrepancy between the exact $\avg{\hat \fconv}$ and the mean-field
+solution falls with a fitted exponent $\numLindbladClosureSlopeFull$. That
+number should not be quoted on its own: over so short a range it is still
+contaminated by small-$N$ curvature. Because the jump operators preserve
+permutation symmetry, the same quantity can be computed exactly from the
+$(N+1)$-state symmetric chain, which reaches $N=\numLindbladClosureNMax$; there
+the fitted exponent is $\numLindbladClosureSlopeDicke$ and the local slope at
+the largest $N$ is $\numLindbladClosureSlopeLocal$
+(\cref{fig:lindblad}). The closure is therefore $\order{N^{-1}}$, and its error
+is subleading to the $\order{N^{-1/2}}$ fluctuations of
+\cref{thm:deterministic-limit}.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.55\textwidth]{lindblad.pdf}
+  \caption{Mean-field closure error of the collective Lindblad dynamics: the
+    maximum over time of the difference between the exact $\avg{\hat \fconv}$
+    and the mean-field solution. Filled circles are the full Liouvillian, which
+    is tractable only to $N=8$ and whose fitted slope is still bent by
+    small-$N$ curvature; open squares are the exact permutation-symmetric chain,
+    which reaches $N=\numLindbladClosureNMax$ and tracks the dotted $N^{-1}$
+    reference. The closure error is subleading to the intrinsic $N^{-1/2}$
+    fluctuations of the jump process.}
+  \label{fig:lindblad}
+\end{figure}
+
+\subsection{Absorption does not imply increasing entropy}\label{sec:quantum-entropy}
+
+A tempting shortcut is to identify absorption with entropy production. It is
+false for the subsystem. Starting from $\ket{I}$, the solution of the two-state
+model is diagonal with $p_I=e^{-\Gam t}$, so the von Neumann entropy
+$-p_I\log p_I-(1-p_I)\log(1-p_I)$ starts at zero, rises to $\log 2$ and returns
+to zero when absorption completes. The second law applies to the system
+together with its environment, and if each jump releases energy $\Delta E$ to a
+bath then that bath cannot be omitted while total energy conservation is being
+claimed.
+
+This is the honest statement of where the cosmological model stands. Taking
+$\QV\ge0$ is a postulate of \cref{asm:closure}; exhibiting a microdynamics that
+conserves total energy, produces the right entropy, and feeds precisely that
+tensor remains open. \Cref{sec:realizations-bridge} proposes a candidate and
+\cref{sec:outlook} lists what would have to be shown.
+
+\paragraph{What this section establishes.}
+That irreversible conversion is incompatible with closed unitary evolution, and
+that an explicitly specified open model reproduces the classical chain with a
+mean-field closure error measured to scale as $\order{N^{-1}}$ --- measured on
+a numerical family, not bounded by a proof. What it does not establish is
+that the substrate is such a system, nor that the environment required by the
+construction is the one the cosmological model needs.

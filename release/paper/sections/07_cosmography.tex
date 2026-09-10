@@ -1,0 +1,239 @@
+% 07_cosmography
+\section{Cosmographic bounds: jerk and snap}\label{sec:cosmography}
+
+The results of the previous sections are statements about a model. This section
+extracts from them two statements about the universe that do not depend on the
+rate law: an inequality on the third derivative of the scale factor, whose sign
+separates this model from its competitors, and a relation on the fourth
+derivative that is the only place where the memory parameters leave a
+background signature.
+
+\subsection{The jerk}\label{sec:cosmography-jerk}
+
+\begin{theorem}[Jerk identity and bound]\label{thm:jerk}
+  For a spatially flat universe containing pressureless matter, conserved
+  radiation, an exact vacuum that receives energy at rate $\QV$, and any
+  further conserved species whose pressure is non-increasing in time,
+  %
+  \begin{keyresult}{C}{eq:cosmography-jerk}
+    \jerk=1+2\Omr+\varepsilon ,
+    \qquad
+    \varepsilon\eqdef\frac{\QV}{2\Mpl^2\Hub^3} ,
+  \end{keyresult}
+  %
+  and therefore, whenever the transfer is towards the vacuum,
+  %
+  \begin{keyresult}{C}{eq:cosmography-jerk-bound}
+    \QV\ge0\ \Longrightarrow\ \jerk\ \ge\ 1+2\Omr .
+  \end{keyresult}
+\end{theorem}
+
+\begin{remark}[Massive neutrinos strengthen the bound]\label{rem:jerk-neutrinos}
+  The last hypothesis is there because the fits of \cref{sec:observations}
+  carry one massive neutrino eigenstate, which is neither pressureless nor
+  conserved radiation, so a bound advertised as parameter-free must say what it
+  does with it. Such a species contributes $-\tfrac32\dot p/(2\Mpl^2\Hub^3)$ to
+  $\jerk$, and its pressure falls monotonically as it becomes non-relativistic,
+  so the contribution is non-negative and
+  \cref{eq:cosmography-jerk-bound} survives --- indeed with room to spare.
+  Measured on the $\LCDM$ best fit for a single $0.06\,\si{\electronvolt}$
+  eigenstate, the term is $\numCheckNeutrinoJerkTermToday$ today and rises to
+  $\numCheckNeutrinoJerkTermMax$ by $z=\numCheckNeutrinoJerkTermZOfMax$,
+  against $2\Omr=\numCheckNeutrinoJerkTermTwoOmegaRToday$ today. It is therefore not
+  negligible at the precision the fits reach, which is why it is carried in the
+  code and stated here rather than dropped.
+\end{remark}
+
+\begin{proof}
+  The kinematic identity $\jerk=1-\dot p_{\rm tot}/(2\Mpl^2\Hub^3)$ follows from
+  $\jerk=1+3\dot \Hub/\Hub^2+\ddot \Hub/\Hub^3$ together with
+  \cref{eq:setup-friedmann} and total conservation. With
+  $p_{\rm tot}=\rhor/3-\rhoV$ and $\dot \rhoV=\QV$, the radiation term gives
+  $2\Omr$ and the vacuum term gives $\varepsilon$.
+\end{proof}
+
+Two features make \cref{eq:cosmography-jerk-bound} worth stating. It is
+parameter-free: it holds for every admissible rate, so no choice of $\Gamz$,
+$\alpha$, $\beta$, $\tauM$, $\aact$ or $p$ can evade it. And it is not
+new in kind: the connection between $\jerk>1$ and a transfer from matter to the
+vacuum was made by \textcite{szydlowski2005_astro-ph0502034} for decaying-vacuum
+cosmologies, and the jerk as a diagnostic of dark-sector interaction has been
+revisited recently \parencite{worsley2026_260720348}. What is added here is the
+inequality form and the sign table below.
+
+In the model, $\varepsilon=\tfrac32(1-\bfrac)(\Gam/\Hub)\Omega_I$. The sandwich
+theorem alone gives only a trivial bound on $j_0$, because the two bracketing
+$\LCDM$ models are tangent to first order at $a=1$. A non-trivial bound needs
+one further hypothesis, and it matters which quantity that hypothesis is
+placed on. Write $\mathsf q(\efold)=\QV/(3\Mpl^2\Hz^2\Hub)$, so that
+$\Delta=\int_{-\infty}^{0}\mathsf q\,e^{3\efold}\,\dd \efold$ and
+$\varepsilon_0=\tfrac32\mathsf q_0$. If $\mathsf q$ is non-decreasing up to
+today, which says that the transfer measured against the expansion rate is
+still switching on, then $\mathsf q\le \mathsf q_0$ throughout and
+%
+\begin{keyresult}{C}{eq:cosmography-deficit-floor}
+  j_0-1\ \ge\ 2\Omega_{r0}+\frac92\,\Delta ,
+\end{keyresult}
+%
+with the relation exact, $\varepsilon_0=\tfrac32(p_{\rm eff}+3)\Delta$, when
+$\mathsf q\propto a^{p_{\rm eff}}$ near today. The hypothesis is on
+$\QV/\Hub$, not on $\QV a^3/\Hub$. The latter is strictly weaker and gives no
+floor: since $\Delta$ already weights $\mathsf q$ by $a^3$, a $\mathsf q$ that
+falls towards today can leave $\QV a^3/\Hub$ increasing while
+$\tfrac92\Delta$ exceeds $\varepsilon_0$. Subject to the correct hypothesis the
+two anchor-free observables of \cref{sec:positivity-ide} would not be
+independent: a measured matter deficit would predict a minimum jerk excess.
+
+\paragraph{The hypothesis fails for the activation law of this paper.} We
+checked it rather than assuming it, and the result is negative. The activation
+switch turns the transfer on at $\zact$, after which the rate falls relative to
+the expansion; $\mathsf q$ therefore \emph{peaks at the activation redshift} and
+declines from there, for every activation redshift and every rate we tried. The
+floor is correspondingly violated: over
+$\numCheckDeficitFloorNDrawsWithTransfer$ uniform prior draws with a non-zero
+deficit the hypothesis holds in $\numCheckDeficitFloorNHypothesisHolds$ of
+them, and the floor fails in
+$\numCheckDeficitFloorNFloorViolated$. The ratio $\varepsilon_0/\Delta$ has
+median $\numCheckDeficitFloorMedianRatio$ where the bound requires
+$\numCheckDeficitFloorFloorCoefficient$, and --- more to the point --- it is
+not a fixed number at all: over the same draws its central ninety per cent
+spans $\numCheckDeficitFloorRatioPZV$ to $\numCheckDeficitFloorRatioPNV$, and
+it reaches down to zero. The reason
+is visible in the kinetics. An early activation finishes its conversion long
+before today, leaving a large deficit and a transfer that has already switched
+off, so $\varepsilon_0$ is small; a late one has the opposite. The deficit and
+the jerk excess therefore measure different things, and neither bounds the
+other.
+a class of transfer histories that this model does not realise, and nothing in
+this paper may be inferred from it. In particular a bound on the deficit does
+not bound the jerk excess: the relation runs the wrong way for that even when
+it holds. Where the jerk excess is needed it is computed directly, as in
+\cref{sec:observations-results}. We keep the bound because the hypothesis is a
+statement about the transfer profile rather than about the kinetics, so a
+different activation law could satisfy it; but it is not available here.
+
+\subsection{The sign separates the alternatives}\label{sec:cosmography-signs}
+
+\begin{theorem}[Sign table]\label{thm:sign-table}
+  Neglecting radiation, the competing late-time descriptions give
+  %
+  \begin{center}
+  \begin{tabular}{lll}
+    \toprule
+    Model & $\jerk-1$ & Sign \\
+    \midrule
+    $\LCDM$ & $0$ & zero \\
+    This model, one-way & $\tfrac32(1-\bfrac)(\Gam/\Hub)\Omega_I$ & $>0$ \\
+    This model, reverse channel dominant
+      & $\varepsilon-\Gamdn \rhoV/(2\Mpl^2\Hub^3)$ & $<0$ \\
+    Running vacuum, $\nu>0$ & $-3\nu(1+\decel)$ & $<0$ \\
+    CPL in the DESI-preferred quadrant
+      & $\Omega_{\rm DE}\!\left[\tfrac92w_0(1+w_0)+\tfrac32w_a\right]$ & $<0$ \\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+\end{theorem}
+
+A robust measurement of $j_0<1$ therefore falsifies the one-way model and
+selects either the reverse channel of \cref{sec:positivity-track-b} or a
+genuinely different dark-energy sector. It is worth emphasising how unusual
+this is: the one-way model and the two families currently favoured by the data
+predict opposite signs for the same kinematic quantity.
+
+\paragraph{How sensitive is this test?} Not yet sensitive enough, and the paper
+says so. Late-time cosmographic reconstructions currently give
+$\sigma(j_0)\approx0.4$, against which the excess this model permits is
+measured directly in \cref{sec:observations-results} rather than inferred from
+the deficit.
+Values of $j_0$ obtained by combining the CMB with low-redshift data are
+tighter but model-dependent, derived within $\LCDM$ or CPL and then quoted as
+if kinematic; they cannot be used to test
+\cref{eq:cosmography-jerk-bound}. The practical route is not a direct
+measurement of a third derivative but a consistency test: fit $\Hub(z)$, then
+check that the reconstructed
+$\QV=2\Mpl^2(\ddot \Hub+3\Hub\dot \Hub)-\tfrac43\Hub\rhor$ is non-negative
+within errors. That is what \cref{sec:observations} does.
+
+\subsection{The snap, where memory shows}\label{sec:cosmography-snap}
+
+\begin{theorem}[Snap]\label{thm:snap}
+  With $\snap=\dot \jerk/\Hub-\jerk(2+3\decel)$ and
+  $\snap_{\LCDM}(\decel,\Omr)=2\Omr'-(1+2\Omr)(2+3\decel)$ its value at
+  $\QV=0$, evaluated at the same $\decel$ and $\Omr$,
+  %
+  \begin{keyresult}{C}{eq:cosmography-snap}
+    \snap-\snap_{\LCDM}(\decel,\Omr)
+    =\varepsilon\left[\frac{\dd\ln\Gam}{\dd \efold}-\frac{\Gam}{\Hub}-2\right] ,
+  \end{keyresult}
+  %
+  which for the rate law \cref{eq:process-rate} reads
+  %
+  \begin{keyresult}{C}{eq:cosmography-snap-explicit}
+    \snap-\snap_{\LCDM}(\decel,\Omr)
+    =-\varepsilon\left[2+\left(1-\alpha(1-\fconv)\right)\frac{\Gam}{\Hub}
+    -\mathcal B\right],
+    \qquad
+    \mathcal B\eqdef\frac{\beta(\fconv-\Mmem)}{\tauM \Hub} .
+  \end{keyresult}
+\end{theorem}
+
+\begin{proof}
+  From $\snap=\jerk'-\jerk(2+3\decel)$ with $'=\dd/\dd \efold$ and
+  \cref{eq:cosmography-jerk}, the radiation terms assemble into
+  $\snap_{\LCDM}(\decel,\Omr)$ and the remainder is
+  $\varepsilon[\varepsilon'/\varepsilon-(2+3\decel)]$. Differentiating
+  $\ln\varepsilon=\text{const}+\ln\Gam+\ln\rhoI-3\ln \Hub$ and using
+  $\dd\ln\rhoI/\dd \efold=-(3+\Gam/\Hub)$ and
+  $\dd\ln \Hub/\dd \efold=-(1+\decel)$ gives
+  $\varepsilon'/\varepsilon=\dd\ln\Gam/\dd \efold-\Gam/\Hub+3\decel$, which is
+  \cref{eq:cosmography-snap}.
+\end{proof}
+
+\begin{theorem}[Memory fingerprint, and what limits it]
+  \label{thm:memory-fingerprint}
+  At fixed $(\Hz,q_0,j_0)$ the memory parameters are unconstrained by the
+  jerk, and do enter the snap:
+  %
+  \begin{keyresult}{C}{eq:cosmography-fingerprint}
+    \frac{\partial j_0}{\partial \mathcal B}=0 ,
+    \qquad
+    \frac{\partial s_0}{\partial \mathcal B}=+\varepsilon_0\ \ne 0 .
+  \end{keyresult}
+  %
+  The activation term of \cref{eq:cosmography-snap-explicit}, however, enters
+  the same bracket with the \emph{same} coefficient as $\mathcal B$, so what
+  the snap measures is the sum $\mathcal B+p(1-\actS)$. Memory is identified by
+  cosmography alone only when the activation profile is known independently, or
+  when $p(1-\actS)$ is negligible today.
+\end{theorem}
+
+\begin{proof}
+  The jerk depends on the memory sector only through the instantaneous value of
+  $\Gam$, and there $\beta$ and $\Mmem$ enter only through the factor
+  $e^{\beta \Mmem}$, which is exactly degenerate with the normalisation
+  $\Gamz$. The lag $\mathcal B$ is not so degenerate: in the bracket of
+  \cref{eq:cosmography-snap-explicit} the coefficient of $\Gam/\Hub$ is
+  $1-\alpha(1-\fconv)$ while that of $\mathcal B$ is $-1$, and these are
+  independent directions unless $\fconv$ is held fixed.
+\end{proof}
+
+This is the observational counterpart of \cref{thm:hysteresis}. The jerk
+measures how much energy is being transferred now; the snap measures whether
+that transfer is being driven by a lagged history. Two limits check the
+statement. Without memory, $\mathcal B=0$ and the snap excess is strictly
+negative for $\alpha(1-\fconv)\le1$. At saturation, $\fconv,\Mmem\to1$, both
+$\varepsilon$ and $\mathcal B$ vanish and the \dS attractor of
+\cref{thm:de-sitter} becomes cosmographically indistinguishable from $\LCDM$,
+as it must. The honest limitation is that only the single combination
+$\mathcal B_0$ is measurable at $z=0$, so $\beta$ and $\tauM$ are not separately
+determined by cosmography alone.
+
+\paragraph{What this section establishes.}
+A parameter-free inequality on the jerk whose sign distinguishes this model
+from running vacuum and from the DESI-preferred CPL quadrant, and a snap
+relation that carries the only background signature of memory. What it does not
+establish is that either is currently measurable: the predicted jerk excess is
+about a factor of ten below present cosmographic errors, and the snap is
+further out of reach. Nor does it establish that the snap isolates memory: the
+activation profile contributes to the same combination, so a measurement of
+$s_0$ constrains $\mathcal B+p(1-\actS)$ and not $\mathcal B$ alone.

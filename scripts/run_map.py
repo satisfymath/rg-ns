@@ -93,13 +93,21 @@ def best_fit(model: str, dataset: str, n_restarts: int, seed: int,
 
     reached = np.asarray([v for v in reached if v < 1e9])
     spread = float(reached.max() - reached.min()) if reached.size > 1 else float("nan")
-    n_at_best = int(np.sum(reached < best + 0.01))
+    # How many independent refinements agreed with the best refinement, and
+    # separately how much the final polishing added. Comparing the refinements
+    # against the *polished* value counts none of them whenever polishing helps
+    # at all, which says nothing about whether the search was reliable.
+    best_refined = float(reached.min()) if reached.size else float("nan")
+    n_at_best = int(np.sum(reached < best_refined + 0.01)) if reached.size else 0
+    polish_gain = float(best_refined - best) if reached.size else float("nan")
     on_edge = [n for n, x, l, h in zip(post.param_names, best_x, lo, hi)
                if abs(x - l) < 1e-6 * (h - l) or abs(x - h) < 1e-6 * (h - l)]
     return dict(model=model, dataset=dataset, ndim=post.ndim,
                 chi2_min=float(best), chi2_spread=spread,
                 n_screen=n_screen, n_refined=len(starts),
                 n_reaching_best=n_at_best,
+                best_before_polish=best_refined,
+                polish_gain=polish_gain,
                 converged=bool(n_at_best >= 2),
                 budget_evals=budget, budget_per_dim=MAP_BUDGET_PER_DIM,
                 on_prior_edge=on_edge,
@@ -129,8 +137,8 @@ def main() -> int:
                 if e["on_prior_edge"] else "")
         mark = "" if e["converged"] else "   [NOT CONVERGED]"
         print(f"  {tag:24s} chi2_min = {e['chi2_min']:.4f}  "
-              f"({e['n_reaching_best']}/{e['n_restarts']} starts reached it, "
-              f"spread {e['chi2_spread']:.3f}{edge}){mark}", flush=True)
+              f"({e['n_reaching_best']}/{e['n_refined']} refinements agreed, "
+              f"polish gained {e['polish_gain']:.4f}{edge}){mark}", flush=True)
         OUT.write_text(json.dumps(out, indent=2, sort_keys=True))
 
     ref = out.get(f"lcdm__{args.data}")

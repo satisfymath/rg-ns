@@ -1,0 +1,50 @@
+{
+  "deficit_floor": {
+    "floor_coefficient": 4.5,
+    "max_ratio": 3.827602855798751,
+    "median_ratio": 0.45458329645165957,
+    "min_deficit_used": 1e-06,
+    "min_ratio": -3.8441012832189353e-150,
+    "model": "xi_h",
+    "n_draws_with_transfer": 399,
+    "n_floor_violated": 399,
+    "n_hypothesis_holds": 0,
+    "ratio_p05": 3.792072965146069e-08,
+    "ratio_p95": 1.3884698914851303
+  },
+  "growth_signature": {
+    "f_growth": 0.9309927475165709,
+    "f_growth_no_transfer": 0.8972941914343479,
+    "f_rsd": 0.8833032937654139,
+    "holds_at_every_point_tried": true,
+    "lowers_rsd": true,
+    "model": "xi_h",
+    "n_points_tried": 9,
+    "params": {
+      "eps": 0.6,
+      "log10_xi": -1.0,
+      "omega_V_act": 0.15,
+      "omega_b": 0.02237,
+      "omega_c": 0.1177,
+      "z_act": 5.0
+    },
+    "raises_growth": true,
+    "z": 2.0
+  },
+  "marginalisation_jacobian": {
+    "baseline": 9.325075582234462,
+    "with_sh0es": 9.34501443928475
+  },
+  "neutrino_jerk_term": {
+    "max": 0.2527589608550244,
+    "min": 4.9350550060082356e-05,
+    "non_negative_everywhere": true,
+    "today": 4.9350550060082356e-05,
+    "two_omega_r_today": 0.00010582228318952393,
+    "z_of_max": 1500.0
+  },
+  "transfer_peak": {
+    "max_relative_offset_of_peak": 0.007151286394683654,
+    "n_activation_redshifts": 7
+  }
+}

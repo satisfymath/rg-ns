@@ -1,0 +1,204 @@
+% 04_homogeneous_cosmology
+\section{Homogeneous cosmology with two products}
+\label{sec:homogeneous-cosmology}
+
+We now couple the kinetic law of \cref{sec:absorbing-process} to gravity. The
+results of this section are exact consequences of the closure stated below:
+identities relating the converted fraction to the surviving densities, global
+positivity and boundedness, and a \dS attractor reached without the Hubble rate
+ever growing.
+
+\subsection{The closure}\label{sec:cosmology-closure}
+
+\begin{assumption}[Homogeneous closure]\label{asm:closure}
+  Space is flat and FLRW. The precursor $\rhoI$ and the localized
+  product $\rhoD$ are pressureless, the third product is an exact vacuum with
+  $p_V=-\rhoV$, and baryons and radiation are separately conserved. A fraction
+  $\bfrac\in[0,1]$ of the converted energy feeds the localized product and the
+  rest feeds the vacuum. No other sector of negative pressure is present.
+\end{assumption}
+
+\begin{equation}\label{eq:cosmology-system}
+  \begin{aligned}
+    \dot\rhoI+3\Hub\rhoI&=-\Gam\rhoI, &
+    \dot\rhoD+3\Hub\rhoD&=\bfrac\,\Gam\rhoI, &
+    \dot \rhoV&=(1-\bfrac)\Gam\rhoI\eqdef \QV,\\
+    \dot\rhob+3\Hub\rhob&=0, &
+    \dot\rhor+4\Hub\rhor&=0, &
+    3\Mpl^2\Hub^2&=\rhoI+\rhoD+\rhob+\rhor+\rhoV,
+  \end{aligned}
+\end{equation}
+%
+together with \cref{eq:process-deterministic} for $(\fconv,\Mmem)$ and $\dot
+a=\Hub a$. The total pressure is $p=\rhor/3-\rhoV$, and summing the five
+density equations returns the total continuity equation exactly: the transfer
+terms $-\Gam\rhoI+\bfrac\Gam\rhoI+(1-\bfrac)\Gam\rhoI$ cancel, so
+\cref{eq:setup-conservation} holds identically. In a given realization $\rhoV$
+already carries the entire effective tensor of the homogeneous product; there
+is no separate energy of the field $\fconv$ to add again.
+
+\subsection{Exact identities}\label{sec:cosmology-identities}
+
+\begin{proposition}[Survival and product identities]\label{prop:identities}
+  With $a_i=1$, constant $\bfrac$ and $\fconv_i<1$, the system
+  \cref{eq:cosmology-system} satisfies
+  %
+  \begin{keyresult}{I}{eq:cosmology-survival}
+    \rhoI a^3=\rho_{I,i}\,\frac{1-\fconv}{1-\fconv_i},
+    \qquad
+    \rhoD a^3=\rho_{D,i}+\bfrac\,\rho_{I,i}\,\frac{\fconv-\fconv_i}{1-\fconv_i} ,
+  \end{keyresult}
+  %
+  and, wherever $\dot \fconv>0$,
+  %
+  \begin{keyresult}{I}{eq:cosmology-dVdf}
+    \odv{\rhoV}{\fconv}=\frac{(1-\bfrac)\rho_{I,i}}{a^3(1-\fconv_i)} .
+  \end{keyresult}
+\end{proposition}
+
+\begin{proof}
+  The first equation of \cref{eq:cosmology-system} gives
+  $\dd\log(\rhoI a^3)/\dd t=-\Gam$, while
+  $\dd\log(1-\fconv)/\dd t=-\Gam$ by \cref{eq:process-survival}; their
+  difference is constant. Substituting into
+  $\dd(\rhoD a^3)/\dd t=\bfrac\Gam\rhoI a^3$ and using
+  $\dot \fconv=(1-\fconv)\Gam$ integrates directly. Dividing $\dot \rhoV$ by
+  $\dot \fconv$ gives \cref{eq:cosmology-dVdf}.
+\end{proof}
+
+\Cref{eq:cosmology-dVdf} is the reason the converted fraction does not by
+itself determine the vacuum density: the same amount of conversion occurring at
+different epochs deposits different amounts of energy, because the donor has
+been diluted by different factors. It is also the mechanism behind
+\cref{thm:hysteresis} at the cosmological level, since two histories reaching a
+given $\fconv$ along different paths integrate \cref{eq:cosmology-dVdf} against
+different $a(\fconv)$.
+
+A related warning: the statistical fraction is not the energy fraction. In the
+two-sector subcase $\bfrac=0$ with $x=\rhoV/(\rhoI+\rhoV)$ one finds
+$\dot x=(1-x)(\Gam+3\Hub x)$, whose second term is absent from the equation for
+$\fconv$. Even with no conversion at all a pre-existing vacuum increases its
+energy share as matter dilutes, so $\fconv=\OmV$ is not an admissible identity.
+
+\subsection{Positivity, conservation and global bounds}
+\label{sec:cosmology-theorem1}
+
+\begin{theorem}[Regular future]\label{thm:regular-future}
+  Assume \cref{asm:closure}; non-negative initial densities with positive sum;
+  $a_i=1$, $\fconv_i\in[0,1)$, $\Mmem_i\in[0,1]$, $\bfrac\in[0,1]$,
+  $\tauM>0$; and $\Gam$ locally Lipschitz with $0\le\Gam\le G<\infty$ on the
+  physical domain. Then a unique solution exists for all finite future times,
+  all densities remain non-negative, $\fconv,\Mmem\in[0,1]$, $\Hub>0$, and
+  %
+  \begin{keyresult}{C}{eq:cosmology-bounds}
+    \dot \Hub=-\frac{\rhoI+\rhoD+\rhob+\tfrac43\rhor}{2\Mpl^2}\le0,
+    \qquad
+    0<\Hub(t)\le \Hub_i,
+    \qquad
+    V_i\le \rhoV(t)\le V_i+(1-\bfrac)\rho_{I,i} .
+  \end{keyresult}
+\end{theorem}
+
+\begin{proof}
+  Each source-free equation integrates to a positive exponential times its
+  initial value; the equations for $\rhoD$ and $\rhoV$ have non-negative
+  sources, and their integrating-factor solutions preserve sign. Formally, the
+  vector field of \cref{eq:cosmology-system} is inward-pointing on every face
+  of the non-negative orthant, because every outflow is proportional to the
+  density of the sector it leaves; the Nagumo subtangent condition then gives
+  forward invariance. \Cref{prop:survival} and
+  \cref{eq:process-memory-solution} confine $(\fconv,\Mmem)$ to the unit
+  square. Summing the density equations gives the total continuity equation,
+  and differentiating the Friedmann constraint gives the first of
+  \cref{eq:cosmology-bounds}, hence $\Hub\le \Hub_i$. For the vacuum bound, use
+  $a\ge1$ and \cref{eq:cosmology-survival}:
+  %
+  \begin{equation}\label{eq:cosmology-vacuum-bound}
+    \rhoV(t)-V_i=(1-\bfrac)\int_{t_i}^{t}\Gam\rhoI\,\dd s
+    \le(1-\bfrac)\rho_{I,i}\left[1-e^{-\int_{t_i}^{t}\Gam\,\dd s}\right]
+    \le(1-\bfrac)\rho_{I,i} .
+  \end{equation}
+  %
+  Finally $\dot\rhotot\ge-4\Hub_i\rhotot$, so the total density cannot reach
+  zero in finite time and the positive Friedmann root stays bounded away from
+  zero; local existence therefore extends globally to the future.
+\end{proof}
+
+This is a statement about a system of ordinary differential equations. It is
+not a global existence result for the Einstein equations with inhomogeneities,
+caustics or gravitational collapse.
+
+\subsection{Late-time attractor}\label{sec:cosmology-theorem2}
+
+\begin{theorem}[\dS attractor without superacceleration]
+  \label{thm:de-sitter}
+  Add to \cref{thm:regular-future} either $V_i>0$, or $\bfrac<1$ together
+  with $\rho_{I,i}>0$ and $\int^\infty\Gam\,\dd t=\infty$. Then
+  $\rhoV\to \Vinf>0$, all other densities tend to zero,
+  %
+  \begin{keyresult}{C}{eq:cosmology-desitter}
+    \Hub(t)\longrightarrow \Hinf=\sqrt{\frac{\Vinf}{3\Mpl^2}}>0,
+    \qquad
+    a(t)e^{-\Hinf(t-t_i)}\longrightarrow C\in(0,\infty) ,
+  \end{keyresult}
+  %
+  and the expansion accelerates from some finite time onwards.
+\end{theorem}
+
+\begin{proof}
+  Under the second alternative the source $\QV$ is strictly positive initially,
+  so there is $t_1$ with $\rhoV(t_1)>0$; by monotonicity
+  $\Hub\ge\sqrt{\rhoV(t_1)/3\Mpl^2}>0$ thereafter, hence $a$ grows at least
+  exponentially. \Cref{eq:cosmology-survival} bounds the comoving dust density,
+  so dust and radiation decay exponentially in $t$, while $\rhoV$ is monotone
+  and bounded by \cref{eq:cosmology-bounds} and therefore converges to a
+  positive limit; the Friedmann constraint gives the first of
+  \cref{eq:cosmology-desitter}. Moreover $\Vinf-\rhoV(t)$ decays at least
+  exponentially, so $\Hub-\Hinf$ is integrable and integrating $\dd\log a/\dd
+  t-\Hinf$ gives the second. Finally $\ddot a/a\to \Hinf^2>0$, so acceleration
+  sets in at some finite time.
+\end{proof}
+
+\begin{corollary}[At most one transition]\label{cor:one-transition}
+  With $\rhom=\rhoI+\rhoD+\rhob$ and $\mathcal A=\ddot a/a$,
+  %
+  \begin{keyresult}{I}{eq:cosmology-monotone-acceleration}
+    \dot{\mathcal A}
+    =\frac{3\QV+3\Hub\rhom+8\Hub\rhor}{6\Mpl^2}\ge0 ,
+  \end{keyresult}
+  %
+  strictly when matter or radiation is present. A solution that begins
+  decelerating and satisfies \cref{thm:de-sitter} therefore crosses
+  $\mathcal A=0$ exactly once. A history requiring several late alternations
+  between acceleration and deceleration does not belong to this closure.
+\end{corollary}
+
+\begin{proof}
+  Differentiate $\mathcal A=(2\rhoV-\rhom-2\rhor)/(6\Mpl^2)$ and substitute
+  $\dot\rhom=-3\Hub\rhom-\QV$ and $\dot\rhor=-4\Hub\rhor$.
+\end{proof}
+
+\subsection{Four things that can be true at once}\label{sec:cosmology-four}
+
+It is worth stating plainly, because the draft version of this work conflated
+them: the converted fraction grows, the vacuum density grows, the acceleration
+$\ddot a/a$ increases, and the Hubble rate decreases. These are four different
+statements about four different quantities, related by the equations above and
+in no tension with one another. In particular, if one insists on writing
+$\dot\rhoV+3\Hub(1+w_{V,\rm eff})\rhoV=0$ then
+$w_{V,\rm eff}=-1-\QV/(3\Hub \rhoV)\le-1$, yet the physical vacuum stress
+tensor still has $p_V=-\rhoV$ exactly, the total satisfies $\rho+p\ge0$, and
+\cref{eq:cosmology-bounds} forbids $\dot \Hub>0$. There is no
+superacceleration and no future singularity within these hypotheses. What
+$w_{V,\rm eff}$ is \emph{not} is the $w(z)$ that an observational fit assuming
+conserved matter would report; \cref{sec:positivity-ide} replaces this
+bookkeeping quantity with statements that do not depend on how a fit is
+anchored.
+
+\paragraph{What this section establishes.}
+Exact identities and global bounds for the homogeneous system, under
+\cref{asm:closure}. What it does not establish is that the closure describes
+our universe, nor that the past extension of these solutions is physical: with
+a rate that does not switch off, the vacuum density becomes negative at early
+times, which is the problem \cref{sec:solvable-early}
+repairs, by assumption rather than by mechanism.

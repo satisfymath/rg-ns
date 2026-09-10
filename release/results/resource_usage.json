@@ -1,0 +1,258 @@
+[
+  {
+    "name": "pancake_smoke",
+    "seconds": 8.041020154953003,
+    "peak_rss_mb": 35.2109375,
+    "mem_available_before_mb": 2214.96484375,
+    "mem_available_after_mb": 2337.9296875,
+    "notes": "N=1024, three rate modes, to D=0.999"
+  },
+  {
+    "name": "pancake_scaling",
+    "seconds": 256.4114770889282,
+    "peak_rss_mb": 35.69921875,
+    "mem_available_before_mb": 2350.65234375,
+    "mem_available_after_mb": 2576.1953125,
+    "notes": "peak density versus distance to the caustic"
+  },
+  {
+    "name": "pancake_convergence",
+    "seconds": 59.0597665309906,
+    "peak_rss_mb": 38.5546875,
+    "mem_available_before_mb": 2657.921875,
+    "mem_available_after_mb": 2674.38671875,
+    "notes": "step and sheet refinement"
+  },
+  {
+    "name": "pancake_convergence_N",
+    "seconds": 279.01958894729614,
+    "peak_rss_mb": 60.42578125,
+    "mem_available_before_mb": 2738.12890625,
+    "mem_available_after_mb": 2946.24609375,
+    "notes": "sheet refinement, control mode"
+  },
+  {
+    "name": "pancake_suite",
+    "seconds": 708.2172186374664,
+    "peak_rss_mb": 43.7421875,
+    "mem_available_before_mb": 2915.59765625,
+    "mem_available_after_mb": 2193.92578125,
+    "notes": "N=16384, 25000 graded steps"
+  },
+  {
+    "name": "profile_xi_h",
+    "seconds": 374.19600915908813,
+    "peak_rss_mb": 607.2734375,
+    "mem_available_before_mb": 5699.69921875,
+    "mem_available_after_mb": 2140.1015625,
+    "notes": "profile likelihood in eps"
+  },
+  {
+    "name": "pancake_suite",
+    "seconds": 816.630339384079,
+    "peak_rss_mb": 44.0703125,
+    "mem_available_before_mb": 2196.65234375,
+    "mem_available_after_mb": 1962.953125,
+    "notes": "N=16384, 25000 graded steps"
+  },
+  {
+    "name": "nested_lcdm__baseline",
+    "seconds": 14.305784940719604,
+    "peak_rss_mb": 259.7890625,
+    "mem_available_before_mb": 11564.3828125,
+    "mem_available_after_mb": 11379.3046875,
+    "notes": "nlive=50"
+  },
+  {
+    "name": "nested_lcdm__baseline",
+    "seconds": 112.51133489608765,
+    "peak_rss_mb": 265.95703125,
+    "mem_available_before_mb": 11518.30078125,
+    "mem_available_after_mb": 11387.734375,
+    "notes": "nlive=500"
+  },
+  {
+    "name": "profile_xi_h_matter_deficit",
+    "seconds": 1696.8806035518646,
+    "peak_rss_mb": 682.8046875,
+    "mem_available_before_mb": 2643.10546875,
+    "mem_available_after_mb": 7065.47265625,
+    "notes": "profile in a derived quantity"
+  },
+  {
+    "name": "nested_xi_h__baseline",
+    "seconds": 488.3620800971985,
+    "peak_rss_mb": 614.65234375,
+    "mem_available_before_mb": 11387.734375,
+    "mem_available_after_mb": 11267.01171875,
+    "notes": "nlive=500"
+  },
+  {
+    "name": "profile_xi_h",
+    "seconds": 480.5659091472626,
+    "peak_rss_mb": 603.3203125,
+    "mem_available_before_mb": 9467.68359375,
+    "mem_available_after_mb": 7185.8046875,
+    "notes": "profile likelihood in eps"
+  },
+  {
+    "name": "nested_reinforce__baseline",
+    "seconds": 1027.4477581977844,
+    "peak_rss_mb": 614.65234375,
+    "mem_available_before_mb": 11271.625,
+    "mem_available_after_mb": 11061.7109375,
+    "notes": "nlive=500"
+  },
+  {
+    "name": "nested_memory__baseline",
+    "seconds": 838.5658066272736,
+    "peak_rss_mb": 614.65234375,
+    "mem_available_before_mb": 11061.7109375,
+    "mem_available_after_mb": 9777.73046875,
+    "notes": "nlive=500"
+  },
+  {
+    "name": "nested_lcdm__baseline",
+    "seconds": 174.55138278007507,
+    "peak_rss_mb": 1588.51171875,
+    "mem_available_before_mb": 8470.5625,
+    "mem_available_after_mb": 8211.24609375,
+    "notes": "nlive=500"
+  },
+  {
+    "name": "nested_xi_h__baseline",
+    "seconds": 872.1482572555542,
+    "peak_rss_mb": 3917.47265625,
+    "mem_available_before_mb": 8211.24609375,
+    "mem_available_after_mb": 8174.3046875,
+    "notes": "nlive=500"
+  },
+  {
+    "name": "profile_xi_h_matter_deficit",
+    "seconds": 4017.1500039100647,
+    "peak_rss_mb": 732.609375,
+    "mem_available_before_mb": 7882.1796875,
+    "mem_available_after_mb": 8197.55078125,
+    "notes": "profile in a derived quantity"
+  },
+  {
+    "name": "nested_track_b__baseline",
+    "seconds": 2531.4091017246246,
+    "peak_rss_mb": 3975.55859375,
+    "mem_available_before_mb": 8353.703125,
+    "mem_available_after_mb": 10218.3046875,
+    "notes": "nlive=500"
+  },
+  {
+    "name": "nested_lcdm__rsd",
+    "seconds": 828.5573108196259,
+    "peak_rss_mb": 3196.52734375,
+    "mem_available_before_mb": 10388.86328125,
+    "mem_available_after_mb": 10226.06640625,
+    "notes": "nlive=500"
+  },
+  {
+    "name": "nested_xi_h__rsd",
+    "seconds": 1818.510005235672,
+    "peak_rss_mb": 4780.69921875,
+    "mem_available_before_mb": 10225.97265625,
+    "mem_available_after_mb": 11271.359375,
+    "notes": "nlive=500"
+  },
+  {
+    "name": "map_lcdm__baseline",
+    "seconds": 5.618691921234131,
+    "peak_rss_mb": 251.60546875,
+    "mem_available_before_mb": 11413.375,
+    "mem_available_after_mb": 11240.38671875,
+    "notes": "3 restarts"
+  },
+  {
+    "name": "map_xi_h__baseline",
+    "seconds": 70.85714077949524,
+    "peak_rss_mb": 620.03125,
+    "mem_available_before_mb": 11240.38671875,
+    "mem_available_after_mb": 10382.49609375,
+    "notes": "3 restarts"
+  },
+  {
+    "name": "map_reinforce__baseline",
+    "seconds": 125.2912483215332,
+    "peak_rss_mb": 637.05078125,
+    "mem_available_before_mb": 10382.49609375,
+    "mem_available_after_mb": 10869.05859375,
+    "notes": "3 restarts"
+  },
+  {
+    "name": "map_memory__baseline",
+    "seconds": 84.59375739097595,
+    "peak_rss_mb": 634.046875,
+    "mem_available_before_mb": 10869.05859375,
+    "mem_available_after_mb": 10863.91015625,
+    "notes": "3 restarts"
+  },
+  {
+    "name": "map_track_b__baseline",
+    "seconds": 134.7064564228058,
+    "peak_rss_mb": 633.05078125,
+    "mem_available_before_mb": 10863.91015625,
+    "mem_available_after_mb": 10902.7109375,
+    "notes": "3 restarts"
+  },
+  {
+    "name": "profile_xi_h_jerk_excess",
+    "seconds": 4338.6684646606445,
+    "peak_rss_mb": 731.8984375,
+    "mem_available_before_mb": 8286.1953125,
+    "mem_available_after_mb": 11491.11328125,
+    "notes": "profile in a derived quantity"
+  },
+  {
+    "name": "map_lcdm__baseline",
+    "seconds": 44.80806040763855,
+    "peak_rss_mb": 242.68359375,
+    "mem_available_before_mb": 12103.77734375,
+    "mem_available_after_mb": 11698.02734375,
+    "notes": "40 restarts"
+  },
+  {
+    "name": "map_xi_h__baseline",
+    "seconds": 900.5928785800934,
+    "peak_rss_mb": 603.328125,
+    "mem_available_before_mb": 11698.02734375,
+    "mem_available_after_mb": 10955.890625,
+    "notes": "40 restarts"
+  },
+  {
+    "name": "profile_xi_h_jerk_excess",
+    "seconds": 2961.7885687351227,
+    "peak_rss_mb": 720.9453125,
+    "mem_available_before_mb": 11890.87890625,
+    "mem_available_after_mb": 10768.609375,
+    "notes": "profile in a derived quantity"
+  },
+  {
+    "name": "map_reinforce__baseline",
+    "seconds": 15133.724274158478,
+    "peak_rss_mb": 719.4609375,
+    "mem_available_before_mb": 10955.890625,
+    "mem_available_after_mb": 11552.43359375,
+    "notes": "40 restarts"
+  },
+  {
+    "name": "map_xi_h__baseline",
+    "seconds": 431.6796169281006,
+    "peak_rss_mb": 666.01953125,
+    "mem_available_before_mb": 6208.796875,
+    "mem_available_after_mb": 6578.19921875,
+    "notes": "8 restarts"
+  },
+  {
+    "name": "map_lcdm__baseline",
+    "seconds": 22.73015308380127,
+    "peak_rss_mb": 260.140625,
+    "mem_available_before_mb": 7083.91796875,
+    "mem_available_after_mb": 6947.2421875,
+    "notes": "8 restarts"
+  }
+]

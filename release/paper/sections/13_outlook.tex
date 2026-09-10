@@ -1,0 +1,168 @@
+% 13_outlook
+\section{Outlook: open directions}\label{sec:outlook}
+
+Everything in this section is conjecture. It is separated from the rest of the
+paper for that reason, and each item is stated with what would have to be shown
+for it to become a result. The framework of the preceding sections stands or
+falls independently of anything here.
+
+\subsection{Where the rate law would come from}\label{sec:outlook-rate}
+
+The reinforced rate \cref{eq:process-rate} and the activation law
+\cref{eq:solvable-activation} are effective descriptions with five parameters.
+\Cref{sec:realizations-bridge} proposed that a nucleation event in a four-form
+sector is an absorption event, which would fix $\bfrac$ as a ratio of energies
+and make $\alpha>0$ equivalent to the upward tunnelling exponent decreasing
+with accumulated flux. Stated as the conjecture it is:
+%
+\begin{keyresult}{S}{eq:outlook-bridge}
+  \alpha=N\mathsf{q}\,\odv{\log\Gam}{h}>0 ,
+  \qquad
+  \bfrac=\frac{E_{\rm wall}}{\epsilon} ,
+\end{keyresult}
+%
+for nucleation driven by the precursor rather than thermally. Turning that into a derivation requires a computation
+this paper does not contain: the critical configuration, its action, the
+prefactor, and the conversion from a rate per four-volume to a rate per
+correlated region. The same computation would decide whether the memory time
+$\tauM$ is the light-crossing time of that region, which is the only physical
+candidate we can point to.
+
+\subsection{A local rate law off the background}\label{sec:outlook-local-rate}
+
+\Cref{asm:geodesic} defines the inhomogeneous theory by requiring the transfer
+to be uniform on comoving hypersurfaces, which makes the kinetic variables
+diagnostic at linear order. Reading the rate law of \cref{eq:process-rate}
+instead as a genuinely local law overdetermines the perturbations by one
+condition, \cref{eq:perturbations-compatibility}, which the dust dynamics do
+not satisfy. Two routes out are available and neither has been followed here:
+allow momentum transfer, so that the donor is no longer geodesic and the extra
+condition is absorbed by its acceleration; or give the receiving sector its own
+dynamics, so that it is no longer an exact vacuum. Both change the linear
+theory of \cref{sec:perturbations}, and the second changes
+\cref{asm:closure}. Until one is carried out, the local reading of the rate
+law is a statement about the homogeneous mode, and the hysteresis of
+\cref{thm:hysteresis} is a property of that mode rather than of two regions
+side by side in one universe.
+
+\subsection{Caustics: what is now settled, and what is not}
+\label{sec:outlook-caustics}
+
+The clock congruence is pressureless and geodesic, so it forms caustics
+\parencite{babichev2017_170403367}, and no linear analysis speaks to their
+fate. An earlier version of this paper conjectured here that because the
+transfer is proportional to the precursor density, and therefore diverges at a
+shell crossing, the precursor would stay finite. That conjecture has since been
+examined and is false: conversion enters the local solution only through the
+integral of the rate, and the rate is bounded.
+\Cref{sec:defects-caustics} states what replaces it, and carries out the
+one-dimensional test proposed here.
+
+What remains open is the self-consistent problem. The analysis of
+\cref{sec:defects-caustics} prescribes the compression rather than solving for
+it, so it establishes what a regular configuration would have to satisfy and
+not that one exists as a solution of the coupled system. Settling that requires
+either a self-gravitating sheet calculation with the transfer included, or an
+existence argument for the self-similar profile; neither is attempted here.
+
+\subsection{Spin and the Standard Model}\label{sec:outlook-spin}
+
+The topological charge of \cref{sec:defects} is not a spin operator. Since
+$\pi_4(S^3)=\Int_2$, a Finkelstein--Rubinstein quantisation in which the
+soliton is a fermion is permitted,
+%
+\begin{keyresult}{S}{eq:outlook-spin}
+  \pi_4(S^3)=\Int_2
+  \quad\Longrightarrow\quad
+  \text{the }\degB=1\text{ sector admits a fermionic quantisation,}
+\end{keyresult}
+%
+but establishing it requires showing that
+the $2\pi$ rotation loop is non-contractible in configuration space and
+choosing a representation of the fundamental group. Even granting that, a
+$\Int_2$ label is not a Standard-Model fermion: reproducing one would need a
+covariant spinor sector and a mass matrix with mixing. Nothing in this paper
+constrains either. The same applies to neutrinos: weak electromagnetic coupling
+is not evidence of proximity to an absorbing state, and their free-streaming
+affects structure growth in ways this model does not address
+\parencite{lesgourgues2012_12126154}.
+
+\subsection{Electromagnetism}\label{sec:outlook-em}
+
+A phase alone is not a gauge field. Writing $A_\mu=q_*^{-1}\partial_\mu\theta$
+gives $F_{\mu\nu}=0$ identically, so holonomies and phase singularities, while
+real, do not by themselves produce the two propagating polarizations of
+Maxwell. Nor is quantised flux the same as electric charge: a vortex can carry
+magnetic flux with no net charge, and winding does not fix the value of $e$. A
+condensate that breaks the relevant $U(1)$ gives the photon a mass
+$m_A^2=Z_\Psi q_*^2 v^2/Z_A$, so a viable realization must preserve the
+observed $U(1)$ or exhibit a different massless combination. Finally, the
+degree-of-freedom count is an obstruction, not a detail: Einstein gravity about
+Minkowski space has two helicity-$\pm2$ modes and Maxwell adds two of helicity
+$\pm1$, and no invertible local change of variables in the gravitational sector
+alone can create them.
+
+\subsection{Averaged stresses and turbulence}\label{sec:outlook-turbulence}
+
+There is a structural identity worth recording, provided it is not oversold.
+When fast oscillations of zero mean ride on a slow background, the slow sector
+inherits a stress quadratic in the oscillations: in hydrodynamics this is the
+Reynolds stress $\avg{w_iw_j}$, and in general relativity it is the Isaacson
+effective tensor $\avg{\partial_\mu h_{\alpha\beta}\partial_\nu h^{\alpha\beta}}$.
+The two have the same form, and in both cases the mean sector acquires
+something no individual mode carries. What follows from this is only that the
+inherited tensor's anisotropy depends on the background, so it need not be an
+isotropic bath. What does \emph{not} follow is a route from oscillations to
+negative pressure, and this can be made quantitative rather than left as a
+caveat. For transverse oscillations $w=a\cos(\xi\cdot x+\varphi)$ with
+$a\cdot\xi=0$, the angular average gives
+$\avg{w_iw_j}=\tfrac12a_ia_j$, hence
+%
+\begin{equation}\label{eq:outlook-reynolds-eos}
+  p_{\rm R}=\tfrac13\Tr\avg{w\otimes w}=\tfrac16\abs{a}^2,
+  \qquad
+  \varepsilon_{\rm kin}=\tfrac12\avg{\abs{w}^2}=\tfrac14\abs{a}^2,
+  \qquad
+  w_{\rm eff}=\frac{p_{\rm R}}{\varepsilon_{\rm kin}}=\frac23 ,
+\end{equation}
+%
+exactly, and unchanged for any superposition of families with vanishing cross
+terms. This is the ideal monatomic-gas relation, and it is not an accident:
+$\avg{w\otimes w}$ is a sum of rank-one terms $\tfrac12 a\otimes a$ with
+positive weights, so it is positive semidefinite and its trace can never be
+negative. Measured instead against a total energy density including rest mass
+one gets $w_{\rm eff}=\avg{v^2}/3c^2\ge0$, the warm-dark-matter result. Both
+normalizations are strictly positive. An averaged quadratic stress of this kind
+therefore cannot approach $p=-\rho$ by any choice of amplitudes or number of
+modes; reaching it needs a different object, not a better average. The same
+computation for high-frequency gravitational waves gives $p=\rho/3$. Concentration phenomena in the continuum limit are suggestive of
+where a description of this kind would break down, but a singularity of a
+continuum equation says only that the solution leaves a regularity class; it
+does not say what replaces it, and it does not convert a singular region into a
+stable absorbing state.
+
+\subsection{Emergent quantum mechanics}\label{sec:outlook-quantum}
+
+The Madelung and Klein--Gordon identities of \cref{app:quantum-hydro} are exact
+rewritings of equations that were assumed, not derived. Writing $n=\abs{\psi}^2$
+after starting from the Schr\"odinger equation adopts the quantum structure. A
+theory of emergent quantum mechanics would have to produce the tensor product
+of subsystems, superposition, entanglement and the Born rule, and would have to
+explain why a two-particle state lives on a six-dimensional configuration space
+rather than on physical space. Likewise, the semiclassical equation
+$\Gmn=\Mpl^{-2}\avg{\hat T_{\mu\nu}}_{\rm ren}$ couples a quantum expectation to
+a classical metric; it does not quantise the metric.
+
+\subsection{What would falsify the programme}\label{sec:outlook-falsify}
+
+Being clear about this matters more than any of the above. A specified version
+of this model should be abandoned if it violates its own positivity conditions,
+if it cannot maintain a conserved total tensor, if it develops an instability
+in the regime where it is being used, or if it cannot describe the data with
+its parameters fixed in advance. Three sharp tests already exist: the sign
+prediction of \cref{thm:no-sign-flip}, the jerk bound of
+\cref{eq:cosmography-jerk-bound}, and the opposite-sign growth signature of
+\cref{eq:perturbations-growth-signature}. Having many parameters, or requiring
+tuning, is not by itself a contradiction or a falsification; but it does weaken
+explanatory power, and it obliges the statistical comparison of
+\cref{sec:observations} to account for the added freedom.

@@ -1,0 +1,278 @@
+% 08_realizations
+\section{Covariant realizations of a silent vacuum}
+\label{sec:realizations}
+
+\Cref{asm:closure} postulates a sector with $p=-\rho$ that receives energy. This
+section asks what can actually produce such a sector. Three constructions are
+examined, and it is important to say at the outset that they establish
+different things: a four-form gives an exact vacuum tensor with no local
+propagating modes; a constrained clock gives a covariant action whose field
+equations reproduce the background transfer; and neither, on its own, produces
+the reinforced conversion law. The last subsection proposes the bridge between
+them, at the level of a conjecture with a stated test.
+
+\subsection{Absence of modes is not absence of a tensor}\label{sec:realizations-four-form}
+
+\begin{proposition}[Four-form vacuum]\label{prop:four-form}
+  Let $C_{\mu\nu\rho}$ be a three-form potential with
+  $\fourform_{\mu\nu\rho\sigma}=4\covd_{[\mu}C_{\nu\rho\sigma]}$ and
+  %
+  \begin{equation}\label{eq:realizations-four-form-action}
+    \Sact_4=-\frac{1}{2\cdot4!}\int \dd^4x\,\gdet\,
+    \fourform_{\alpha\beta\gamma\delta}\fourform^{\alpha\beta\gamma\delta} .
+  \end{equation}
+  %
+  In a connected source-free region the field equations imply
+  %
+  \begin{keyresult}{I}{eq:realizations-four-form}
+    \fourform_{\mu\nu\rho\sigma}=h\,\epsilon_{\mu\nu\rho\sigma},
+    \qquad \partial_\mu h=0,
+    \qquad T^{(4)}_{\mu\nu}=-\frac{h^2}{2}g_{\mu\nu} .
+  \end{keyresult}
+\end{proposition}
+
+\begin{proof}
+  Varying $C$ and integrating by parts gives
+  $\covd_\mu\fourform^{\mu\nu\rho\sigma}=0$. In four dimensions every
+  four-form is proportional to the volume form, and
+  $\covd_\mu\epsilon^{\mu\nu\rho\sigma}=0$, so $h$ is constant. Varying the
+  metric before imposing the solution gives
+  $T^{(4)}_{\mu\nu}=\tfrac{1}{3!}\fourform_{\mu\alpha\beta\gamma}
+  \fourform_\nu{}^{\alpha\beta\gamma}
+  -\tfrac{1}{2\cdot4!}g_{\mu\nu}\fourform^2$; with signature $(-+++)$ the
+  contractions are
+  $\epsilon_{\mu\alpha\beta\gamma}\epsilon_\nu{}^{\alpha\beta\gamma}=-3!\,g_{\mu\nu}$
+  and $\epsilon_{\alpha\beta\gamma\delta}\epsilon^{\alpha\beta\gamma\delta}=-4!$,
+  giving $T_{\mu\nu}=-h^2g_{\mu\nu}+\tfrac12h^2g_{\mu\nu}$, which is
+  \cref{eq:realizations-four-form} with $\rho_4=h^2/2$ and $p_4=-h^2/2$.
+\end{proof}
+
+A massless three-form gauge field has $\binom{D-2}{3}$ local polarizations,
+which vanishes for $D=4$: its only amplitude is the integration constant $h$.
+This settles a question that recurs in discussions of a dark sector: a
+component can be electromagnetically silent, carry no local waves, and still
+determine the expansion. It does not settle the magnitude of $h$, and it does
+not produce conversion, because in the free theory $h$ cannot change.
+
+\subsection{An obstruction for a canonical order parameter}
+\label{sec:realizations-obstruction}
+
+It is tempting to identify the converted fraction with a rolling scalar. That
+identification is not available.
+
+\begin{proposition}[No rolling exact vacuum]\label{prop:no-rolling}
+  For a canonical real scalar with
+  $\Lag=-\tfrac12(\covd\phi)^2-W(\phi)$ one has
+  $\rho_\phi+p_\phi=\dot\phi^2$. Hence $w_\phi=-1$ exactly requires
+  $\dot\phi=0$.
+\end{proposition}
+
+So one cannot simultaneously impose $\phi\propto \fconv$, $\dot \fconv>0$ and
+$p_\phi=-\rho_\phi$ with a non-degenerate kinetic term. This is why $\fconv$ is
+kept throughout as a statistical fraction and $\rhoV$ as a separate variable of
+the effective description, rather than the two being identified. A double-well
+potential $W(s)=W_0+\lambda_W s^2(1-s)^2-\varepsilon(3s^2-2s^3)$ with
+$\lambda_W>3\varepsilon>0$ has minima at $s=0,1$ with
+$W(1)-W(0)=-\varepsilon$, so the transition releases energy; but releasing
+energy is not the same as increasing a vacuum density, and a barrier picture
+alone yields no rate. A semiclassical nucleation rate would require a critical
+configuration, its action and a prefactor, and a rate per four-volume must be
+converted to a rate per region before it can be compared with $\Gam$, which has
+dimensions of inverse time.
+
+\subsection{A constrained clock}\label{sec:realizations-clock}
+
+Introduce a scalar $\clock$ of dimension $-1$ and a multiplier $\lagm$:
+%
+\begin{equation}\label{eq:realizations-clock-action}
+  \Sact_{\rm clock}=\int \dd^4x\,\gdet\left[\frac{\Mpl^2}{2}R
+  -\frac{\lagm}{2}\left(g^{\mu\nu}\partial_\mu \clock\partial_\nu \clock+1\right)
+  -V(\clock)\right] .
+\end{equation}
+
+\begin{proposition}[Clock field equations]\label{prop:clock}
+  On the branch with future-directed timelike gradient and $\lagm\ge0$,
+  \cref{eq:realizations-clock-action} gives
+  %
+  \begin{keyresult}{I}{eq:realizations-clock}
+    \ulow=-\partial_\mu \clock,\quad u^\mu u_\mu=-1,\quad
+    \Tmn=\lagm\, u_\mu u_\nu-V g_{\mu\nu},
+  \end{keyresult}
+  %
+  together with $u^\nu\covd_\nu \umu=0$,
+  $\covd_\mu(\lagm \umu)=-V_{,\clock}$ and
+  $\covd_\mu T_V^{\mu\nu}=V_{,\clock}\,u^\nu$.
+\end{proposition}
+
+\begin{proof}
+  Varying $\lagm$ imposes $(\partial \clock)^2=-1$. The metric variation
+  produces $\lagm\partial_\mu \clock\partial_\nu \clock$, and on the constraint
+  the matter Lagrangian equals $-V$. Varying $\clock$ gives
+  $\covd_\mu(\lagm\covd^\mu \clock)=V_{,\clock}$, and since
+  $\covd^\mu \clock=-\umu$ this is the stated continuity equation. The symmetry
+  of $\covd_\mu\covd_\nu \clock$ gives
+  $u^\nu\covd_\nu u_\mu=\tfrac12\covd_\mu(u^\nu u_\nu)=0$, so the flow is
+  geodesic.
+\end{proof}
+
+In FLRW one may take $\clock=t$, and then $\dot\lagm+3\Hub\lagm=-\dot V$ with
+$3\Mpl^2\Hub^2=\lagm+V$: an exact realization of dust transferring energy to
+the vacuum whenever $V_{,\clock}\ge0$. This construction is not new. It is the
+"dust of dark energy" of \textcite{lim2010_10035751}, and with a potential it
+is mimetic matter in the sense of
+\textcite{chamseddine2014_14033961}; reviews are given by
+\textcite{sebastiani2016_161208661} and \textcite{malaeb2026_260214082}. A
+recent construction combines a mimetic-like silent sector with an interacting
+vacuum and fits it to DESI data \parencite{prez2026_260719494}. We use
+it here as an existence proof for the background of
+\cref{sec:homogeneous-cosmology}, not as a claim of novelty.
+
+\subsection{The potential is determined, not chosen}\label{sec:realizations-determined}
+
+The standard objection to \cref{eq:realizations-clock-action} is that
+$V(\clock)$ can be reverse-engineered to reproduce almost any expansion
+history, so the construction explains nothing
+\parencite{chamseddine2014_14033961}. We do not claim to answer it. What can be
+said is weaker and worth stating precisely.
+
+\begin{proposition}[Kinetically determined potential]\label{prop:determined-V}
+  Fix $(\Gamz,\alpha,\beta,\tauM,\bfrac)$, the activation law, and initial
+  data. By \cref{thm:regular-future} the background is unique, so with
+  $\clock=t$,
+  %
+  \begin{keyresult}{I}{eq:realizations-determined-V}
+    V(\clock)=V_0+(1-\bfrac)\int_{t_0}^{\clock}\Gam\rhoI\,\dd t ,
+    \qquad
+    \lagm=\rhoI+\rhoD ,
+  \end{keyresult}
+  %
+  is a five-parameter family, monotone non-decreasing and bounded above by
+  \cref{eq:cosmology-bounds}.
+\end{proposition}
+
+\Cref{eq:realizations-determined-V} is simply the integral of the third line of
+\cref{eq:cosmology-system}; the content is in what it is being integrated
+against. The kinetic law is an additional postulate imposed from outside the
+action, so the action still does not constrain $V$, and the mimetic objection
+stands. What has been gained is that the ansatz for $V$ has five parameters
+rather than the freedom of a function space, is monotone non-decreasing and
+bounded above by \cref{eq:cosmology-bounds}, carries a specified early-time
+cutoff, and was not chosen by looking at any dataset. That is a statement about
+naturalness and about the number of free functions, not a derivation, and it is
+what makes the fits of \cref{sec:observations} interpretable and the prediction
+of \cref{sec:cosmography} falsifiable.
+
+One further consequence of the same limitation should be recorded here rather
+than left for the reader to notice. The matter tensor of
+\cref{eq:realizations-clock} is $\lagm u_\mu u_\nu-\rhoV g_{\mu\nu}$ with
+$\lagm=\rhoI+\rhoD$: the action distinguishes the dust sector from the vacuum,
+but nothing in it distinguishes the precursor from the defects. Since $\bfrac$
+is also degenerate with $\epsilon$ at background level (\cref{prop:ide-map})
+and cancels from linear growth (\cref{thm:b-independence}), the split of the
+dark sector into $\rhoI$ and $\rhoD$ is bookkeeping at every level this paper
+computes. It acquires content only through the defect sector of
+\cref{sec:defects}, and only if those objects are real.
+
+Two known problems of this class of theories remain, and both must be stated
+without softening.
+
+The scalar sound speed vanishes identically. This single fact has two faces
+that appear in different places in this paper and should not be counted twice:
+it means there is no scalar sound horizon, and it is also the reason the linear
+system of \cref{sec:perturbations} has no $k$-dependent coefficient. The latter
+is what makes \cref{prop:no-instability} available, but it is a degeneracy of
+the scalar sector rather than a restoring force, so it establishes the absence
+of one specific instability and nothing more.
+
+Pressureless geodesic flow develops caustics, which no linear analysis can
+exclude \parencite{babichev2017_170403367}. \Cref{eq:realizations-clock-action}
+contains no higher-derivative term of the form $(\Box \clock)^2$, so the
+gradient instabilities identified by \textcite{ijjas2016_160408586} in extended
+mimetic models are absent \emph{from this action}. That scoping matters: the
+action alone leaves $V(\clock)$ arbitrary and contains no rate law, so it is
+not by itself the theory whose perturbations are computed in
+\cref{sec:perturbations} and fitted in \cref{sec:observations}. The additional
+prescription those sections use, \cref{asm:geodesic}, is not a consequence of
+\cref{eq:realizations-clock-action}, and its scalar sector has not been shown
+free of gradient instabilities by the argument just given. Caustics are taken up
+where they actually bite, in \cref{sec:perturbations-realization}.
+
+\subsection{Nucleation events as absorption events}\label{sec:realizations-bridge}
+
+The three constructions above are related by more than analogy, and this
+subsection states the connection precisely enough to be attacked.
+
+In a four-form sector coupled to membranes, nucleation of a membrane of charge
+$\mathsf{q}$ shifts the flux across its worldvolume, $h\to h\pm \mathsf{q}$, so
+the vacuum density jumps by $\Delta V=\pm h\mathsf{q}+\mathsf{q}^2/2$
+\parencite{bousso2000_hep-th0004134,kaloper2023_230502349}. Identify the
+upward event with one absorption event: a precursor unit of energy $\epsilon$
+per patch volume is consumed, with the accounting
+$\epsilon=\Delta V\,\mathcal V_p+E_{\rm wall}$, where the wall energy that does
+not disperse is the localized remnant. Then the branching ratio is not a free
+parameter but a ratio of energies, $\bfrac=E_{\rm wall}/\epsilon$, and the
+remnants are candidates for the defect sector of \cref{sec:defects}; particle-like
+remnants of exactly this kind have been constructed in three-form sectors
+\parencite{khan2026_260403363}.
+
+\begin{remark}[The event sequence is a reinforced birth process]
+  \label{prop:bridge}
+  If each of $N$ precursor units per patch can nucleate once, and the
+  $(k+1)$-th event has rate $\Gam_k=\Gam(h_0+k\mathsf{q})$, then $K_t$ is
+  exactly the chain of \cref{eq:process-intensity} with
+  $\Gam(\fconv)=\Gam(h_0+\fconv N\mathsf{q})$. The exponential law
+  \cref{eq:process-rate} corresponds to $\log\Gam$ linear in $h$ over the
+  relevant range, with
+  $\alpha=N\mathsf{q}\,\dd\log\Gam/\dd h$. Reinforcement, $\alpha>0$, holds if
+  and only if the upward tunnelling exponent decreases with accumulated flux.
+
+  The identification is immediate once each unit may nucleate at most once: the
+  number of units still able to nucleate after $k$ events is $N-k$, and each
+  carries the common rate $\Gam(h_0+k\mathsf q)$, so the total intensity is
+  $\lambda_k=(N-k)\Gam(h_0+k\mathsf q)$, which is
+  \cref{eq:process-intensity} with $\fconv=k/N$. The exponential form
+  \cref{eq:process-rate} is then the statement that $\log\Gam$ is linear in $h$
+  over the range swept, with the stated identification of $\alpha$. We label
+  this a remark rather than a proposition because the premises -- one
+  nucleation per unit, a common rate, a flux that shifts by a fixed quantum --
+  are modelling choices, not consequences of the four-form dynamics.
+\end{remark}
+
+Whether this is a constraint or a picture turns on the sign, and the sign needs
+care. The \dS entropy is $S=8\pi^2\Mpl^2/\Hub^2=24\pi^2\Mpl^4/V$, which
+\emph{decreases} with $V$. An upward nucleation therefore lowers the horizon
+entropy and is exponentially suppressed relative to the downward one,
+$\Gam_\uparrow/\Gam_\downarrow=e^{-\Delta S}$ with $\Delta S>0$: the naive
+reading, that accumulating flux is entropically favoured, is backwards. What
+survives is one order more delicate. The suppression of a single upward step,
+%
+\begin{equation}\label{eq:realizations-suppression}
+  \Delta S=S(V)-S(V+\mathsf q h)
+  \simeq 24\pi^2\Mpl^4\,\frac{\mathsf q h}{V^2} ,
+\end{equation}
+%
+itself decreases as $V$ grows, so the upward rate rises with accumulated flux
+even though it never overtakes the downward one. That is the behaviour
+$\alpha>0$ requires, and it is the corrected form of the argument.
+
+Two honest caveats accompany it. At vacuum densities of order the observed one
+these rates are astronomically small, so the mechanism can only be relevant if
+the nucleation is not thermal but driven by the precursor, which is precisely
+what \cref{asm:closure} assumes and does not derive. And the bridge covers
+$\alpha$ and $\bfrac$ but not the memory sector: nothing in this subsection
+produces $\beta$ or $\tauM$. We therefore record \cref{prop:bridge} as a
+conditional statement about the structure of the process, and the claim that
+this mechanism operates in nature as a conjecture, listed as such in
+\cref{sec:outlook}.
+
+The same bridge identifies what the reverse channel of
+\cref{sec:positivity-ide} would be: an ordinary downward nucleation, returning
+vacuum energy to the localized sector.
+
+\paragraph{What this section establishes.}
+That a silent vacuum tensor exists (\cref{prop:four-form}), that a covariant
+action reproduces the background transfer (\cref{prop:clock}), and that its
+potential is fixed by the kinetics rather than chosen
+(\cref{prop:determined-V}). What it does not establish is a microscopic
+derivation of the rate law, the value of $\alpha$, or that caustics of the
+clock congruence are benign.

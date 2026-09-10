@@ -1,14 +1,16 @@
 {
   "lcdm__baseline": {
+    "best_before_polish": 1436.5160886245565,
     "budget_evals": 900,
     "budget_per_dim": 300,
-    "chi2_min": 1436.516088616481,
-    "chi2_spread": 29800.620832996665,
+    "chi2_min": 1436.5160886094236,
+    "chi2_spread": 9.051063898368739e-09,
     "converged": true,
     "dataset": "baseline",
     "model": "lcdm",
-    "n_reaching_best": 39,
-    "n_restarts": 40,
+    "n_reaching_best": 8,
+    "n_refined": 8,
+    "n_screen": 3000,
     "ndim": 3,
     "on_prior_edge": [],
     "param_names": [
@@ -16,10 +18,11 @@
       "omega_c",
       "omega_V_act"
     ],
+    "polish_gain": 1.513285496912431e-08,
     "theta": [
-      0.02251682742494211,
-      0.11773259478463431,
-      0.3266477328825641
+      0.022516828206057632,
+      0.11773260999990567,
+      0.3266476980966394
     ]
   },
   "memory__baseline": {

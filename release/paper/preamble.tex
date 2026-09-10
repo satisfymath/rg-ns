@@ -1,0 +1,146 @@
+% ============================================================================
+% preamble.tex -- Self-reinforced geometric absorption
+% Engine: pdflatex (see latexmkrc).  Bibliography: biblatex + biber, style=phys
+% ============================================================================
+
+% ---- Layout & typography ---------------------------------------------------
+\usepackage[a4paper,margin=2.5cm,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{csquotes}
+
+% ---- Mathematics -----------------------------------------------------------
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{mathrsfs}   % \mathscr, used for the Hilbert space
+\usepackage{tensor}
+
+% ---- Graphics & tables -----------------------------------------------------
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[font=small,labelfont=bf,labelsep=period]{caption}
+\usepackage{subcaption}
+\graphicspath{{figures/}}
+
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage[group-separator={,},group-minimum-digits=4,detect-all]{siunitx}
+% siunitx knows no astronomical units; the parsec is needed for H_0.
+\DeclareSIUnit{\parsec}{pc}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---- Lists, spacing, floats ------------------------------------------------
+\usepackage{enumitem}
+\usepackage{xspace}
+\usepackage{etoolbox}
+\usepackage[section]{placeins}
+\usepackage{needspace}
+\usepackage{xcolor}
+
+% ---- Links (load before cleveref) ------------------------------------------
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=green!45!black,
+            urlcolor=black!65,bookmarks=true,bookmarksnumbered=true]{hyperref}
+\usepackage[nameinlink,capitalise]{cleveref}
+
+% ---- Bibliography ----------------------------------------------------------
+\usepackage[backend=biber,style=phys,biblabel=brackets,sorting=none,
+            eprint=true,doi=true,url=false,isbn=false,
+            maxbibnames=5,minbibnames=3,giveninits=true]{biblatex}
+\addbibresource{references.bib}
+
+% ============================================================================
+% Draft-figure guard.  In draft mode a missing figure prints a visible box;
+% in final mode a missing figure is a hard error (never silently dropped).
+% ============================================================================
+\newif\ifdraftfigs
+\draftfigstrue   % <-- set \draftfigsfalse before submission
+\let\origincludegraphics\includegraphics
+\renewcommand{\includegraphics}[2][]{%
+  \IfFileExists{figures/#2}%
+    {\origincludegraphics[#1]{#2}}%
+    {\ifdraftfigs
+       \fbox{\parbox{0.6\linewidth}{\centering\color{red}\ttfamily
+             MISSING FIGURE\\ figures/#2}}%
+     \else
+       \GenericError{}{Missing figure: figures/#2}{}{Build aborted: final mode requires all figures.}%
+     \fi}}
+
+% ============================================================================
+% Theorem environments (shared counter, numbered by section)
+% ============================================================================
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{notation}[theorem]{Notation}
+
+\crefname{theorem}{Theorem}{Theorems}
+\crefname{proposition}{Proposition}{Propositions}
+\crefname{lemma}{Lemma}{Lemmas}
+\crefname{corollary}{Corollary}{Corollaries}
+\crefname{definition}{Definition}{Definitions}
+\crefname{assumption}{Assumption}{Assumptions}
+\crefname{conjecture}{Conjecture}{Conjectures}
+\crefname{remark}{Remark}{Remarks}
+\crefname{equation}{Eq.}{Eqs.}
+\crefname{figure}{Fig.}{Figs.}
+\crefname{table}{Table}{Tables}
+\crefname{section}{Sec.}{Secs.}
+\crefname{appendix}{Appendix}{Appendices}
+
+\numberwithin{equation}{section}
+
+% ============================================================================
+% Claims ladder.  Every displayed key result is wrapped in `keyresult`, whose
+% level is machine-extracted by scripts/check_claims.py:
+%   I = identity or standard result   C = conditional theorem of the model
+%   P = phenomenological / fitted     S = speculative (Outlook only)
+% Usage:  \begin{keyresult}{C}{eq:jerk-bound} ... \end{keyresult}
+% ============================================================================
+% The evidential level is printed with the result.  It used to be discarded,
+% so a reader had to match labels against a table in an appendix to learn
+% whether a displayed result was an identity, a theorem or a conjecture, and a
+% ladder invisible at the point of the claim does not do the job the
+% introduction claims for it.  The argument is also extracted from the source
+% by scripts/check_claims.py, which greps \begin{keyresult}{LEVEL}{label}.
+%
+% Built from \csname rather than nested \ifthenelse, and set as a flush-right
+% line rather than a \marginpar: the first version of this used both, and
+% pdflatex spent thirteen minutes on a single pass without finishing.
+\expandafter\def\csname claimlevel@A\endcsname{Postulate}
+\expandafter\def\csname claimlevel@I\endcsname{Identity}
+\expandafter\def\csname claimlevel@C\endcsname{Theorem of the model}
+\expandafter\def\csname claimlevel@N\endcsname{Numerical}
+\expandafter\def\csname claimlevel@P\endcsname{Fitted to data}
+\expandafter\def\csname claimlevel@S\endcsname{Conjecture}
+\newcommand{\claimlevelname}[1]{%
+  \ifcsname claimlevel@#1\endcsname\csname claimlevel@#1\endcsname\else#1\fi}
+\newenvironment{keyresult}[2]%
+  {\par\nobreak\vspace{-2pt}%
+   {\raggedleft\scriptsize\sffamily\color{black!55}%
+    #1 --- \claimlevelname{#1}\par}%
+   \nobreak\vspace{-6pt}%
+   \begin{equation}\label{#2}\begin{aligned}}%
+  {\end{aligned}\end{equation}}
+
+% ---- Draft helpers (removed before submission) ------------------------------
+\newcommand{\TODO}[1]{\textcolor{red}{\textbf{[TODO: #1]}}}
+\newcommand{\CITE}{\textcolor{orange}{\textbf{[CITE]}}}

@@ -1,0 +1,78 @@
+% appC_quantum_hydro
+\section{Quantum-hydrodynamic identities}\label{app:quantum-hydro}
+
+The identities below are exact rewritings of equations that are \emph{assumed},
+not derived. They are collected here because they are used in
+\cref{sec:quantum,sec:outlook} and because the distinction between a rewriting
+and a derivation is easy to lose.
+
+\subsection{Madelung form}\label{app:quantum-madelung}
+
+Starting from the Schr\"odinger equation
+$i\hbar\partial_t\psi=-\tfrac{\hbar^2}{2m}\nabla^2\psi+W\psi$ and writing
+$\psi=\sqrt{n}\,e^{iS/\hbar}$ on a domain where $\psi\neq0$, the imaginary and
+real parts separate into
+%
+\begin{keyresult}{I}{eq:appc-madelung}
+  \partial_t n+\nabla\cdot\!\left(n\frac{\nabla S}{m}\right)=0,
+  \qquad
+  \partial_t S+\frac{\abs{\nabla S}^2}{2m}+W+U_Q=0,
+  \qquad
+  U_Q=-\frac{\hbar^2}{2m}\frac{\nabla^2\sqrt n}{\sqrt n} .
+\end{keyresult}
+%
+With $\mathbf v=\nabla S/m$ and local irrotationality this gives
+$m(\partial_t+\mathbf v\cdot\nabla)\mathbf v=-\nabla(W+U_Q)$. There is no
+viscous term, and the underlying evolution conserves the norm and is reversible
+for a Hermitian Hamiltonian: a hydrodynamic \emph{form} is not a dissipative
+dynamics.
+
+The same equations follow from the action
+$\Sact_{\rm Mad}=\int \dd t\,\dd^3x\,[-n(\partial_tS+\abs{\nabla S}^2/2m+W)
+-\tfrac{\hbar^2}{8m}\abs{\nabla n}^2/n]$, since
+$\delta E_Q/\delta n=U_Q$ for
+$E_Q=\tfrac{\hbar^2}{8m}\int\abs{\nabla n}^2/n$. This exhibits the gradient
+energy any microscopic theory would have to reproduce, and makes plain that
+symmetry alone does not fix the coefficient $\hbar^2/8m$.
+
+\subsection{Circulation is extra information}\label{app:quantum-circulation}
+
+Single-valuedness of $\psi$ requires, around a closed loop not crossing a node,
+%
+\begin{keyresult}{I}{eq:appc-circulation}
+  \oint\nabla S\cdot \dd\boldsymbol\ell=2\pi\hbar\,n_{\rm w},
+  \qquad n_{\rm w}\in\Int .
+\end{keyresult}
+%
+The local equations do not imply this. On a two-dimensional annulus,
+$n=n_0$, $S=\ell\theta-Et$ and $W(r)=E-\ell^2/(2mr^2)$ satisfy
+\cref{eq:appc-madelung} with $U_Q=0$ for \emph{any} real $\ell$, while
+single-valuedness forces $\ell/\hbar\in\Int$. Any programme deriving quantum
+mechanics from a fluid must therefore supply this topological input separately.
+On a time-dependent spatial metric, conservation of the norm must also be
+written with the measure $\sqrt{h}\,\dd^3x$; replacing the Laplacian alone is
+not enough.
+
+\subsection{Klein--Gordon and its non-relativistic limit}\label{app:quantum-kg}
+
+For $\Psi=Ae^{iS/\hbar}$ with $A>0$ the same separation of
+$(\Box-m^2c^2/\hbar^2)\Psi=0$ gives
+$\covd_\mu(A^2\covd^\mu S)=0$ and
+$\covd_\mu S\covd^\mu S+m^2c^2-\hbar^2\Box A/A=0$. The conserved
+Klein--Gordon current is not a positive probability density for every solution,
+so the relativistic interpretation needs quantum field theory. Writing
+$\Psi=e^{-imc^2t/\hbar}\psi$ in Minkowski space gives
+$2im\hbar^{-1}\partial_t\psi+\nabla^2\psi-c^{-2}\partial_t^2\psi=0$, which
+reduces to the free Schr\"odinger equation when the second time derivative is
+negligible. That is a low-energy limit of a relativistic \emph{quantum}
+equation, not a derivation of quantisation from relativity.
+
+\subsection{Why this does not amount to emergence}\label{app:quantum-limits}
+
+A two-particle state $\psi(\mathbf x_1,\mathbf x_2)$ lives on a six-dimensional
+configuration space, which a local scalar fluid on physical space does not
+represent. Identifying $n=\abs{\psi}^2$ after starting from the Schr\"odinger
+equation adopts the quantum structure rather than deducing it. The same
+applies to the semiclassical equation
+$\Gmn=\Mpl^{-2}\avg{\hat T_{\mu\nu}}_{\rm ren}$: it couples an expectation value
+to a classical metric and does not quantise it.

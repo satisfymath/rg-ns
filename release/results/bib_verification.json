@@ -1,0 +1,353 @@
+[
+  {
+    "key": "wands2012_12036776",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:1203.6776",
+    "fetched_title": "Inhomogeneous vacuum energy",
+    "author_ok": true
+  },
+  {
+    "key": "lim2010_10035751",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:1003.5751",
+    "fetched_title": "Dust of Dark Energy",
+    "author_ok": true
+  },
+  {
+    "key": "chamseddine2014_14033961",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:1403.3961",
+    "fetched_title": "Cosmology with Mimetic Matter",
+    "author_ok": true
+  },
+  {
+    "key": "collaboration2025_250314738",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:2503.14738",
+    "fetched_title": "DESI DR2 Results II: Measurements of Baryon Acoustic Oscillations and Cosmological Constraints",
+    "author_ok": true
+  },
+  {
+    "key": "collaboration2018_180706209",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:1807.06209",
+    "fetched_title": "Planck 2018 results. VI. Cosmological parameters",
+    "author_ok": true
+  },
+  {
+    "key": "sebastiani2016_161208661",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:1612.08661",
+    "fetched_title": "Mimetic gravity: a review of recent developments and applications to cosmology and astrophysics",
+    "author_ok": true
+  },
+  {
+    "key": "babichev2017_170403367",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:1704.03367",
+    "fetched_title": "Caustic free completion of pressureless perfect fluid and k-essence",
+    "author_ok": true
+  },
+  {
+    "key": "ijjas2016_160408586",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:1604.08586",
+    "fetched_title": "NEC violation in mimetic cosmology revisited",
+    "author_ok": true
+  },
+  {
+    "key": "valiviita2008_08040232",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:0804.0232",
+    "fetched_title": "Large-scale instability in interacting dark energy and dark matter fluids",
+    "author_ok": true
+  },
+  {
+    "key": "sebastianutti2023_231214123",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:2312.14123",
+    "fetched_title": "The interacting vacuum and tensions: a comparison of theoretical models",
+    "author_ok": true
+  },
+  {
+    "key": "szydlowski2005_astro-ph0502034",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:astro-ph/0502034",
+    "fetched_title": "Cosmological model with energy transfer",
+    "author_ok": true
+  },
+  {
+    "key": "bousso2000_hep-th0004134",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:hep-th/0004134",
+    "fetched_title": "Quantization of Four-form Fluxes and Dynamical Neutralization of the Cosmological Constant",
+    "author_ok": true
+  },
+  {
+    "key": "kaloper2023_230502349",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:2305.02349",
+    "fetched_title": "de Sitter Space Decay and Cosmological Constant Relaxation in Unimodular Gravity with Charged Membranes",
+    "author_ok": true
+  },
+  {
+    "key": "albertini2023_230312842",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:2303.12842",
+    "fetched_title": "Dynamical Henneaux-Teitelboim Gravity",
+    "author_ok": true
+  },
+  {
+    "key": "rideout1999_gr-qc9904062",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:gr-qc/9904062",
+    "fetched_title": "A Classical Sequential Growth Dynamics for Causal Sets",
+    "author_ok": true
+  },
+  {
+    "key": "hinrichsen2000_cond-mat0001070",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:cond-mat/0001070",
+    "fetched_title": "Nonequilibrium Critical Phenomena and Phase Transitions into Absorbing States",
+    "author_ok": true
+  },
+  {
+    "key": "carroll1997_gr-qc9712019",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:gr-qc/9712019",
+    "fetched_title": "Lecture Notes on General Relativity",
+    "author_ok": true
+  },
+  {
+    "key": "brout2022_220204077",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:2202.04077",
+    "fetched_title": "The Pantheon+ Analysis: Cosmological Constraints",
+    "author_ok": true
+  },
+  {
+    "key": "chen2018_180805724",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:1808.05724",
+    "fetched_title": "Distance Priors from Planck Final Release",
+    "author_ok": true
+  },
+  {
+    "key": "moresco2022_220107241",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:2201.07241",
+    "fetched_title": "Unveiling the Universe with Emerging Cosmological Probes",
+    "author_ok": true
+  },
+  {
+    "key": "martinelli2019_190210694",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:1902.10694",
+    "fetched_title": "Constraints on the interacting vacuum -- geodesic CDM scenario",
+    "author_ok": true
+  },
+  {
+    "key": "hogg2020_200210449",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:2002.10449",
+    "fetched_title": "Latest evidence for a late time vacuum -- geodesic CDM interaction",
+    "author_ok": true
+  },
+  {
+    "key": "kitano2016_160507355",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:1605.07355",
+    "fetched_title": "Electroweak-Skyrmion as Topological Dark Matter",
+    "author_ok": true
+  },
+  {
+    "key": "lesgourgues2012_12126154",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:1212.6154",
+    "fetched_title": "Neutrino mass from Cosmology",
+    "author_ok": true
+  },
+  {
+    "key": "bemfica2020_200911388",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:2009.11388",
+    "fetched_title": "First-Order General-Relativistic Viscous Fluid Dynamics",
+    "author_ok": true
+  },
+  {
+    "key": "prez2026_260719494",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:2607.19494",
+    "fetched_title": "The silent dark sector: a field-theory approach to unified dark fluids with vanishing speed of sound",
+    "author_ok": true
+  },
+  {
+    "key": "salcedo2026_260312321",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:2603.12321",
+    "fetched_title": "Phenomenology of an Open Effective Field Theory of Dark Energy",
+    "author_ok": true
+  },
+  {
+    "key": "worsley2026_260720348",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:2607.20348",
+    "fetched_title": "Beyond $j=1$: Observational Constraints on Almost-$\u039b$CDM Cosmologies",
+    "author_ok": true
+  },
+  {
+    "key": "westhuizen2025_250904494",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:2509.04494",
+    "fetched_title": "II. Non-Linear Interacting Dark Energy: Analytical Solutions and Theoretical Pathologies",
+    "author_ok": true
+  },
+  {
+    "key": "westhuizen2025_250904495",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:2509.04495",
+    "fetched_title": "I. Linear Interacting Dark Energy: Analytical Solutions and Theoretical Pathologies",
+    "author_ok": true
+  },
+  {
+    "key": "westhuizen2025_250904496",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:2509.04496",
+    "fetched_title": "III. Interacting Dark Energy: Summary of Models, Pathologies, and Constraints",
+    "author_ok": true
+  },
+  {
+    "key": "kandel2026_260712283",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:2607.12283",
+    "fetched_title": "Testing the Direction of Dark Sector Interaction Using Late-Time Datasets",
+    "author_ok": true
+  },
+  {
+    "key": "yang2026_260821938",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:2608.21938",
+    "fetched_title": "Beyond dynamical dark energy: the role of dark sector interactions after DESI DR2",
+    "author_ok": true
+  },
+  {
+    "key": "khan2026_260403363",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:2604.03363",
+    "fetched_title": "Topolons: Stable Particle-Like Remnants of Collapsed Vacuum Bubbles in a Three-Form Gauge Sector",
+    "author_ok": true
+  },
+  {
+    "key": "malaeb2026_260214082",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:2602.14082",
+    "fetched_title": "The Theoretical Landscape of Mimetic Gravity: A Comprehensive Review",
+    "author_ok": true
+  },
+  {
+    "key": "wang2026_260903062",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:2609.03062",
+    "fetched_title": "Reassessing Evidence for Dark-Sector Interactions with Dynamical Dark Energy and DESI DR2",
+    "author_ok": true
+  },
+  {
+    "key": "popovic2025_251107517",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:2511.07517",
+    "fetched_title": "The Dark Energy Survey Supernova Program: A Reanalysis Of Cosmology Results And Evidence For Evolving Dark Energy With An Updated Type Ia Supernova Calibration",
+    "author_ok": true
+  },
+  {
+    "key": "tipler1977_singularities",
+    "status": "OK",
+    "score": 1.0,
+    "source": "inspire",
+    "identifier": "doi:10.1016/0375-9601(77)90508-4",
+    "fetched_title": "Singularities in conformally flat spacetimes",
+    "author_ok": true
+  },
+  {
+    "key": "clarke1985_strongcurvature",
+    "status": "OK",
+    "score": 0.992,
+    "source": "crossref",
+    "identifier": "doi:10.1016/0393-0440(85)90012-9",
+    "fetched_title": "Conditions for the occurence of strong curvature singularities",
+    "author_ok": true
+  }
+]
