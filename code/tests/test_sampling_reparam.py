@@ -6,7 +6,7 @@ only if the measure on the original parameters is untouched, so it is tested
 directly rather than argued: sample the transformed target with a constant
 likelihood and check that the parameters come back uniform on their box.
 """
-# covers: app:numerics-sampling
+# covers: (methodology only; supports the sampler, not a numbered claim)
 #   Machine-readable link from tests to the claims they cover, read by
 #   scripts/claim_ledger.py. A claim quoted in the abstract or the
 #   conclusions with nothing testing it is what the ledger exists to find.

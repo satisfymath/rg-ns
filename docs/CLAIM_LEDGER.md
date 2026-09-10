@@ -6,9 +6,9 @@ conclusions that refer to it: those are the places where a claim can
 quietly become stronger than its proof, which is what four referees
 found independently.
 
-- results catalogued: **96**
+- results catalogued: **133**
 - carrying an explicit evidential level: **53**
-- referred to from a summary section: **20**
+- referred to from a summary section: **22**
 - referred to from a summary but covered by no test: **0**
 
 | claim | kind | level | file | in summary | tests |
@@ -22,11 +22,18 @@ found independently.
 | `cor:one-transition` | corollary | — | 04_homogeneous_cosmology.tex | — | — |
 | `def:memory` | definition | — | 03_absorbing_process.tex | — | — |
 | `eq:appb-absorption` | keyresult | I (identity) | appB_proofs.tex | — | — |
+| `eq:appb-generator` | equation | — | appB_proofs.tex | — | — |
+| `eq:appb-integral` | equation | — | appB_proofs.tex | — | — |
 | `eq:appb-moments` | keyresult | I (identity) | appB_proofs.tex | — | — |
+| `eq:appb-vacuum` | equation | — | appB_proofs.tex | — | — |
 | `eq:appc-circulation` | keyresult | I (identity) | appC_quantum_hydro.tex | — | — |
 | `eq:appc-madelung` | keyresult | I (identity) | appC_quantum_hydro.tex | — | — |
 | `eq:appd-constitutive` | keyresult | I (identity) | appD_hydrodynamics.tex | — | — |
+| `eq:appd-entropy` | equation | — | appD_hydrodynamics.tex | — | — |
+| `eq:appd-shear` | equation | — | appD_hydrodynamics.tex | — | — |
 | `eq:appd-telegraph` | keyresult | I (identity) | appD_hydrodynamics.tex | — | — |
+| `eq:appe-induced` | equation | — | appE_skyrme.tex | — | — |
+| `eq:appe-radial` | equation | — | appE_skyrme.tex | — | — |
 | `eq:cosmography-deficit-floor` | keyresult | C (theorem of the model) | 07_cosmography.tex | — | deficit_floor |
 | `eq:cosmography-fingerprint` | keyresult | C (theorem of the model) | 07_cosmography.tex | — | — |
 | `eq:cosmography-jerk` | keyresult | C (theorem of the model) | 07_cosmography.tex | — | background |
@@ -38,41 +45,71 @@ found independently.
 | `eq:cosmology-desitter` | keyresult | C (theorem of the model) | 04_homogeneous_cosmology.tex | — | — |
 | `eq:cosmology-monotone-acceleration` | keyresult | I (identity) | 04_homogeneous_cosmology.tex | — | — |
 | `eq:cosmology-survival` | keyresult | I (identity) | 04_homogeneous_cosmology.tex | — | background |
+| `eq:cosmology-system` | equation | — | 04_homogeneous_cosmology.tex | — | — |
+| `eq:cosmology-vacuum-bound` | equation | — | 04_homogeneous_cosmology.tex | — | — |
 | `eq:defects-bound` | keyresult | I (identity) | 11_defects.tex | — | — |
+| `eq:defects-degree` | equation | — | 11_defects.tex | — | — |
+| `eq:defects-energy` | equation | — | 11_defects.tex | — | — |
+| `eq:defects-eos` | equation | — | 11_defects.tex | — | — |
 | `eq:defects-local-exact` | keyresult | I (identity) | 11_defects.tex | — | collapse, pancake |
+| `eq:defects-ode` | equation | — | 11_defects.tex | — | — |
 | `eq:defects-regularity` | keyresult | C (theorem of the model) | 11_defects.tex | — | collapse |
 | `eq:defects-solved` | keyresult | N (numerical) | 11_defects.tex | 01_intro.tex | skyrme |
 | `eq:defects-trial` | keyresult | I (identity) | 11_defects.tex | — | — |
+| `eq:numerics-system` | equation | — | appF_numerics.tex | — | — |
+| `eq:observations-deficit-limit` | equation | — | 10_observations.tex | 14_conclusions.tex | published_limits |
+| `eq:observations-jerk-limit` | equation | — | 10_observations.tex | 14_conclusions.tex | published_limits |
 | `eq:outlook-bridge` | keyresult | S (conjecture) | 13_outlook.tex | — | — |
+| `eq:outlook-reynolds-eos` | equation | — | 13_outlook.tex | — | — |
 | `eq:outlook-spin` | keyresult | S (conjecture) | 13_outlook.tex | — | — |
+| `eq:perturbations-com` | equation | — | 09_perturbations.tex | — | — |
+| `eq:perturbations-compatibility` | equation | — | 09_perturbations.tex | — | — |
 | `eq:perturbations-frsd` | keyresult | C (theorem of the model) | 09_perturbations.tex | — | — |
 | `eq:perturbations-growth` | keyresult | C (theorem of the model) | 09_perturbations.tex | — | growth |
 | `eq:perturbations-growth-N` | keyresult | C (theorem of the model) | 09_perturbations.tex | — | — |
 | `eq:perturbations-growth-signature` | keyresult | C (theorem of the model) | 09_perturbations.tex | 01_intro.tex, 14_conclusions.tex | growth |
 | `eq:perturbations-integrability` | keyresult | I (identity) | 09_perturbations.tex | — | — |
 | `eq:perturbations-isw` | keyresult | C (theorem of the model) | 09_perturbations.tex | — | — |
+| `eq:perturbations-peff` | equation | — | 09_perturbations.tex | — | — |
 | `eq:perturbations-system` | keyresult | C (theorem of the model) | 09_perturbations.tex | — | — |
 | `eq:positivity-deficit` | keyresult | C (theorem of the model) | 05_positivity_ide.tex | — | — |
 | `eq:positivity-map` | keyresult | I (identity) | 05_positivity_ide.tex | — | — |
 | `eq:positivity-no-sign-flip` | keyresult | C (theorem of the model) | 05_positivity_ide.tex | — | — |
 | `eq:positivity-sandwich` | keyresult | C (theorem of the model) | 05_positivity_ide.tex | — | — |
+| `eq:positivity-sandwich-lower` | equation | — | 05_positivity_ide.tex | — | — |
+| `eq:positivity-sandwich-upper` | equation | — | 05_positivity_ide.tex | — | — |
+| `eq:positivity-track-b` | equation | — | 05_positivity_ide.tex | — | — |
 | `eq:process-acceleration` | keyresult | I (identity) | 03_absorbing_process.tex | — | — |
 | `eq:process-binomial` | keyresult | C (theorem of the model) | 03_absorbing_process.tex | — | — |
 | `eq:process-breakdown-gap` | keyresult | C (theorem of the model) | 03_absorbing_process.tex | — | — |
 | `eq:process-deterministic` | keyresult | C (theorem of the model) | 03_absorbing_process.tex | — | — |
+| `eq:process-intensity` | equation | — | 03_absorbing_process.tex | — | — |
+| `eq:process-memory` | equation | — | 03_absorbing_process.tex | — | — |
+| `eq:process-memory-solution` | equation | — | 03_absorbing_process.tex | — | — |
 | `eq:process-rate` | keyresult | A (postulate) | 03_absorbing_process.tex | — | — |
 | `eq:process-survival` | keyresult | I (identity) | 03_absorbing_process.tex | — | — |
+| `eq:quantum-collective` | equation | — | 12_quantum.tex | — | — |
 | `eq:quantum-collective-mean` | keyresult | I (identity) | 12_quantum.tex | — | — |
 | `eq:quantum-two-state` | keyresult | I (identity) | 12_quantum.tex | — | — |
 | `eq:realizations-clock` | keyresult | I (identity) | 08_realizations.tex | — | — |
+| `eq:realizations-clock-action` | equation | — | 08_realizations.tex | — | — |
 | `eq:realizations-determined-V` | keyresult | I (identity) | 08_realizations.tex | — | — |
 | `eq:realizations-four-form` | keyresult | I (identity) | 08_realizations.tex | — | — |
+| `eq:realizations-four-form-action` | equation | — | 08_realizations.tex | — | — |
+| `eq:realizations-suppression` | equation | — | 08_realizations.tex | — | — |
+| `eq:setup-action` | equation | — | 02_covariant_setup.tex | — | — |
 | `eq:setup-conservation` | keyresult | I (identity) | 02_covariant_setup.tex | — | — |
+| `eq:setup-curvature` | equation | — | 02_covariant_setup.tex | — | — |
 | `eq:setup-einstein` | keyresult | I (identity) | 02_covariant_setup.tex | — | — |
 | `eq:setup-friedmann` | keyresult | I (identity) | 02_covariant_setup.tex | — | — |
+| `eq:setup-raychaudhuri` | equation | — | 02_covariant_setup.tex | — | — |
+| `eq:setup-ricci` | equation | — | 02_covariant_setup.tex | — | — |
+| `eq:setup-units` | equation | — | 02_covariant_setup.tex | — | — |
 | `eq:setup-vacuum-transfer` | keyresult | I (identity) | 02_covariant_setup.tex | — | — |
 | `eq:solvable-activation` | keyresult | A (postulate) | 06_solvable_early.tex | — | early_branch |
 | `eq:solvable-closed-form` | keyresult | I (identity) | 06_solvable_early.tex | — | — |
+| `eq:solvable-exponent` | equation | — | 06_solvable_early.tex | — | early_branch |
+| `eq:solvable-friedmann` | equation | — | 06_solvable_early.tex | — | — |
 | `eq:solvable-nogo` | keyresult | C (theorem of the model) | 06_solvable_early.tex | — | — |
 | `prop:activation` | proposition | — | 06_solvable_early.tex | — | — |
 | `prop:bridge` | remark | — | 08_realizations.tex | — | — |
@@ -109,11 +146,3 @@ found independently.
 | `thm:sandwich` | theorem | — | 05_positivity_ide.tex | — | symbolic |
 | `thm:sign-table` | theorem | — | 07_cosmography.tex | 14_conclusions.tex | symbolic |
 | `thm:snap` | theorem | — | 07_cosmography.tex | 01_intro.tex | background |
-
-## Test markers naming a label the manuscript does not define
-
-- `test_early.py` claims to cover `eq:observations-rdrag`, which is not a label in the sources
-- `test_early_branch.py` claims to cover `eq:solvable-exponent`, which is not a label in the sources
-- `test_likelihoods.py` claims to cover `eq:observations-marginalisation`, which is not a label in the sources
-- `test_prior_sensitivity.py` claims to cover `tab:comparison`, which is not a label in the sources
-- `test_sampling_reparam.py` claims to cover `app:numerics-sampling`, which is not a label in the sources

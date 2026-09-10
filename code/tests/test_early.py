@@ -4,7 +4,7 @@ The reference numbers are Planck 2018 base-LambdaCDM (Planck Collaboration
 VI, 2020, Table 1/2) evaluated at omega_b = 0.02237, omega_c = 0.1200,
 h = 0.6736:  r_drag = 147.09 Mpc, z_* = 1089.92, r_s(z_*) = 144.43 Mpc.
 """
-# covers: eq:observations-rdrag
+# covers: (methodology only; the sound-horizon recipe used by the BAO likelihood)
 #   Machine-readable link from tests to the claims they cover, read by
 #   scripts/claim_ledger.py. A claim quoted in the abstract or the
 #   conclusions with nothing testing it is what the ledger exists to find.

@@ -137,6 +137,32 @@
     "text": "",
     "title": ""
   },
+  "eq:appb-generator": {
+    "claim_id": "eq:appb-generator",
+    "file": "appB_proofs.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:appb-integral": {
+    "claim_id": "eq:appb-integral",
+    "file": "appB_proofs.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
   "eq:appb-moments": {
     "claim_id": "eq:appb-moments",
     "file": "appB_proofs.tex",
@@ -144,6 +170,19 @@
     "kind": "keyresult",
     "level": "I",
     "level_name": "identity",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:appb-vacuum": {
+    "claim_id": "eq:appb-vacuum",
+    "file": "appB_proofs.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
     "referenced_in": [],
     "status": "UNREVIEWED",
     "tests": [],
@@ -189,6 +228,32 @@
     "text": "",
     "title": ""
   },
+  "eq:appd-entropy": {
+    "claim_id": "eq:appd-entropy",
+    "file": "appD_hydrodynamics.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:appd-shear": {
+    "claim_id": "eq:appd-shear",
+    "file": "appD_hydrodynamics.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
   "eq:appd-telegraph": {
     "claim_id": "eq:appd-telegraph",
     "file": "appD_hydrodynamics.tex",
@@ -196,6 +261,32 @@
     "kind": "keyresult",
     "level": "I",
     "level_name": "identity",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:appe-induced": {
+    "claim_id": "eq:appe-induced",
+    "file": "appE_skyrme.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:appe-radial": {
+    "claim_id": "eq:appe-radial",
+    "file": "appE_skyrme.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
     "referenced_in": [],
     "status": "UNREVIEWED",
     "tests": [],
@@ -368,6 +459,35 @@
     "text": "",
     "title": ""
   },
+  "eq:cosmology-system": {
+    "claim_id": "eq:cosmology-system",
+    "file": "04_homogeneous_cosmology.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "05_positivity_ide.tex",
+      "08_realizations.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:cosmology-vacuum-bound": {
+    "claim_id": "eq:cosmology-vacuum-bound",
+    "file": "04_homogeneous_cosmology.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
   "eq:defects-bound": {
     "claim_id": "eq:defects-bound",
     "file": "11_defects.tex",
@@ -378,6 +498,45 @@
     "referenced_in": [
       "appE_skyrme.tex"
     ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:defects-degree": {
+    "claim_id": "eq:defects-degree",
+    "file": "11_defects.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:defects-energy": {
+    "claim_id": "eq:defects-energy",
+    "file": "11_defects.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:defects-eos": {
+    "claim_id": "eq:defects-eos",
+    "file": "11_defects.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
     "status": "UNREVIEWED",
     "tests": [],
     "text": "",
@@ -396,6 +555,19 @@
       "test_collapse.py",
       "test_pancake.py"
     ],
+    "text": "",
+    "title": ""
+  },
+  "eq:defects-ode": {
+    "claim_id": "eq:defects-ode",
+    "file": "11_defects.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
     "text": "",
     "title": ""
   },
@@ -448,6 +620,57 @@
     "text": "",
     "title": ""
   },
+  "eq:numerics-system": {
+    "claim_id": "eq:numerics-system",
+    "file": "appF_numerics.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:observations-deficit-limit": {
+    "claim_id": "eq:observations-deficit-limit",
+    "file": "10_observations.tex",
+    "in_summary": [
+      "14_conclusions.tex"
+    ],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "14_conclusions.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_published_limits.py"
+    ],
+    "text": "",
+    "title": ""
+  },
+  "eq:observations-jerk-limit": {
+    "claim_id": "eq:observations-jerk-limit",
+    "file": "10_observations.tex",
+    "in_summary": [
+      "14_conclusions.tex"
+    ],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "14_conclusions.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_published_limits.py"
+    ],
+    "text": "",
+    "title": ""
+  },
   "eq:outlook-bridge": {
     "claim_id": "eq:outlook-bridge",
     "file": "13_outlook.tex",
@@ -455,6 +678,19 @@
     "kind": "keyresult",
     "level": "S",
     "level_name": "conjecture",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:outlook-reynolds-eos": {
+    "claim_id": "eq:outlook-reynolds-eos",
+    "file": "13_outlook.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
     "referenced_in": [],
     "status": "UNREVIEWED",
     "tests": [],
@@ -469,6 +705,34 @@
     "level": "S",
     "level_name": "conjecture",
     "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:perturbations-com": {
+    "claim_id": "eq:perturbations-com",
+    "file": "09_perturbations.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:perturbations-compatibility": {
+    "claim_id": "eq:perturbations-compatibility",
+    "file": "09_perturbations.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "13_outlook.tex"
+    ],
     "status": "UNREVIEWED",
     "tests": [],
     "text": "",
@@ -564,6 +828,21 @@
     "text": "",
     "title": ""
   },
+  "eq:perturbations-peff": {
+    "claim_id": "eq:perturbations-peff",
+    "file": "09_perturbations.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "appA_conventions.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
   "eq:perturbations-system": {
     "claim_id": "eq:perturbations-system",
     "file": "09_perturbations.tex",
@@ -633,6 +912,45 @@
     "text": "",
     "title": ""
   },
+  "eq:positivity-sandwich-lower": {
+    "claim_id": "eq:positivity-sandwich-lower",
+    "file": "05_positivity_ide.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:positivity-sandwich-upper": {
+    "claim_id": "eq:positivity-sandwich-upper",
+    "file": "05_positivity_ide.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:positivity-track-b": {
+    "claim_id": "eq:positivity-track-b",
+    "file": "05_positivity_ide.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
   "eq:process-acceleration": {
     "claim_id": "eq:process-acceleration",
     "file": "03_absorbing_process.tex",
@@ -688,6 +1006,52 @@
     "text": "",
     "title": ""
   },
+  "eq:process-intensity": {
+    "claim_id": "eq:process-intensity",
+    "file": "03_absorbing_process.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "08_realizations.tex",
+      "appB_proofs.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:process-memory": {
+    "claim_id": "eq:process-memory",
+    "file": "03_absorbing_process.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "appB_proofs.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:process-memory-solution": {
+    "claim_id": "eq:process-memory-solution",
+    "file": "03_absorbing_process.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "04_homogeneous_cosmology.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
   "eq:process-rate": {
     "claim_id": "eq:process-rate",
     "file": "03_absorbing_process.tex",
@@ -720,6 +1084,19 @@
       "04_homogeneous_cosmology.tex",
       "appB_proofs.tex"
     ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:quantum-collective": {
+    "claim_id": "eq:quantum-collective",
+    "file": "12_quantum.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
     "status": "UNREVIEWED",
     "tests": [],
     "text": "",
@@ -764,6 +1141,22 @@
     "text": "",
     "title": ""
   },
+  "eq:realizations-clock-action": {
+    "claim_id": "eq:realizations-clock-action",
+    "file": "08_realizations.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "06_solvable_early.tex",
+      "appA_conventions.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
   "eq:realizations-determined-V": {
     "claim_id": "eq:realizations-determined-V",
     "file": "08_realizations.tex",
@@ -790,6 +1183,45 @@
     "text": "",
     "title": ""
   },
+  "eq:realizations-four-form-action": {
+    "claim_id": "eq:realizations-four-form-action",
+    "file": "08_realizations.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:realizations-suppression": {
+    "claim_id": "eq:realizations-suppression",
+    "file": "08_realizations.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:setup-action": {
+    "claim_id": "eq:setup-action",
+    "file": "02_covariant_setup.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
   "eq:setup-conservation": {
     "claim_id": "eq:setup-conservation",
     "file": "02_covariant_setup.tex",
@@ -800,6 +1232,19 @@
     "referenced_in": [
       "04_homogeneous_cosmology.tex"
     ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:setup-curvature": {
+    "claim_id": "eq:setup-curvature",
+    "file": "02_covariant_setup.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
     "status": "UNREVIEWED",
     "tests": [],
     "text": "",
@@ -828,6 +1273,45 @@
     "referenced_in": [
       "07_cosmography.tex"
     ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:setup-raychaudhuri": {
+    "claim_id": "eq:setup-raychaudhuri",
+    "file": "02_covariant_setup.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:setup-ricci": {
+    "claim_id": "eq:setup-ricci",
+    "file": "02_covariant_setup.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:setup-units": {
+    "claim_id": "eq:setup-units",
+    "file": "02_covariant_setup.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
     "status": "UNREVIEWED",
     "tests": [],
     "text": "",
@@ -874,6 +1358,34 @@
     "referenced_in": [
       "appF_numerics.tex"
     ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:solvable-exponent": {
+    "claim_id": "eq:solvable-exponent",
+    "file": "06_solvable_early.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_early_branch.py"
+    ],
+    "text": "",
+    "title": ""
+  },
+  "eq:solvable-friedmann": {
+    "claim_id": "eq:solvable-friedmann",
+    "file": "06_solvable_early.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
     "status": "UNREVIEWED",
     "tests": [],
     "text": "",

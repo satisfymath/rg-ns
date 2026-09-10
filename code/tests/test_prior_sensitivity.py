@@ -11,7 +11,7 @@ prior.  The identity is exact, so it is checked against a case whose evidence
 can be written down in closed form rather than against another estimate of
 itself.
 """
-# covers: tab:comparison
+# covers: (methodology only; supports the evidence comparison, not a numbered claim)
 #   Machine-readable link from tests to the claims they cover, read by
 #   scripts/claim_ledger.py. A claim quoted in the abstract or the
 #   conclusions with nothing testing it is what the ledger exists to find.

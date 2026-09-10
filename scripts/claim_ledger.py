@@ -32,6 +32,7 @@ ENV_RE = re.compile(
     r"\\begin\{(" + "|".join(ENVS) + r")\}(\[[^\]]*\])?\s*\\label\{([^}]+)\}",
     re.S)
 KEYRESULT_RE = re.compile(r"\\begin\{keyresult\}\{(\w+)\}\{([^}]+)\}")
+PLAIN_EQ_RE = re.compile(r"\\begin\{equation\}\s*\\label\{([^}]+)\}")
 CREF_RE = re.compile(r"\\c?ref\{([^}]+)\}")
 LEVEL_NAME = {"A": "postulate", "I": "identity", "C": "theorem of the model",
               "N": "numerical", "P": "fitted to data", "S": "conjecture"}
@@ -56,6 +57,15 @@ def collect() -> tuple[dict, set]:
                 level=None, level_name=None,
                 text=" ".join(body_of(text, m.end(), env).split())[:400],
                 referenced_in=[], tests=[], status="UNREVIEWED")
+        # labelled displayed equations that are not keyresults: they carry no
+        # evidential level, but the manuscript still refers to them and a test
+        # may still cover them, so they belong in the ledger.
+        for m in PLAIN_EQ_RE.finditer(text):
+            label = m.group(1)
+            claims.setdefault(label, dict(
+                claim_id=label, kind="equation", title="", file=name,
+                level=None, level_name=None, text="",
+                referenced_in=[], tests=[], status="UNREVIEWED"))
         for m in KEYRESULT_RE.finditer(text):
             level, label = m.group(1), m.group(2)
             claims.setdefault(label, dict(
@@ -83,7 +93,10 @@ def collect() -> tuple[dict, set]:
         body = path.read_text()
         for line in body.splitlines():
             if line.startswith("# covers:"):
-                for label in line[len("# covers:"):].split(","):
+                payload = line[len("# covers:"):].strip()
+                if payload.startswith("("):      # methodology-only marker
+                    continue
+                for label in payload.split(","):
                     label = label.strip()
                     if label in claims:
                         claims[label]["tests"].append(path.name)

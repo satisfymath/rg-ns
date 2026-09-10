@@ -1,0 +1,86 @@
+"""The two limits the manuscript quotes must remain the kind of thing a limit is.
+
+# covers: eq:observations-deficit-limit, eq:observations-jerk-limit
+#   Machine-readable link from tests to the claims they cover, read by
+#   scripts/claim_ledger.py.
+
+These are pipeline outputs rather than analytic results, so what a test can do
+is guard the properties that make them meaningful. Both were, at one point, not
+meaningful: the deficit limit was read off a profile whose grid points missed
+their targets by up to a factor of three and whose Delta chi-square ran 0.09,
+298, 22, 127, and the jerk limit was a NaN that LaTeX typeset as the word.
+
+The checks below are exactly the conditions that failure violated.
+"""
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+import numpy as np
+import pytest
+
+RESULTS = Path(__file__).resolve().parents[2] / "results" / "profile.json"
+THRESHOLD = 2.71          # one-sided 95% for one parameter of interest
+
+
+def _profile(key: str) -> dict:
+    if not RESULTS.exists():
+        pytest.skip("results/profile.json not present")
+    data = json.loads(RESULTS.read_text())
+    if key not in data:
+        pytest.skip(f"{key} not in profile.json")
+    return data[key]
+
+
+@pytest.mark.parametrize("key", ["xi_h__baseline__matter_deficit",
+                                 "xi_h__baseline__jerk_excess"])
+def test_profile_actually_imposed_its_constraint(key):
+    """Every grid point must have reached the value it was profiling at."""
+    p = _profile(key)
+    assert p["max_target_miss_rel"] < 1e-6, (
+        f"{key}: worst grid point missed its target by "
+        f"{p['max_target_miss_rel']:.3g} relative; the constraint is not being "
+        f"imposed and the curve is not a profile")
+
+
+@pytest.mark.parametrize("key", ["xi_h__baseline__matter_deficit",
+                                 "xi_h__baseline__jerk_excess"])
+def test_profile_is_monotone_above_its_minimum(key):
+    """A profile that goes down after going up means the optimiser failed."""
+    p = _profile(key)
+    assert p["n_non_monotone_steps"] == 0, (
+        f"{key}: {p['n_non_monotone_steps']} decreasing steps above the "
+        f"minimum; each grid point is maximising a different function")
+
+
+@pytest.mark.parametrize("key", ["xi_h__baseline__matter_deficit",
+                                 "xi_h__baseline__jerk_excess"])
+def test_quoted_limit_is_a_real_crossing_not_a_grid_endpoint(key):
+    """The limit must be interior, and the profile must actually cross 2.71."""
+    p = _profile(key)
+    assert not p["unbounded"], f"{key}: no crossing, so no limit exists to quote"
+    limit = p["limit_95"]
+    assert np.isfinite(limit), f"{key}: limit is {limit}"
+    targets = np.asarray(p["targets"])
+    assert targets[0] < limit < targets[-1], (
+        f"{key}: limit {limit} is not interior to the grid "
+        f"[{targets[0]}, {targets[-1]}] -- an endpoint is not a limit")
+    assert p["max_delta_chi2"] > THRESHOLD, (
+        f"{key}: profile only reaches {p['max_delta_chi2']:.3f}, below the "
+        f"{THRESHOLD} threshold it is supposed to cross")
+
+
+def test_the_deficit_limit_is_the_value_the_manuscript_quotes():
+    """Regression on the published number itself.
+
+    Loose enough to survive a re-run of the optimiser, tight enough to fail if
+    the profile changes character.
+    """
+    p = _profile("xi_h__baseline__matter_deficit")
+    assert p["limit_95"] == pytest.approx(0.0101, rel=0.10)
+
+
+def test_the_jerk_limit_is_the_value_the_manuscript_quotes():
+    p = _profile("xi_h__baseline__jerk_excess")
+    assert p["limit_95"] == pytest.approx(0.0306, rel=0.10)

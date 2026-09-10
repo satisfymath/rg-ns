@@ -9,7 +9,7 @@ Two kinds of check:
   chi^2 per data point, and moving the cosmology away from it must make the
   fit worse.
 """
-# covers: eq:observations-marginalisation, prop:ide-map
+# covers: prop:ide-map
 #   Machine-readable link from tests to the claims they cover, read by
 #   scripts/claim_ledger.py. A claim quoted in the abstract or the
 #   conclusions with nothing testing it is what the ledger exists to find.
