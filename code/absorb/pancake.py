@@ -69,6 +69,11 @@ class PancakeParams:
     b: float = 0.0                   # branching into defects
     d_end: float = 0.999             # final growth factor, in units of D_CROSS
     n_steps: int = 20000
+    time_grid: Literal["uniform", "graded"] = "graded"
+    """A caustic is approached self-similarly, so the natural step variable is
+    u = -ln(1 - D): uniform steps in u are geometrically refined steps in D and
+    resolve every decade of the approach at the same relative accuracy.  A
+    uniform grid would need ~1/s_min steps to reach the same place."""
     seed: int = 20260909
 
     def __post_init__(self) -> None:
@@ -82,6 +87,11 @@ class PancakeResult:
 
     D: np.ndarray
     max_rho_I: np.ndarray
+    centre_rho_I: np.ndarray         # at the sheet that forms the caustic
+    centre_rho_D: np.ndarray
+    centre_V: np.ndarray
+    centre_f: np.ndarray
+    centre_theta: np.ndarray
     max_rho_D: np.ndarray
     max_abs_theta: np.ndarray
     mean_f: np.ndarray
@@ -107,6 +117,8 @@ class Pancake:
         self.S = -p.amplitude * np.sin(p.k * self.q) / p.k
         self.Sp = -p.amplitude * np.cos(p.k * self.q)      # dS/dq
         self.dq = (2 * np.pi / p.k) / n
+        #: index of the sheet that forms the caustic (J vanishes first there)
+        self._centre = int(np.argmin(self.Sp))
 
     # -- kinematics ---------------------------------------------------------
     def jacobian(self, D: float) -> np.ndarray:
@@ -136,8 +148,16 @@ class Pancake:
         n_out = 200
         # D(t) = t is the simplest growth law; Ddot = 1.  Time and growth
         # factor then coincide, which keeps the scaling analysis transparent.
-        D_grid = np.linspace(0.0, p.d_end * D_CROSS, p.n_steps + 1)
-        dt = D_grid[1] - D_grid[0]
+        if p.time_grid == "uniform":
+            D_grid = np.linspace(0.0, p.d_end * D_CROSS, p.n_steps + 1)
+        else:
+            # uniform in u = -ln(1 - D) over the last decades, preceded by a
+            # coarse uniform stretch where nothing is happening
+            s_end = 1.0 - p.d_end
+            n_coarse = p.n_steps // 5
+            coarse = np.linspace(0.0, 0.9, n_coarse, endpoint=False)
+            u = np.linspace(-np.log(0.1), -np.log(s_end), p.n_steps - n_coarse + 1)
+            D_grid = np.concatenate([coarse, 1.0 - np.exp(-u)])
         Ddot = 1.0
 
         rho_I = np.ones_like(self.q)
@@ -147,7 +167,9 @@ class Pancake:
         M = np.zeros_like(self.q)
 
         out_idx = np.unique(np.linspace(0, p.n_steps, n_out).astype(int))
-        rec = {k: [] for k in ("D", "max_rho_I", "max_rho_D", "max_abs_theta",
+        rec = {k: [] for k in ("D", "max_rho_I", "centre_rho_I", "centre_rho_D",
+                               "centre_V", "centre_f", "centre_theta",
+                               "max_rho_D", "max_abs_theta",
                                "mean_f", "max_V", "total_mass",
                                "column_rho_I", "column_rho_D", "integral_V")}
 
@@ -162,6 +184,7 @@ class Pancake:
             return d_rI, d_rD, d_V, d_f, d_M
 
         for i, D in enumerate(D_grid[:-1]):
+            dt = D_grid[i + 1] - D_grid[i]
             if i in out_idx:
                 self._record(rec, D, Ddot, rho_I, rho_D, V, f)
             # classical RK4 on the five local variables
@@ -189,6 +212,16 @@ class Pancake:
     def _record(self, rec, D, Ddot, rho_I, rho_D, V, f) -> None:
         J = self.jacobian(D)
         th = self.theta(D, Ddot)
+        # The sheet that forms the caustic is the one where J first vanishes,
+        # i.e. where S' is most negative.  The *global* maximum of rho_I is a
+        # different quantity: once the centre is depleted it migrates away from
+        # the caustic, so the two must be recorded separately.
+        j0 = self._centre
+        rec["centre_rho_I"].append(float(rho_I[j0]))
+        rec["centre_rho_D"].append(float(rho_D[j0]))
+        rec["centre_V"].append(float(V[j0]))
+        rec["centre_f"].append(float(f[j0]))
+        rec["centre_theta"].append(float(th[j0]))
         # Lagrangian measure: the comoving mass element is uniform in q, so a
         # column density is an integral over q with no Jacobian factor.
         rec["D"].append(D)

@@ -6,5 +6,21 @@
     "mem_available_before_mb": 2214.96484375,
     "mem_available_after_mb": 2337.9296875,
     "notes": "N=1024, three rate modes, to D=0.999"
+  },
+  {
+    "name": "pancake_scaling",
+    "seconds": 256.4114770889282,
+    "peak_rss_mb": 35.69921875,
+    "mem_available_before_mb": 2350.65234375,
+    "mem_available_after_mb": 2576.1953125,
+    "notes": "peak density versus distance to the caustic"
+  },
+  {
+    "name": "pancake_convergence",
+    "seconds": 59.0597665309906,
+    "peak_rss_mb": 38.5546875,
+    "mem_available_before_mb": 2657.921875,
+    "mem_available_after_mb": 2674.38671875,
+    "notes": "step and sheet refinement"
   }
 ]
