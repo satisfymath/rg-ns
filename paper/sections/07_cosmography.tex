@@ -114,17 +114,18 @@ within errors. That is what \cref{sec:observations} does.
 
 \begin{theorem}[Snap]\label{thm:snap}
   With $\snap=\dot \jerk/\Hub-\jerk(2+3\decel)$ and
-  $\snap_{\LCDM}(\decel)$ its value at $\QV=0$,
+  $\snap_{\LCDM}(\decel,\Omr)=2\Omr'-(1+2\Omr)(2+3\decel)$ its value at
+  $\QV=0$, evaluated at the same $\decel$ and $\Omr$,
   %
   \begin{keyresult}{C}{eq:cosmography-snap}
-    \snap-\snap_{\LCDM}(\decel)
+    \snap-\snap_{\LCDM}(\decel,\Omr)
     =\varepsilon\left[\frac{\dd\ln\Gam}{\dd \efold}-\frac{\Gam}{\Hub}-2\right] ,
   \end{keyresult}
   %
   which for the rate law \cref{eq:process-rate} reads
   %
   \begin{keyresult}{C}{eq:cosmography-snap-explicit}
-    \snap-\snap_{\LCDM}(\decel)
+    \snap-\snap_{\LCDM}(\decel,\Omr)
     =-\varepsilon\left[2+\left(1-\alpha(1-\fconv)\right)\frac{\Gam}{\Hub}
     -\mathcal B\right],
     \qquad
@@ -135,7 +136,7 @@ within errors. That is what \cref{sec:observations} does.
 \begin{proof}
   From $\snap=\jerk'-\jerk(2+3\decel)$ with $'=\dd/\dd \efold$ and
   \cref{eq:cosmography-jerk}, the radiation terms assemble into
-  $\snap_{\LCDM}(\decel)$ and the remainder is
+  $\snap_{\LCDM}(\decel,\Omr)$ and the remainder is
   $\varepsilon[\varepsilon'/\varepsilon-(2+3\decel)]$. Differentiating
   $\ln\varepsilon=\text{const}+\ln\Gam+\ln\rhoI-3\ln \Hub$ and using
   $\dd\ln\rhoI/\dd \efold=-(3+\Gam/\Hub)$ and
