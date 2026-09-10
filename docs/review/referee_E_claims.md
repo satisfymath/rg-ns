@@ -104,8 +104,9 @@ And for §10's method paragraph:
 
 ### M2. The abstract's testability claim uses an inequality backwards
 
-**Location**: `00_abstract.tex:52–54`; `10_observations.tex:133–137`;
-`07_cosmography.tex:57–70, 100–103`.
+**Location**: `00_abstract.tex:52–54`; `10_observations.tex:136–140`;
+`14_conclusions.tex:50–52` (added during this review, so the error is now in
+three places); `07_cosmography.tex:57–70, 100–103`.
 
 `eq:cosmography-deficit-floor` is
 
@@ -154,66 +155,67 @@ paper's own 95% deficit limit saturated.
 > in any present data set."
 
 and delete "of order a few per cent … an order of magnitude below" from §7,
-replacing it with the same numbers. The abstract sentence must be rewritten to
-match; as written it is an unearned reassurance in the direction of the
-authors' own conclusion.
+replacing it with the same numbers. The abstract sentence and the newly added
+`14_conclusions.tex:50–52` ("That bound places the predicted jerk excess below
+what late-time data can currently resolve") must be rewritten to match; as
+written all three are unearned reassurances in the direction of the authors' own
+conclusion. Note that the rewrite of §14 propagated the error rather than
+catching it, which is a reason to fix it at the source in §7 first.
 
-### M3. The Conclusions misreport a refuted conjecture as an unrun one
+### M3. [RESOLVED IN FLIGHT — verify and keep] The Conclusions had misreported a refuted conjecture as an unrun one
 
-**Location**: `14_conclusions.tex:55–56`, against `11_defects.tex:151–204`,
-`13_outlook.tex:48–59`, `fig:pancake`, and `docs/theory/06_*.md`.
+**Location**: `14_conclusions.tex:67–77` (current), formerly `:55–56`.
 
-The Conclusions state:
+The version I began from stated:
 
 > "The clock congruence forms caustics, and whether defect formation regulates
 > them is a conjecture with a test we have not run."
 
-Both halves are false as of this version. §11.5 and §13.3 say the conjecture
-"has since been examined and is **false**" (`13_outlook.tex:55–57`), prove it
-(`thm:bounded-rate-obstruction`), and report the one-dimensional test that
-§13.3 says was "carried out". This is precisely the failure mode the author's
-own standing instruction is meant to prevent: a null result that exists in the
-body is converted, in the section most readers actually read to the end, back
-into an open question. Whether this is a stale sentence or not, its effect is
-to hide a negative result.
+Both halves were false: §11.5 proves the obstruction
+(`thm:bounded-rate-obstruction`), §13.3 says the conjecture "has since been
+examined and is **false**", and `fig:pancake` reports the test that sentence
+said had not been run. The section a reader turns to for the summary was
+converting a refuted conjecture back into an open question.
 
-**Fix.** Replace with:
+**This has been fixed during the review.** The current text ("now settled in the
+negative for the model as published … a rate bounded on the approach cannot
+change the exponent of the divergence, only its amplitude") is accurate, and it
+now also names the branching contradiction and the covariant dichotomy. I keep
+the point on the record because it shows how easily this particular null result
+migrates back to "open" when a summary is rewritten, and because the abstract
+still has the same gap (see M4). No further action needed in §14.
 
-> "The clock congruence forms caustics. An earlier version of this work
-> conjectured that conversion regularizes them; that conjecture has been tested
-> and is false for the model as published — a bounded rate enters the local
-> solution only through its time integral and cannot beat a non-integrable
-> compression (\cref{thm:bounded-rate-obstruction}). A compression-driven
-> channel could, but only for κ>1 *and* b=0, which contradicts the b>0 required
-> for a relic abundance; that tension is unresolved."
+### M4. The abstract still omits the three structural negatives that §11.5 and §14 now carry
 
-### M4. The Conclusions omit every negative result the abstract does report, and three negatives never leave §11.5
+**Location**: `00_abstract.tex` (whole); `11_defects.tex:151–256`;
+`14_conclusions.tex:44–54, 67–77` (current).
 
-**Location**: `14_conclusions.tex` (whole section); `00_abstract.tex`.
+§14 now reports the fit null and the three obstructions; the abstract does not.
+It mentions "Two defects of an earlier version of this work are corrected rather
+than dropped" — the rate floor and the growth equation — and the observational
+null, but says nothing about: the caustic conjecture being false for the model
+as published; the contradiction between b = 0 (regularity at a caustic) and
+b > 0 (relic abundance); and the covariant obstruction the authors could not
+resolve. All three live in one subsection, §11.5, and now in §14. A reader who
+reads only the abstract — the majority — learns of two retractions and misses
+three obstructions of comparable weight.
 
-§14 contains no mention of: ΛCDM being preferred; ε being unmeasurable; the
-matter-deficit limit; the b = 0 versus b > 0 contradiction; the covariant
-obstruction of `11_defects.tex:232–256`. Its "What has *not* been shown"
-paragraph lists five items, none of them observational and none of them the
-three structural obstructions. Conversely the abstract reports the fit outcome
-but not the caustic refutation, the b-contradiction or the covariant
-obstruction. The net effect is that a reader of abstract + conclusions — the
-normal reading path — never learns of three of the paper's five genuine
-negative results, all of which live in a single subsection, §11.5.
+**Fix.** Add one sentence to the abstract, after the "Two defects…" sentence:
 
-**Fix.** Add to §14, before the final paragraph:
+> "Three obstructions are recorded rather than passed over: a conjecture that
+> conversion regularizes caustics, which is false for the model as published;
+> a contradiction between the branching ratio required for regularity there
+> (b = 0) and the one required for a relic abundance (b > 0); and a covariant
+> obstruction to the compression-driven rate that would repair the first, which
+> we leave unresolved."
 
-> "Confronted with Pantheon+, DESI DR2, cosmic chronometers and the Planck
-> distance priors, the outcome is null and is reported as such: ΛCDM is
-> preferred over both fitted extensions, at odds of about five and eight to
-> one; the convertible fraction ε admits no upper limit, because the rate can
-> always vanish; and the one quantity the data do bound is the matter deficit,
-> Δ < 0.0126 at 95%. Three structural obstructions are also left open: the
-> earlier caustic conjecture is false; regularity at a caustic requires b = 0
-> while a relic abundance requires b > 0, and no constant branching ratio
-> satisfies both; and covariance forbids the compression-driven channel that
-> would repair the first, unless an anisotropic-stress closure we do not supply
-> is found."
+Also note a new overclaim introduced by the rewrite: `14_conclusions.tex:51–53`
+now says "of the three sign predictions above, none is yet within reach of the
+data that exist", justified in the preceding clause by the deficit bound alone.
+The deficit bound speaks only to the jerk. The growth signature's reach is not
+established by it and is not tested anywhere in the paper (M11). Either test it
+or write "the jerk excess is below what late-time data can resolve; the growth
+signature is not tested here."
 
 Add one clause to the abstract listing the two structural obstructions
 alongside the two "defects of an earlier version" already mentioned there.
@@ -660,8 +662,17 @@ failed.
 
 The pattern is worth stating: the *mathematics* of this paper is more careful
 than its *summaries*. Every one of my major points is a failure of §§00, 01, 10
-or 14 to report accurately what §§3–13 actually establish. Fixing them is
-editorial work on four files, not new physics — but until it is done the
-abstract claims a fitted model that was never fitted, an upper bound derived
-from a lower bound, and a complete classification that is not complete, and the
-conclusions revive a conjecture the body has refuted.
+or 14 to report accurately what §§3–13 actually establish — and the one that was
+fixed while I was reading (M3) is the proof of the pattern, not an exception to
+it. Fixing the rest is editorial work on four files, not new physics; but until
+it is done, the abstract claims a fitted model that was never fitted, three
+places in the paper derive an upper bound from a lower bound, the abstract
+advertises a complete classification that is not complete, and §10 twice tells
+the reader that a fit exists which the results directory does not contain.
+
+One procedural remark. The manuscript's central editorial commitment is that
+null results are not hidden. That commitment is met in §§3.2, 5.3, 8.4, 9.1,
+11.5, 12.4 and 13 to a degree I rarely see. It is not met in the abstract, and
+the gap is systematic rather than random: in every instance I found, the
+overclaim runs in the direction that flatters the model. That is worth the
+authors' attention independently of any individual point above.

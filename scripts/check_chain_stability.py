@@ -30,6 +30,11 @@ What is checked now, in order of how early it catches a bad chain:
    data do not constrain it and no limit derived from it should be quoted.
 
 A chain that cannot be checked fails rather than passes.
+
+Chains whose name ends in ``_frozen`` are archived failures, kept so that the
+diagnosis in the numerics appendix can be repeated. They are reported in full
+and never fail the gate: they are evidence that the gate works, and the
+manuscript quotes no posterior from them. Nothing else is exempt.
 """
 from __future__ import annotations
 
@@ -50,6 +55,10 @@ sys.path.insert(0, str(ROOT / "code"))
 
 from absorb.params import MODELS                                # noqa: E402
 from absorb.sampling import LogitMap, N_TAU, load_chain_meta    # noqa: E402
+
+#: Suffix marking a chain kept as a record of a sampling failure rather than as
+#: a result. Such a chain is diagnosed but does not fail the gate.
+ARCHIVED_SUFFIX = "_frozen"
 
 TOL = 0.25          # allowed relative drift of a reported statistic
 MIN_MOVE_RATE = 0.05    # below this the ensemble is not exploring
@@ -104,11 +113,13 @@ def main() -> int:
 
     for path in paths:
         name = Path(path).stem
+        archived = name.endswith(ARCHIVED_SUFFIX)
         model = next((m for m in MODELS if name.startswith(m + "_")), None)
         if model is None:
             failures.append(f"{name}: filename does not name a known model, "
                             f"so the chain cannot be checked")
             continue
+        local: list[str] = failures if not archived else []
         with h5py.File(path, "r", locking=False) as fh:
             it = int(fh["mcmc"].attrs["iteration"])
             if it < args.min_steps:
@@ -126,7 +137,9 @@ def main() -> int:
             chain = lmap.to_x(chain)
         n_walk = chain.shape[1]
 
-        print(f"\n{name}  ({it} steps, {n_walk} walkers)")
+        print(f"\n{name}  ({it} steps, {n_walk} walkers)"
+              + ("   [archived failure; reported, not gated]"
+                 if archived else ""))
 
         # --- 1. mixing -----------------------------------------------------
         early, late = move_rates(log_prob)
@@ -134,11 +147,11 @@ def main() -> int:
         print(f"  move rate  first tenth {early:.4f}   last tenth {late:.4f}"
               f"   (cumulative acceptance {cumulative:.4f})")
         if late < MIN_MOVE_RATE:
-            failures.append(f"{name}: move rate over the last tenth is "
+            local.append(f"{name}: move rate over the last tenth is "
                             f"{late:.4f}, below {MIN_MOVE_RATE}; the ensemble "
                             f"is not exploring")
         if late > 0 and early / late > MAX_DECELERATION:
-            failures.append(f"{name}: move rate fell from {early:.4f} to "
+            local.append(f"{name}: move rate fell from {early:.4f} to "
                             f"{late:.4f} over the run; the chain is "
                             f"decelerating, so sampling longer will not help")
 
@@ -146,14 +159,14 @@ def main() -> int:
         try:
             tau = autocorr_time(chain)
         except Exception as exc:                                # noqa: BLE001
-            failures.append(f"{name}: autocorrelation time not estimable "
+            local.append(f"{name}: autocorrelation time not estimable "
                             f"({type(exc).__name__}); chain unusable")
             continue
         n_tau = it / tau
         print(f"  tau_max {tau:.1f}   chain length {n_tau:.1f} tau "
               f"(need {N_TAU})")
         if n_tau < N_TAU:
-            failures.append(f"{name}: chain is {n_tau:.1f} tau long, short of "
+            local.append(f"{name}: chain is {n_tau:.1f} tau long, short of "
                             f"the {N_TAU} tau the sampler itself requires")
 
         # --- 3. pinning ----------------------------------------------------
@@ -170,6 +183,13 @@ def main() -> int:
                       f"the data do not constrain it, and no limit on it "
                       f"should be quoted")
 
+        if archived:
+            for msg in local:
+                print(f"  [note] {msg}")
+            print("  archived: posterior not re-derived, and nothing is "
+                  "quoted from this chain")
+            continue
+
         if m.ndim == 3:
             print("  no conversion parameters; nothing derived to check")
             continue
@@ -181,7 +201,7 @@ def main() -> int:
             post = arr[burn_rows:].ravel()
             post = post[np.isfinite(post)]
             if post.size < 200:
-                failures.append(f"{name}/{q}: only {post.size} finite derived "
+                local.append(f"{name}/{q}: only {post.size} finite derived "
                                 f"samples after burn-in; not checkable")
                 continue
             half = len(post) // 2
@@ -194,7 +214,7 @@ def main() -> int:
                 print(f"  [{mark}] {q:16s} {stat:10s} "
                       f"{lo:.5f} -> {hi:.5f}  drift {drift:.0%}")
                 if drift > args.tol:
-                    failures.append(
+                    local.append(
                         f"{name}/{q}: {stat} drifts {drift:.0%} across the "
                         f"chain ({lo:.5f} vs {hi:.5f})")
 
