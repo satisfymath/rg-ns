@@ -54,5 +54,37 @@
     "mem_available_before_mb": 2196.65234375,
     "mem_available_after_mb": 1962.953125,
     "notes": "N=16384, 25000 graded steps"
+  },
+  {
+    "name": "nested_lcdm__baseline",
+    "seconds": 14.305784940719604,
+    "peak_rss_mb": 259.7890625,
+    "mem_available_before_mb": 11564.3828125,
+    "mem_available_after_mb": 11379.3046875,
+    "notes": "nlive=50"
+  },
+  {
+    "name": "nested_lcdm__baseline",
+    "seconds": 112.51133489608765,
+    "peak_rss_mb": 265.95703125,
+    "mem_available_before_mb": 11518.30078125,
+    "mem_available_after_mb": 11387.734375,
+    "notes": "nlive=500"
+  },
+  {
+    "name": "profile_xi_h_matter_deficit",
+    "seconds": 1696.8806035518646,
+    "peak_rss_mb": 682.8046875,
+    "mem_available_before_mb": 2643.10546875,
+    "mem_available_after_mb": 7065.47265625,
+    "notes": "profile in a derived quantity"
+  },
+  {
+    "name": "nested_xi_h__baseline",
+    "seconds": 488.3620800971985,
+    "peak_rss_mb": 614.65234375,
+    "mem_available_before_mb": 11387.734375,
+    "mem_available_after_mb": 11267.01171875,
+    "notes": "nlive=500"
   }
 ]

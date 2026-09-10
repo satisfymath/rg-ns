@@ -146,14 +146,25 @@ def profile(model: str, dataset: str, n_grid: int = 17,
         print(f"  eps={eps:5.3f}   chi2_min={best:10.3f}")
 
     chi2 -= chi2.min()
-    # one-sided 95% limit for one parameter of interest: Delta chi2 = 2.71
+    # One-sided 95% limit for one parameter of interest: Delta chi2 = 2.71.
+    # If the profile never reaches it, there is no limit, and saying so is the
+    # only honest option: an earlier version returned the right-hand end of the
+    # grid, which produced a plausible-looking "95% upper limit on eps" of 0.6
+    # that was nothing but the value of ``grid[-1]`` and would have become 1.0
+    # had the grid been drawn to 1.0.
     above = np.where(chi2 > 2.71)[0]
-    limit = float(np.interp(2.71, chi2[: above[0] + 1], grid[: above[0] + 1])) \
-        if above.size else float(grid[-1])
+    unbounded = not above.size
+    limit = (float(np.interp(2.71, chi2[: above[0] + 1], grid[: above[0] + 1]))
+             if above.size else float("nan"))
+    if unbounded:
+        print(f"  no limit: the profile never exceeds "
+              f"Delta chi2 = {chi2.max():.3f} over [{grid[0]}, {grid[-1]}]")
     return {
         "model": model, "dataset": dataset,
         "eps_grid": grid.tolist(), "delta_chi2": chi2.tolist(),
         "eps_limit_95": limit,
+        "unbounded": bool(unbounded),
+        "max_delta_chi2": float(chi2.max()),
         "chi2_at_zero": float(chi2[0]),
         "best_theta": [t.tolist() for t in best_theta],
         "param_names": names,
@@ -185,7 +196,10 @@ def main() -> int:
             key = f"{m}__{args.data}"
             with record(f"profile_{m}", "profile likelihood in eps"):
                 out[key] = profile(m, args.data, args.n_grid)
-            print(f"  95% upper limit on eps: {out[key]['eps_limit_95']:.4f}")
+            r = out[key]
+            msg = ("unbounded within the grid" if r["unbounded"]
+                   else f"{r['eps_limit_95']:.5f}")
+            print(f"  95% upper limit on eps: {msg}")
         OUT.write_text(json.dumps(out, indent=2))
     print(f"\nwrote {OUT.relative_to(ROOT)}")
     return 0

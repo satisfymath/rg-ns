@@ -90,6 +90,22 @@ class CollapseModel:
         power = (s / s0) ** (-(self.c - self.g))
         return rho0 * power * np.exp(-self.gamma_bounded * (t - t0))
 
+    def log_rho_exact(self, t: float, t0: float = 0.0,
+                      log_rho0: float = 0.0) -> float:
+        """``log(rho_exact)``, evaluated without ever forming ``rho_exact``.
+
+        The bounded rate contributes a factor ``exp(-G (t - t0))``, which for a
+        large bound underflows float64 to exactly zero while remaining strictly
+        positive in exact arithmetic.  That underflow is the numerical artefact
+        the obstruction theorem is about, so the theorem cannot be tested at
+        large ``G`` in the linear form: at ``G = 1e4`` every density involved is
+        the float ``0.0`` and every ratio is ``nan``.  In logarithms the same
+        statement is a subtraction of two finite numbers and stays exact.
+        """
+        s0, s = self.T - t0, self.T - t
+        return (log_rho0 - (self.c - self.g) * np.log(s / s0)
+                - self.gamma_bounded * (t - t0))
+
     def rho_numeric(self, t: float, t0: float = 0.0, rho0: float = 1.0) -> float:
         return rho0 * density_ratio(self.theta, self.gamma, t0, t)
 
@@ -106,6 +122,17 @@ def bounded_rate_factor(gamma_bound: float, t0: float, T: float) -> float:
     cannot convert a divergent power into a finite limit.
     """
     return float(np.exp(-gamma_bound * (T - t0)))
+
+
+def log_bounded_rate_factor(gamma_bound: float, t0: float, T: float) -> float:
+    """``log`` of :func:`bounded_rate_factor`, exact where the factor underflows.
+
+    For ``gamma_bound (T - t0) > 745`` the factor itself is the float ``0.0``,
+    which would make a bounded rate look like a perfect regulator in floating
+    point.  It is not: the logarithm is finite for every bound, which is the
+    content of the theorem.
+    """
+    return float(-gamma_bound * (T - t0))
 
 
 def converted_fraction_singular(g: float, T: float, t: float,

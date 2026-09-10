@@ -1,12 +1,17 @@
 #!/usr/bin/env python3
 """Fail if the manuscript contains hand-typed numbers or stale macros.
 
-Two checks:
-1. Regenerating paper/generated/numbers.tex from results/results.json must
-   reproduce the committed file byte for byte.
+Three checks:
+1. Regenerating paper/generated/numbers.tex from every results file registered
+   in gen_numbers.SOURCES must reproduce the committed file byte for byte.
 2. No decimal literal may appear in the prose of paper/sections/*.tex outside
    maths, a whitelisted context, or a generated macro.  Quoted results belong
-   in results.json, not in the text.
+   in a results file, not in the text.
+3. Every ``\num...`` macro the sections use must be defined by the generator.
+   Check 1 cannot catch an *invented* macro name: a subsection once quoted
+   seven \numPancake... macros that existed nowhere, from a results file no
+   script read, one of them for a quantity that had never been computed.  The
+   document still compiled, because latexmk was running in force mode.
 """
 from __future__ import annotations
 
@@ -46,6 +51,18 @@ def main() -> int:
         failures.append(
             "paper/generated/numbers.tex is out of date with results/results.json "
             "(run `make tables` and commit the result)")
+
+    defined = set(re.findall(r"\\newcommand\{\\(num[A-Za-z]+)\}",
+                             after or ""))
+    used: dict[str, str] = {}
+    for tex in sorted(SECTIONS.glob("*.tex")):
+        for m in re.finditer(r"\\(num[A-Za-z]+)\b", tex.read_text()):
+            used.setdefault(m.group(1), str(tex.relative_to(ROOT)))
+    for name, where in sorted(used.items()):
+        if name not in defined:
+            failures.append(f"{where}: \\{name} is used but no results file "
+                            f"defines it (invented macro name, or a results "
+                            f"file missing from gen_numbers.SOURCES)")
 
     allowed = load_whitelist()
     for tex in sorted(SECTIONS.glob("*.tex")):

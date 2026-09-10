@@ -319,18 +319,37 @@ do, it must therefore do on the approach; the integrated hazard
 $\kappa\log(1/\abs{J})$ does diverge there, which is why the exponents below are
 well defined, but nothing here describes the multi-stream regime.
 
+A fourth limitation is one of measurement rather than of physics. The sheets
+are discrete, so the one nearest the caustic sits at $q=\Delta q/2$ and its
+Jacobian bottoms out at $J=s+(1-s)\varepsilon$ with
+$\varepsilon=1-\cos(k\Delta q/2)\simeq(k\Delta q/2)^2/2$. That floor, not the
+time integration, is what limits how close to the caustic an exponent can be
+read: at the resolution used here it is $\varepsilon\simeq2\times10^{-8}$, and
+a window at $s\sim10^{-5}$ therefore returns an exponent a few parts in $10^4$
+short of its limit. The run with no conversion is best read as a check of the
+solver against the exact kinematic result $\rhoI=1/J$, which it reproduces to a
+relative error of $5\times10^{-11}$; what the other runs add is the behaviour of
+the coupled system, where the compression channel acts together with the
+bounded reinforcing rate and its memory, and where the exponent is consequently
+not available in closed form.
+
 The measured exponents reproduce the analytic values. With no conversion the
-central density follows $\numPancakeControlExponent$ and with the bounded rate
-of \cref{eq:process-rate} it follows $\numPancakeBoundedExponent$: the same
-exponent, with the amplitude lowered by a factor of
-$\numPancakeBoundedSuppression$. That is
-\cref{thm:bounded-rate-obstruction} made visible. The compression-driven
-channel gives $\kappa-1$, measured as $\numPancakeKappaHalfExponent$,
-$\numPancakeKappaOnepointfiveExponent$ and $\numPancakeKappaThreeExponent$ for
-$\kappa=0.5$, $1.5$ and $3$, and the exponent is independent of the branching
-ratio, the memory time and the reinforcement strengths, as the analysis
-requires. The two exact survival identities hold to
-$\numPancakeDustResidual$ across the suite.
+central density follows $s^{\numPancakeANoneExpRhoINear}$, and with the bounded
+rate of \cref{eq:process-rate} it follows $s^{\numPancakeBCosmoExpRhoINear}$:
+the same exponent, with the amplitude lowered by a finite factor of
+$\numPancakeSummaryBoundedSuppression$. That is
+\cref{thm:bounded-rate-obstruction} made visible --- a bounded rate buys an
+amplitude, never an exponent. The compression-driven channel gives $\kappa-1$,
+measured as $\numPancakeCCollapseKZpVExpRhoINear$,
+$\numPancakeCCollapseKOpZExpRhoINear$,
+$\numPancakeCCollapseKOpVExpRhoINear$ and
+$\numPancakeCCollapseKWpZExpRhoINear$ for $\kappa=0.5$, $1$, $1.5$ and $3$
+against the predicted $-0.5$, $0$, $0.5$ and $2$, and the exponent is
+independent of the branching ratio, the memory time and the reinforcement
+strengths, as the analysis requires. Across all
+$\numPancakeSummaryNCases$ runs the largest violation of the three exact
+identities of \cref{eq:defects-local-exact} is
+$\numPancakeSummaryWorstIdentityResidual$.
 
 \subsection{What would be needed for an abundance}\label{sec:defects-abundance}
 

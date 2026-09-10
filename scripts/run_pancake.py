@@ -98,6 +98,27 @@ def run(label: str, store_curves: bool = False, **kw) -> dict:
     return d
 
 
+def summarise(res: dict[str, dict]) -> dict:
+    """Cross-case quantities the manuscript quotes.
+
+    Computed here rather than read off the table by eye, because the paper's
+    rule is that no number in it is typed by hand.  The suppression factor is
+    the ratio of central precursor densities between the run with no conversion
+    and the run with the bounded rate: the two share an exponent, so the ratio
+    is the whole effect of the bounded rate, and it is the quantity
+    thm:bounded-rate-obstruction predicts to be finite.
+    """
+    residuals = [v[k] for v in res.values() if isinstance(v, dict) and "params" in v
+                 for k in ("survival_residual", "defect_residual", "dust_residual")]
+    return {
+        "worst_identity_residual": float(max(residuals)),
+        "bounded_suppression": float(res["A_none"]["centre_rho_I"]
+                                     / res["B_cosmo"]["centre_rho_I"]),
+        "n_cases": sum(1 for v in res.values()
+                       if isinstance(v, dict) and "params" in v),
+    }
+
+
 def main() -> int:
     SIMS.mkdir(parents=True, exist_ok=True)
     print(f"MemAvailable at start: {mem_available_mb():.0f} MB")
@@ -125,6 +146,7 @@ def main() -> int:
             res[tag] = run(tag, False, rate_mode="collapse", kappa=1.5, b=0.0,
                            alpha=alpha, beta=beta)
 
+    res["summary"] = summarise(res)
     OUT.write_text(json.dumps(res, indent=2, sort_keys=True))
     print(f"\n{'case':22s} {'centre rho_I':>13} {'exp near':>9} {'centre V':>10} "
           f"{'<f>':>7} {'dust resid':>11}")

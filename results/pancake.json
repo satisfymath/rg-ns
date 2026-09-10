@@ -406,5 +406,10 @@
       "tau_M": 3.0
     },
     "survival_residual": 1.7409630594794612e-14
+  },
+  "summary": {
+    "bounded_suppression": 273.9442921849125,
+    "n_cases": 12,
+    "worst_identity_residual": 4.5365045053813446e-11
   }
 }

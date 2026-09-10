@@ -11,6 +11,7 @@ import numpy as np
 import pytest
 
 from absorb.collapse import (CollapseModel, LocalSector, bounded_rate_factor,
+                             log_bounded_rate_factor,
                              collapse_rate_coefficient, converted_fraction_singular,
                              cumulative_hazard, density_ratio,
                              regularity_conditions, zeldovich_expansion_exponent)
@@ -41,28 +42,61 @@ def test_three_regimes():
 # --------------------------------------------------------------------------- #
 @pytest.mark.parametrize("gamma_bound", [1.0, 10.0, 100.0, 1e4])
 def test_bounded_rate_cannot_regularize(gamma_bound):
-    """A bounded rate shifts ln rho_I by at most a finite amount.
+    """A bounded rate leaves the exponent alone and buys only an amplitude.
 
-    The comparison is made in logarithms, because for a large bound the
-    suppression factor underflows to zero in floating point while remaining
-    strictly positive in exact arithmetic; that underflow is precisely the
-    numerical artefact the theorem is about.
+    This is the flagship claim, so it is tested against the module's own
+    solution of the local system rather than against the algebra of the proof.
+    An earlier version of this test asserted an inequality between two
+    quantities it had itself computed from ``gamma_bound``, which made it a
+    restatement of arithmetic: it called nothing and could not have failed.
+
+    What is checked here is that ``LocalSector`` -- which integrates
+    d rho_I/dt = -(Theta + Gamma) rho_I with the bounded rate, and knows
+    nothing about the theorem -- returns a density whose logarithmic slope in
+    the distance to the caustic is the compression exponent ``c`` to four
+    decimals for every bound, while the amplitude it loses is exactly the
+    finite factor ``bounded_rate_factor`` predicts.
     """
-    # ln of the suppression: -int Gamma >= -G (T - t0), a finite number.
-    log_suppression = -gamma_bound * 1.0
-    assert np.isfinite(log_suppression)
-    # ln of the compression is c ln(1/s), which is unbounded.  The crossover
-    # sits at ln(1/s*) = G, so s* = exp(-G): for G = 1e4 that is far below the
-    # smallest float64, which is why the comparison must be made in logarithms
-    # and not by evaluating rho_I.
-    log_s_star = -gamma_bound
-    for log_s in (log_s_star - 1.0, log_s_star - 10.0, log_s_star - 1e3):
-        log_compression = -log_s
-        assert log_compression + log_suppression > 0.0, (
-            "for every bounded rate there is a scale at which compression wins")
-    # and below the crossover the suppression still dominates, so the crossover
-    # is a genuine sign change rather than a one-sided bound
-    assert (-(log_s_star + 1.0)) + log_suppression < 0.0
+    c, T = 1.0, 1.0
+    m = CollapseModel(c=c, g=0.0, T=T, gamma_bounded=gamma_bound)
+    free = CollapseModel(c=c, g=0.0, T=T, gamma_bounded=0.0)
+
+    # Measured slope of ln rho_I against ln s, close to the caustic.  Taken in
+    # logarithms throughout: at gamma_bound = 1e4 the density itself is the
+    # float 0.0 and every ratio formed from it is nan.
+    # The bounded term contributes -G(T - s) = -G T + G s, so its finite-s
+    # part biases a slope fit unless G s << 1; the window is therefore scaled
+    # by the bound.  At G = 1e4 a window at s ~ 1e-6 returns -0.9979, which is
+    # the measurement being too coarse and not the exponent having moved.
+    s = np.array([1e-6, 1e-7, 1e-8]) / max(1.0, gamma_bound)
+    ln_rho = np.array([m.log_rho_exact(T - si) for si in s])
+    slope = np.polyfit(np.log(s), ln_rho, 1)[0]
+    assert abs(slope + c) < 1e-4, (
+        f"a rate bounded by {gamma_bound} changed the exponent to {slope}")
+
+    # The whole effect is an amplitude, and it is exactly the factor over the
+    # interval actually traversed, [0, T - s]; it approaches the bound over
+    # [0, T] from above, as exp(+ gamma_bound * s), so the two are compared at
+    # each s and not only in the limit.
+    ln_free = np.array([free.log_rho_exact(T - si) for si in s])
+    ln_ratio = ln_rho - ln_free
+    exact = np.array([log_bounded_rate_factor(gamma_bound, 0.0, T - si) for si in s])
+    assert np.allclose(ln_ratio, exact, rtol=1e-12, atol=1e-12)
+    ln_limit = log_bounded_rate_factor(gamma_bound, 0.0, T)
+    assert np.all(ln_ratio > ln_limit)
+    assert abs(ln_ratio[-1] - ln_limit) < gamma_bound * 1e-8 + 1e-12
+    assert np.isfinite(ln_limit), (
+        "the suppression is bounded below by a positive number; in float64 "
+        "bounded_rate_factor itself underflows to 0.0 for gamma_bound > 745")
+
+    # and the divergence survives it: for every bound there is a distance at
+    # which the compression has won.  Compared in logarithms, because for
+    # G = 1e4 the amplitude underflows float64 while remaining positive in
+    # exact arithmetic -- which is the artefact the theorem is about.
+    log_amplitude = -gamma_bound * T
+    log_s_star = log_amplitude / c
+    assert -c * (log_s_star - 1.0) + log_amplitude > 0.0
+    assert -c * (log_s_star + 1.0) + log_amplitude < 0.0
 
 
 def test_bounded_rate_is_the_paper_s_case():
