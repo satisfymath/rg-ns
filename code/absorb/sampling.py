@@ -39,10 +39,13 @@ SPLIT_TOL = 0.25     # allowed relative drift of the reported limit
 TAU_TOL = 0.02       # and tau stable to 2% between checks
 CHECK_EVERY = 500
 
-#: Measured resident size of one worker after the data are loaded and one
-#: likelihood has been evaluated.  Most of it is copy-on-write shared with the
-#: parent under the fork start method, so this is a conservative upper bound.
-WORKER_RSS_MB = 260
+#: Resident size of one worker in a long run.  Immediately after forking it is
+#: about 260 MB, most of it copy-on-write shared with the parent; it settles
+#: near 720 MB over tens of thousands of steps as allocator arenas fragment
+#: under the churn of per-call background solves.  The larger figure is the one
+#: to budget against, since exhausting memory late in a run wastes the whole
+#: chain.
+WORKER_RSS_MB = 720
 #: Never consume more than this fraction of the memory the OS reports as
 #: available; the machine is shared with other work.
 MEMORY_BUDGET_FRACTION = 0.5
