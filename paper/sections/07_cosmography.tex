@@ -45,20 +45,29 @@ revisited recently \parencite{worsley2026_260720348}. What is added here is the
 inequality form and the sign table below.
 
 In the model, $\varepsilon=\tfrac32(1-\bfrac)(\Gam/\Hub)\Omega_I$. The sandwich
-theorem alone gives only a trivial bound on $j_0$, because the two
-bracketing $\LCDM$ models are tangent to first order at $a=1$; but if the
-transfer is switching on, so that $\QV a^3/\Hub$ is non-decreasing, then the
-matter deficit sets a floor,
+theorem alone gives only a trivial bound on $j_0$, because the two bracketing
+$\LCDM$ models are tangent to first order at $a=1$. A non-trivial bound needs
+one further hypothesis, and it matters which quantity that hypothesis is
+placed on. Write $\mathsf q(\efold)=\QV/(3\Mpl^2\Hz^2\Hub)$, so that
+$\Delta=\int_{-\infty}^{0}\mathsf q\,e^{3\efold}\,\dd \efold$ and
+$\varepsilon_0=\tfrac32\mathsf q_0$. If $\mathsf q$ is non-decreasing up to
+today, which says that the transfer measured against the expansion rate is
+still switching on, then $\mathsf q\le \mathsf q_0$ throughout and
 %
 \begin{keyresult}{C}{eq:cosmography-deficit-floor}
   j_0-1\ \ge\ 2\Omega_{r0}+\frac92\,\Delta ,
 \end{keyresult}
 %
-and if $\QV a^3/\Hub\propto a^{p_{\rm eff}}$ near today the relation is exact,
-$\varepsilon_0=\tfrac32(p_{\rm eff}+3)\Delta$. The two anchor-free observables
-of \cref{sec:positivity-ide} are therefore not independent: a measured matter
-deficit predicts a minimum jerk excess. That is the model's tightest internal
-consistency test.
+with the relation exact, $\varepsilon_0=\tfrac32(p_{\rm eff}+3)\Delta$, when
+$\mathsf q\propto a^{p_{\rm eff}}$ near today. The hypothesis is on
+$\QV/\Hub$, not on $\QV a^3/\Hub$. The latter is strictly weaker and gives no
+floor: since $\Delta$ already weights $\mathsf q$ by $a^3$, a $\mathsf q$ that
+falls towards today can leave $\QV a^3/\Hub$ increasing while
+$\tfrac92\Delta$ exceeds $\varepsilon_0$. Subject to the correct hypothesis the
+two anchor-free observables of \cref{sec:positivity-ide} are not independent:
+a measured matter deficit predicts a minimum jerk excess. That is the model's
+tightest internal consistency test, and whether the hypothesis holds has to be
+checked for the activation profile in use rather than assumed.
 
 \subsection{The sign separates the alternatives}\label{sec:cosmography-signs}
 
@@ -135,15 +144,22 @@ within errors. That is what \cref{sec:observations} does.
   \cref{eq:cosmography-snap}.
 \end{proof}
 
-\begin{theorem}[Memory fingerprint]\label{thm:memory-fingerprint}
-  At fixed $(\Hz,q_0,j_0)$ the memory parameters are unconstrained by
-  the jerk, and constrained by the snap:
+\begin{theorem}[Memory fingerprint, and what limits it]
+  \label{thm:memory-fingerprint}
+  At fixed $(\Hz,q_0,j_0)$ the memory parameters are unconstrained by the
+  jerk, and do enter the snap:
   %
   \begin{keyresult}{C}{eq:cosmography-fingerprint}
     \frac{\partial j_0}{\partial \mathcal B}=0 ,
     \qquad
     \frac{\partial s_0}{\partial \mathcal B}=+\varepsilon_0\ \ne 0 .
   \end{keyresult}
+  %
+  The activation term of \cref{eq:cosmography-snap-explicit}, however, enters
+  the same bracket with the \emph{same} coefficient as $\mathcal B$, so what
+  the snap measures is the sum $\mathcal B+p(1-\actS)$. Memory is identified by
+  cosmography alone only when the activation profile is known independently, or
+  when $p(1-\actS)$ is negligible today.
 \end{theorem}
 
 \begin{proof}
@@ -173,4 +189,6 @@ from running vacuum and from the DESI-preferred CPL quadrant, and a snap
 relation that carries the only background signature of memory. What it does not
 establish is that either is currently measurable: the predicted jerk excess is
 about a factor of ten below present cosmographic errors, and the snap is
-further out of reach.
+further out of reach. Nor does it establish that the snap isolates memory: the
+activation profile contributes to the same combination, so a measurement of
+$s_0$ constrains $\mathcal B+p(1-\actS)$ and not $\mathcal B$ alone.

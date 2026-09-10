@@ -467,6 +467,54 @@ class Background:
         QV = self.Q_V(zz)
         return 1.0 + 2.0 * rad / E2 - 1.5 * pnu_p / E2 + 1.5 * QV / E2 ** 1.5
 
+    def snap(self, z: ArrayLike) -> np.ndarray:
+        """Snap parameter, s = dj/dN - j(2 + 3q).
+
+        Computed from a spline of j on the solution grid rather than from a
+        closed form, so that it tests the analytic expression in the paper
+        instead of restating it.
+        """
+        zz = np.atleast_1d(np.asarray(z, dtype=float))
+        m = (self.z < 60.0) & (self.z > 1e-4)
+        Ng, jg = self.N[m], self.j(self.z[m])
+        order = np.argsort(Ng)
+        spline = CubicSpline(Ng[order], jg[order])
+        Nq = np.log(1.0 / (1.0 + zz))
+        return spline(Nq, 1) - self.j(zz) * (2.0 + 3.0 * self.q(zz))
+
+    def snap_excess_analytic(self, z: ArrayLike) -> np.ndarray:
+        """The model's closed form for s - s_LambdaCDM(q).
+
+        With epsilon = Q_V/(2 Mpl^2 H^3) the general result is
+        eps * [dlnGamma/dN - Gamma/H - 2].  For the rate law used here,
+
+            dlnGamma/dN = alpha (1-f) Gamma/H + beta (f-M)/(tau_M H)
+                          + p (1 - S_act(a)),
+
+        the last term coming from the activation switch.  Dropping it changes
+        the sign of the bracket once the switch is still opening, which is
+        exactly where the effect is largest.
+        """
+        zz = np.atleast_1d(np.asarray(z, dtype=float))
+        a = 1.0 / (1.0 + zz)
+        p = self.p
+        E = self.E(zz)
+        f, M = self.f_conv(zz), self.memory(zz)
+        gamma_over_H = self._gamma_over_E(a, f, M, E)
+        eps = 1.5 * self.Q_V(zz) / E ** 3
+        S = np.asarray(self._switch(a), dtype=float)
+        dlnGamma = (p.alpha * (1.0 - f) * gamma_over_H
+                    + p.beta * (f - M) / (p.tau_hat * E)
+                    + p.p_act * (1.0 - S))
+        if p.rate_tracks_H:
+            dlnGamma = dlnGamma - (1.0 + self.q(zz))
+        return eps * (dlnGamma - gamma_over_H - 2.0)
+
+    def snap_lambda_cdm(self, z: ArrayLike) -> np.ndarray:
+        """s for the same q with no transfer, i.e. the reference the excess is
+        measured against."""
+        return self.snap(z) - self.snap_excess_analytic(z)
+
     def jerk_lambda_cdm_bound(self, z: ArrayLike) -> np.ndarray:
         """The bound 1 + 2 Omega_gamma - (3/2) p'_nu/E^2 that j must exceed
         whenever the transfer to the vacuum is non-negative."""

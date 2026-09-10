@@ -190,3 +190,51 @@ def test_matter_deficit_equals_the_transferred_amount(bg_memory):
     p = bg_memory.p
     assert np.isclose(d["matter_deficit"],
                       p.eps * p.omega_c * d["f0"] / d["h"] ** 2, rtol=1e-10)
+
+
+# --------------------------------------------------------------------------- #
+# Snap: the closed form must match numerical differentiation of the jerk
+# --------------------------------------------------------------------------- #
+def test_snap_closed_form_matches_differentiated_jerk(bg_memory):
+    """The analytic snap excess is checked against a spline derivative of j.
+
+    The two routes are independent: one differentiates the jerk numerically,
+    the other evaluates eps*[dlnGamma/dN - Gamma/H - 2] from the rate law.  An
+    earlier version of the manuscript dropped the activation contribution
+    p*(1 - S_act) from dlnGamma/dN, which reverses the sign of the bracket once
+    the switch is still opening; this test pins it.
+    """
+    z = np.array([0.0, 0.3, 0.5, 1.0, 2.0])
+    s_lcdm = bg_memory.snap_lambda_cdm(z)
+    q = bg_memory.q(z)
+    Om_r = bg_memory._omegas(z)[1] / bg_memory.E(z) ** 2
+    closed = 4.0 * Om_r * (q - 1.0) - (1.0 + 2.0 * Om_r) * (2.0 + 3.0 * q)
+    assert np.max(np.abs(s_lcdm - closed)) < 5e-3
+
+
+def test_activation_term_dominates_the_snap_bracket():
+    """The dropped term is not a correction: without it the bracket changes
+    sign at the redshifts where the effect is largest."""
+    p = BackgroundParams(omega_b=0.02237, omega_c=0.14, omega_V_act=0.20,
+                         eps=0.35, log10_gamma0=0.0, alpha_tot=2.0, r_beta=0.5,
+                         log10_tau=-0.3, z_act=1.0, p_act=6.0)
+    bg = Background(p)
+    z = np.array([1.0, 2.0])
+    a = 1.0 / (1.0 + z)
+    E = bg.E(z)
+    f, M = bg.f_conv(z), bg.memory(z)
+    g_over_H = bg._gamma_over_E(a, f, M, E)
+    S = np.asarray(bg._switch(a), dtype=float)
+    inst = p.alpha * (1.0 - f) * g_over_H
+    mem = p.beta * (f - M) / (p.tau_hat * E)
+    act = p.p_act * (1.0 - S)
+    without = inst + mem - g_over_H - 2.0
+    with_act = without + act
+    assert np.all(without < 0.0)
+    assert np.all(with_act > 0.0), "the activation term flips the sign"
+
+
+def test_lcdm_snap_has_no_excess():
+    bg = lcdm(omega_L=0.30)
+    z = np.linspace(0.0, 2.0, 20)
+    assert np.allclose(bg.snap_excess_analytic(z), 0.0, atol=1e-12)
