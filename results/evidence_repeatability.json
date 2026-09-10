@@ -1,0 +1,17 @@
+{
+  "xi_h__baseline": {
+    "dataset": "baseline",
+    "logz_reported_error": 0.20799637745346677,
+    "logz_spread": 0.14589571429039214,
+    "logz_values": [
+      -733.9350910059526,
+      -734.0876176297604,
+      -733.7959282281709
+    ],
+    "max_pairwise_difference": 0.291689401589565,
+    "model": "xi_h",
+    "n_repeats": 3,
+    "nlive": 500,
+    "ratio_spread_to_reported": 0.7014339195548351
+  }
+}
