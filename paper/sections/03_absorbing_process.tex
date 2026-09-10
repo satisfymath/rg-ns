@@ -211,8 +211,11 @@ direct simulation (\cref{fig:gillespie}).
     solution, with $5$--$95\%$ bands, for four population sizes; the inset
     shows the deterministic $\fconv(t)$ that has been subtracted. \emph{Right:}
     the same ensembles' standard deviations multiplied by $\sqrt{N}$, which
-    collapse onto a single curve, confirming the $N^{-1/2}$ scaling of
-    \cref{thm:deterministic-limit}. Rate parameters as in
+    collapse onto a single curve. This is numerical evidence for the
+    $N^{-1/2}$ scaling under the reinforced rate, which is not what
+    \cref{thm:deterministic-limit} proves: that theorem gives convergence in
+    probability, and the exact binomial law of
+    \cref{rem:hazard-time-change} needs a state-independent rate. Rate parameters as in
     \cref{sec:numerics-stochastic}.}
   \label{fig:gillespie}
 \end{figure}
@@ -257,18 +260,34 @@ initial memory state: $\beta>0$ alone does not guarantee earlier acceleration.
 The operational content of the memory variable is that the present state of the
 densities does not determine the future.
 
-\begin{theorem}[Hysteresis]\label{thm:hysteresis}
-  Let $\beta>0$ and let two histories reach the same converted fraction
-  $\fconv_*$ at the same time with different memory states
+\begin{theorem}[Hysteresis, along a prescribed expansion history]
+  \label{thm:hysteresis}
+  Fix a scale factor $a(t)$ and let $\beta>0$. Let two solutions of
+  \cref{eq:process-deterministic} driven by that $a(t)$ reach the same
+  converted fraction $\fconv_*$ at the same time with different memory states
   $\Mmem^{(1)}>\Mmem^{(2)}$. Then $\fconv^{(1)}(t)\ge \fconv^{(2)}(t)$ at every
-  later $t$, with strict inequality on a set of positive measure. Consequently,
-  whenever the accumulated vacuum is given by \cref{eq:cosmology-dVdf} along a
-  common expansion history, the two reach different asymptotic vacuum
-  densities.
+  later $t$, with strict inequality on a set of positive measure, and the
+  vacuum accumulated through \cref{eq:cosmology-dVdf} along that same $a(t)$
+  differs between them.
 \end{theorem}
 
+\begin{remark}[Why the expansion history is prescribed]
+  \label{rem:hysteresis-prescribed}
+  The hypothesis is not cosmetic and cannot be removed by rewording. The
+  comparison argument below compares two solutions of one system, so both must
+  be driven by the same $a(t)$; and the conclusion is that they accumulate
+  different vacuum, which through the Friedmann constraint would give them
+  different $a(t)$. Stated for the coupled system the theorem would therefore
+  contradict its own hypothesis. What it establishes is a property of the
+  kinetics: at equal converted fraction the memory state still carries
+  information about the future, so the pair $(\rhoI,\rhoD,\rhoV)$ at one
+  instant does not determine the solution. \Cref{fig:hysteresis} is computed
+  exactly in this decoupled setting.
+\end{remark}
+
 \begin{proof}
-  The system \cref{eq:process-deterministic} is cooperative: $\partial\dot
+  Both solutions are driven by the same $a(t)$, so they solve one system, and
+  \cref{eq:process-deterministic} is cooperative: $\partial\dot
   \fconv/\partial \Mmem=(1-\fconv)\beta\Gam\ge0$ and $\partial\dot
   \Mmem/\partial \fconv=\tauM^{-1}>0$. The Kamke--M\"uller comparison theorem
   for cooperative systems gives componentwise ordering of the two solutions
@@ -311,8 +330,9 @@ by showing that $\beta$ and $\tauM$ enter the snap parameter while cancelling
 out of the jerk.
 
 \paragraph{What this section establishes.}
-A well-posed kinetic law with a controlled deterministic limit, a derived
-rather than postulated memory variable, and path dependence. What it does not
+A well-posed kinetic law with a controlled deterministic limit, a memory variable that is the population mean of a
+per-unit relaxation law with a common relaxation time, rather than a weaker
+assumption, and path dependence. What it does not
 establish is that any physical substrate realises this law: $\Gamz$, $\alpha$,
 $\beta$ and $\tauM$ are parameters of an effective description, and
 \cref{sec:realizations} exhibits candidate mechanisms without deriving their

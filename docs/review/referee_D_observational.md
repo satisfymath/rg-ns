@@ -128,13 +128,26 @@ point exists and the true profile at `Delta = 0.0126` is above `chi2_min + 35.6`
 — in which case `0.0126` is not the 95% limit but far beyond it. In neither
 case is `Delta < 0.0126` a 95% upper limit.
 
-**Independent check of the optimiser.** Re-running the same constrained fit
-with one background solve per objective evaluation instead of two, Nelder-Mead
-*and* Powell, five restarts plus a warm start, and `penalty = 1e9`
-(`/tmp/.../scratchpad/reprofile.py`), the `target = 0` point returns
-`achieved = 2.1e-07`, `chi2 = 1436.5160` — i.e. exactly the LambdaCDM minimum,
-which is the right answer and which the shipped run misses (it returns
-`achieved = 1.95e-04`). See M2 for the numbers at the limit-setting targets.
+**(e) The zero point is wrong too: the shipped profile never found the model's
+minimum.** I re-ran the same constrained fit with one background solve per
+objective evaluation instead of two, Nelder-Mead *and* Powell, five restarts
+plus a warm start, and `penalty = 1e9`. The constraint is then met to 1e-7 at
+every point, and the fits are much better than the shipped ones:
+
+```
+  target=0.000000  achieved=2.08e-07  chi2=1436.5160    <- exactly the LCDM minimum
+  target=0.002000  achieved=0.002000  chi2=1435.8174
+  target=0.004000  achieved=0.004000  chi2=1434.9201    <- 0.737 BELOW the shipped
+                                                           profile's own minimum
+```
+
+Each was re-evaluated independently through `Posterior.log_prior` to confirm it
+lies inside the prior box (`log_prior = 0.0` at all three). The shipped
+`profile_derived` reports its minimum as `1435.65690` (the value the whole
+`delta_chi2` column is referred to); a plain re-run finds `1434.9201` at
+`Delta = 0.004`. Every `Delta chi2` in `results/profile.json` is therefore
+referred to a point that is 0.74 too high, and the same applies to the `eps`
+profile, which shares the minimum. See M3 for how far this goes.
 
 **Also affected**: the text supports the limit with "the profile rising to
 `Delta chi2 ~ 1192` across the grid, so this is a constraint and not another
@@ -251,7 +264,7 @@ number above says it does — then the honest headline is that the evidence does
 not distinguish the models, and the profile-likelihood statement (`Delta chi2`
 of 0.86 between the two best fits) is the robust one and should lead.
 
-### M3. The `Delta chi2` column of Table 1 mixes three incompatible maximisers, and prints an impossible number.
+### M3. The `Delta chi2` column of Table 1 mixes three incompatible maximisers, prints an impossible number, and understates the model's best fit by a factor of two.
 
 **Location**: `paper/generated/tab_comparison.tex`; `scripts/gen_tables.py:108-117`;
 `scripts/run_map.py` (never run — `results/map.json` absent).
