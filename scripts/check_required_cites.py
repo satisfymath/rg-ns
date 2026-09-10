@@ -16,6 +16,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 BIB = ROOT / "paper" / "references.bib"
 SECTIONS = ROOT / "paper" / "sections"
+GENERATED = ROOT / "paper" / "generated"
+
+
+def tex_sources():
+    """Every file whose citations reach the document, including the tables
+    generated from results/results.json and included by the sections."""
+    return sorted(SECTIONS.glob("*.tex")) + sorted(GENERATED.glob("*.tex"))
 
 REQUIRED = {
     "1203.6776":  "Wands, De-Santiago & Wang: inhomogeneous vacuum energy",
@@ -67,7 +74,7 @@ def main() -> int:
         if eprint not in keys_by_eprint:
             failures.append(f"missing from references.bib: {eprint} ({why})")
 
-    all_text = "\n".join(p.read_text() for p in SECTIONS.glob("*.tex"))
+    all_text = "\n".join(p.read_text() for p in tex_sources())
     cited = set(re.findall(r"\\[a-zA-Z]*cite[a-zA-Z]*\s*(?:\[[^\]]*\])*\{([^}]+)\}",
                            all_text))
     cited = {k.strip() for group in cited for k in group.split(",")}

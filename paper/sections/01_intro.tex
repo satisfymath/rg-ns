@@ -1,4 +1,152 @@
 % 01_intro
 \section{Problem, hypotheses, and what is claimed}\label{sec:intro}
 
-\TODO{not written yet}
+\subsection{The question}\label{sec:intro-question}
+
+Suppose a substrate whose regions explore configurations, some of which are
+persistent; suppose the accumulated conversion changes the probability of
+further conversion; and suppose the products gravitate while remaining
+electromagnetically quiet. This paper asks what that idea implies once it is
+written as equations, and where it stops implying anything.
+
+The word "space" carries two meanings in such a proposal. Microscopically it
+names a substrate that is not specified here. Macroscopically it names a
+Lorentzian manifold. We do not identify the two by definition: the
+coarse-graining map that would connect them is part of the open problem, not
+part of the construction. Throughout, \emph{absorption} means the absence of
+return on the timescale and in the set of observables considered. An absorbing
+state need not be a global energy minimum, a relativistic vacuum, or a
+particle; each of those is a separate calculation.
+
+\subsection{Hypotheses}\label{sec:intro-hypotheses}
+
+Five assumptions carry the construction, and it is worth listing them plainly
+because the paper's results are conditional on them.
+
+\begin{enumerate}
+  \item Identifiable mesoscopic units exist, each active or absorbed.
+  \item The conversion rate is non-negative and may depend on a memory of the
+    conversion already accumulated.
+  \item The macroscopic description admits a pressureless precursor, a
+    pressureless localized product, and a product of vacuum type.
+  \item A fixed fraction of the transferred energy feeds each product.
+  \item General relativity and covariant conservation of the total tensor hold
+    in the regime studied.
+\end{enumerate}
+
+The third assumption does not follow from the first two, which is why
+\cref{sec:realizations} studies explicit realizations of a vacuum tensor and of
+a localized configuration rather than asserting them. The rate is not derived
+from gravity either: an effective law is specified and its consequences are
+computed.
+
+\subsection{Relation to existing work}\label{sec:intro-prior}
+
+Most of the machinery used here is not new, and saying so precisely is
+necessary before the contribution can be identified.
+
+Interacting vacuum cosmology, in which a component with $p=-\rho$ exchanges
+energy with matter and therefore has no rest frame of its own, was developed by
+\textcite{wands2012_12036776}; its covariant perturbation theory is set out by
+\textcite{sebastianutti2023_231214123}. The constrained-clock action of
+\cref{sec:realizations} is the "dust of dark energy" of
+\textcite{lim2010_10035751}, equivalently mimetic matter with a potential
+\parencite{chamseddine2014_14033961}, whose known pathologies -- vanishing
+sound speed, caustics, and gradient instabilities in extended versions -- are
+reviewed by \textcite{sebastiani2016_161208661} and
+\textcite{malaeb2026_260214082}. A silent sector combining these ingredients
+with an interacting vacuum, fitted to recent data, has been constructed by
+\textcite{prez2026_260719494}. Four-form realizations of a vacuum sector go
+back to \textcite{bousso2000_hep-th0004134}. Open-system descriptions of dark
+energy have been developed by \textcite{salcedo2026_260312321}. The link
+between the third derivative of the scale factor and energy transfer to the
+vacuum was made by \textcite{szydlowski2005_astro-ph0502034} and revisited by
+\textcite{worsley2026_260720348}.
+
+What we have not found elsewhere is the dynamical law: an absorbing-state
+kinetics with self-reinforcement, and a memory variable obeying
+$\tauM\dot \Mmem=\fconv-\Mmem$, applied to the dark sector. That is where this
+paper plants its flag, and \cref{thm:hysteresis} states what the memory buys
+that no coupling written directly between densities can provide.
+
+\subsection{Contributions}\label{sec:intro-contributions}
+
+\begin{enumerate}
+  \item A kinetic law with a controlled deterministic limit, whose memory
+    variable is derived by eliminating a per-unit degree of freedom rather than
+    postulated (\cref{prop:memory-origin,thm:deterministic-limit}), and which
+    produces hysteresis: two universes with identical densities but different
+    memory have different futures (\cref{thm:hysteresis}).
+  \item A positivity theorem that is structural rather than tuned
+    (\cref{thm:quasi-positivity}), which is what distinguishes this coupling
+    from the interacting dark energy models catalogued as admitting negative
+    densities \parencite{westhuizen2025_250904495,westhuizen2025_250904494,westhuizen2025_250904496};
+    together with an exact map onto the standard parametrizations
+    (\cref{prop:ide-map}) and a sign prediction that no choice of parameters
+    can evade (\cref{thm:no-sign-flip}).
+  \item A proof that the rate law cannot be extended into the early universe as
+    originally written, and the minimal repair (\cref{thm:no-go,asm:activation}).
+  \item A parameter-free cosmographic inequality and a snap relation
+    (\cref{thm:jerk,thm:snap}), whose signs separate this model from running
+    vacuum and from the currently favoured dark-energy parametrizations, and in
+    which the memory parameters appear in the snap while cancelling from the
+    jerk (\cref{thm:memory-fingerprint}).
+  \item A closed linear perturbation theory in which the branching ratio
+    cancels identically (\cref{thm:b-independence}), correcting a result of the
+    earlier version of this work, and which predicts enhanced density growth
+    together with suppressed velocity growth
+    (\cref{eq:perturbations-growth-signature}).
+  \item A confrontation with Pantheon+, DESI DR2, cosmic chronometers and the
+    Planck distance priors (\cref{sec:observations}), with the code and data
+    checksums archived.
+  \item A solved, finite-energy, unit-charge defect
+    (\cref{eq:defects-solved}), and an open quantum realization whose
+    mean-field closure error is controlled (\cref{prop:classical-reduction}).
+\end{enumerate}
+
+\subsection{What is claimed, and at what level}\label{sec:intro-ladder}
+
+This paper is a framework, not a unification. To keep that distinction from
+eroding as the argument proceeds, every displayed result carries an explicit
+evidential level, and the classification is machine-checked as part of the
+build rather than asserted here.
+
+\begin{center}
+\begin{tabular}{cL{0.75\textwidth}}
+  \toprule
+  Level & Meaning \\
+  \midrule
+  I & Identity, or a standard result restated. Follows from stated equations
+      and definitions alone. \\
+  C & Theorem of the model. Follows from the new postulates together with the
+      system specified; the hypotheses are named in the statement. \\
+  P & Phenomenological. A number obtained by fitting to data, valid within the
+      stated likelihood and priors. \\
+  S & Conjecture. Requires a microscopic theory or a calculation not performed
+      here; confined to \cref{sec:outlook}. \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+Three claims that this paper does \emph{not} make are worth stating in advance,
+because a reader could otherwise supply them. It does not derive quantum
+mechanics: \cref{sec:quantum} begins from a specified open quantum model and
+recovers the classical chain from it. It does not derive electromagnetism or
+any Standard-Model content. And it does not claim that the defects of
+\cref{sec:defects} are the dark matter; that identification is a conjecture,
+listed as such.
+
+\subsection{Plan}\label{sec:intro-plan}
+
+\Cref{sec:covariant-setup} fixes conventions.
+\Cref{sec:absorbing-process} develops the kinetic law.
+\Cref{sec:homogeneous-cosmology} couples it to gravity and proves the global
+results. \Cref{sec:positivity-ide} establishes positivity and the map to
+interacting dark energy. \Cref{sec:solvable-early} gives the solvable family
+and repairs the early-universe branch. \Cref{sec:cosmography} derives the
+cosmographic tests. \Cref{sec:realizations} exhibits covariant realizations.
+\Cref{sec:perturbations} develops linear perturbation theory.
+\Cref{sec:observations} confronts the model with data.
+\Cref{sec:defects} solves the defect sector and \cref{sec:quantum} the quantum
+one. \Cref{sec:outlook} lists what remains conjectural, and
+\cref{sec:conclusions} states what has been shown.

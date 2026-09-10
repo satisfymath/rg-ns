@@ -1,4 +1,125 @@
 % 10_observations
 \section{Observational constraints}\label{sec:observations}
 
-\TODO{not written yet}
+This section confronts the model with data. The framing matters: the aim is
+not to show that the model fits, but to find out whether the sign prediction of
+\cref{thm:no-sign-flip} and the jerk bound of
+\cref{eq:cosmography-jerk-bound} survive, and to report the answer either way.
+
+\subsection{Data and likelihood}\label{sec:observations-data}
+
+\begin{table}[t]
+  \centering
+  \input{generated/tab_datasets}
+  \caption{Data sets used. All are public releases; a script downloads each and
+    verifies it against a recorded checksum, and none is redistributed with the
+    code.}
+  \label{tab:datasets}
+\end{table}
+
+\Cref{tab:datasets} lists the combination. Supernova distances constrain the
+shape of the late expansion history; baryon acoustic oscillations tie it to the
+sound horizon; cosmic chronometers measure $\Hub(z)$ directly and without a
+distance ladder; and the compressed CMB likelihood supplies the early-universe
+anchor. The absolute magnitude of the supernovae is marginalised analytically,
+so the baseline combination contains no distance-ladder calibration; a variant
+including it is reported separately.
+
+Three choices deserve to be stated rather than buried, since each could
+otherwise be mistaken for an error.
+
+First, the sound horizon is computed from the matter density \emph{before}
+activation. In this model the late-time matter density is lower than the early
+one by the deficit $\Delta$ of \cref{eq:positivity-deficit}, and it is the
+early value that fixes the acoustic scale. Using the late value would
+misattribute the deficit to the early universe.
+
+Second, the compressed CMB likelihood is a geometric summary derived within a
+model family. Its use here is legitimate because the model's pre-recombination
+physics is identical to the standard one, by \cref{asm:activation}: the
+conversion rate at recombination is below $10^{-21}$ of the expansion rate. It
+is not a substitute for a Boltzmann calculation, and the late-time-only
+combination is reported alongside so the reader can see what the compressed
+likelihood is doing.
+
+Third, our semi-analytic recipe for the acoustic scale differs from a full
+Boltzmann calculation at the few-tenths-of-a-percent level, which is several
+standard deviations of $\lA$. Since every model considered here shares the same
+early physics, the recipe is calibrated once at a reference cosmology and the
+same constant correction is applied throughout; a test asserts that it is not
+re-derived per model.
+
+\subsection{Method}\label{sec:observations-method}
+
+Posteriors are sampled with an affine-invariant ensemble sampler; chains run
+until they exceed fifty integrated autocorrelation times with a stable estimate
+of that time. Priors are uniform and identical across models wherever a
+parameter is shared, so that the model comparison is not driven by prior
+volume. Because $\epsilon=0$ reduces every absorption model to $\LCDM$ exactly,
+the comparison is nested and $\LCDM$ sits inside the prior of each extension
+rather than beside it. Details, including the exact prior ranges, are in
+\cref{app:numerics}.
+
+Two degeneracies are exact and are worth recording, because they mean certain
+parameters are simply not measurable here. The branching ratio $\bfrac$ does
+not appear in the background separately from the combination $\epsilon$
+(\cref{prop:ide-map}) and cancels identically from linear growth
+(\cref{thm:b-independence}); it is therefore held fixed. And the memory
+parameters enter the jerk only through a factor degenerate with the rate
+normalisation (\cref{thm:memory-fingerprint}), so they are constrained by the
+shape of the expansion history rather than by its low-order derivatives.
+
+\subsection{Results}\label{sec:observations-results}
+
+\begin{table}[t]
+  \centering
+  \input{generated/tab_comparison}
+  \caption{Model comparison on the baseline combination. Differences are taken
+    with respect to $\LCDM$; $k$ is the number of sampled parameters. A
+    negative $\Delta\AIC$ or $\Delta\BIC$ favours the extension.}
+  \label{tab:comparison}
+\end{table}
+
+\begin{table}[t]
+  \centering
+  \input{generated/tab_parameters}
+  \caption{Posterior for the full model on the baseline combination. Derived
+    quantities are computed from samples, not propagated linearly.}
+  \label{tab:parameters}
+\end{table}
+
+\Cref{tab:comparison,tab:parameters} report the fits. \TODO{Interpret once all
+chains have converged: whether the extensions improve the fit, whether
+$\epsilon$ is bounded away from zero, and what the posterior says about the
+matter deficit and the jerk excess.}
+
+\subsection{Reading the result}\label{sec:observations-reading}
+
+Whatever the numbers, three things should be kept distinct.
+
+A fit that prefers $\epsilon\to0$ would say the data are consistent with no
+conversion, not that the mechanism is impossible; it would bound $\Gamz$ and
+$\epsilon$, which is a useful and reportable outcome for a paper whose main
+claims are structural.
+
+A fit that prefers $\epsilon>0$ would not by itself be evidence for the
+mechanism, because the model can partially mimic an evolving dark-energy
+equation of state within the band of \cref{thm:sandwich}. What would
+distinguish it is the combination of signatures: a positive jerk excess
+(\cref{eq:cosmography-jerk-bound}), a matter deficit consistent with it through
+\cref{eq:cosmography-deficit-floor}, and the opposite-sign growth signature of
+\cref{eq:perturbations-growth-signature}. Any one of these alone is degenerate
+with other physics; together they are not.
+
+And a fit that requires $\delta_{\rm eff}>0$ would falsify the one-way model
+outright, by \cref{thm:no-sign-flip}. Current DESI-era analyses lean weakly in
+that direction \parencite{kandel2026_260712283,yang2026_260821938}, which is why
+the reverse channel of \cref{sec:positivity-track-b} is fitted alongside rather
+than after the fact.
+
+\paragraph{What this section establishes.}
+Constraints on the model's parameters from public late-time data with an
+early-universe anchor, obtained with code and checksums archived. What it does
+not establish is a full CMB analysis, a nonlinear structure-formation
+comparison, or a Bayesian evidence robust to prior choice; the first two are
+absent and the third is reported with its prior sensitivity.
