@@ -14,10 +14,14 @@ from __future__ import annotations
 
 import argparse
 import glob
+import os
 import sys
 from pathlib import Path
 
 import numpy as np
+
+# Never take a lock on a chain file: the sampler may be writing to it.
+os.environ["HDF5_USE_FILE_LOCKING"] = "FALSE"
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "code"))
@@ -57,7 +61,7 @@ def main() -> int:
         model = name.rsplit("_", 1)[0]
         if model not in MODELS:
             continue
-        with h5py.File(path, "r") as fh:
+        with h5py.File(path, "r", locking=False) as fh:
             it = int(fh["mcmc"].attrs["iteration"])
             if it < 500:
                 print(f"  {name}: only {it} steps, skipped")

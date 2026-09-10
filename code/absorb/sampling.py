@@ -10,6 +10,11 @@ from __future__ import annotations
 
 import os
 import time
+
+# Reading a chain file while the sampler holds it takes an HDF5 lock and can
+# abort the run.  Disabling file locking for this process makes concurrent
+# inspection safe; the sampler is the only writer.
+os.environ.setdefault("HDF5_USE_FILE_LOCKING", "FALSE")
 from dataclasses import dataclass, asdict
 from pathlib import Path
 from typing import Callable, Sequence
