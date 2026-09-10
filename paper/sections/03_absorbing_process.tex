@@ -51,7 +51,11 @@ $\fconv$ and $\Mmem_i$ do. The covariant form is $\tauM\,u^\mu\covd_\mu
 \Mmem=\fconv-\Mmem$; the choice of $\umu$ is physical input, fixed in
 \cref{sec:realizations}. A homogeneous reduction is a symmetry assumption, not
 a mechanism for superluminal communication: the rate at a point depends only on
-that point's causal past.
+that point's causal past. That reading is what
+\cref{sec:process-state,sec:process-hysteresis} use and it is consistent for
+the homogeneous mode; promoting it to a local law off the background is not
+automatic, for a reason given in \cref{sec:perturbations-realization} and
+listed as open in \cref{sec:outlook-local-rate}.
 
 The rate used throughout is
 %
@@ -193,19 +197,36 @@ densities does not determine the future.
 \begin{theorem}[Hysteresis]\label{thm:hysteresis}
   Let $\beta>0$ and let two histories reach the same converted fraction
   $\fconv_*$ at the same time with different memory states
-  $\Mmem^{(1)}>\Mmem^{(2)}$. Then $\fconv^{(1)}(t)\ge \fconv^{(2)}(t)$ for all
-  later $t$, with strict inequality on a set of positive measure, and the
-  asymptotic converted fractions differ.
+  $\Mmem^{(1)}>\Mmem^{(2)}$. Then $\fconv^{(1)}(t)\ge \fconv^{(2)}(t)$ at every
+  later $t$, with strict inequality on a set of positive measure. Consequently,
+  whenever the accumulated vacuum is given by \cref{eq:cosmology-dVdf} along a
+  common expansion history, the two reach different asymptotic vacuum
+  densities.
 \end{theorem}
 
 \begin{proof}
   The system \cref{eq:process-deterministic} is cooperative: $\partial\dot
   \fconv/\partial \Mmem=(1-\fconv)\beta\Gam\ge0$ and $\partial\dot
-  \Mmem/\partial \fconv=\tauM^{-1}>0$. The Kamke--Muller comparison theorem for
-  cooperative systems then gives componentwise ordering of the two solutions
+  \Mmem/\partial \fconv=\tauM^{-1}>0$. The Kamke--M\"uller comparison theorem
+  for cooperative systems gives componentwise ordering of the two solutions
   from ordered initial data, and strictness follows because the vector fields
-  differ wherever $\Mmem^{(1)}\neq \Mmem^{(2)}$ and $\fconv<1$.
+  differ wherever $\Mmem^{(1)}\neq \Mmem^{(2)}$ and $\fconv<1$. The vacuum
+  statement follows by integrating \cref{eq:cosmology-dVdf}, whose integrand
+  depends on the epoch at which each increment of $\fconv$ occurs: the earlier
+  history deposits its conversion when $a$ is smaller and therefore
+  accumulates more.
 \end{proof}
+
+It is worth being precise about what does \emph{not} differ. Under
+\cref{asm:activation} the integrated rate diverges, so by
+\cref{prop:survival} both histories have $\fconv\to1$: the asymptotic converted
+\emph{fractions} coincide. Hysteresis shows up in the accumulated vacuum, not
+in the endpoint of the kinetics, because \cref{eq:cosmology-dVdf} weights each
+increment of $\fconv$ by $a^{-3}$ and the two histories convert at different
+epochs. The simulation of \cref{fig:hysteresis} reports exactly this: at the
+end of the integration window the converted fractions agree to
+$\numHysteresisDeltaVacuum$ while the vacuum densities differ by
+$\numHysteresisRelativeDeltaVacuum$ in relative terms.
 
 \begin{figure}[t]
   \centering

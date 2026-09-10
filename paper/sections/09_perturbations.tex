@@ -31,18 +31,49 @@ hypersurfaces of constant $\clock$ this gives
 \end{equation}
 
 \begin{assumption}[Geodesic realization]\label{asm:geodesic}
-  The transfer is realised geodesically: $u_\mu=-\partial_\mu \clock$ with
-  $\rhoV=\rhoV(\clock)$, so that \cref{eq:perturbations-com} holds. The rate
-  law \cref{eq:process-rate} then applies to the background mode, and the
-  perturbations of the kinetic variables are slaved,
-  $\delta\Gam/\bar\Gam=-\delta_I$, with $\delta \fconv$ and $\delta \Mmem$
-  following by integration.
+  The theory is \emph{defined} by imposing
+  \cref{eq:perturbations-integrability} with a geodesic clock, so that the
+  volumetric transfer is spatially uniform on comoving hypersurfaces,
+  \cref{eq:perturbations-com}. Equivalently, the local conversion rate
+  anti-correlates exactly with the local precursor density,
+  $\delta\Gam/\bar\Gam=-\delta_I$. The kinetic variables $(\fconv,\Mmem)$ are
+  then \emph{diagnostic} at linear order: their perturbations are reconstructed
+  from that relation together with whichever of their evolution equations one
+  retains.
 \end{assumption}
 
 The draft listed four ways to extend the transfer off the background and chose
-none of them. We choose this one, and state it as an assumption rather than a
-derivation, because that is what it is. The choice is not arbitrary, however:
-the natural alternative is unstable.
+none of them. We choose this one and state it as an assumption, not a
+derivation, because that is what it is; the natural alternative is shown below
+to be unstable.
+
+\paragraph{The structural cost, stated plainly.} If instead the rate law
+\cref{eq:process-rate} is read as a \emph{local} law, so that
+$\delta\Gam/\bar\Gam=\alpha\,\delta \fconv+\beta\,\delta \Mmem$ holds
+pointwise, then together with the two linearised kinetic evolution equations
+one has three conditions on the two unknowns $(\delta \fconv,\delta \Mmem)$.
+The system is overdetermined by one, and differentiating the algebraic relation
+and substituting the evolution equations yields a compatibility condition,
+%
+\begin{equation}\label{eq:perturbations-compatibility}
+  \alpha\left[-\bar\Gam\,\delta \fconv
+    -(1-\bar \fconv)\bar\Gam\,\delta_I\right]
+  +\frac{\beta}{\tauM}\left(\delta \fconv-\delta \Mmem\right)
+  =-\dot\delta_I ,
+\end{equation}
+%
+which the dust dynamics do not satisfy identically. \Cref{asm:geodesic}
+resolves this by taking the transfer condition as primary and demoting the
+kinetic perturbations to diagnostics, which costs nothing in linear
+observables: by \cref{thm:b-independence} the entire linear dust sector closes
+on $\delta_{\rm m}$ and $\vartheta$ and sees the kinetic sector only through
+the background quantity $\bar \QV$. It does, however, mean that at linear order
+$\fconv$, $\Mmem$, $\alpha$, $\beta$ and $\tauM$ are background bookkeeping
+rather than local fields, so the locality of the rate law asserted in
+\cref{sec:process-state} is a statement about the homogeneous mode. Whether a
+genuinely local rate law admits a consistent inhomogeneous completion, and what
+that completion does to \cref{eq:perturbations-com}, is an open problem; it is
+listed as such in \cref{sec:outlook}.
 
 \begin{proposition}[A clumping vacuum is gradient-unstable]
   \label{prop:clumping-unstable}
