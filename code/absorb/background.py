@@ -549,6 +549,37 @@ class Background:
         p_de = -V
         return p_de / rho_de
 
+    def transfer_q(self) -> np.ndarray:
+        """The reduced transfer q(N) = Q_V / (3 Mpl^2 H0^2 H) on the solver grid.
+
+        This is the quantity the deficit bound places its hypothesis on: the
+        deficit is ``Delta = int q e^{3N} dN`` and the jerk excess is
+        ``eps_0 = (3/2) q_0``, both to the accuracy of the massive-neutrino
+        pressure term.
+        """
+        return self.QV_grid / self.E_grid / self.E_grid[-1] ** 2
+
+    def transfer_diagnostics(self, z_max: float = 3.0) -> dict:
+        """Whether the deficit bound's hypothesis holds, and where q peaks.
+
+        The bound ``j_0 - 1 >= 2 Omega_r0 + (9/2) Delta`` needs q to be
+        non-decreasing up to today.  For the activation law of this model it is
+        not: the switch turns the transfer on at ``z_act`` and the rate then
+        falls relative to the expansion, so q peaks at the activation redshift
+        and declines from there.  The bound is therefore unavailable here, and
+        the jerk excess has to be computed rather than inferred.
+        """
+        q = self.transfer_q()
+        sel = self.N > np.log(1.0 / (1.0 + z_max))
+        qs = q[sel]
+        scale = max(float(np.max(np.abs(qs))), 1e-300)
+        peak = int(np.argmax(q))
+        return {
+            "q_nondecreasing": bool(np.all(np.diff(qs) >= -1e-9 * scale)),
+            "z_of_peak": float(np.expm1(-self.N[peak])),
+            "q0": float(q[-1]),
+        }
+
     def derived(self) -> dict[str, float]:
         """Summary quantities quoted in the paper."""
         E0 = self.h
@@ -575,6 +606,11 @@ class Background:
         # Delta = (rho_m^early - rho_m0)/rho_crit,0 = eps omega_c f0 / E0^2,
         # the single number that sets the width of the sandwich bound.
         out["matter_deficit"] = (out["omega_m_early"] - out["omega_m_today"]) / E0 ** 2
+        # The jerk excess itself, which is what a cosmographic measurement
+        # would see.  Computed directly rather than inferred from the deficit,
+        # because the inequality relating them is a floor whose hypothesis this
+        # model's activation law does not satisfy; see transfer_diagnostics.
+        out["jerk_excess"] = out["j0"] - 1.0 - 2.0 * out["Omega_r0"]
         # acceleration onset
         qz = self.q(self.z)
         sign = np.sign(qz)

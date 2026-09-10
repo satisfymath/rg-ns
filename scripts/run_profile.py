@@ -184,7 +184,8 @@ def main() -> int:
     print(f"MemAvailable {mem_available_mb():.0f} MB; single process")
     out = json.loads(OUT.read_text()) if OUT.exists() else {}
     for m in args.models:
-        print(f"\n=== profile in eps: {m} / {args.data} ===")
+        what = args.quantity or "eps"
+        print(f"\n=== profile in {what}: {m} / {args.data} ===")
         if args.quantity:
             key = f"{m}__{args.data}__{args.quantity}"
             with record(f"profile_{m}_{args.quantity}", "profile in a derived quantity"):

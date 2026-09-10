@@ -41,7 +41,7 @@ abstract.
 ### M1. The paper fits a model it does not name, and claims to fit two it never ran
 
 **Location**: `paper/generated/tab_parameters.tex` (entire file);
-`10_observations.tex:90–96, 150–161, 63–70`; `05_positivity_ide.tex:235`;
+`10_observations.tex:90–96, 153–164, 63–70`; `05_positivity_ide.tex:235`;
 `00_abstract.tex:46–48`; `code/absorb/params.py:8–17, 147–165`;
 `results/evidence.json`.
 
@@ -54,7 +54,7 @@ Three separate failures, all in the same place.
 
 Yet §10 says "\Cref{tab:comparison,tab:parameters} report the fits", the caption
 promises "Posterior for the full model on the baseline combination", and
-`10_observations.tex:158–159` states "Their posteriors are therefore taken from
+`10_observations.tex:161` states "Their posteriors are therefore taken from
 nested sampling". No posterior for any extended model is displayed anywhere in
 the manuscript. A referee cannot check a fit that is not printed.
 
@@ -79,7 +79,7 @@ came out weakly constrained. They were not sampled.
 
 (c) **The reverse channel was never fitted, twice promised.**
 `05_positivity_ide.tex:235`: "Both are fitted in \cref{sec:observations}."
-`10_observations.tex:183–185`: "which is why the reverse channel of
+`10_observations.tex:187`: "which is why the reverse channel of
 \cref{sec:positivity-track-b} is fitted alongside rather than after the fact."
 `params.py` defines `track_b`; `evidence.json` has no `track_b` entry and
 `tab:comparison` has no such row. This is the one fit that would matter most,
@@ -478,7 +478,7 @@ Suggested: add "…and any further species whose pressure satisfies
 
 **m2. Hand-typed numbers, against the paper's own guarantee.**
 `appF_numerics.tex:4–7`: "no number is typed by hand". But
-`10_observations.tex:150–152` reads "acceptance $0.44$, length $157$
+`10_observations.tex:153–154` reads "acceptance $0.44$, length $157$
 autocorrelation times" while `\numDiagLcdmBaselineAcceptance` = 0.4386 exists
 and no macro exists for the autocorrelation length at all. Similar hand-typed
 values: 10⁻²¹ and "nine orders of magnitude" (§6, appF), σ(j0) ≈ 0.4 (§7),
