@@ -34,6 +34,11 @@ from run_nested import run                                      # noqa: E402
 OUT = ROOT / "results" / "evidence_repeatability.json"
 
 
+def _load():
+    import json as _j
+    return _j.loads(OUT.read_text()) if OUT.exists() else {}
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--model", default="lcdm")
@@ -71,7 +76,9 @@ def main() -> int:
     print(f"  error the sampler reports:  {reported:.3f}")
     print(f"  ratio: {out['ratio_spread_to_reported']:.2f} "
           f"(1 means the reported error is honest)")
-    OUT.write_text(json.dumps(out, indent=2, sort_keys=True))
+    store = _load()
+    store[f"{args.model}__{args.data}"] = out
+    OUT.write_text(json.dumps(store, indent=2, sort_keys=True))
     print(f"wrote {OUT.relative_to(ROOT)}")
     return 0
 

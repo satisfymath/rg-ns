@@ -491,7 +491,12 @@ Changing the sampler's geometry as well as its seed (`bound='single'`,
 
 a spread of `0.325` across three runs of a well-behaved 3-parameter posterior,
 1.7 times the quoted error. So even the reference row of Table 1 is only good to
-about `0.2`-`0.3`, before the extension's `0.94` is taken into account.
+about `0.2`-`0.3`, before the extension's `0.94` is taken into account. The
+matching `xi_h` run under `single`/`unif` had not terminated after an hour of
+wall time on two workers, against 87 seconds and 30 220 evaluations for
+LambdaCDM under the same settings — which is itself a measure of how much harder
+the extension's posterior is for a nested sampler, and a reason not to take a
+single run of it at face value.
 
 **The mechanism is visible in the same output.** Both runs report a best live
 point far from the model's actual maximum:

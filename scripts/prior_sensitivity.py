@@ -40,6 +40,11 @@ POSTERIORS = ROOT / "results" / "posteriors"
 EVIDENCE = ROOT / "results" / "evidence.json"
 OUT = ROOT / "results" / "prior_sensitivity.json"
 
+#: Below this many equal-weight samples inside the narrowed box, the estimate
+#: of the posterior mass in it is Monte Carlo noise and the row is reported but
+#: not used.  A single surviving sample gave an apparent 3-unit swing in ln B.
+MIN_SAMPLES_IN_BOX = 50
+
 #: Parameters that exist only under the alternative.  Narrowing these is the
 #: test that matters: they are the ones the data do not identify, so the whole
 #: Occam penalty is the volume the model spends on them.
@@ -51,11 +56,23 @@ EXTRA = {
 }
 
 
-def narrowed(model: str, samples: np.ndarray, factor: float) -> tuple[float, float, float]:
+def narrowed(model: str, samples: np.ndarray, factor: float,
+             about: str = "posterior") -> tuple[float, float, float]:
     """(ln p_B, its standard error, ln|A|/|B|) for shrinking EXTRA by ``factor``.
 
-    Each extra parameter's interval is shrunk about its own centre, keeping the
-    prior uniform and keeping the LambdaCDM point eps = 0 inside it.
+    Each extra parameter's interval is shrunk while the prior stays uniform and
+    the LambdaCDM point eps = 0 stays inside it.
+
+    ``about`` decides where the shrunken interval is centred, and the choice
+    matters more than the factor. Centring on the *prior* asks what happens if
+    one guessed the centre wrong: for this model the posterior sits near one
+    edge of ``log10_xi``, so a half-width box about the prior centre keeps 36
+    of 9608 samples and the evidence collapses. That is a real effect but it is
+    a statement about the guess, not about the data. Centring on the *posterior
+    median* asks the question a reader actually has --- how much of the Occam
+    penalty is the prior volume the model spends on directions the data do not
+    identify --- and bounds how far the verdict could move under a prior chosen
+    with hindsight.
     """
     m = MODELS[model]
     priors = m.priors()
@@ -66,14 +83,20 @@ def narrowed(model: str, samples: np.ndarray, factor: float) -> tuple[float, flo
             continue
         p = priors[k]
         lo, hi = p.low, p.high
+        width = factor * (hi - lo)
         if name == "eps":
-            # eps is bounded below by zero and the null sits on that boundary;
-            # shrink from above only, so the null stays interior to the box.
-            new_lo, new_hi = lo, lo + factor * (hi - lo)
+            # bounded below by zero, and the null sits on that boundary, so
+            # shrink from above only and keep the null interior
+            new_lo, new_hi = lo, lo + width
         else:
-            mid = 0.5 * (lo + hi)
-            half = 0.5 * factor * (hi - lo)
-            new_lo, new_hi = mid - half, mid + half
+            centre = (float(np.median(samples[:, k])) if about == "posterior"
+                      else 0.5 * (lo + hi))
+            new_lo, new_hi = centre - 0.5 * width, centre + 0.5 * width
+            # keep the box inside the original prior, preserving its width
+            if new_lo < lo:
+                new_lo, new_hi = lo, lo + width
+            if new_hi > hi:
+                new_lo, new_hi = hi - width, hi
         inside &= (samples[:, k] >= new_lo) & (samples[:, k] <= new_hi)
         log_volume_ratio += np.log((hi - lo) / (new_hi - new_lo))
     n_in = int(inside.sum())
@@ -81,7 +104,6 @@ def narrowed(model: str, samples: np.ndarray, factor: float) -> tuple[float, flo
     if n_in == 0:
         return float("-inf"), float("nan"), log_volume_ratio
     p_b = n_in / n
-    # binomial standard error propagated to the logarithm
     se = float(np.sqrt(p_b * (1 - p_b) / n) / p_b)
     return float(np.log(p_b)), se, float(log_volume_ratio)
 
@@ -91,6 +113,9 @@ def main() -> int:
     ap.add_argument("--data", default="baseline")
     ap.add_argument("--factors", type=float, nargs="+",
                     default=[1.0, 0.5, 0.25, 0.125])
+    ap.add_argument("--about", choices=("posterior", "prior"),
+                    default="posterior",
+                    help="where the narrowed box is centred; see narrowed()")
     args = ap.parse_args()
 
     if not EVIDENCE.exists():
@@ -115,16 +140,23 @@ def main() -> int:
               f"ln Z = {ev[key]['logz']:.3f})")
         print(f"  {'shrink':>7} {'ln B':>9} {'+/-':>7} {'samples in box':>15}")
         for f in args.factors:
-            ln_p, se, ln_vol = narrowed(model, samples, f)
+            ln_p, se, ln_vol = narrowed(model, samples, f, about=args.about)
             ln_z = ev[key]["logz"] + ln_p + ln_vol
             ln_b = ln_z - ref["logz"]
             err = float(np.hypot(se, np.hypot(ev[key]["logz_err"],
                                               ref["logz_err"])))
             n_in = int(round(np.exp(ln_p) * len(samples))) if np.isfinite(ln_p) else 0
+            trustworthy = n_in >= MIN_SAMPLES_IN_BOX
             rows.append(dict(shrink=f, logz=ln_z, ln_bayes=ln_b, err=err,
-                             n_in_box=n_in))
-            print(f"  {f:7.3f} {ln_b:+9.3f} {err:7.3f} {n_in:15d}")
-        out[key] = dict(model=model, dataset=args.data, rows=rows,
+                             n_in_box=n_in, trustworthy=bool(trustworthy)))
+            mark = "" if trustworthy else "   (too few samples to trust)"
+            print(f"  {f:7.3f} {ln_b:+9.3f} {err:7.3f} {n_in:15d}{mark}")
+        usable = [r for r in rows if r["trustworthy"]]
+        out[key] = dict(model=model, dataset=args.data, about=args.about,
+                        rows=rows,
+                        ln_bayes_span_usable=float(
+                            max(r["ln_bayes"] for r in usable)
+                            - min(r["ln_bayes"] for r in usable)) if usable else float("nan"),
                         ln_bayes_full_prior=rows[0]["ln_bayes"],
                         ln_bayes_span=float(max(r["ln_bayes"] for r in rows)
                                             - min(r["ln_bayes"] for r in rows)))
