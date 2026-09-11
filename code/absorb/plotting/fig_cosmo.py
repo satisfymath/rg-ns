@@ -86,7 +86,9 @@ def fig_background(model: str = "memory") -> Path | None:
           r"$f$")
     _band(axes[0, 0], z, [b.memory(z) for b in bgs], COLORS["accent"],
           r"$M$", ls="--")
-    axes[0, 0].set_ylabel("converted fraction, memory")
+    # shorter than "converted fraction, memory", which the panel clipped;
+    # the two curves already carry their own labels in the legend
+    axes[0, 0].set_ylabel(r"$f$,  $M$")
     axes[0, 0].legend(loc="upper right")
 
     _band(axes[0, 1], z, [b.omega_V(z) / b.E(z) ** 2 for b in bgs],
