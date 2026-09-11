@@ -127,15 +127,34 @@ def upper_limit(samples_entry: dict, fmt: str = ".4f") -> str:
 
 
 def pm(entry: dict, fmt: str = ".4f") -> str:
-    """Median with asymmetric 68% credible interval."""
+    """Median with asymmetric 68% credible interval, rounded to the error.
+
+    The number of decimals is taken from the uncertainty rather than fixed, so
+    that the table does not print five significant figures on a quantity whose
+    error is a third of it. The convention is the usual one: two significant
+    figures on the larger error, and the value to the same decimal place.
+    ``fmt`` is kept as a floor, so quantities that want more decimals than
+    their error implies -- the Hubble constant, at two -- still get them.
+    """
+    import math
+
     if "value" in entry:
         v, lo, hi = entry["value"], entry.get("err_lo", 0), entry.get("err_hi", 0)
     else:
         v = entry["median"]
         lo, hi = v - entry.get("lo68", v), entry.get("hi68", v) - v
+
+    err = max(abs(lo), abs(hi))
+    if err > 0 and math.isfinite(err):
+        decimals = max(0, 1 - int(math.floor(math.log10(err))))
+        floor = int(fmt.strip(".f") or 4)
+        spec = f".{min(decimals, floor)}f"
+    else:
+        spec = fmt
+
     if abs(hi - lo) < 0.05 * max(abs(hi), abs(lo), 1e-30):
-        return rf"${v:{fmt}} \pm {0.5*(lo+hi):{fmt}}$"
-    return rf"${v:{fmt}}^{{+{hi:{fmt}}}}_{{-{lo:{fmt}}}}$"
+        return rf"${v:{spec}} \pm {0.5*(lo+hi):{spec}}$"
+    return rf"${v:{spec}}^{{+{hi:{spec}}}}_{{-{lo:{spec}}}}$"
 
 
 def comparison_table(chains: dict) -> str:
