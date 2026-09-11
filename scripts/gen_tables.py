@@ -56,6 +56,40 @@ DERIVED_LABEL = {
 ONE_SIDED = {"eps", "f0", "matter_deficit", "V0_minus_Vact"}
 
 
+#: A parameter whose 5--95 span covers more than this fraction of its prior is
+#: not measured; the number that would be printed for it is the prior's, not
+#: the data's.  Same threshold and same definition as the chain-stability gate,
+#: imported rather than repeated so the table and the gate cannot disagree.
+def _prior_fill_max() -> float:
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "_ccs", ROOT / "scripts" / "check_chain_stability.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return float(mod.PRIOR_FILL_MAX)
+
+
+def prior_fill(model: str, name: str, entry: dict) -> float | None:
+    """Fraction of the prior covered by the 5--95 span, or None if unknown."""
+    import sys as _sys
+    _sys.path.insert(0, str(ROOT / "code"))
+    try:
+        from absorb.params import MODELS
+        m = MODELS[model]
+        priors = dict(zip(m.params, m.priors()))
+    except Exception:
+        return None
+    pr = priors.get(name)
+    if pr is None or "hi95" not in entry or "lo95" not in entry:
+        return None
+    width = pr.high - pr.low
+    return None if width <= 0 else (entry["hi95"] - entry["lo95"]) / width
+
+
+def unconstrained_cell() -> str:
+    return r"\emph{unconstrained}"
+
+
 def upper_limit(samples_entry: dict, fmt: str = ".4f") -> str:
     """95% upper limit, for quantities bounded below by zero."""
     hi = samples_entry.get("hi95")
@@ -159,19 +193,37 @@ def parameter_table(chains: dict, model: str = "memory") -> str:
         return (HEADER + r"\textbf{[missing: no posterior for model '"
                 + model + r"' in results.json]}" + "\n")
     c = chains[key]
-    lines = [HEADER, r"\begin{tabular}{ll}", r"\toprule",
-             r"Parameter & Posterior (median, 68\%) \\", r"\midrule"]
+    # Three columns, because two hid the thing that matters. The last one is
+    # the fraction of the prior the 5--95 span covers, by the same definition
+    # the chain-stability gate uses; a reader can then see for every parameter
+    # how much of what is printed is the data and how much is the prior.
+    lines = [HEADER, r"\begin{tabular}{llr}", r"\toprule",
+             r"Parameter & Posterior (median, 68\%) & prior filled \\",
+             r"\midrule"]
+    fill_max = _prior_fill_max()
     for p, entry in c["parameters"].items():
-        cell = upper_limit(entry) if p in ONE_SIDED else pm(entry)
-        lines.append(rf"{PARAM_LABEL.get(p, p)} & {cell} \\")
+        # A parameter the data do not constrain gets no number. The text says
+        # in as many words that the limit on eps is withdrawn because the
+        # optimiser can always send the rate to zero; the table went on
+        # printing "< 0.83 (95%)" for it anyway, which is the prior's 95th
+        # percentile and contradicts the paragraph beside it.
+        fill = prior_fill(model, p, entry)
+        if fill is not None and fill > fill_max:
+            cell = unconstrained_cell()
+        elif p in ONE_SIDED:
+            cell = upper_limit(entry)
+        else:
+            cell = pm(entry)
+        frac = "---" if fill is None else rf"{fill:.0%}".replace("%", r"\%")
+        lines.append(rf"{PARAM_LABEL.get(p, p)} & {cell} & {frac} \\")
     lines.append(r"\midrule")
-    lines.append(r"\multicolumn{2}{l}{\emph{derived}}\\")
+    lines.append(r"\multicolumn{3}{l}{\emph{derived}}\\")
     for p, label in DERIVED_LABEL.items():
         if p in c.get("derived", {}):
             fmt = ".2f" if p == "H0" else ".4f"
             entry = c["derived"][p]
             cell = upper_limit(entry, fmt) if p in ONE_SIDED else pm(entry, fmt)
-            lines.append(rf"{label} & {cell} \\")
+            lines.append(rf"{label} & {cell} & \\")
     lines += [r"\bottomrule", r"\end{tabular}"]
     return "\n".join(lines) + "\n"
 

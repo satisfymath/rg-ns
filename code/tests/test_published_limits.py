@@ -84,3 +84,65 @@ def test_the_deficit_limit_is_the_value_the_manuscript_quotes():
 def test_the_jerk_limit_is_the_value_the_manuscript_quotes():
     p = _profile("xi_h__baseline__jerk_excess")
     assert p["limit_95"] == pytest.approx(0.0306, rel=0.10)
+
+
+def test_no_number_is_quoted_for_a_parameter_the_data_do_not_constrain():
+    """A prior-dominated parameter must not appear in the table as a number.
+
+    The manuscript says in as many words that the upper limit on the
+    convertible fraction is withdrawn, because the rate can always be sent to
+    zero and Lambda-CDM recovered at any value of it. The generated table went
+    on printing ``< 0.83 (95%)`` beside that paragraph, which is the 95th
+    percentile of the prior and not a measurement. Four of the nine sampled
+    parameters were in the same position.
+
+    The criterion is the chain-stability gate's: the 5--95 span as a fraction
+    of the prior width. This test reads the published table and checks that
+    every parameter above that threshold carries the word "unconstrained"
+    rather than digits.
+    """
+    import importlib.util
+    import re
+
+    root = Path(__file__).resolve().parents[2]
+    table = root / "paper" / "generated" / "tab_parameters.tex"
+    results = root / "results" / "results.json"
+    if not table.exists() or not results.exists():
+        pytest.skip("generated table or results.json not present")
+
+    spec = importlib.util.spec_from_file_location(
+        "_gt", root / "scripts" / "gen_tables.py")
+    gt = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(gt)
+
+    chains = json.loads(results.read_text()).get("chains", {})
+    key = "memory__baseline"
+    if key not in chains:
+        pytest.skip("the full model's posterior is not present")
+
+    text = table.read_text()
+    rows = {}
+    for line in text.splitlines():
+        if "&" in line and line.rstrip().endswith(r"\\"):
+            label, _, rest = line.partition("&")
+            rows[label.strip()] = rest
+
+    threshold = gt._prior_fill_max()
+    checked = 0
+    for name, entry in chains[key]["parameters"].items():
+        fill = gt.prior_fill("memory", name, entry)
+        if fill is None or fill <= threshold:
+            continue
+        checked += 1
+        label = gt.PARAM_LABEL.get(name, name)
+        row = rows.get(label)
+        assert row is not None, f"{name}: no row for {label} in the table"
+        assert "unconstrained" in row, (
+            f"{name} fills {fill:.0%} of its prior, above the {threshold:.0%} "
+            f"threshold the chain-stability gate uses, yet the table quotes "
+            f"{row.strip()}. A number there is the prior's, not the data's.")
+        assert not re.search(r"\d+\.\d", row.split("&")[0]), (
+            f"{name}: the posterior cell still carries digits: {row}")
+    assert checked >= 1, (
+        "no prior-dominated parameter was found to check; either the "
+        "posterior changed or the fill computation is not working")
