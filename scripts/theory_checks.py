@@ -201,6 +201,63 @@ def marginalisation_jacobian() -> dict:
     return out
 
 
+def recombination_recipe_systematic() -> dict:
+    """How much of the compressed-CMB recipe's error the calibration absorbs.
+
+    The sound horizon is corrected by a single constant calibrated at one
+    reference cosmology. That is defensible only if the recipe's error is
+    close to constant over the range the fits explore, and the claim should be
+    measured rather than asserted: a referee pointed out that the recipe's
+    ``z_*`` sits about two units above the Planck value, and that the acoustic
+    scale is measured to 0.030 per cent.
+
+    The measurement isolates the ``z_*`` formula by recomputing the priors with
+    ``z_*`` forced to the Planck value, over the prior box and over the much
+    smaller posterior range. What matters is not the mean offset, which the
+    calibration absorbs, but the *variation*, which it cannot.
+    """
+    from absorb import early
+    from absorb.params import MODELS
+
+    m = MODELS["lcdm"]
+    sigma_lA = 0.090          # Planck compressed-prior error on l_A
+
+    def spread(obs, ocs):
+        vals = []
+        for ob in obs:
+            for oc in ocs:
+                bg = m.builder(m.to_dict([ob, oc, 0.3266]))
+                om = ob + oc + early.OMEGA_NU0
+                _, lA = early.cmb_distance_priors(bg, ob, om)
+                orig = early.z_star
+                early.z_star = lambda *a, **k: early.PLANCK18["z_star"]
+                try:
+                    _, lA_planck = early.cmb_distance_priors(bg, ob, om)
+                finally:
+                    early.z_star = orig
+                vals.append(lA - lA_planck)
+        v = np.asarray(vals)
+        return float(v.mean()), float(v.max() - v.min())
+
+    prior_mean, prior_range = spread((0.0215, 0.02237, 0.0232),
+                                     (0.10, 0.1177, 0.14))
+    post_mean, post_range = spread((0.0223, 0.0225, 0.0227),
+                                   (0.1167, 0.1177, 0.1188))
+    return {
+        "z_star_recipe": float(early.z_star(0.02237,
+                                            0.02237 + 0.1177 + early.OMEGA_NU0)),
+        "z_star_planck": float(early.PLANCK18["z_star"]),
+        "sigma_lA": sigma_lA,
+        "prior_box_mean_shift": prior_mean,
+        "prior_box_range": prior_range,
+        "prior_box_range_sigma": prior_range / sigma_lA,
+        "posterior_mean_shift": post_mean,
+        "posterior_range": post_range,
+        "posterior_range_sigma": post_range / sigma_lA,
+        "posterior_mean_shift_sigma": post_mean / sigma_lA,
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--draws", type=int, default=400)
@@ -212,6 +269,7 @@ def main() -> int:
         "neutrino_jerk_term": neutrino_jerk_term(),
         "growth_signature": growth_signature(),
         "marginalisation_jacobian": marginalisation_jacobian(),
+        "recombination_recipe": recombination_recipe_systematic(),
     }
     f = out["deficit_floor"]
     print(f"  deficit floor: hypothesis holds in {f['n_hypothesis_holds']} of "
@@ -227,6 +285,11 @@ def main() -> int:
           f"against {g['f_growth_no_transfer']:.4f} with no transfer, "
           f"f_rsd = {g['f_rsd']:.4f}; holds at every point tried: "
           f"{g['holds_at_every_point_tried']}")
+    rr = out["recombination_recipe"]
+    print(f"  recombination recipe: z_* = {rr['z_star_recipe']:.2f} against "
+          f"Planck's {rr['z_star_planck']:.2f}; the l_A offset varies by "
+          f"{rr['posterior_range_sigma']:.2f} sigma over the posterior and "
+          f"{rr['prior_box_range_sigma']:.2f} sigma over the prior box")
     j = out["marginalisation_jacobian"]
     print(f"  M_B marginalisation Jacobian: {j['baseline']:.4f} "
           f"(with SH0ES {j['with_sh0es']:.4f})")

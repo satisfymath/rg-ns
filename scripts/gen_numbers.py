@@ -73,6 +73,8 @@ FORMATS = {
     "ln_bayes_err": ".2f",
     "chi2_min": ".4f",
     "chi2_spread": ".4f",
+    "z_star_recipe": ".2f",
+    "z_star_planck": ".2f",
     "reference_chi2": ".4f",
     "reference_shortfall": ".4f",
     "chi2_at_zero": ".3f",

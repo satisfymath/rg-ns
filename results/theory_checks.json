@@ -43,6 +43,18 @@
     "two_omega_r_today": 0.00010582228318952393,
     "z_of_max": 1500.0
   },
+  "recombination_recipe": {
+    "posterior_mean_shift": 0.300885293598166,
+    "posterior_mean_shift_sigma": 3.3431699288685115,
+    "posterior_range": 0.13189471088895743,
+    "posterior_range_sigma": 1.4654967876550826,
+    "prior_box_mean_shift": 0.3493743645754471,
+    "prior_box_range": 1.0385284405197126,
+    "prior_box_range_sigma": 11.539204894663474,
+    "sigma_lA": 0.09,
+    "z_star_planck": 1089.92,
+    "z_star_recipe": 1091.7108120603225
+  },
   "transfer_peak": {
     "max_relative_offset_of_peak": 0.007151286394683654,
     "n_activation_redshifts": 7

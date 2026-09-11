@@ -133,7 +133,29 @@ sound horizon at recombination differs from a full Boltzmann calculation by
 about $0.2\%$, which is several standard deviations of the acoustic scale. Since
 all models considered here share identical pre-recombination physics, the
 recipe is calibrated once at the reference cosmology and the same constant
-correction is applied throughout; a test asserts that it is not re-derived per
+correction is applied throughout.
+
+How much that constant leaves behind is measured rather than assumed, because
+a constant can only absorb a constant. Isolating the fitting formula for the
+recombination redshift --- which gives
+$z_*=\numCheckRecombinationRecipeZStarRecipe$ against Planck's
+$\numCheckRecombinationRecipeZStarPlanck$ --- and recomputing the priors with
+the Planck value shifts $\lA$ by
+$\numCheckRecombinationRecipePosteriorMeanShift$ on average across the
+posterior range, which the calibration absorbs, and that shift \emph{varies}
+by $\numCheckRecombinationRecipePosteriorRange$ across the same range, which
+it does not. Against $\sigma(\lA)=\numCheckRecombinationRecipeSigmaLA$ that
+residual is $\numCheckRecombinationRecipePosteriorRangeSigma\sigma$. Over the
+whole prior box it is $\numCheckRecombinationRecipePriorBoxRangeSigma\sigma$,
+so the constant calibration is adequate only because the posterior is narrow,
+and not in general. Two consequences follow and both are stated rather than
+buried: parameter values quoted from the compressed likelihood carry that
+residual, and it largely cancels from comparisons between the models fitted
+here, which share $\omega_{\rm b}$ and $\omega_c$ at recombination and whose
+posteriors in them overlap. We have not refitted with an alternative
+$z_*$ to confirm the cancellation.
+
+A test asserts that the calibration is not re-derived per
 model. Users who prefer to avoid the compressed likelihood can run the
 late-time-only combination, which is reported alongside.
 
