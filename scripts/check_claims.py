@@ -34,6 +34,12 @@ LEVELS = {
     "A": "Postulate of the model",
     "I": "Identity or standard result",
     "C": "Theorem of the model",
+    # A result proved rigorously but about a *different* system than the one
+    # the paper postulates. The bridge of sec:realizations-bridge carried C
+    # while sec:outlook restated the same content as a conjecture, which no
+    # ladder can sustain; neither level was right, so a level was added rather
+    # than the disagreement papered over.
+    "X": "Result of an auxiliary model",
     # A boundary-value problem solved numerically is not a number fitted to
     # data, which is what P means.
     "N": "Numerical solution of the stated equations",

@@ -104,6 +104,30 @@ the Moresco compilation with the full covariance built from the published
 systematic budget. The compressed CMB likelihood uses the shift parameter, the
 acoustic scale and the baryon density.
 
+Redshift-space distortions enter only the ``$+$growth'' combination and are
+described here because an evidence is quoted from them. The data are the four
+$\fsig$ entries of the SDSS DR16 consensus at $z=0.38$, $0.51$, $0.698$ and
+$1.48$ \parencite{alam2021_eboss}, taken with the $\fsig$ rows \emph{and}
+columns of the consensus covariance: at each effective redshift the growth
+measurement correlates with the two geometric ones at $\abs{\rho}\sim0.4$, and
+those are dropped because they overlap in volume with the DESI sample and
+would otherwise be counted twice. The model is
+$\fsig(z)=f_g(z)\sigma_8(z)$ from the growth system of
+\cref{sec:perturbations}, and no scale cut is applied: the consensus values
+are already compressed to a single number per redshift.
+
+One choice there is consequential and is not marginalised over.
+$\sigma_{8,0}$ is held at the Planck value $0.8111$ rather than treated as a
+free nuisance parameter. The reason is that the question being asked is
+whether the parameters the geometry prefers are compatible with the observed
+growth, and a free $\sigma_{8,0}$ absorbs exactly the effect under test: the
+model's signature is a change in the \emph{shape} of $f_g(z)$ together with a
+change in amplitude, and an unconstrained amplitude removes half of it. The
+consequence is that the evidence quoted for the ``$+$growth'' combination is
+conditional on that value, and a reader who prefers to marginalise should read
+it as an upper bound on how much growth data can help. We did not run the
+marginalised variant.
+
 One caveat is disclosed rather than buried. The semi-analytic recipe for the
 sound horizon at recombination differs from a full Boltzmann calculation by
 about $0.2\%$, which is several standard deviations of the acoustic scale. Since

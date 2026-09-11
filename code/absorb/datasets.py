@@ -23,8 +23,11 @@ def _fs8(sigma8: float = SIGMA8_FIDUCIAL) -> Callable:
     sigma_8 is held at its Planck value rather than marginalised: the point of
     including growth here is to test whether the geometry-preferred parameters
     are compatible with structure formation, and letting sigma_8 float would
-    absorb precisely the effect being tested.  Section 10 reports the result
-    both ways.
+    absorb precisely the effect being tested.  The consequence -- that the
+    evidence for the "+growth" combination is conditional on this value -- is
+    stated in the numerics appendix. The marginalised variant has not been
+    run; an earlier version of this docstring said Section 10 reported both,
+    and it did not.
     """
     return lambda bg, z: Growth(bg).f_sigma8(z, sigma8)
 

@@ -241,6 +241,14 @@ def dataset_table() -> str:
         ("Compressed CMB", "Planck 2018 distance priors",
          "$\\shift$, $\\lA$, $\\omega_{\\rm b}$",
          r"\parencite{chen2018_180805724,collaboration2018_180706209}"),
+        # Used only in the "+growth" combination of sec:observations, and
+        # listed here because a quantitative evidence is quoted from it: a
+        # number in the manuscript may not rest on a data set the manuscript
+        # does not name.
+        ("Redshift-space distortions", "SDSS DR16 (eBOSS)",
+         "4 measurements of $\\fsig$, $0.38\\le z\\le1.48$; the "
+         "$\\fsig$ sub-block of the consensus covariance",
+         r"\parencite{alam2021_eboss}"),
     ]
     lines = [HEADER, r"\begin{tabular}{lL{0.20\textwidth}L{0.32\textwidth}l}",
              r"\toprule", r"Probe & Data set & Content & Reference \\",

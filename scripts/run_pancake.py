@@ -169,8 +169,12 @@ def main() -> int:
     print(f"\n{'case':22s} {'centre rho_I':>13} {'exp near':>9} {'centre V':>10} "
           f"{'<f>':>7} {'dust resid':>11}")
     for k, v in res.items():
-        print(f"{k:22s} {v['centre_rho_I']:13.4e} {v['exp_rho_I_near']:+9.3f} "
-              f"{v['centre_V']:10.4f} {v['mean_f']:7.4f} {v['dust_residual']:11.2e}")
+        if "centre_rho_I" not in v:          # the cross-case summary row
+            continue
+        print(f"{k:22s} {v['centre_rho_I']:13.4e} "
+              f"{v['exp_rho_I_near']:+6.3f}+-{v['exp_rho_I_near_err']:5.3f} "
+              f"{v['centre_V']:10.4f} {v['mean_f']:7.4f} "
+              f"{v['dust_residual']:11.2e}")
     print(f"\nwrote {OUT.relative_to(ROOT)}")
     return 0
 

@@ -412,5 +412,14 @@
     "identifier": "doi:10.1002/zamm.19230030407",
     "fetched_title": "\u00dcber die Statistik verketteter Vorg\u00e4nge",
     "author_ok": true
+  },
+  {
+    "key": "alam2021_eboss",
+    "status": "OK",
+    "score": 0.9882,
+    "source": "arxiv",
+    "identifier": "arXiv:2007.08991",
+    "fetched_title": "The Completed SDSS-IV extended Baryon Oscillation Spectroscopic Survey: Cosmological Implications from two Decades of Spectroscopic Surveys at the Apache Point observatory",
+    "author_ok": true
   }
 ]
