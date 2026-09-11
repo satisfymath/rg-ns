@@ -82,8 +82,20 @@ def test_the_deficit_limit_is_the_value_the_manuscript_quotes():
 
 
 def test_the_jerk_limit_is_the_value_the_manuscript_quotes():
+    """Regression on the published number, with its one deliberate change.
+
+    The pin was 0.0306 and this test caught its change, which is the test
+    working rather than failing. The grid it came from ran from 1e-4 to 0.16
+    while the unconstrained maximum sits at a jerk excess of 1.4e-8, so the
+    profile never sampled the region containing its own minimum and measured
+    every Delta chi-square from a floor 0.93 too high. Widening the grid to
+    nine decades moves the limit to 0.0273 -- tighter, because the rise is now
+    measured from the true floor.
+
+    The pin is updated, not loosened: the tolerance is the same ten per cent.
+    """
     p = _profile("xi_h__baseline__jerk_excess")
-    assert p["limit_95"] == pytest.approx(0.0306, rel=0.10)
+    assert p["limit_95"] == pytest.approx(0.0273, rel=0.10)
 
 
 def test_no_number_is_quoted_for_a_parameter_the_data_do_not_constrain():

@@ -78,6 +78,14 @@ def _solve_eps_for(post, quantity: str, target: float, theta, i_eps: int,
         return None
 
 
+def _with(names, free, sub, i_eps):
+    """Assemble a full parameter vector from the free block, eps set to zero."""
+    th = np.empty(len(names))
+    th[free] = sub
+    th[i_eps] = 0.0
+    return th
+
+
 def profile_derived(model: str, dataset: str, quantity: str = "matter_deficit",
                     targets=None, n_restarts: int = 2,
                     n_screen: int = 200, maxfev: int = 800,
@@ -209,8 +217,67 @@ def profile_derived(model: str, dataset: str, quantity: str = "matter_deficit",
         print(f"  target {quantity}={target:11.6f}  achieved {achieved[k]:11.6f}"
               f"  eps={e:7.4f}  chi2={chi2[k]:10.3f}")
 
+    # A second sweep, from the far end back. The forward sweep warm-starts
+    # each target from the previous one, which helps only in one direction: a
+    # target whose search fails is then seeded from a failure, and the profile
+    # acquires local minima that are artefacts of the optimiser rather than
+    # features of the likelihood. On the jerk profile the forward sweep left
+    # three grid points sitting at the LambdaCDM value while their neighbours
+    # sat 1.6 lower, which is impossible for a profile and is what the
+    # monotonicity diagnostic was built to catch.
+    #
+    # A profile is the lower envelope of what is attainable, so taking the
+    # better of two sweeps can only improve it, and the sweep costs one more
+    # local optimisation per grid point.
+    n_improved = 0
+    for k in range(len(targets) - 2, -1, -1):
+        if best_theta[k + 1] is None:
+            continue
+        target = float(targets[k])
+
+        def neg_back(sub, target=target):
+            if np.any(sub < lows[free]) or np.any(sub > highs[free]):
+                return 1e10
+            th = np.empty(len(names))
+            th[free] = sub
+            th[i_eps] = 0.0
+            e = _solve_eps_for(post, quantity, target, th, i_eps,
+                               lows[i_eps], highs[i_eps])
+            if e is None:
+                return 1e10
+            th[i_eps] = e
+            v = post(th)
+            return 1e10 if not np.isfinite(v) else -2.0 * v
+
+        x0 = np.asarray(best_theta[k + 1])[free]
+        for method, opts in (("Nelder-Mead",
+                              dict(maxfev=maxfev, xatol=1e-5, fatol=1e-4)),
+                             ("Powell",
+                              dict(maxfev=maxfev, xtol=1e-6, ftol=1e-6))):
+            r = minimize(neg_back, x0, method=method, options=opts)
+            x0 = r.x
+            if np.isfinite(chi2[k]) and r.fun >= chi2[k] - 1e-9:
+                continue
+            if r.fun >= 1e10:
+                continue
+            e = _solve_eps_for(post, quantity, target, _with(names, free, r.x,
+                                                             i_eps),
+                               i_eps, lows[i_eps], highs[i_eps])
+            if e is None:
+                continue
+            th = _with(names, free, r.x, i_eps)
+            th[i_eps] = e
+            chi2[k] = r.fun
+            achieved[k] = post.model.builder(
+                post.model.to_dict(th[:post.model.ndim])).derived()[quantity]
+            best_theta[k] = th.tolist()
+            n_improved += 1
+    if n_improved:
+        print(f"  backward sweep improved {n_improved} grid point(s)")
+
     ok = np.isfinite(chi2)
     base = {"model": model, "dataset": dataset, "quantity": quantity,
+            "n_improved_by_backward_sweep": n_improved,
             "targets": targets.tolist(), "achieved": achieved.tolist(),
             "best_theta": best_theta, "param_names": names,
             "n_unreachable": int((~ok).sum())}
@@ -246,7 +313,12 @@ def profile_derived(model: str, dataset: str, quantity: str = "matter_deficit",
 
     chi2 = chi2 - np.nanmin(chi2)
     seq = chi2[ok]
-    non_monotone = int(np.sum(np.diff(seq) < -0.5))
+    # Only decreases *above the minimum* count. A profile is expected to fall
+    # on its way into the minimum, and counting those made the diagnostic fire
+    # on a healthy profile whose grid happens to start on the far side of it.
+    i_min = int(np.nanargmin(seq))
+    rising = seq[i_min:]
+    non_monotone = int(np.sum(np.diff(rising) < -0.5))
     miss = float(np.nanmax(np.abs(achieved[ok] - targets[ok])
                            / np.maximum(np.abs(targets[ok]), 1e-12)))
 
