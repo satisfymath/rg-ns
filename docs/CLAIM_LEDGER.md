@@ -8,7 +8,7 @@ found independently.
 
 - results catalogued: **146**
 - carrying an explicit evidential level: **57**
-- referred to from a summary section: **26**
+- referred to from a summary section: **27**
 - referred to from a summary but covered by no test: **0**
 
 | claim | kind | level | file | in summary | tests |
@@ -126,7 +126,7 @@ found independently.
 | `prop:derrick` | proposition | — | 11_defects.tex | — | skyrme |
 | `prop:determined-V` | proposition | — | 08_realizations.tex | — | — |
 | `prop:four-form` | proposition | — | 08_realizations.tex | — | symbolic |
-| `prop:geodesic-forced` | proposition | — | 09_perturbations.tex | — | symbolic |
+| `prop:geodesic-forced` | proposition | — | 09_perturbations.tex | 01_intro.tex | symbolic |
 | `prop:ide-map` | proposition | — | 05_positivity_ide.tex | 01_intro.tex, 14_conclusions.tex | likelihoods |
 | `prop:identities` | proposition | — | 04_homogeneous_cosmology.tex | — | background |
 | `prop:memory-origin` | proposition | — | 03_absorbing_process.tex | 01_intro.tex, 14_conclusions.tex | stochastic |

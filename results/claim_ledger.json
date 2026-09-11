@@ -1658,11 +1658,14 @@
   "prop:geodesic-forced": {
     "claim_id": "prop:geodesic-forced",
     "file": "09_perturbations.tex",
-    "in_summary": [],
+    "in_summary": [
+      "01_intro.tex"
+    ],
     "kind": "proposition",
     "level": null,
     "level_name": null,
     "referenced_in": [
+      "01_intro.tex",
       "06_solvable_early.tex",
       "13_outlook.tex"
     ],
