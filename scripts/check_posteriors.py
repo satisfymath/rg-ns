@@ -96,6 +96,36 @@ def main() -> int:
         print(f"  {path.name:28s} {samples.shape[0]:6d} samples, "
               f"{len(names)} parameters{note}")
 
+    # Evidences are only comparable across models and data sets if every run
+    # shares its sampler configuration. The queue size in particular changes
+    # the answer -- it sets how many proposals dynesty draws from its random
+    # stream at a time -- and it used to be tied to the worker count, so a run
+    # on a busier machine gave a different number. Runs made before the field
+    # was recorded are reported rather than failed, since the value cannot be
+    # recovered; a mixture of recorded values is a failure.
+    ev = ROOT / "results" / "evidence.json"
+    if ev.exists():
+        import json
+        entries = json.loads(ev.read_text())
+        seen, missing = {}, []
+        for tag, e in sorted(entries.items()):
+            qs, nlive = e.get("queue_size"), e.get("nlive")
+            if qs is None:
+                missing.append(tag)
+            else:
+                seen.setdefault((qs, nlive), []).append(tag)
+        for (qs, nlive), tags in sorted(seen.items()):
+            print(f"  evidence: queue {qs}, nlive {nlive} -> {len(tags)} run(s)")
+        if missing:
+            print(f"  evidence: {len(missing)} run(s) predate the record: "
+                  + ", ".join(missing))
+        if len(seen) > 1:
+            bad.append("evidence.json mixes sampler configurations: "
+                       + "; ".join(f"queue {q}/nlive {n}: {', '.join(t)}"
+                                   for (q, n), t in sorted(seen.items()))
+                       + ". Evidences from different configurations are not "
+                         "comparable and must not appear in one table.")
+
     if bad:
         print("\ncheck_posteriors: FAILED")
         for line in bad:

@@ -225,12 +225,24 @@ def profile_derived(model: str, dataset: str, quantity: str = "matter_deficit",
     # freely, so a positive excess means the constrained search failed, and
     # every Delta chi-square below is then measured from too high a base.
     profile_min = float(np.nanmin(chi2))
-    map_chi2 = None
+    map_chi2 = map_value = None
     if map_path.exists():
         entry = json.loads(map_path.read_text()).get(f"{model}__{dataset}")
         if entry is not None:
             map_chi2 = float(entry["chi2_min"])
+            # Where the unconstrained maximum sits in the profiled quantity.
+            # If the grid does not sample near it, the profile's floor is not
+            # the maximum and every Delta chi-square below is measured from
+            # too high a base -- which is how the jerk grid, whose smallest
+            # non-zero target was 1e-4, missed a maximum at 1.4e-8.
+            bg = post.model.builder(
+                post.model.to_dict(np.asarray(entry["theta"])[:post.model.ndim]))
+            map_value = float(bg.derived()[quantity])
     excess = None if map_chi2 is None else profile_min - map_chi2
+    positive = targets[targets > 0]
+    grid_covers = (map_value is not None and positive.size > 0
+                   and map_value <= float(targets.max())
+                   and map_value >= float(positive.min()))
 
     chi2 = chi2 - np.nanmin(chi2)
     seq = chi2[ok]
@@ -245,6 +257,10 @@ def profile_derived(model: str, dataset: str, quantity: str = "matter_deficit",
     base.update({"delta_chi2": chi2.tolist(), "limit_95": limit,
                  "profile_min_chi2": profile_min,
                  "map_chi2": map_chi2,
+                 "map_quantity_value": map_value,
+                 "grid_smallest_positive_target": (float(positive.min())
+                                                   if positive.size else None),
+                 "grid_covers_the_maximum": bool(grid_covers),
                  "profile_min_excess": excess,
                  "max_delta_chi2": float(np.nanmax(chi2)),
                  "n_non_monotone_steps": non_monotone,

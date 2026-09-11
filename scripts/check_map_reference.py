@@ -88,10 +88,21 @@ def main() -> int:
             if ex is None:
                 print(f"  {tag:34s} profile floor not compared (no MAP)")
                 continue
+            covers = e.get("grid_covers_the_maximum")
             kind = "matches" if ex <= PROFILE_TOL else "ABOVE"
             print(f"  {tag:34s} floor {e['profile_min_chi2']:.4f} vs MAP "
                   f"{e['map_chi2']:.4f}  ({ex:+.4f}, {kind})")
-            if ex > PROFILE_TOL:
+            if covers is False:
+                bad.append(
+                    f"{tag}: the grid does not sample the unconstrained "
+                    f"maximum, which sits at "
+                    f"{e.get('map_quantity_value'):.3g} while the smallest "
+                    f"positive target is "
+                    f"{e.get('grid_smallest_positive_target'):.3g}. The "
+                    f"profile's floor is then not the maximum and every "
+                    f"Delta chi-square in it is measured from too high a base; "
+                    f"widen the grid rather than reinterpreting the number")
+            elif ex > PROFILE_TOL:
                 bad.append(f"{tag}: the profile's floor is {ex:.4f} above the "
                            f"model's own maximum, so every Delta chi-square in "
                            f"it is measured from the wrong base")
