@@ -1928,7 +1928,9 @@
       "14_conclusions.tex"
     ],
     "status": "UNREVIEWED",
-    "tests": [],
+    "tests": [
+      "test_stochastic.py"
+    ],
     "text": "The hypothesis is not cosmetic and cannot be removed by rewording. The comparison argument below compares two solutions of one system, so both must be driven by the same $a(t)$; and the conclusion is that they accumulate different vacuum, which through the Friedmann constraint would give them different $a(t)$. Stated for the coupled system the theorem would therefore contradict its own hypothesis.",
     "title": "Why the expansion history is prescribed"
   },

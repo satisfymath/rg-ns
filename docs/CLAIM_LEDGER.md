@@ -9,7 +9,7 @@ found independently.
 - results catalogued: **146**
 - carrying an explicit evidential level: **57**
 - referred to from a summary section: **26**
-- referred to from a summary but covered by no test: **1**
+- referred to from a summary but covered by no test: **0**
 
 | claim | kind | level | file | in summary | tests |
 |---|---|---|---|---|---|
@@ -141,7 +141,7 @@ found independently.
 | `rem:activation-local` | remark | — | 06_solvable_early.tex | — | early_branch |
 | `rem:bridge-limits` | remark | — | 08_realizations.tex | — | — |
 | `rem:hazard-time-change` | remark | — | 03_absorbing_process.tex | — | collapse |
-| `rem:hysteresis-prescribed` | remark | — | 03_absorbing_process.tex | 14_conclusions.tex | — |
+| `rem:hysteresis-prescribed` | remark | — | 03_absorbing_process.tex | 14_conclusions.tex | stochastic |
 | `rem:jerk-neutrinos` | remark | — | 07_cosmography.tex | — | background |
 | `rem:residual-boundary-layer` | remark | — | 03_absorbing_process.tex | — | collapse |
 | `rem:sandwich-naive` | remark | — | 05_positivity_ide.tex | — | — |
@@ -159,7 +159,3 @@ found independently.
 | `thm:sandwich` | theorem | — | 05_positivity_ide.tex | — | symbolic, theorems |
 | `thm:sign-table` | theorem | — | 07_cosmography.tex | 14_conclusions.tex | symbolic, theorems |
 | `thm:snap` | theorem | — | 07_cosmography.tex | 01_intro.tex | background |
-
-## Referred to from a summary, covered by no test
-
-- `rem:hysteresis-prescribed` (remark) — cited in 14_conclusions.tex

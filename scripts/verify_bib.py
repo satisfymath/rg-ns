@@ -339,6 +339,23 @@ def main() -> int:
         mark = "ok " if r["status"] == "OK" else "FAIL"
         print(f"  [{mark}] {r['key']:32s} {r['identifier']:22s} "
               f"score={r['score']:.3f} {r['status']}")
+    # An entry that is verified but never cited is a different failure from an
+    # entry that is wrong, and it is one a referee does notice: five of these
+    # were the most directly relevant prior work in the file, sitting uncited
+    # while the text cited the general formalism instead.
+    import re as _re
+    tex = "".join(p.read_text() for p in
+                  sorted((ROOT / "paper").rglob("*.tex")))
+    cited = set()
+    for m in _re.finditer(r"\\[a-zA-Z]*cite[a-zA-Z]*\*?(?:\[[^\]]*\])*"
+                          r"\{([^}]*)\}", tex):
+        cited |= {k.strip() for k in m.group(1).split(",")}
+    uncited = sorted(k for k in (r["key"] for r in rows) if k not in cited)
+    if uncited:
+        print("\nverified but never cited:")
+        for k in uncited:
+            print(f"  - {k}")
+
     print(f"\n{len(rows) - len(bad)}/{len(rows)} entries verified")
     return 1 if bad else 0
 

@@ -15,7 +15,7 @@ The suite pins down four independent things:
 All randomness is seeded from ``absorb.constants.SEED``, so every number below
 is reproducible.
 """
-# covers: thm:deterministic-limit, prop:memory-origin, eq:process-memory, thm:hysteresis, prop:survival, eq:process-survival
+# covers: thm:deterministic-limit, prop:memory-origin, eq:process-memory, thm:hysteresis, rem:hysteresis-prescribed, prop:survival, eq:process-survival
 #   Machine-readable link from tests to the claims they cover, read by
 #   scripts/claim_ledger.py. A claim quoted in the abstract or the
 #   conclusions with nothing testing it is what the ledger exists to find.
@@ -611,3 +611,54 @@ def test_the_memory_law_is_the_exact_average_of_per_unit_relaxations():
                       rtol=1e-11, atol=1e-13, dense_output=True,
                       max_step=0.01)
     assert np.max(np.abs(mixed.sol(t).mean(axis=0) - population_M)) > 1e-3
+
+
+def test_the_prescribed_history_hypothesis_cannot_be_dropped():
+    """``rem:hysteresis-prescribed``: the coupled version contradicts itself.
+
+    The theorem compares two solutions of one system, so both must be driven
+    by the same a(t); its conclusion is that they accumulate different vacuum,
+    which through the Friedmann constraint gives them different a(t). Stated
+    for the coupled system it would contradict its own hypothesis.
+
+    That is checked here rather than argued. The same two histories are
+    evolved twice: once against a prescribed expansion, where the comparison
+    is available and the vacua separate, and once with the expansion solved
+    for from the densities, where the two expansion histories separate too --
+    so the premise "the same a(t)" is false and the comparison the theorem
+    makes does not exist.
+    """
+    from scipy.integrate import solve_ivp
+
+    from absorb import stochastic as st
+
+    h = st.hysteresis_experiment(a=lambda t: (1.0 + t) ** (2.0 / 3.0),
+                                 t_final=20.0)
+    # prescribed: the vacua separate, which is the theorem
+    assert h.relative_delta_V > 0.05
+
+    # coupled: integrate (f, M, V) together with a Friedmann-like closure in
+    # which the expansion is set by the densities the kinetics produces
+    p = st.Kinetics(Gamma0=0.15, alpha=2.0, beta=4.0, tau_M=12.0)
+
+    def coupled(t, y):
+        f, M, V, lna = y
+        rate = p.Gamma0 * np.exp(p.alpha * f + p.beta * M)
+        rho_I = (1.0 - f) * np.exp(-3.0 * lna)
+        H = np.sqrt(max(rho_I + V, 1e-300) / 3.0)
+        return [(1.0 - f) * rate, (f - M) / p.tau_M,
+                (1.0 - f) * rate * np.exp(-3.0 * lna), H]
+
+    out = []
+    for M0 in (h.M_A, h.M_B):
+        sol = solve_ivp(coupled, (0.0, 12.0), [h.f_checkpoint, M0, 0.30, 0.0],
+                        rtol=1e-11, atol=1e-13)
+        assert sol.success
+        out.append(sol.y[:, -1])
+
+    (fa, _, va, lna_a), (fb, _, vb, lna_b) = out
+    # the vacua still separate
+    assert abs(va - vb) / max(va, vb) > 1e-3, (va, vb)
+    # and so do the expansion histories, by a comparable amount: the premise
+    # of the prescribed-history theorem is not available here
+    assert abs(lna_a - lna_b) > 1e-3, (lna_a, lna_b)

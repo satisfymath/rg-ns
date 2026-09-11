@@ -421,5 +421,41 @@
     "identifier": "arXiv:2007.08991",
     "fetched_title": "The Completed SDSS-IV extended Baryon Oscillation Spectroscopic Survey: Cosmological Implications from two Decades of Spectroscopic Surveys at the Apache Point observatory",
     "author_ok": true
+  },
+  {
+    "key": "brown1988_neutralization",
+    "status": "OK",
+    "score": 1.0,
+    "source": "inspire",
+    "identifier": "doi:10.1016/0550-3213(88)90559-7",
+    "fetched_title": "Neutralization of the Cosmological Constant by Membrane Creation",
+    "author_ok": true
+  },
+  {
+    "key": "brown1987_dynamical",
+    "status": "OK",
+    "score": 1.0,
+    "source": "inspire",
+    "identifier": "doi:10.1016/0370-2693(87)91190-7",
+    "fetched_title": "Dynamical Neutralization of the Cosmological Constant",
+    "author_ok": true
+  },
+  {
+    "key": "aurilia1980_hidden",
+    "status": "OK",
+    "score": 1.0,
+    "source": "inspire",
+    "identifier": "doi:10.1016/0550-3213(80)90466-6",
+    "fetched_title": "Hidden Constants: The Theta Parameter of QCD and the Cosmological Constant of N=8 Supergravity",
+    "author_ok": true
+  },
+  {
+    "key": "hawking1984_cosmological",
+    "status": "OK",
+    "score": 1.0,
+    "source": "inspire",
+    "identifier": "doi:10.1016/0370-2693(84)91370-4",
+    "fetched_title": "The Cosmological Constant Is Probably Zero",
+    "author_ok": true
   }
 ]

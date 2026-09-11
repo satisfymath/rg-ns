@@ -11,11 +11,14 @@ unverified or mismatched.
 |---|---|---|---:|---|
 | `alam2021_eboss` | arXiv:2007.08991 | OK | 0.988 | arxiv |
 | `albertini2023_230312842` | arXiv:2303.12842 | OK | 1.000 | arxiv |
+| `aurilia1980_hidden` | doi:10.1016/0550-3213(80)90466-6 | OK | 1.000 | inspire |
 | `avrami1939_kinetics` | doi:10.1063/1.1750380 | OK | 1.000 | crossref |
 | `babichev2017_170403367` | arXiv:1704.03367 | OK | 1.000 | arxiv |
 | `bemfica2020_200911388` | arXiv:2009.11388 | OK | 1.000 | arxiv |
 | `bousso2000_hep-th0004134` | arXiv:hep-th/0004134 | OK | 1.000 | arxiv |
 | `brout2022_220204077` | arXiv:2202.04077 | OK | 1.000 | arxiv |
+| `brown1987_dynamical` | doi:10.1016/0370-2693(87)91190-7 | OK | 1.000 | inspire |
+| `brown1988_neutralization` | doi:10.1016/0550-3213(88)90559-7 | OK | 1.000 | inspire |
 | `carroll1997_gr-qc9712019` | arXiv:gr-qc/9712019 | OK | 1.000 | arxiv |
 | `chamseddine2014_14033961` | arXiv:1403.3961 | OK | 1.000 | arxiv |
 | `chen2018_180805724` | arXiv:1808.05724 | OK | 1.000 | arxiv |
@@ -24,6 +27,7 @@ unverified or mismatched.
 | `collaboration2018_180706209` | arXiv:1807.06209 | OK | 1.000 | arxiv |
 | `collaboration2025_250314738` | arXiv:2503.14738 | OK | 1.000 | arxiv |
 | `eggenberger1923_urn` | doi:10.1002/zamm.19230030407 | OK | 0.974 | crossref |
+| `hawking1984_cosmological` | doi:10.1016/0370-2693(84)91370-4 | OK | 1.000 | inspire |
 | `hinrichsen2000_cond-mat0001070` | arXiv:cond-mat/0001070 | OK | 1.000 | arxiv |
 | `hogg2020_200210449` | arXiv:2002.10449 | OK | 1.000 | arxiv |
 | `ijjas2016_160408586` | arXiv:1604.08586 | OK | 1.000 | arxiv |
