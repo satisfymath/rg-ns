@@ -15,7 +15,7 @@ The suite pins down four independent things:
 All randomness is seeded from ``absorb.constants.SEED``, so every number below
 is reproducible.
 """
-# covers: thm:deterministic-limit, prop:memory-origin, thm:hysteresis
+# covers: thm:deterministic-limit, prop:memory-origin, thm:hysteresis, prop:survival, eq:process-survival
 #   Machine-readable link from tests to the claims they cover, read by
 #   scripts/claim_ledger.py. A claim quoted in the abstract or the
 #   conclusions with nothing testing it is what the ledger exists to find.
@@ -469,3 +469,77 @@ def test_absorbed_realizations_stay_absorbed() -> None:
         assert np.all(np.diff(ens.M[r, after]) >= -1e-12)
         assert ens.M[r, -1] < 1.0
     assert np.all(ens.f <= 1.0) and np.all(ens.f >= 0.0)
+
+
+def test_the_survival_identity_holds_for_a_state_dependent_rate():
+    """``prop:survival``: 1 - f = (1 - f_i) exp(-int Gamma), Gamma along the path.
+
+    The identity is the integrating factor of ``f' = (1 - f) Gamma`` and so
+    holds for any locally integrable rate, including one that depends on the
+    state it is driving. That last clause is the part worth checking: the rate
+    used here is ``Gamma_0 exp(alpha f + beta M)`` with a relaxing memory, so
+    it is neither prescribed in advance nor monotone in time, and the integral
+    in the exponent is of the realized rate rather than of a given function.
+
+    The integral is accumulated as a state variable of the same solver, so
+    that the comparison is not between an ODE solution and a separate
+    quadrature with its own error.
+    """
+    from scipy.integrate import solve_ivp
+
+    g0, alpha, beta, tau = 0.7, 3.0, 2.0, 0.35
+    f_i = 0.05
+
+    def rhs(t, y):
+        f, M, S = y                       # S = int_0^t Gamma ds
+        rate = g0 * np.exp(alpha * f + beta * M) * (1.0 + 0.5 * np.sin(3.0 * t))
+        return [(1.0 - f) * rate, (f - M) / tau, rate]
+
+    sol = solve_ivp(rhs, (0.0, 6.0), [f_i, 0.0, 0.0], rtol=1e-12, atol=1e-14,
+                    dense_output=True)
+    assert sol.success
+
+    t = np.linspace(0.0, 6.0, 400)
+    f, _, S = sol.sol(t)
+    residual = np.abs((1.0 - f) - (1.0 - f_i) * np.exp(-S))
+    assert residual.max() < 1e-10, residual.max()
+
+    # the test would be vacuous if nothing happened: the rate must vary and
+    # the conversion must actually run to near completion
+    assert f[-1] > 0.99 and f[0] == pytest.approx(f_i)
+    assert S[-1] > 5.0
+
+
+def test_a_flat_background_cannot_exhibit_hysteresis_in_the_vacuum():
+    """Why the demonstration needs an expanding background, asserted not claimed.
+
+    With ``a = 1`` the vacuum increment is ``dV = (1-f) Gamma dt = df``, so
+    ``V`` is the converted fraction up to a constant and any difference in
+    ``V`` between two histories equals their difference in ``f`` exactly. A
+    run on a flat background therefore *cannot* show what
+    ``thm:hysteresis`` says -- histories that agree in the converted fraction
+    and differ in the accumulated vacuum -- and the manuscript described such a
+    run in those terms for a while, quoting one difference for both.
+
+    The two assertions below are the whole argument: degenerate when flat, not
+    degenerate when expanding, with both histories run to completion so that
+    the fractions genuinely agree rather than merely being close.
+    """
+    from absorb import stochastic as st
+
+    flat = st.hysteresis_experiment()
+    assert abs(flat.delta_V - flat.delta_f_final) < 1e-9 * max(
+        abs(flat.delta_V), 1e-30), (
+        f"on a flat background dV should equal df exactly; got "
+        f"{flat.delta_V:.6e} and {flat.delta_f_final:.6e}")
+
+    grown = st.hysteresis_experiment(a=lambda t: (1.0 + t) ** (2.0 / 3.0),
+                                     t_final=20.0)
+    # both histories have run to completion: the fractions agree to solver
+    # tolerance, so nothing about the kinetics distinguishes their endpoints
+    assert abs(grown.delta_f_final) < 1e-9, grown.delta_f_final
+    assert abs(1.0 - grown.f_final_A) < 1e-9
+    assert abs(1.0 - grown.f_final_B) < 1e-9
+    # and the accumulated vacua nonetheless differ, by far more than that
+    assert grown.relative_delta_V > 0.05, grown.relative_delta_V
+    assert abs(grown.delta_V) > 1e6 * abs(grown.delta_f_final)

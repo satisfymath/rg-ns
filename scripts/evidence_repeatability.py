@@ -54,7 +54,7 @@ def main() -> int:
     for i in range(args.repeats):
         seed = SEED + 1000 * (i + 1)
         r = run(args.model, args.data, nlive=args.nlive, dlogz=0.1,
-                seed=seed, n_proc=n_proc)
+                seed=seed, n_proc=n_proc, archive=False)
         logz.append(r["logz"])
         errs.append(r["logz_err"])
         print(f"  seed {seed}: ln Z = {r['logz']:.3f} +/- {r['logz_err']:.3f}",

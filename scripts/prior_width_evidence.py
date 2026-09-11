@@ -61,7 +61,8 @@ def main() -> int:
             importlib.reload(run_nested)
             for seed in args.seeds:
                 r = run_nested.run(args.model, args.data, nlive=args.nlive,
-                                   dlogz=0.1, seed=seed, n_proc=n_proc)
+                                   dlogz=0.1, seed=seed, n_proc=n_proc,
+                                   archive=False)
                 rows.append(dict(low=low, seed=seed, logz=r["logz"],
                                  logz_err=r["logz_err"],
                                  chi2_min=r["chi2_min"]))

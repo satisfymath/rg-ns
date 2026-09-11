@@ -52,9 +52,30 @@ def run_skyrme() -> dict:
     return out
 
 
+#: The hysteresis demonstration needs an expanding background, and the reason
+#: is not presentational. With ``a = 1`` the vacuum increment is
+#: ``dV = (1-f) Gamma dt = df``, so ``V`` is the converted fraction up to a
+#: constant and ``Delta V = Delta f`` identically: the run cannot separate the
+#: two and therefore cannot exhibit the theorem, which is about histories that
+#: agree in ``f`` and differ in ``V``. The flat run was what this script used,
+#: and the manuscript then described its output as fractions agreeing while
+#: vacua differed, which the numbers did not say. With ``a ~ t^{2/3}`` each
+#: increment of ``f`` is weighted by ``a^{-3}``, the two histories convert at
+#: different epochs, and both run to ``f = 1`` while their vacua stay apart.
+#: ``test_stochastic.py`` asserts the degeneracy of the flat case, so the
+#: reason for this choice is checked rather than asserted here.
+def hysteresis_scale_factor(t: float) -> float:
+    """Matter-domination expansion for the hysteresis run."""
+    return (1.0 + t) ** (2.0 / 3.0)
+
+
+HYSTERESIS_T_FINAL = 20.0
+
+
 def run_hysteresis() -> dict:
     print("stochastic: hysteresis experiment ...")
-    h = stochastic.hysteresis_experiment()
+    h = stochastic.hysteresis_experiment(a=hysteresis_scale_factor,
+                                         t_final=HYSTERESIS_T_FINAL)
     np.savez(SIMS / "hysteresis.npz", t=h.t, f_A=h.f_A, f_B=h.f_B,
              M_A=h.M_A_traj, M_B=h.M_B_traj)
     out = {
@@ -66,9 +87,18 @@ def run_hysteresis() -> dict:
         "vacuum_B":         {"value": float(h.V_B), "fmt": ".5f"},
         "delta_vacuum":     {"value": float(h.delta_V), "fmt": ".5f"},
         "relative_delta_vacuum": {"value": float(h.relative_delta_V), "fmt": ".4f"},
+        # The converted fractions at the end of the window, and their
+        # difference. The manuscript's sentence about the two histories needs
+        # *both* halves -- that the fractions agree and that the vacua differ
+        # -- and for a while it quoted the vacuum difference for both, so the
+        # agreement of the fractions was never actually reported.
+        "f_final_A":        {"value": float(h.f_final_A), "fmt": ".8f"},
+        "f_final_B":        {"value": float(h.f_final_B), "fmt": ".8f"},
+        "delta_f_final":    {"value": float(h.delta_f_final), "fmt": ".2e"},
     }
     print(f"  same f = {h.f_checkpoint:.5f}, memories differ by {h.delta_M:.5f}"
-          f"  ->  final vacua differ by {100*h.relative_delta_V:.2f}%")
+          f"  ->  final vacua differ by {100*h.relative_delta_V:.2f}%, "
+          f"final fractions by {h.delta_f_final:.2e}")
     return out
 
 

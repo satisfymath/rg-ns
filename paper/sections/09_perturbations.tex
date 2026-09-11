@@ -136,12 +136,19 @@ listed as such in \cref{sec:outlook}.
   squared is then negative and short-wavelength modes grow without bound.
 \end{proposition}
 
-\Cref{prop:clumping-unstable} excludes one branch, not all alternatives: it says
-nothing about $\zeta<0$, which gives a positive effective sound speed and is not
-excluded, nor about the other completions the draft listed, namely allowing
+\Cref{prop:clumping-unstable} excludes one branch and not all alternatives, and
+it is worth being exact about the scope, because two different questions are
+easy to run together. \emph{Taken by itself}, as a statement about the growth
+equation, it says nothing about $\zeta<0$, which gives a positive effective
+sound speed; nor about the other completions the draft listed, namely allowing
 momentum transfer with a compensating acceleration of the donor, or giving the
 receiving sector its own dynamics and pressure. Those are different theories,
-not refuted ones. What can be said is that the geodesic branch is the one used
+not refuted ones. \emph{Given the two stress hypotheses used everywhere else in
+this paper}, the situation is different, and \cref{prop:geodesic-forced} below
+is the statement of it: $\zeta$ is then not a parameter at all but zero, and
+the compensating-acceleration branch is excluded rather than untried. The two
+readings do not conflict --- the second assumes more --- but the first is the
+one that survives if the recipient is allowed to stop being an exact vacuum. What can be said is that the geodesic branch is the one used
 in the interacting-vacuum literature
 \parencite{wands2012_12036776,sebastianutti2023_231214123} and the one for which
 the linear sector closes. More can be said, and should be, because
@@ -151,10 +158,13 @@ actually is.
 \begin{proposition}[The geodesic realization is forced, not chosen]
   \label{prop:geodesic-forced}
   Let the dark sector consist of pressureless components with a common
-  four-velocity $\umu$ and an exact vacuum, $T^{\mu\nu}_V=-\rhoV g^{\mu\nu}$;
-  let the transfer between them carry no momentum in the frame $\umu$, so that
-  $\covd_\mu T^{\mu\nu}_V=\QV u^\nu$; and let $\rhoI+\rhoD>0$. Then, on any
-  simply connected region where $\QV\neq0$ and the congruence is regular,
+  four-velocity $\umu$ and no heat flux, $T^{\mu\nu}_{I,D}=\rho_{I,D}u^\mu
+  u^\nu$, together with an exact vacuum, $T^{\mu\nu}_V=-\rhoV g^{\mu\nu}$; let
+  the remaining species be separately conserved, so that the dark sector
+  conserves in total; let the transfer within it carry no momentum in the frame
+  $\umu$, so that $\covd_\mu T^{\mu\nu}_V=\QV u^\nu$; and let $\rhoI+\rhoD>0$.
+  Then, on any simply connected region where $\QV\neq0$ and the congruence is
+  regular,
   %
   \begin{enumerate}
     \item $a^\mu \equiv u^\nu\covd_\nu u^\mu=0$: the congruence is geodesic;
@@ -170,9 +180,8 @@ actually is.
 \end{proposition}
 
 \begin{proof}
-  (1) Baryons and radiation are separately conserved, so the dark sector
-  conserves in total, $\covd_\mu(T_I+T_D+T_V)^{\mu\nu}=0$, with $T^{\mu\nu}_{I,D}
-  =\rho_{I,D}u^\mu u^\nu$. Using
+  (1) By hypothesis the dark sector conserves in total,
+  $\covd_\mu(T_I+T_D+T_V)^{\mu\nu}=0$. Using
   $\covd_\mu(\rho u^\mu u^\nu)=u^\nu\covd_\mu(\rho u^\mu)+\rho\,a^\nu$ and
   projecting the whole equation with $h^\lambda{}_\nu$, every term carrying a
   free $u^\nu$ is annihilated --- including the vacuum source, which by
@@ -189,6 +198,19 @@ actually is.
   $\covd\rhoV$ is everywhere parallel to $\covd\clock$, so $\rhoV=F(\clock)$
   locally, and comparing the two expressions gives $\QV=F'(\clock)$.
 \end{proof}
+
+One objection should be met before the consequences are drawn, because it is
+the first a reader will raise: is the hypothesis not already the conclusion?
+It is not, but the distance is short and worth measuring. The hypothesis is a
+statement about the \emph{transfer} --- that its momentum part vanishes in the
+frame $\umu$ --- and the conclusion is a statement about the \emph{congruence}.
+What connects them is the donor's equation of motion, and the content of the
+proposition is exactly that connection: two of the four completions the draft
+listed, the geodesic one and the one with a compensating acceleration of the
+donor, are not two options but one dichotomy, and choosing a transfer with no
+momentum is choosing a geodesic clock whether or not one notices. A reader who
+finds that obvious once stated has understood it; it was not stated in the
+draft, and \cref{asm:geodesic} was written as though the two were independent.
 
 The reason to state this separately from \cref{prop:vorticity-obstruction} is
 that the two use different equations. The vorticity result uses only the

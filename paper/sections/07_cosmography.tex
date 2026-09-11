@@ -32,16 +32,22 @@ background signature.
   The last hypothesis is there because the fits of \cref{sec:observations}
   carry one massive neutrino eigenstate, which is neither pressureless nor
   conserved radiation, so a bound advertised as parameter-free must say what it
-  does with it. Such a species contributes $-\tfrac32\dot p/(2\Mpl^2\Hub^3)$ to
-  $\jerk$, and its pressure falls monotonically as it becomes non-relativistic,
-  so the contribution is non-negative and
+  does with it. Such a species contributes $-\dot p/(2\Mpl^2\Hub^3)$ to
+  $\jerk$, by the same identity as every other pressure, and its pressure falls
+  monotonically as it becomes non-relativistic, so the contribution is
+  non-negative and
   \cref{eq:cosmography-jerk-bound} survives --- indeed with room to spare.
   Measured on the $\LCDM$ best fit for a single $0.06\,\si{\electronvolt}$
   eigenstate, the term is $\numCheckNeutrinoJerkTermToday$ today and rises to
   $\numCheckNeutrinoJerkTermMax$ by $z=\numCheckNeutrinoJerkTermZOfMax$,
   against $2\Omr=\numCheckNeutrinoJerkTermTwoOmegaRToday$ today. It is therefore not
   negligible at the precision the fits reach, which is why it is carried in the
-  code and stated here rather than dropped.
+  code and stated here rather than dropped. In the reduced variables the code
+  works in --- densities in units of the critical density and derivatives with
+  respect to $\efold$ --- the same term reads $-\tfrac32(\dd p/\dd \efold)/E^2$,
+  since $2\Mpl^2\Hub^2=\tfrac23\rho_{\rm tot}$; the two forms have been confused
+  in an earlier version of this remark, and only the first belongs in
+  \cref{eq:cosmography-jerk}.
 \end{remark}
 
 \begin{proof}
@@ -171,7 +177,7 @@ within errors. That is what \cref{sec:observations} does.
   \begin{keyresult}{C}{eq:cosmography-snap-explicit}
     \snap-\snap_{\LCDM}(\decel,\Omr)
     =-\varepsilon\left[2+\left(1-\alpha(1-\fconv)\right)\frac{\Gam}{\Hub}
-    -\mathcal B\right],
+    -\mathcal B-p\left(1-\actS\right)\right],
     \qquad
     \mathcal B\eqdef\frac{\beta(\fconv-\Mmem)}{\tauM \Hub} .
   \end{keyresult}
@@ -186,7 +192,16 @@ within errors. That is what \cref{sec:observations} does.
   $\dd\ln\rhoI/\dd \efold=-(3+\Gam/\Hub)$ and
   $\dd\ln \Hub/\dd \efold=-(1+\decel)$ gives
   $\varepsilon'/\varepsilon=\dd\ln\Gam/\dd \efold-\Gam/\Hub+3\decel$, which is
-  \cref{eq:cosmography-snap}.
+  \cref{eq:cosmography-snap}. For \cref{eq:process-rate} the logarithmic
+  derivative has three terms, not two:
+  $\dd\ln\Gam/\dd \efold=\alpha(1-\fconv)\Gam/\Hub+\mathcal B+p(1-\actS)$,
+  the last because
+  $\dd\ln\actS/\dd \efold=p\left(1-\actS\right)$ for the switch of
+  \cref{eq:solvable-activation}. That term is easy to drop --- an earlier
+  version of \cref{eq:cosmography-snap-explicit} did, while the text around it
+  and the implementation both carried it --- and dropping it changes the sign
+  of the bracket wherever the switch is still opening, which is where the
+  effect is largest.
 \end{proof}
 
 \begin{theorem}[Memory fingerprint, and what limits it]
@@ -220,8 +235,11 @@ within errors. That is what \cref{sec:observations} does.
 This is the observational counterpart of \cref{thm:hysteresis}. The jerk
 measures how much energy is being transferred now; the snap measures whether
 that transfer is being driven by a lagged history. Two limits check the
-statement. Without memory, $\mathcal B=0$ and the snap excess is strictly
-negative for $\alpha(1-\fconv)\le1$. At saturation, $\fconv,\Mmem\to1$, both
+statement. Without memory, $\mathcal B=0$, and the snap excess is strictly
+negative for $\alpha(1-\fconv)\le1$ \emph{once the switch has closed}; while it
+is still opening the activation term $p(1-\actS)$ can exceed
+$2+(1-\alpha(1-\fconv))\Gam/\Hub$ and reverse the sign, which is the same
+caveat as the one below and not a separate one. At saturation, $\fconv,\Mmem\to1$, both
 $\varepsilon$ and $\mathcal B$ vanish and the \dS attractor of
 \cref{thm:de-sitter} becomes cosmographically indistinguishable from $\LCDM$,
 as it must. The honest limitation is that only the single combination

@@ -6,7 +6,7 @@ S(a) = a^p/(a^p + a_act^p).  These tests pin the two conditions the repair has
 to satisfy: the conversion must be negligible at recombination, and the
 integral that generates the vacuum must converge as a -> 0.
 """
-# covers: thm:no-go, asm:activation, eq:solvable-activation-local, rem:activation-local, eq:solvable-activation, eq:solvable-exponent
+# covers: thm:no-go, prop:activation, asm:activation, eq:solvable-activation-local, rem:activation-local, eq:solvable-activation, eq:solvable-exponent
 #   Machine-readable link from tests to the claims they cover, read by
 #   scripts/claim_ledger.py. A claim quoted in the abstract or the
 #   conclusions with nothing testing it is what the ledger exists to find.

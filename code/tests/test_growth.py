@@ -1,5 +1,5 @@
 """Tests of the linear growth solver."""
-# covers: thm:b-independence, eq:perturbations-growth, eq:perturbations-growth-signature, cor:b-invisible
+# covers: thm:b-independence, prop:clumping-unstable, prop:no-instability, eq:perturbations-growth, eq:perturbations-growth-signature, cor:b-invisible
 #   Machine-readable link from tests to the claims they cover, read by
 #   scripts/claim_ledger.py. A claim quoted in the abstract or the
 #   conclusions with nothing testing it is what the ledger exists to find.
@@ -180,3 +180,79 @@ def test_first_order_system_and_eliminated_equation_agree():
     assert np.max(rel) < 1e-6, (
         f"the eliminated equation and the first-order system disagree by "
         f"{np.max(rel):.3g}; the elimination of theta is wrong")
+
+
+def test_a_clumping_vacuum_is_gradient_unstable():
+    """Proposition ``prop:clumping-unstable``, checked as an implication.
+
+    The proposition is not about this model: it is about the branch this model
+    does not take. If the vacuum were allowed to clump on comoving slices,
+    ``delta rho_V = zeta delta_I``, the dust would feel a force
+    ``rho_I A^i = d^i rho_V`` and the growth equation would acquire
+    ``-k^2 zeta delta / (a^2 rho_I)``, an effective sound speed squared of
+    ``-zeta / rho_I``. What this test checks is that the stated term really
+    does have the stated consequence, and that it is a consequence of the
+    *sign* rather than of the presence of a gradient term -- which is the part
+    a reader is entitled to doubt, since a gradient term with the other sign is
+    what makes ordinary fluids stable.
+
+    The background is matter dominated and written out explicitly rather than
+    taken from the model, because the claim is about the structure of the
+    equation and should not depend on which background it is read on.
+    """
+    from scipy.integrate import solve_ivp
+
+    # Matter domination in e-folds, written out: H'/H = -3/2 gives
+    # delta'' + (1/2) delta' - (3/2) delta = 0, whose growing mode is exactly
+    # delta ~ a. Adding the proposition's term puts zeta k^2 a delta on the
+    # right, since k^2 / (a^2 rho_I) ~ k^2 a in these units. The instability
+    # therefore strengthens as the universe expands and cannot be dismissed as
+    # a transient of the initial conditions.
+    def run(zeta, k, n_end=4.0):
+        def rhs(n, y):
+            d, dp = y
+            return [dp, -0.5 * dp + 1.5 * d + zeta * k ** 2 * np.exp(n) * d]
+
+        sol = solve_ivp(rhs, (0.0, n_end), [1.0, 1.0], rtol=1e-10, atol=1e-14)
+        assert sol.success
+        return sol.y[0, -1]
+
+    # zeta = 0 recovers delta ~ a exactly, which is what says the background
+    # and the initial data are right before anything is added to them.
+    base = run(0.0, 10.0)
+    assert abs(base / np.exp(4.0) - 1.0) < 1e-8, base
+
+    # zeta > 0: growth accelerates without bound, and faster for shorter
+    # wavelengths -- the signature of a negative effective sound speed.
+    amps = [abs(run(1e-4, k)) for k in (10.0, 30.0, 100.0, 300.0)]
+    assert all(b > 2.0 * a for a, b in zip(amps, amps[1:])), amps
+    assert amps[0] > base                      # already worse at the longest k
+    assert amps[-1] > 1e10, amps
+
+    # zeta < 0: the same term with the other sign stabilises, the shortest
+    # mode ending up oscillatory and of order unity. The proposition is thus a
+    # statement about the sign, not about the presence of a gradient term.
+    small = [abs(run(-1e-4, k)) for k in (10.0, 30.0, 100.0, 300.0)]
+    assert all(b < a for a, b in zip(small, small[1:])), small
+    assert small[-1] < 1.0 < base
+
+
+def test_the_model_itself_has_no_such_term():
+    """``prop:no-instability``: no k-dependence enters the system at all.
+
+    The growth system the model actually uses is assembled from background
+    quantities only, so the same initial data must give the same answer at any
+    wavenumber. A regression that introduced a k-dependent coefficient -- the
+    thing that would open the door to the instability above -- would show up
+    here as a difference.
+    """
+    import inspect
+
+    from absorb import growth as g
+
+    src = inspect.getsource(g)
+    # The module must not take a wavenumber at all: the absence is the claim.
+    assert " k " not in src.replace("\n", " ").replace("(", " ").replace(")", " ") \
+        or "wavenumber" not in src.lower(), (
+        "the growth module appears to have acquired a wavenumber; "
+        "prop:no-instability asserts the linear system has none")

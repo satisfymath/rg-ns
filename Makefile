@@ -49,6 +49,7 @@ check:    ## all quality gates
 	$(PY) scripts/check_chain_stability.py
 	$(PY) scripts/check_map_reference.py
 	$(PY) scripts/check_reproducible.py
+	$(PY) scripts/check_posteriors.py
 	@echo "== all gates passed =="
 
 arxiv:    ## build the arXiv submission bundle

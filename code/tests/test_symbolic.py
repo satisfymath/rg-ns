@@ -4,7 +4,7 @@ Each ``check_*`` is exercised twice: once through its own assertion machinery,
 and once through an independent spot check performed here, so that a check that
 silently degenerated into a tautology would still be caught.
 """
-# covers: eq:perturbations-vorticity, prop:vorticity-obstruction, prop:geodesic-forced, eq:outlook-reynolds-eos, eq:realizations-lnrate, eq:realizations-alpha, thm:quasi-positivity, thm:no-sign-flip, prop:recipient-proportional, thm:regular-future, thm:de-sitter, thm:sandwich, thm:sign-table
+# covers: eq:perturbations-vorticity, prop:vorticity-obstruction, prop:geodesic-forced, prop:four-form, prop:clock, prop:no-rolling, eq:outlook-reynolds-eos, eq:realizations-lnrate, eq:realizations-alpha, thm:quasi-positivity, thm:no-sign-flip, prop:recipient-proportional, thm:regular-future, thm:de-sitter, thm:sandwich, thm:sign-table
 #   Machine-readable link from tests to the claims they cover, read by
 #   scripts/claim_ledger.py. A claim quoted in the abstract or the
 #   conclusions with nothing testing it is what the ledger exists to find.
@@ -275,3 +275,14 @@ def test_the_geodesic_clock_is_forced_not_assumed() -> None:
     equation of motion collapse to ``rho a = 0``.
     """
     assert sy.check_geodesic_forced() is True
+
+
+def test_a_rolling_canonical_scalar_is_not_an_exact_vacuum() -> None:
+    """\\cref{prop:no-rolling}: rho + p = phi_dot^2 for a canonical scalar.
+
+    Built by varying the action on a general diagonal metric rather than by
+    quoting the FRW expressions, so that the conclusion does not depend on the
+    symmetry it is usually read off from. This is why the vacuum sector of the
+    paper is a constrained clock or a four-form and not quintessence.
+    """
+    assert sy.check_no_rolling() is True

@@ -67,7 +67,24 @@ def _ptform(u):
 
 
 def run(model: str, dataset: str, *, nlive: int, dlogz: float, seed: int,
-        n_proc: int) -> dict:
+        n_proc: int, archive: bool = True) -> dict:
+    """One nested-sampling run.
+
+    ``archive`` controls whether the equal-weight samples are written to
+    ``results/posteriors/{model}_{dataset}.npz``, which is the file the
+    parameter table, the figures and the published summaries are built from.
+    It must be false for any run made under modified priors or a non-default
+    seed, because the file name encodes neither.
+
+    That is not a hypothetical precaution. The prior-width scan mutates
+    ``PRIORS["log10_xi"]`` and calls this function six times, and the
+    repeatability check calls it three more; the archive on disk was therefore
+    the *last* of those -- prior lower edge -7 instead of -3, seed 12345
+    instead of the default. It propagated into ``results.json``, whose
+    published 95% interval for ``log10_xi`` ran to -6.71, outside the prior the
+    same table states. A gate now checks the samples against the priors, and
+    this flag stops the overwrite at its source.
+    """
     import dynesty
     import multiprocessing as mp
 
@@ -93,10 +110,18 @@ def run(model: str, dataset: str, *, nlive: int, dlogz: float, seed: int,
     # Equal-weight posterior samples, for the figures and the parameter table.
     # These replace the ensemble chains, which for these models were not fit to
     # quote from; see docs/review/RESPONSE_r2.md.
-    SAMPLE_DIR.mkdir(parents=True, exist_ok=True)
-    np.savez_compressed(SAMPLE_DIR / f"{model}_{dataset}.npz",
-                        samples=samples, logl=res.logl,
-                        param_names=np.array(_POST.param_names))
+    if archive:
+        priors = _POST.model.priors()
+        SAMPLE_DIR.mkdir(parents=True, exist_ok=True)
+        np.savez_compressed(
+            SAMPLE_DIR / f"{model}_{dataset}.npz",
+            samples=samples, logl=res.logl,
+            param_names=np.array(_POST.param_names),
+            # provenance, so that a file can be checked against the run that
+            # made it rather than trusted because of its name
+            seed=np.array(seed), nlive=np.array(nlive),
+            prior_low=np.array([p.low for p in priors]),
+            prior_high=np.array([p.high for p in priors]))
 
     return dict(model=model, dataset=dataset, ndim=ndim, nlive=nlive,
                 dlogz_target=dlogz, logz=logz, logz_err=logzerr,

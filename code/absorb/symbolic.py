@@ -504,6 +504,57 @@ def check_geodesic_forced() -> bool:
     return True
 
 
+# ---------------------------------------------------------------------------
+# 8. a canonical scalar cannot sit at w = -1 while rolling
+# ---------------------------------------------------------------------------
+def check_no_rolling() -> bool:
+    """Verify ``prop:no-rolling`` from the stress tensor, not from memory.
+
+    For ``L = -(1/2) (nabla phi)^2 - W(phi)`` the claim is
+    ``rho + p = phi_dot^2``, so ``w = -1`` exactly requires ``phi_dot = 0``:
+    a canonical scalar that is rolling is not an exact vacuum, which is why
+    the vacuum sector of this paper is realized by a constrained clock or a
+    four-form and not by quintessence.
+
+    The check builds ``T_{mu nu}`` by varying with respect to the inverse
+    metric on a general diagonal metric and reads off the density and the
+    isotropic pressure, rather than quoting the textbook FRW expressions.
+    """
+    t = sp.Symbol("t", real=True)
+    A, B = sp.Function("A", positive=True)(t), sp.Function("B", positive=True)(t)
+    phi = sp.Function("phi")(t)
+    W = sp.Function("W")(phi)
+
+    g = sp.diag(-A ** 2, B ** 2, B ** 2, B ** 2)
+    ginv = g.inv()
+    dphi = sp.Matrix([sp.diff(phi, t), 0, 0, 0])
+
+    kin = sum(ginv[m, n] * dphi[m] * dphi[n] for m in IDX for n in IDX)
+    lag = -sp.Rational(1, 2) * kin - W
+    # T_{mu nu} = d_mu phi d_nu phi + g_{mu nu} L   for this Lagrangian
+    T = sp.Matrix(DIM, DIM,
+                  lambda m, n: sp.simplify(dphi[m] * dphi[n] + g[m, n] * lag))
+
+    u_up = sp.Matrix([1 / A, 0, 0, 0])
+    u_dn = g * u_up
+    assert sp.simplify((u_dn.T * u_up)[0, 0] + 1) == 0
+
+    rho = sp.simplify(sum(T[m, n] * u_up[m] * u_up[n] for m in IDX for n in IDX))
+    # isotropic pressure from the spatial trace, p = (1/3) h^{mu nu} T_{mu nu}
+    h_up = sp.Matrix(DIM, DIM,
+                     lambda m, n: ginv[m, n] + u_up[m] * u_up[n])
+    p = sp.simplify(sum(h_up[m, n] * T[m, n] for m in IDX for n in IDX) / 3)
+
+    phidot2 = sp.simplify(sp.diff(phi, t) ** 2 / A ** 2)      # proper time
+    assert sp.simplify(rho + p - phidot2) == 0, (
+        f"rho + p is not phi_dot^2: {sp.simplify(rho + p)}")
+    # and therefore w = -1 forces the kinetic term to vanish
+    roots = sp.solve(sp.Eq(rho + p, 0), sp.diff(phi, t))
+    assert [sp.simplify(r) for r in roots] == [0], (
+        f"w = -1 does not force phi_dot = 0; roots {roots}")
+    return True
+
+
 ALL_CHECKS = (
     check_four_form,
     check_clock_action,
@@ -512,6 +563,7 @@ ALL_CHECKS = (
     check_growth_equation,
     check_solvable_family,
     check_geodesic_forced,
+    check_no_rolling,
 )
 
 
