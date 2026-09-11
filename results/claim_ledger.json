@@ -126,7 +126,7 @@
     "referenced_in": [],
     "status": "UNREVIEWED",
     "tests": [],
-    "text": "Along a flow line with proper time $\\tau$, % \\begin{equation}\\label{eq:process-memory} \\tauM\\,\\odv{\\Mmem}{\\tau}=\\fconv-\\Mmem,\\qquad \\tauM>0 , \\end{equation} % whose solution from $\\tau_i$ is % \\begin{equation}\\label{eq:process-memory-solution} \\Mmem(\\tau)=\\Mmem_i e^{-(\\tau-\\tau_i)/\\tauM} +\\frac{1}{\\tauM}\\int_{\\tau_i}^{\\tau}e^{-(\\tau-s)/\\tauM}\\fconv(s)\\,\\dd s . \\end{equation}",
+    "text": "Along a flow line with proper time $\\tau$, % \\begin{keyresult}{A}{eq:process-memory} \\tauM\\,\\odv{\\Mmem}{\\tau}=\\fconv-\\Mmem,\\qquad \\tauM>0 , \\end{keyresult} % whose solution from $\\tau_i$ is % \\begin{keyresult}{I}{eq:process-memory-solution} \\Mmem(\\tau)=\\Mmem_i e^{-(\\tau-\\tau_i)/\\tauM} +\\frac{1}{\\tauM}\\int_{\\tau_i}^{\\tau}e^{-(\\tau-s)/\\tauM}\\fconv(s)\\,\\dd s . \\end{keyresult}",
     "title": "Memory variable"
   },
   "eq:appb-absorption": {
@@ -333,8 +333,8 @@
     "file": "07_cosmography.tex",
     "in_summary": [],
     "kind": "keyresult",
-    "level": "C",
-    "level_name": "theorem of the model",
+    "level": "I",
+    "level_name": "identity",
     "referenced_in": [],
     "status": "UNREVIEWED",
     "tests": [
@@ -483,9 +483,9 @@
     "claim_id": "eq:cosmology-system",
     "file": "04_homogeneous_cosmology.tex",
     "in_summary": [],
-    "kind": "equation",
-    "level": null,
-    "level_name": null,
+    "kind": "keyresult",
+    "level": "A",
+    "level_name": "postulate",
     "referenced_in": [
       "05_positivity_ide.tex",
       "08_realizations.tex"
@@ -540,9 +540,9 @@
     "claim_id": "eq:defects-energy",
     "file": "11_defects.tex",
     "in_summary": [],
-    "kind": "equation",
-    "level": null,
-    "level_name": null,
+    "kind": "keyresult",
+    "level": "A",
+    "level_name": "postulate",
     "referenced_in": [
       "08_realizations.tex"
     ],
@@ -584,9 +584,9 @@
     "claim_id": "eq:defects-ode",
     "file": "11_defects.tex",
     "in_summary": [],
-    "kind": "equation",
-    "level": null,
-    "level_name": null,
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
     "referenced_in": [],
     "status": "UNREVIEWED",
     "tests": [],
@@ -661,9 +661,9 @@
     "in_summary": [
       "14_conclusions.tex"
     ],
-    "kind": "equation",
-    "level": null,
-    "level_name": null,
+    "kind": "keyresult",
+    "level": "P",
+    "level_name": "fitted to data",
     "referenced_in": [
       "14_conclusions.tex"
     ],
@@ -680,9 +680,9 @@
     "in_summary": [
       "14_conclusions.tex"
     ],
-    "kind": "equation",
-    "level": null,
-    "level_name": null,
+    "kind": "keyresult",
+    "level": "P",
+    "level_name": "fitted to data",
     "referenced_in": [
       "14_conclusions.tex"
     ],
@@ -738,9 +738,9 @@
     "claim_id": "eq:perturbations-com",
     "file": "09_perturbations.tex",
     "in_summary": [],
-    "kind": "equation",
-    "level": null,
-    "level_name": null,
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
     "referenced_in": [],
     "status": "UNREVIEWED",
     "tests": [],
@@ -751,9 +751,9 @@
     "claim_id": "eq:perturbations-compatibility",
     "file": "09_perturbations.tex",
     "in_summary": [],
-    "kind": "equation",
-    "level": null,
-    "level_name": null,
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
     "referenced_in": [
       "13_outlook.tex"
     ],
@@ -869,9 +869,9 @@
     "claim_id": "eq:perturbations-peff",
     "file": "09_perturbations.tex",
     "in_summary": [],
-    "kind": "equation",
-    "level": null,
-    "level_name": null,
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
     "referenced_in": [
       "appA_conventions.tex"
     ],
@@ -898,8 +898,8 @@
     "file": "09_perturbations.tex",
     "in_summary": [],
     "kind": "keyresult",
-    "level": "C",
-    "level_name": "theorem of the model",
+    "level": "I",
+    "level_name": "identity",
     "referenced_in": [],
     "status": "UNREVIEWED",
     "tests": [
@@ -913,8 +913,8 @@
     "file": "05_positivity_ide.tex",
     "in_summary": [],
     "kind": "keyresult",
-    "level": "C",
-    "level_name": "theorem of the model",
+    "level": "I",
+    "level_name": "identity",
     "referenced_in": [
       "06_solvable_early.tex",
       "10_observations.tex",
@@ -1068,9 +1068,9 @@
     "claim_id": "eq:process-intensity",
     "file": "03_absorbing_process.tex",
     "in_summary": [],
-    "kind": "equation",
-    "level": null,
-    "level_name": null,
+    "kind": "keyresult",
+    "level": "A",
+    "level_name": "postulate",
     "referenced_in": [
       "08_realizations.tex",
       "appB_proofs.tex"
@@ -1086,9 +1086,9 @@
     "in_summary": [
       "01_intro.tex"
     ],
-    "kind": "equation",
-    "level": null,
-    "level_name": null,
+    "kind": "keyresult",
+    "level": "A",
+    "level_name": "postulate",
     "referenced_in": [
       "01_intro.tex",
       "appB_proofs.tex"
@@ -1104,9 +1104,9 @@
     "claim_id": "eq:process-memory-solution",
     "file": "03_absorbing_process.tex",
     "in_summary": [],
-    "kind": "equation",
-    "level": null,
-    "level_name": null,
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
     "referenced_in": [
       "04_homogeneous_cosmology.tex"
     ],
@@ -1161,9 +1161,9 @@
     "claim_id": "eq:quantum-collective",
     "file": "12_quantum.tex",
     "in_summary": [],
-    "kind": "equation",
-    "level": null,
-    "level_name": null,
+    "kind": "keyresult",
+    "level": "A",
+    "level_name": "postulate",
     "referenced_in": [],
     "status": "UNREVIEWED",
     "tests": [],
@@ -1230,9 +1230,9 @@
     "claim_id": "eq:realizations-clock-action",
     "file": "08_realizations.tex",
     "in_summary": [],
-    "kind": "equation",
-    "level": null,
-    "level_name": null,
+    "kind": "keyresult",
+    "level": "A",
+    "level_name": "postulate",
     "referenced_in": [
       "06_solvable_early.tex",
       "appA_conventions.tex"
@@ -1315,9 +1315,9 @@
     "claim_id": "eq:realizations-suppression",
     "file": "08_realizations.tex",
     "in_summary": [],
-    "kind": "equation",
-    "level": null,
-    "level_name": null,
+    "kind": "keyresult",
+    "level": "X",
+    "level_name": "?",
     "referenced_in": [],
     "status": "UNREVIEWED",
     "tests": [],
@@ -1397,9 +1397,9 @@
     "claim_id": "eq:setup-raychaudhuri",
     "file": "02_covariant_setup.tex",
     "in_summary": [],
-    "kind": "equation",
-    "level": null,
-    "level_name": null,
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
     "referenced_in": [],
     "status": "UNREVIEWED",
     "tests": [],
@@ -1468,9 +1468,9 @@
     "claim_id": "eq:solvable-activation-local",
     "file": "06_solvable_early.tex",
     "in_summary": [],
-    "kind": "equation",
-    "level": null,
-    "level_name": null,
+    "kind": "keyresult",
+    "level": "I",
+    "level_name": "identity",
     "referenced_in": [],
     "status": "UNREVIEWED",
     "tests": [
@@ -1498,9 +1498,9 @@
     "claim_id": "eq:solvable-exponent",
     "file": "06_solvable_early.tex",
     "in_summary": [],
-    "kind": "equation",
-    "level": null,
-    "level_name": null,
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
     "referenced_in": [],
     "status": "UNREVIEWED",
     "tests": [
@@ -1868,7 +1868,7 @@
     "tests": [
       "test_symbolic.py"
     ],
-    "text": "Let the vacuum be exact, $T^{\\mu\\nu}_V=-\\rhoV g^{\\mu\\nu}$, let it receive energy with no spatial momentum transfer in the frame $\\umu$, so that $\\covd_\\mu T^{\\mu\\nu}_V=\\QV u^\\nu$, and let $\\umu$ be a unit timelike field. Then % \\begin{keyresult}{C}{eq:perturbations-vorticity} \\QV\\,\\omega_{\\mu\\nu}=0 , \\end{keyresult} % where $\\omega_{\\mu\\nu}$ is the vorticity of $\\umu$: the congruence is irrotation",
+    "text": "Let the vacuum be exact, $T^{\\mu\\nu}_V=-\\rhoV g^{\\mu\\nu}$, let it receive energy with no spatial momentum transfer in the frame $\\umu$, so that $\\covd_\\mu T^{\\mu\\nu}_V=\\QV u^\\nu$, and let $\\umu$ be a unit timelike field. Then % \\begin{keyresult}{I}{eq:perturbations-vorticity} \\QV\\,\\omega_{\\mu\\nu}=0 , \\end{keyresult} % where $\\omega_{\\mu\\nu}$ is the vorticity of $\\umu$: the congruence is irrotation",
     "title": "An exact vacuum fed without momentum transfer forbids\n  vorticity"
   },
   "rem:activation-local": {
@@ -1883,7 +1883,7 @@
     "tests": [
       "test_early_branch.py"
     ],
-    "text": "As written, $\\actS$ refers to the scale factor, which is not a local scalar, so \\cref{eq:solvable-activation} is a statement about the homogeneous mode. It need not stay one. The survival identity $\\rhoI a^3=\\rho_{I,\\rm act}(1-\\fconv)$ is exact, so $a$ can be eliminated with no approximation: writing $\\rho_*=\\rho_{I,\\rm act}/\\aact^3$ for the comoving precursor density at activation, % \\begin{equat",
+    "text": "As written, $\\actS$ refers to the scale factor, which is not a local scalar, so \\cref{eq:solvable-activation} is a statement about the homogeneous mode. It need not stay one. The survival identity $\\rhoI a^3=\\rho_{I,\\rm act}(1-\\fconv)$ is exact, so $a$ can be eliminated with no approximation: writing $\\rho_*=\\rho_{I,\\rm act}/\\aact^3$ for the comoving precursor density at activation, % \\begin{keyre",
     "title": "The switch is local, and it closes under compression"
   },
   "rem:bridge-limits": {
@@ -1944,7 +1944,9 @@
     "kind": "remark",
     "level": null,
     "level_name": null,
-    "referenced_in": [],
+    "referenced_in": [
+      "10_observations.tex"
+    ],
     "status": "UNREVIEWED",
     "tests": [
       "test_background.py"
@@ -2115,7 +2117,7 @@
       "test_background.py",
       "test_deficit_floor.py"
     ],
-    "text": "For a spatially flat universe containing pressureless matter, conserved radiation and an exact vacuum that receives energy at rate $\\QV$, and nothing else, % \\begin{keyresult}{C}{eq:cosmography-jerk} \\jerk=1+2\\Omr+\\varepsilon , \\qquad \\varepsilon\\eqdef\\frac{\\QV}{2\\Mpl^2\\Hub^3} , \\end{keyresult} % and therefore, whenever the transfer is towards the vacuum, % \\begin{keyresult}{C}{eq:cosmography-jerk",
+    "text": "For a spatially flat universe containing pressureless matter, conserved radiation and an exact vacuum that receives energy at rate $\\QV$, and nothing else, % \\begin{keyresult}{I}{eq:cosmography-jerk} \\jerk=1+2\\Omr+\\varepsilon , \\qquad \\varepsilon\\eqdef\\frac{\\QV}{2\\Mpl^2\\Hub^3} , \\end{keyresult} % and therefore, whenever the transfer is towards the vacuum, % \\begin{keyresult}{C}{eq:cosmography-jerk",
     "title": "Jerk identity and bound"
   },
   "thm:memory-fingerprint": {
@@ -2247,7 +2249,7 @@
       "test_symbolic.py",
       "test_theorems.py"
     ],
-    "text": "Let the solution be defined and non-negative on $[a_e,1]$ with radiation exactly conserved, and define the matter deficit % \\begin{keyresult}{C}{eq:positivity-deficit} \\Delta\\eqdef\\frac{\\rho_{\\rm m}^{\\rm early}-\\rho_{\\rm m0}}{3\\Mpl^2\\Hz^2} =\\frac{1}{3\\Mpl^2\\Hz^2}\\int_{t_e}^{t_0}\\QV a^3\\,\\dd t\\ \\ge 0 , \\qquad \\rho_{\\rm m}^{\\rm early}\\eqdef\\rhom(t_e)\\,a_e^3 , \\end{keyresult} % both densities being c",
+    "text": "Let the solution be defined and non-negative on $[a_e,1]$ with radiation exactly conserved, and define the matter deficit % \\begin{keyresult}{I}{eq:positivity-deficit} \\Delta\\eqdef\\frac{\\rho_{\\rm m}^{\\rm early}-\\rho_{\\rm m0}}{3\\Mpl^2\\Hz^2} =\\frac{1}{3\\Mpl^2\\Hz^2}\\int_{t_e}^{t_0}\\QV a^3\\,\\dd t\\ \\ge 0 , \\qquad \\rho_{\\rm m}^{\\rm early}\\eqdef\\rhom(t_e)\\,a_e^3 , \\end{keyresult} % both densities being c",
     "title": "Sandwich"
   },
   "thm:sign-table": {

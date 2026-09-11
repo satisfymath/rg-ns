@@ -74,6 +74,7 @@ FORMATS = {
     "ln_bayes_err": ".2f",
     "chi2_min": ".4f",
     "chi2_spread": ".4f",
+    "change": "+.2f",
     "pct90": ".2f",
     "pct90_err": ".2f",
     "pct50": ".2f",

@@ -1,12 +1,12 @@
 {
-  "change": -0.21721398051772667,
+  "change": 0.16088210713428452,
   "datasets": [
     "baseline",
     "rsd"
   ],
-  "ln_bayes_baseline": -1.6119663689116805,
-  "ln_bayes_baseline_err": 0.2862415979651169,
-  "ln_bayes_with_growth": -1.8291803494294072,
-  "ln_bayes_with_growth_err": 0.2855863715254291,
+  "ln_bayes_baseline": -1.617057085162969,
+  "ln_bayes_baseline_err": 0.28514831181214695,
+  "ln_bayes_with_growth": -1.4561749780286846,
+  "ln_bayes_with_growth_err": 0.2849950949637666,
   "model": "xi_h"
 }

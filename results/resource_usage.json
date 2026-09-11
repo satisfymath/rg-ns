@@ -478,5 +478,29 @@
     "mem_available_before_mb": 7111.51953125,
     "mem_available_after_mb": 5676.4296875,
     "notes": "profile in a derived quantity"
+  },
+  {
+    "name": "nested_lcdm__rsd",
+    "seconds": 985.9954602718353,
+    "peak_rss_mb": 2218.92578125,
+    "mem_available_before_mb": 6588.703125,
+    "mem_available_after_mb": 6852.26171875,
+    "notes": "nlive=500"
+  },
+  {
+    "name": "nested_xi_h__rsd",
+    "seconds": 2229.389872789383,
+    "peak_rss_mb": 3271.86328125,
+    "mem_available_before_mb": 6852.26171875,
+    "mem_available_after_mb": 6292.64453125,
+    "notes": "nlive=500"
+  },
+  {
+    "name": "profile_xi_h_jerk_excess",
+    "seconds": 4311.986050605774,
+    "peak_rss_mb": 739.5390625,
+    "mem_available_before_mb": 6805.91796875,
+    "mem_available_after_mb": 6276.91015625,
+    "notes": "profile in a derived quantity"
   }
 ]

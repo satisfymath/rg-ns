@@ -7,7 +7,7 @@ quietly become stronger than its proof, which is what four referees
 found independently.
 
 - results catalogued: **146**
-- carrying an explicit evidential level: **57**
+- carrying an explicit evidential level: **74**
 - referred to from a summary section: **27**
 - referred to from a summary but covered by no test: **0**
 
@@ -36,7 +36,7 @@ found independently.
 | `eq:appe-radial` | equation | — | appE_skyrme.tex | — | — |
 | `eq:cosmography-deficit-floor` | keyresult | C (theorem of the model) | 07_cosmography.tex | — | deficit_floor |
 | `eq:cosmography-fingerprint` | keyresult | C (theorem of the model) | 07_cosmography.tex | — | — |
-| `eq:cosmography-jerk` | keyresult | C (theorem of the model) | 07_cosmography.tex | — | background |
+| `eq:cosmography-jerk` | keyresult | I (identity) | 07_cosmography.tex | — | background |
 | `eq:cosmography-jerk-bound` | keyresult | C (theorem of the model) | 07_cosmography.tex | — | — |
 | `eq:cosmography-snap` | keyresult | C (theorem of the model) | 07_cosmography.tex | — | background |
 | `eq:cosmography-snap-explicit` | keyresult | C (theorem of the model) | 07_cosmography.tex | — | — |
@@ -46,25 +46,25 @@ found independently.
 | `eq:cosmology-monotone-acceleration` | keyresult | I (identity) | 04_homogeneous_cosmology.tex | — | — |
 | `eq:cosmology-no-acceleration` | keyresult | C (theorem of the model) | 04_homogeneous_cosmology.tex | — | background |
 | `eq:cosmology-survival` | keyresult | I (identity) | 04_homogeneous_cosmology.tex | — | background |
-| `eq:cosmology-system` | equation | — | 04_homogeneous_cosmology.tex | — | — |
+| `eq:cosmology-system` | keyresult | A (postulate) | 04_homogeneous_cosmology.tex | — | — |
 | `eq:cosmology-vacuum-bound` | equation | — | 04_homogeneous_cosmology.tex | — | — |
 | `eq:defects-bound` | keyresult | I (identity) | 11_defects.tex | — | — |
 | `eq:defects-degree` | equation | — | 11_defects.tex | — | — |
-| `eq:defects-energy` | equation | — | 11_defects.tex | — | — |
+| `eq:defects-energy` | keyresult | A (postulate) | 11_defects.tex | — | — |
 | `eq:defects-eos` | equation | — | 11_defects.tex | — | — |
 | `eq:defects-local-exact` | keyresult | I (identity) | 11_defects.tex | — | collapse, pancake |
-| `eq:defects-ode` | equation | — | 11_defects.tex | — | — |
+| `eq:defects-ode` | keyresult | I (identity) | 11_defects.tex | — | — |
 | `eq:defects-regularity` | keyresult | C (theorem of the model) | 11_defects.tex | — | collapse |
 | `eq:defects-solved` | keyresult | N (numerical) | 11_defects.tex | 01_intro.tex | skyrme |
 | `eq:defects-trial` | keyresult | I (identity) | 11_defects.tex | — | — |
 | `eq:numerics-system` | equation | — | appF_numerics.tex | — | — |
-| `eq:observations-deficit-limit` | equation | — | 10_observations.tex | 14_conclusions.tex | published_limits |
-| `eq:observations-jerk-limit` | equation | — | 10_observations.tex | 14_conclusions.tex | published_limits |
+| `eq:observations-deficit-limit` | keyresult | P (fitted to data) | 10_observations.tex | 14_conclusions.tex | published_limits |
+| `eq:observations-jerk-limit` | keyresult | P (fitted to data) | 10_observations.tex | 14_conclusions.tex | published_limits |
 | `eq:outlook-bridge` | keyresult | S (conjecture) | 13_outlook.tex | — | — |
 | `eq:outlook-reynolds-eos` | equation | — | 13_outlook.tex | — | symbolic |
 | `eq:outlook-spin` | keyresult | S (conjecture) | 13_outlook.tex | — | — |
-| `eq:perturbations-com` | equation | — | 09_perturbations.tex | — | — |
-| `eq:perturbations-compatibility` | equation | — | 09_perturbations.tex | — | — |
+| `eq:perturbations-com` | keyresult | C (theorem of the model) | 09_perturbations.tex | — | — |
+| `eq:perturbations-compatibility` | keyresult | I (identity) | 09_perturbations.tex | — | — |
 | `eq:perturbations-frsd` | keyresult | C (theorem of the model) | 09_perturbations.tex | — | — |
 | `eq:perturbations-growth` | keyresult | C (theorem of the model) | 09_perturbations.tex | — | growth |
 | `eq:perturbations-growth-N` | keyresult | C (theorem of the model) | 09_perturbations.tex | — | — |
@@ -72,10 +72,10 @@ found independently.
 | `eq:perturbations-integrability` | keyresult | I (identity) | 09_perturbations.tex | — | — |
 | `eq:perturbations-isw` | keyresult | C (theorem of the model) | 09_perturbations.tex | — | — |
 | `eq:perturbations-local-drain` | equation | — | 09_perturbations.tex | — | — |
-| `eq:perturbations-peff` | equation | — | 09_perturbations.tex | — | — |
+| `eq:perturbations-peff` | keyresult | C (theorem of the model) | 09_perturbations.tex | — | — |
 | `eq:perturbations-system` | keyresult | C (theorem of the model) | 09_perturbations.tex | — | — |
-| `eq:perturbations-vorticity` | keyresult | C (theorem of the model) | 09_perturbations.tex | — | symbolic |
-| `eq:positivity-deficit` | keyresult | C (theorem of the model) | 05_positivity_ide.tex | — | theorems |
+| `eq:perturbations-vorticity` | keyresult | I (identity) | 09_perturbations.tex | — | symbolic |
+| `eq:positivity-deficit` | keyresult | I (identity) | 05_positivity_ide.tex | — | theorems |
 | `eq:positivity-map` | keyresult | I (identity) | 05_positivity_ide.tex | — | — |
 | `eq:positivity-no-sign-flip` | keyresult | C (theorem of the model) | 05_positivity_ide.tex | — | theorems |
 | `eq:positivity-sandwich` | keyresult | C (theorem of the model) | 05_positivity_ide.tex | — | theorems |
@@ -86,36 +86,36 @@ found independently.
 | `eq:process-binomial` | keyresult | C (theorem of the model) | 03_absorbing_process.tex | — | — |
 | `eq:process-breakdown-gap` | keyresult | C (theorem of the model) | 03_absorbing_process.tex | — | — |
 | `eq:process-deterministic` | keyresult | C (theorem of the model) | 03_absorbing_process.tex | — | — |
-| `eq:process-intensity` | equation | — | 03_absorbing_process.tex | — | — |
-| `eq:process-memory` | equation | — | 03_absorbing_process.tex | 01_intro.tex | stochastic |
-| `eq:process-memory-solution` | equation | — | 03_absorbing_process.tex | — | — |
+| `eq:process-intensity` | keyresult | A (postulate) | 03_absorbing_process.tex | — | — |
+| `eq:process-memory` | keyresult | A (postulate) | 03_absorbing_process.tex | 01_intro.tex | stochastic |
+| `eq:process-memory-solution` | keyresult | I (identity) | 03_absorbing_process.tex | — | — |
 | `eq:process-rate` | keyresult | A (postulate) | 03_absorbing_process.tex | — | — |
 | `eq:process-survival` | keyresult | I (identity) | 03_absorbing_process.tex | 01_intro.tex | stochastic |
-| `eq:quantum-collective` | equation | — | 12_quantum.tex | — | — |
+| `eq:quantum-collective` | keyresult | A (postulate) | 12_quantum.tex | — | — |
 | `eq:quantum-collective-mean` | keyresult | I (identity) | 12_quantum.tex | — | — |
 | `eq:quantum-two-state` | keyresult | I (identity) | 12_quantum.tex | — | — |
 | `eq:realizations-alpha` | keyresult | X (?) | 08_realizations.tex | — | symbolic |
 | `eq:realizations-clock` | keyresult | I (identity) | 08_realizations.tex | — | — |
-| `eq:realizations-clock-action` | equation | — | 08_realizations.tex | — | — |
+| `eq:realizations-clock-action` | keyresult | A (postulate) | 08_realizations.tex | — | — |
 | `eq:realizations-determined-V` | keyresult | I (identity) | 08_realizations.tex | — | — |
 | `eq:realizations-four-form` | keyresult | I (identity) | 08_realizations.tex | — | — |
 | `eq:realizations-four-form-action` | equation | — | 08_realizations.tex | — | — |
 | `eq:realizations-lnrate` | keyresult | X (?) | 08_realizations.tex | — | symbolic |
 | `eq:realizations-rate-split` | equation | — | 08_realizations.tex | — | — |
-| `eq:realizations-suppression` | equation | — | 08_realizations.tex | — | — |
+| `eq:realizations-suppression` | keyresult | X (?) | 08_realizations.tex | — | — |
 | `eq:setup-action` | equation | — | 02_covariant_setup.tex | — | — |
 | `eq:setup-conservation` | keyresult | I (identity) | 02_covariant_setup.tex | — | — |
 | `eq:setup-curvature` | equation | — | 02_covariant_setup.tex | — | — |
 | `eq:setup-einstein` | keyresult | I (identity) | 02_covariant_setup.tex | — | — |
 | `eq:setup-friedmann` | keyresult | I (identity) | 02_covariant_setup.tex | — | — |
-| `eq:setup-raychaudhuri` | equation | — | 02_covariant_setup.tex | — | — |
+| `eq:setup-raychaudhuri` | keyresult | I (identity) | 02_covariant_setup.tex | — | — |
 | `eq:setup-ricci` | equation | — | 02_covariant_setup.tex | — | — |
 | `eq:setup-units` | equation | — | 02_covariant_setup.tex | — | — |
 | `eq:setup-vacuum-transfer` | keyresult | I (identity) | 02_covariant_setup.tex | — | — |
 | `eq:solvable-activation` | keyresult | A (postulate) | 06_solvable_early.tex | — | early_branch |
-| `eq:solvable-activation-local` | equation | — | 06_solvable_early.tex | — | early_branch |
+| `eq:solvable-activation-local` | keyresult | I (identity) | 06_solvable_early.tex | — | early_branch |
 | `eq:solvable-closed-form` | keyresult | I (identity) | 06_solvable_early.tex | — | — |
-| `eq:solvable-exponent` | equation | — | 06_solvable_early.tex | — | early_branch |
+| `eq:solvable-exponent` | keyresult | C (theorem of the model) | 06_solvable_early.tex | — | early_branch |
 | `eq:solvable-friedmann` | equation | — | 06_solvable_early.tex | — | — |
 | `eq:solvable-nogo` | keyresult | C (theorem of the model) | 06_solvable_early.tex | — | — |
 | `prop:activation` | proposition | — | 06_solvable_early.tex | — | early_branch |
