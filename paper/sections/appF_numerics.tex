@@ -99,9 +99,16 @@ under a flat prior, which is verified against a brute-force one-dimensional
 marginalisation. Baryon acoustic oscillations use the DESI DR2 measurements
 with their covariance, and the sound horizon at the drag epoch is evaluated
 from a fitting formula in the \emph{pre-activation} matter density, which is
-the quantity the early universe actually determines. Cosmic chronometers use
-the Moresco compilation with the full covariance built from the published
-systematic budget. The compressed CMB likelihood uses the shift parameter, the
+the quantity the early universe actually determines. Cosmic chronometers use the Moresco
+compilation with a covariance built from the published systematic budget: the
+statistical errors plus the initial-mass-function and ``model, odd one out''
+terms. That is the reduced budget, not the full one. The conservative variant,
+which adds the stellar-library and full model terms, is implemented and tested
+but is not what the fits use; it doubles the effective error on a coherent
+offset in $\Hub(z)$, from $5.7\%$ to $11.6\%$. Reporting the fits under it is
+left undone, and the choice is recorded here rather than described as ``full
+covariance'', which is what an earlier version of this paragraph and of the
+data table both said. The compressed CMB likelihood uses the shift parameter, the
 acoustic scale and the baryon density.
 
 Redshift-space distortions enter only the ``$+$growth'' combination and are
@@ -158,6 +165,57 @@ $z_*$ to confirm the cancellation.
 A test asserts that the calibration is not re-derived per
 model. Users who prefer to avoid the compressed likelihood can run the
 late-time-only combination, which is reported alongside.
+
+\subsection{Maximisation}\label{app:numerics-maximisation}
+
+The $\chisq_{\min}$ column of \cref{tab:comparison} is a maximisation, so it
+carries a numerical error of its own, and that error has to be small compared
+with the differences read off the column. Three protocols were used and the
+first two failed in ways worth recording, because both produced numbers that
+looked ordinary.
+
+A fixed evaluation budget from a handful of random starts gave every model the
+same number of likelihood calls regardless of dimension, so the three
+parameters of $\LCDM$ and the nine of the memory model were searched equally
+hard. Forty full simplex runs from uniform prior draws did find the maxima but
+took $8.4$ hours for five models, because a uniform draw usually lands where
+the background integration is stiff and the simplex then spends its whole
+budget there. The protocol in use screens a Latin hypercube of
+$\numMapXiHBaselineNScreen$ points once, refines only the best few --- which
+are by construction in the cheap region --- and polishes the winner with
+alternating simplex and direction-set steps until it stops moving, with a
+budget of $\numMapXiHBaselineBudgetPerDim$ evaluations per parameter. The
+alternation is not decoration: the simplex contracts across the curved
+degeneracy between the rate normalisation and the activation redshift instead
+of following it, and on the six-parameter model the direction-set steps
+recovered $\numMapXiHBaselinePolishGain$ in $\chisq$ that the simplex had left
+behind.
+
+Two things keep the cheaper protocol honest. Nesting is exact, so a model
+cannot fit worse than a model it contains; each search is seeded with every
+submodel's best fit embedded, and a gate fails the build if the column is not
+monotone in the nesting. That is not hypothetical: the nine-parameter search
+once returned a value $1.55$ \emph{worse} than the seven-parameter model it
+contains, which is impossible, and the number was on its way into the table.
+And the slow run's answers are frozen in the repository as a ceiling. A
+chi-square is attained at an actual point in parameter space, so a later run
+landing above the frozen value has failed to find something already known to
+exist, whatever its internal diagnostics say. $\LCDM$ reproduces the frozen
+value to $10^{-9}$, which is what certifies that the likelihood itself has not
+changed. A second gate fails the build on any larger gap, and it is also not
+hypothetical: when it was first written --- the comparison had been described
+in a docstring for some time without being performed --- it found the
+reinforced model sitting $0.137$ above a value this repository had already
+recorded, while reporting its search as converged.
+
+What the protocol does not achieve should be said plainly. For the extended
+models the agreement among independent refinements is poor --- for the
+six-parameter model one restart in nine reached the best value --- and the
+maxima sit on a prior edge in the unidentified directions, which is what one
+expects when those directions are flat. The column is therefore the best value
+the search reached, checked against a frozen independent answer, and not a
+converged goodness of fit; the conclusions of \cref{sec:observations} rest on
+the evidence column, which is computed by integration rather than by search.
 
 \subsection{Sampling}\label{app:numerics-sampling}
 

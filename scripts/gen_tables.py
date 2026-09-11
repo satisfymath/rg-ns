@@ -268,7 +268,8 @@ def dataset_table() -> str:
          "13 measurements, $0.30\\le z\\le2.33$",
          r"\parencite{collaboration2025_250314738}"),
         ("Cosmic chronometers", "Moresco compilation",
-         "15 measurements of $\\Hub(z)$, full covariance",
+         "15 measurements of $\\Hub(z)$; statistical errors plus the IMF and "
+         "``model, odd one out'' systematic terms",
          r"\parencite{moresco2022_220107241}"),
         ("Compressed CMB", "Planck 2018 distance priors",
          "$\\shift$, $\\lA$, $\\omega_{\\rm b}$",

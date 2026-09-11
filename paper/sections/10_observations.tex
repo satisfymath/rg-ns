@@ -96,7 +96,15 @@ than as a measurement of nine numbers.
     count there is not $k$. Both $2k$ and $k\ln n$ would then penalise a number
     that does not describe the model at the point being tested, and both would
     do so in the direction of the conclusion drawn below. The evidence requires
-    no such count.}
+    no such count.
+    %
+    The $\Delta\chisq$ column is a maximisation and carries its own numerical
+    error, discussed in \cref{app:numerics-maximisation}: for the extended
+    models the multi-start agreement is poor and the best fits sit on a prior
+    edge in the unidentified directions, so the column should be read as what
+    the search reached --- verified against a frozen brute-force run --- and
+    not as a converged goodness of fit. Nothing in the conclusions rests on
+    it; the evidence column does.}
   \label{tab:comparison}
 \end{table}
 
@@ -244,9 +252,15 @@ credits them nothing. And the model that does best is the one with the
 \emph{most} parameters, the reverse channel of
 \cref{sec:positivity-track-b}, which recovers part of its penalty by fitting
 better. That is the branch whose jerk excess has the opposite sign, and it is
-the branch a confirmed preference for $j_0<1$ would select; the data lean that
-way weakly, which is why it is carried through the comparison rather than
-mentioned and dropped. It is still disfavoured against $\LCDM$.
+the branch a confirmed preference for $j_0<1$ would select. It is still
+disfavoured against $\LCDM$, and the ordering among the four extensions should
+not be read as a result: the gap between the best and the worst of them is
+$0.77$ in $\ln B$ against an error of about $0.30$ on any difference between
+two of them, and against a prior-width range of $1.39$ documented above, which
+is larger than the whole spread. On the evidence the four are
+indistinguishable. The reverse channel is carried through the comparison
+because the theory requires it to be --- it is what the sign predictions are
+predictions \emph{against} --- and not because the data prefer it.
 
 \paragraph{One chain is quoted from and three are not.} The $\LCDM$ ensemble
 acceptance $\numDiagLcdmBaselineAcceptance$, length $\numDiagLcdmBaselineLengthInTau$ autocorrelation times
