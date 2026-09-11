@@ -105,6 +105,50 @@
       13.142943856911932
     ]
   },
+  "track_b__baseline": {
+    "best_before_polish": 1432.08456995454,
+    "budget_evals": 3000,
+    "budget_per_dim": 300,
+    "chi2_min": 1429.747889923794,
+    "chi2_spread": 75.35947302344789,
+    "converged": false,
+    "dataset": "baseline",
+    "model": "track_b",
+    "n_reaching_best": 1,
+    "n_refined": 11,
+    "n_screen": 3000,
+    "n_seeded_from_submodels": 3,
+    "ndim": 10,
+    "on_prior_edge": [
+      "omega_V_act",
+      "alpha_tot"
+    ],
+    "param_names": [
+      "omega_b",
+      "omega_c",
+      "omega_V_act",
+      "eps",
+      "log10_gamma0",
+      "alpha_tot",
+      "r_beta",
+      "log10_tau",
+      "z_act",
+      "log10_gamma_down"
+    ],
+    "polish_gain": 2.336680030746038,
+    "theta": [
+      0.022492465217807414,
+      0.11811591693146242,
+      1.8363699184577123e-08,
+      0.9997363092913691,
+      -1.2164828702438095,
+      2.4214240905692902e-08,
+      8.104533677420086e-05,
+      -1.876617648447382,
+      8.811458078895479,
+      -0.5614361301695586
+    ]
+  },
   "xi_h__baseline": {
     "best_before_polish": 1435.648827480276,
     "budget_evals": 1800,
