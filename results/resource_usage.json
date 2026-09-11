@@ -502,5 +502,21 @@
     "mem_available_before_mb": 6805.91796875,
     "mem_available_after_mb": 6276.91015625,
     "notes": "profile in a derived quantity"
+  },
+  {
+    "name": "profile_xi_h_matter_deficit",
+    "seconds": 5865.9879331588745,
+    "peak_rss_mb": 732.51953125,
+    "mem_available_before_mb": 7574.46875,
+    "mem_available_after_mb": 5487.32421875,
+    "notes": "profile in a derived quantity"
+  },
+  {
+    "name": "profile_xi_h_jerk_excess",
+    "seconds": 6237.693934202194,
+    "peak_rss_mb": 754.84375,
+    "mem_available_before_mb": 7453.49609375,
+    "mem_available_after_mb": 5731.5625,
+    "notes": "profile in a derived quantity"
   }
 ]

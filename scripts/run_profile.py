@@ -29,7 +29,8 @@ from scipy.optimize import minimize
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "code"))
 
-from absorb import datasets                                     # noqa: E402
+from absorb import datasets
+from absorb import jsonstore as store                                     # noqa: E402
 from absorb.params import MODELS, PRIORS                        # noqa: E402
 from absorb.resources import mem_available_mb, record           # noqa: E402
 from absorb.sampling import Posterior                           # noqa: E402
@@ -464,7 +465,7 @@ def main() -> int:
             msg = ("unbounded within the grid" if r["unbounded"]
                    else f"{r['eps_limit_95']:.5f}")
             print(f"  95% upper limit on eps: {msg}")
-        OUT.write_text(json.dumps(out, indent=2))
+        out = store.update(OUT, {key: out[key]})
     print(f"\nwrote {OUT.relative_to(ROOT)}")
     return 0
 

@@ -24,7 +24,8 @@ sys.path.insert(0, str(ROOT / "code"))
 
 import numpy as np                                              # noqa: E402
 
-from absorb import datasets                                     # noqa: E402
+from absorb import datasets
+from absorb import jsonstore as store                                     # noqa: E402
 from absorb.constants import SEED                               # noqa: E402
 from absorb.resources import record                             # noqa: E402
 from absorb.sampling import (MAP_BUDGET_PER_DIM, Posterior,      # noqa: E402
@@ -260,7 +261,7 @@ def main() -> int:
         # previous protocol's value in place, and the comparison that was
         # supposed to check the new protocol compared the old answer with
         # itself.
-        OUT.write_text(json.dumps(out, indent=2, sort_keys=True))
+        out = store.update(OUT, {tag: out[tag]})
         e = out[tag]
         edge = (f", on the prior edge in {','.join(e['on_prior_edge'])}"
                 if e["on_prior_edge"] else "")

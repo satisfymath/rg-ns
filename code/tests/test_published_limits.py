@@ -158,3 +158,53 @@ def test_no_number_is_quoted_for_a_parameter_the_data_do_not_constrain():
     assert checked >= 1, (
         "no prior-dominated parameter was found to check; either the "
         "posterior changed or the fill computation is not working")
+
+
+def test_two_writers_do_not_lose_each_other_s_results():
+    """``absorb.jsonstore``: concurrent runs must not overwrite each other.
+
+    Two profile runs launched minutes apart each produced a result and the
+    file kept one. The survivor's copy of the other key was the stale version
+    it had read hours earlier, so the loss was invisible: the file was
+    well-formed and contained a plausible number for every key.
+
+    The store merges at write time under a lock instead of at read time. This
+    exercises it with two processes that both read an empty file, sleep past
+    each other, and write different keys.
+    """
+    import json as _json
+    import multiprocessing as mp
+    import tempfile
+    import time
+    from pathlib import Path as _Path
+
+    from absorb import jsonstore
+
+    with tempfile.TemporaryDirectory() as d:
+        path = _Path(d) / "results.json"
+        path.write_text('{"pre_existing": 1}')
+        ctx = mp.get_context("fork")
+        procs = [ctx.Process(target=_writer, args=(str(path), f"k{i}", 0.05 * i))
+                 for i in range(3)]
+        for pr in procs:
+            pr.start()
+        for pr in procs:
+            pr.join(30)
+            assert pr.exitcode == 0, pr.exitcode
+        got = _json.loads(path.read_text())
+
+    assert got["pre_existing"] == 1, got
+    for i in range(3):
+        assert got[f"k{i}"] == {"value": f"k{i}"}, got
+
+
+def _writer(path, key, delay):
+    """Top-level so that it can be sent to a process; see the test above."""
+    import time
+
+    from pathlib import Path as _Path
+
+    from absorb import jsonstore
+
+    time.sleep(delay)
+    jsonstore.update(_Path(path), {key: {"value": key}})
