@@ -146,3 +146,42 @@ def test_window_independence() -> None:
 def test_rejects_bad_window() -> None:
     with pytest.raises(ValueError):
         sk.solve_hedgehog(x_min=1.0, x_max=0.5)
+
+
+def test_the_solution_is_converged_in_the_mesh_and_the_domain():
+    """The published energy must not depend on the discretisation.
+
+    The paper quotes the unit-charge energy to six significant figures and
+    nothing in the suite established that many: the existing convergence test
+    varies only the outer radius. This varies the node count over a factor of
+    eight and the inner cut-off over a decade, and requires the energy to move
+    by far less than the precision printed.
+
+    The inner cut-off is the more interesting of the two, because the boundary
+    condition there is a series truncation rather than an exact statement, and
+    the module argues its induced error is fourth order in the cut-off. That
+    argument is checked rather than trusted: the observed convergence must be
+    at least third order.
+    """
+    ref = sk.solve_hedgehog()
+
+    energies = np.array([sk.solve_hedgehog(n_nodes=n).Etilde
+                         for n in (300, 600, 1200, 2400)])
+    spread = float(energies.max() - energies.min()) / abs(ref.Etilde)
+    assert spread < 1e-8, (energies, spread)
+
+    # inner cut-off: measure the order of convergence rather than assert a
+    # tolerance, since the tolerance would pass for any order at all
+    cuts = np.array([1e-3, 3e-4, 1e-4])
+    errs = np.array([abs(sk.solve_hedgehog(x_min=c).Etilde - ref.Etilde)
+                     / abs(ref.Etilde) for c in cuts])
+    assert errs[0] < 1e-7, errs
+    order = np.log(errs[0] / errs[1]) / np.log(cuts[0] / cuts[1])
+    assert order > 3.0, (cuts, errs, order)
+
+    # the virial identity holds at the same precision on every mesh, which is
+    # what says the solution is a solution and not a fixed point of the
+    # discretisation
+    for n_nodes in (300, 1200, 2400):
+        h = sk.solve_hedgehog(n_nodes=n_nodes)
+        assert abs(h.E2 - h.E4) / h.Etilde < 1e-8, (n_nodes, h.E2, h.E4)
