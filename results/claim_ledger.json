@@ -439,6 +439,21 @@
     "text": "",
     "title": ""
   },
+  "eq:cosmology-no-acceleration": {
+    "claim_id": "eq:cosmology-no-acceleration",
+    "file": "04_homogeneous_cosmology.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_background.py"
+    ],
+    "text": "",
+    "title": ""
+  },
   "eq:cosmology-survival": {
     "claim_id": "eq:cosmology-survival",
     "file": "04_homogeneous_cosmology.tex",
@@ -1668,6 +1683,21 @@
     "tests": [],
     "text": "Under \\cref{asm:geodesic} the system \\cref{eq:perturbations-system} contains no independent dark-energy degree of freedom, no pressure perturbation, and no $k$-dependent coefficient. Its coefficients are of order $\\Hub$ and $\\Hub^2$, so $|\\delta_{\\rm m}|$ is bounded by a power of $a$ on every scale.",
     "title": "Absence of the instability"
+  },
+  "prop:no-pressure-from-kinetics": {
+    "claim_id": "prop:no-pressure-from-kinetics",
+    "file": "04_homogeneous_cosmology.tex",
+    "in_summary": [],
+    "kind": "proposition",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_background.py"
+    ],
+    "text": "Let the dark sector consist of components exchanging energy with no momentum transfer, each a perfect fluid with its own density $\\rho_i$ and pressure $p_i$. Then the total pressure is $\\sum_i p_i$, independent of every transfer rate. In particular, if every component is pressureless the total is pressureless, and % \\begin{keyresult}{C}{eq:cosmology-no-acceleration} \\ddot a\\le0 \\quad\\text{for all ",
+    "title": "Conversion cannot manufacture an equation of state"
   },
   "prop:no-rolling": {
     "claim_id": "prop:no-rolling",

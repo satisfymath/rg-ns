@@ -6,8 +6,8 @@ conclusions that refer to it: those are the places where a claim can
 quietly become stronger than its proof, which is what four referees
 found independently.
 
-- results catalogued: **141**
-- carrying an explicit evidential level: **56**
+- results catalogued: **143**
+- carrying an explicit evidential level: **57**
 - referred to from a summary section: **22**
 - referred to from a summary but covered by no test: **0**
 
@@ -44,6 +44,7 @@ found independently.
 | `eq:cosmology-dVdf` | keyresult | I (identity) | 04_homogeneous_cosmology.tex | — | — |
 | `eq:cosmology-desitter` | keyresult | C (theorem of the model) | 04_homogeneous_cosmology.tex | — | — |
 | `eq:cosmology-monotone-acceleration` | keyresult | I (identity) | 04_homogeneous_cosmology.tex | — | — |
+| `eq:cosmology-no-acceleration` | keyresult | C (theorem of the model) | 04_homogeneous_cosmology.tex | — | background |
 | `eq:cosmology-survival` | keyresult | I (identity) | 04_homogeneous_cosmology.tex | — | background |
 | `eq:cosmology-system` | equation | — | 04_homogeneous_cosmology.tex | — | — |
 | `eq:cosmology-vacuum-bound` | equation | — | 04_homogeneous_cosmology.tex | — | — |
@@ -128,6 +129,7 @@ found independently.
 | `prop:identities` | proposition | — | 04_homogeneous_cosmology.tex | — | — |
 | `prop:memory-origin` | proposition | — | 03_absorbing_process.tex | 01_intro.tex, 14_conclusions.tex | stochastic |
 | `prop:no-instability` | proposition | — | 09_perturbations.tex | — | — |
+| `prop:no-pressure-from-kinetics` | proposition | — | 04_homogeneous_cosmology.tex | — | background |
 | `prop:no-rolling` | proposition | — | 08_realizations.tex | — | — |
 | `prop:recipient-proportional` | proposition | — | 05_positivity_ide.tex | 14_conclusions.tex | symbolic |
 | `prop:survival` | proposition | — | 03_absorbing_process.tex | — | — |

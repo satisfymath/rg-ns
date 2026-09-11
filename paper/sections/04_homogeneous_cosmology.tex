@@ -37,6 +37,60 @@ terms $-\Gam\rhoI+\bfrac\Gam\rhoI+(1-\bfrac)\Gam\rhoI$ cancel, so
 already carries the entire effective tensor of the homogeneous product; there
 is no separate energy of the field $\fconv$ to add again.
 
+\subsection{What the kinetics is not responsible for}
+\label{sec:cosmology-not-kinetics}
+
+Before deriving what the transfer does, it is worth recording what it cannot
+do, because the point is easy to lose and it fixes the division of labour in
+everything that follows.
+
+\begin{proposition}[Conversion cannot manufacture an equation of state]
+  \label{prop:no-pressure-from-kinetics}
+  Let the dark sector consist of components exchanging energy with no momentum
+  transfer, each a perfect fluid with its own density $\rho_i$ and pressure
+  $p_i$. Then the total pressure is $\sum_i p_i$, independent of every transfer
+  rate. In particular, if every component is pressureless the total is
+  pressureless, and
+  %
+  \begin{keyresult}{C}{eq:cosmology-no-acceleration}
+    \ddot a\le0 \quad\text{for all }t,
+  \end{keyresult}
+  %
+  whatever the rate, the reinforcement, or the memory.
+\end{proposition}
+
+\begin{proof}
+  Energy exchange moves $\rho$ between components and enters each continuity
+  equation as a source; it does not appear in the stress tensor's spatial
+  trace, which is $\sum_ip_i$ by construction. The acceleration equation
+  depends on the total through $\rho+3p$ alone, and the sources cancel in the
+  sum by total conservation.
+\end{proof}
+
+Read as an effective bulk pressure the two halves are individually non-trivial
+and individually misleading. Solving $\dot\rho_i+3\Hub(\rho_i+\Pi_i)=0$ for the
+$\Pi_i$ that reproduces the model's equations gives
+$\Pi_I=+\Gam\rhoI/3\Hub$ for the donor and $\Pi_D=-\bfrac\Gam\rhoI/3\Hub$ for
+the recipient: the recipient does acquire a negative effective pressure, which
+is the familiar result from particle-creation cosmology, and the donor acquires
+an equal and opposite one. Their sum is $(1-\bfrac)\Gam\rhoI/3\Hub$, which
+vanishes identically at $\bfrac=1$. Read as a viscosity the donor's coefficient
+is $\zeta_I=-\Gam\rhoI/9\Hub^2<0$, which the second law forbids --- the tell
+that the precursor is not dissipating but handing energy to something else.
+
+Integrating the two-sector system with all conversion going to the defects,
+over random draws spanning two decades in rate and the full ranges of
+reinforcement and memory, gives $(\rho+3p)/\rho=1$ to the solver tolerance and
+$\dd\rho/\dd\efold=-3\rho$ to $6\times10^{-13}$.
+
+The consequence is the division of labour this paper works under. The
+acceleration comes from the vacuum's $p=-\rhoV$, which is postulated in
+\cref{asm:closure} and not derived; the kinetics, the reinforcement and the
+memory decide only how much vacuum exists by today. Any programme that hopes to
+produce acceleration from conversion alone, from vortical structure, or from
+averaging, has to break one of the hypotheses above --- and the only one this
+paper's framework leaves available is that the recipient be pressureless.
+
 \subsection{Exact identities}\label{sec:cosmology-identities}
 
 \begin{proposition}[Survival and product identities]\label{prop:identities}

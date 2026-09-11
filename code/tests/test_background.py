@@ -4,7 +4,7 @@ These check the *model identities* against numerics that do not assume them,
 and the numerics against an external reference (astropy) and against the
 closed-form solutions of the analytically solvable family.
 """
-# covers: eq:cosmology-survival, thm:jerk, thm:snap, thm:memory-fingerprint, eq:cosmography-jerk, eq:cosmography-snap, rem:jerk-neutrinos
+# covers: eq:cosmology-no-acceleration, prop:no-pressure-from-kinetics, eq:cosmology-survival, thm:jerk, thm:snap, thm:memory-fingerprint, eq:cosmography-jerk, eq:cosmography-snap, rem:jerk-neutrinos
 #   Machine-readable link from tests to the claims they cover, read by
 #   scripts/claim_ledger.py. A claim quoted in the abstract or the
 #   conclusions with nothing testing it is what the ledger exists to find.
@@ -366,3 +366,49 @@ def test_the_two_independent_integrations_agree_where_the_posterior_lives():
     assert worst_s < 1e-10, f"survival residual {worst_s:.3g} on the posterior"
 
 
+
+
+def test_conversion_between_pressureless_sectors_never_accelerates():
+    """The kinetics cannot manufacture an equation of state.
+
+    Energy exchange moves density between components and enters each continuity
+    equation as a source; it does not enter the stress tensor's spatial trace.
+    So with every component pressureless the total stays pressureless and the
+    expansion never accelerates, whatever the rate, the reinforcement or the
+    memory. This is what fixes the division of labour in the paper: the
+    acceleration comes from the vacuum's equation of state, which is postulated,
+    and the kinetics decides only how much vacuum there is.
+    """
+    import numpy as np
+    from scipy.integrate import solve_ivp
+
+    def run(gamma0, alpha, beta, tau):
+        def rhs(N, y):
+            rho_I, rho_D, f, M = y
+            H = np.sqrt(max(rho_I + rho_D, 1e-300) / 3.0)
+            gamma = gamma0 * np.exp(alpha * f + beta * M)
+            return [-3 * rho_I - gamma * rho_I / H,
+                    -3 * rho_D + gamma * rho_I / H,
+                    (1.0 - f) * gamma / H,
+                    (f - M) / (tau * H)]
+
+        sol = solve_ivp(rhs, (0.0, 8.0), [1.0, 0.0, 0.0, 0.0], method="Radau",
+                        rtol=1e-11, atol=1e-14, dense_output=True)
+        assert sol.success
+        N = np.linspace(0.0, 8.0, 300)
+        rho_I, rho_D, _, _ = sol.sol(N)
+        return N, rho_I + rho_D
+
+    rng = np.random.default_rng(0)
+    for _ in range(5):
+        gamma0 = 10 ** rng.uniform(-1, 1)
+        alpha, beta = rng.uniform(0, 8), rng.uniform(0, 8)
+        tau = 10 ** rng.uniform(-2, 1)
+        N, rho = run(gamma0, alpha, beta, tau)
+
+        # the total is pure dust: rho + 3p = rho, and rho ~ e^{-3N}
+        assert np.all(rho > 0)
+        predicted = rho[0] * np.exp(-3.0 * (N - N[0]))
+        assert np.max(np.abs(rho - predicted)) / rho[0] < 1e-9, (
+            "the total density departs from dust, so the transfer has leaked "
+            "into the total pressure")
