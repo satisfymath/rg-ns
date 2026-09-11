@@ -167,7 +167,16 @@ def main() -> int:
         like.restore()
 
     a = np.asarray(stats)
+    # A bootstrap error on the quantile, because a percentile of 96 numbers is
+    # not a precise number and the whole point of this script is to replace an
+    # assumption with a measurement rather than with a different assumption.
+    rng_bs = np.random.default_rng(0)
+    boot = np.array([np.percentile(rng_bs.choice(a, size=a.size, replace=True),
+                                   90) for _ in range(20000)])
     out = {
+        "pct90_err": float(boot.std()),
+        "prob_true_threshold_above_regular": float((boot > 2.71).mean()),
+        "fraction_exactly_zero": float((a < 1e-9).mean()),
         "model": args.model, "dataset": args.data, "n_draws": int(a.size),
         "delta_chi2": a.tolist(),
         "pct50": float(np.percentile(a, 50)),

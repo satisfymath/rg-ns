@@ -398,5 +398,29 @@
     "mem_available_before_mb": 6938.234375,
     "mem_available_after_mb": 9437.171875,
     "notes": "N=16384, 25000 graded steps"
+  },
+  {
+    "name": "map_reinforce__baseline",
+    "seconds": 15224.02683377266,
+    "peak_rss_mb": 732.25,
+    "mem_available_before_mb": 7782.6953125,
+    "mem_available_after_mb": 10179.0390625,
+    "notes": "8 restarts"
+  },
+  {
+    "name": "map_memory__baseline",
+    "seconds": 8685.229448080063,
+    "peak_rss_mb": 638.6875,
+    "mem_available_before_mb": 10179.80859375,
+    "mem_available_after_mb": 10102.9453125,
+    "notes": "8 restarts"
+  },
+  {
+    "name": "map_track_b__baseline",
+    "seconds": 3675.8949279785156,
+    "peak_rss_mb": 677.4609375,
+    "mem_available_before_mb": 10102.9453125,
+    "mem_available_after_mb": 10086.05078125,
+    "notes": "8 restarts"
   }
 ]

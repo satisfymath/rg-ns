@@ -5,11 +5,23 @@
     "protocol": "brute force: 40 Nelder-Mead runs from uniform prior draws",
     "runtime_note": "about 8.4 hours for five models"
   },
+  "memory__baseline": {
+    "chi2_min": 1434.662132300197,
+    "n_restarts": 10,
+    "protocol": "brute force superseded: screened Latin hypercube with alternating simplex and direction-set polish; beat the 40-restart brute-force run recorded here before it",
+    "runtime_note": "no earlier brute-force value existed"
+  },
   "reinforce__baseline": {
-    "chi2_min": 1434.754774590462,
-    "n_restarts": 40,
-    "protocol": "brute force: 40 Nelder-Mead runs from uniform prior draws",
-    "runtime_note": "about 8.4 hours for five models"
+    "chi2_min": 1434.6621323094564,
+    "n_restarts": 9,
+    "protocol": "brute force superseded: screened Latin hypercube with alternating simplex and direction-set polish; beat the 40-restart brute-force run recorded here before it",
+    "runtime_note": "previous frozen value 1434.754775, beaten by 0.0926"
+  },
+  "track_b__baseline": {
+    "chi2_min": 1429.2077419624725,
+    "n_restarts": 11,
+    "protocol": "brute force superseded: screened Latin hypercube with alternating simplex and direction-set polish; beat the 40-restart brute-force run recorded here before it",
+    "runtime_note": "no earlier brute-force value existed"
   },
   "xi_h__baseline": {
     "chi2_min": 1434.8789394676678,

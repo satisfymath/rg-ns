@@ -859,37 +859,49 @@
     }
   },
   "hysteresis": {
+    "delta_f_final": {
+      "fmt": ".2e",
+      "value": -5.724309914967307e-13
+    },
     "delta_memory": {
       "fmt": ".5f",
-      "value": 0.041644906341994976
+      "value": 0.04164490634199515
     },
     "delta_vacuum": {
       "fmt": ".5f",
-      "value": 0.005398599867457166
+      "value": 0.006409939453341187
     },
     "f_checkpoint": {
       "fmt": ".5f",
-      "value": 0.26283232409614143
+      "value": 0.2628323240961413
+    },
+    "f_final_A": {
+      "fmt": ".8f",
+      "value": 0.9999999999994713
+    },
+    "f_final_B": {
+      "fmt": ".8f",
+      "value": 1.0000000000000437
     },
     "memory_A": {
       "fmt": ".5f",
-      "value": 0.05833405083283243
+      "value": 0.058334050832832086
     },
     "memory_B": {
       "fmt": ".5f",
-      "value": 0.016689144490837457
+      "value": 0.016689144490836937
     },
     "relative_delta_vacuum": {
       "fmt": ".4f",
-      "value": 0.007346213586257992
+      "value": 0.08408048649177255
     },
     "vacuum_A": {
       "fmt": ".5f",
-      "value": 0.7348819638944231
+      "value": 0.07623575600943286
     },
     "vacuum_B": {
       "fmt": ".5f",
-      "value": 0.7294833640269659
+      "value": 0.06982581655609167
     }
   },
   "lindblad": {
@@ -901,10 +913,12 @@
       "value": 0.007283800909815619
     },
     "closure_slope_dicke": {
+      "err": 0.002881889572948426,
       "fmt": ".3f",
       "value": -1.0108792385331582
     },
     "closure_slope_full": {
+      "err": 0.027029527512253557,
       "fmt": ".3f",
       "value": -1.1903835872498805
     },
@@ -918,41 +932,61 @@
       "fmt": ".4f",
       "value": -0.9988740741593451
     },
+    "bounded_exponent_err": {
+      "fmt": ".2g",
+      "value": 1.622584373579932e-05
+    },
     "bounded_peak": {
       "fmt": ".4g",
       "value": 3584.481699513739
     },
     "bounded_suppression": {
-      "fmt": ".0f",
+      "fmt": ".4g",
       "value": 273.9442921849125
     },
     "control_exponent": {
       "fmt": ".4f",
       "value": -0.9993253981698985
     },
+    "control_exponent_err": {
+      "fmt": ".2g",
+      "value": 3.6015098891757454e-05
+    },
     "control_peak": {
       "fmt": ".4g",
       "value": 981948.3020230634
     },
     "dust_residual": {
-      "fmt": ".1e",
+      "fmt": ".2e",
       "value": 4.5365045053813446e-11
     },
     "final_gap": {
-      "fmt": ".0e",
+      "fmt": ".1e",
       "value": 1.0000000000287557e-06
     },
     "kappa_half_exponent": {
       "fmt": ".4f",
       "value": -0.49917885160527764
     },
+    "kappa_half_exponent_err": {
+      "fmt": ".2g",
+      "value": 1.1256256482744631e-05
+    },
     "kappa_onepointfive_exponent": {
       "fmt": ".4f",
       "value": 0.5001711748746709
     },
+    "kappa_onepointfive_exponent_err": {
+      "fmt": ".2g",
+      "value": 4.4409413469715505e-05
+    },
     "kappa_three_exponent": {
       "fmt": ".4f",
       "value": 1.9991749812537472
+    },
+    "kappa_three_exponent_err": {
+      "fmt": ".2g",
+      "value": 9.861403436980693e-05
     }
   },
   "skyrme": {
@@ -988,7 +1022,7 @@
   "symbolic": {
     "n_checks": {
       "fmt": "d",
-      "value": 6
+      "value": 8
     }
   }
 }

@@ -155,6 +155,33 @@ fit. An earlier version of this analysis
 reported a $95\%$ upper limit on $\epsilon$; it was the right-hand end of the
 grid, and it is withdrawn.
 
+\paragraph{Is $\Delta\chisq=2.71$ the right threshold here?} It is the
+regular-theory value for a one-sided limit on one parameter, and this section
+has just argued that regular theory does not apply: at $\epsilon=0$ the rate
+parameters are unidentified, which is why the information criteria were
+dropped. Using the non-regularity where it removes an unfavourable number and
+ignoring it where it would loosen a favourable one would not be defensible, so
+the threshold is measured rather than assumed. Synthetic data are generated at
+the $\LCDM$ best fit with the real covariances, both models are maximised on
+each --- the extension seeded with the null's answer embedded, so the statistic
+cannot come out negative --- and the null distribution of
+$\chisq_{\LCDM}-\chisq_{\rm ext}$ is accumulated over
+$\numThreshNDraws$ realizations. Its ninetieth percentile, which is what a
+$95\%$ one-sided limit inverts, is
+$\numThreshPctNZ\pm\numThreshPctNZErr$ against the regular-theory
+$\numThreshRegularThreshold$: the threshold in use is if anything
+\emph{conservative}, with probability
+$\numThreshProbTrueThresholdAboveRegular$ that the true value exceeds it. The
+distribution has an atom at zero --- in a fraction
+$\numThreshFractionExactlyZero$ of realizations the extension cannot improve
+on the null at all --- which is the signature of the boundary and the reason
+the naive $\chisq_1$ intuition fails in the direction it does. This is the
+Davies statistic for the unconstrained comparison, which explores more of the
+unidentified space than a profile at fixed derived quantity does, so it bounds
+the correction the profiles would need. We therefore keep $2.71$, and record
+that the limits below are marginally weaker than a calibrated threshold would
+give.
+
 \paragraph{What the data do constrain is the deficit.} The quantity with
 physical content is not how much substrate could convert but how much vacuum
 the conversion has actually produced, which is the matter deficit $\Delta$ of

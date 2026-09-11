@@ -34,6 +34,7 @@ SOURCES = [
     (ROOT / "results" / "prior_width_summary.json", "width"),
     (ROOT / "results" / "growth_comparison.json", "growth"),
     (ROOT / "results" / "evidence_repeatability.json", "repeat"),
+    (ROOT / "results" / "threshold_calibration.json", "thresh"),
 ]
 
 HEADER = (
@@ -73,6 +74,13 @@ FORMATS = {
     "ln_bayes_err": ".2f",
     "chi2_min": ".4f",
     "chi2_spread": ".4f",
+    "pct90": ".2f",
+    "pct90_err": ".2f",
+    "pct50": ".2f",
+    "pct95": ".2f",
+    "regular_threshold": ".2f",
+    "prob_true_threshold_above_regular": ".2f",
+    "fraction_exactly_zero": ".2f",
     # The jerk sits at 1 + 2 Omega_r + a neutrino term, so four
     # significant figures round it to exactly 1 and erase the thing the
     # section is about.

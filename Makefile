@@ -85,6 +85,7 @@ reproduce-full:  ## reproduce-core plus every sampler run (hours; see README_REP
 	$(PY) scripts/growth_comparison.py
 	$(PY) scripts/run_profile.py --models xi_h --data baseline --quantity matter_deficit
 	$(PY) scripts/run_profile.py --models xi_h --data baseline --quantity jerk_excess --log-range -4 -0.8
+	$(PY) scripts/calibrate_threshold.py --draws 96
 	$(PY) scripts/summarise_posteriors.py --data baseline
 	$(PY) scripts/prior_sensitivity.py --data baseline
 	$(MAKE) reproduce-core
