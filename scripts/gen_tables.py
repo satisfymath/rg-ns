@@ -56,6 +56,32 @@ DERIVED_LABEL = {
 ONE_SIDED = {"eps", "f0", "matter_deficit", "V0_minus_Vact"}
 
 
+def profiled_quantities() -> set[str]:
+    """Derived quantities with a profile that actually crosses the threshold.
+
+    A one-sided "95% upper limit" read off a marginal posterior is only a
+    limit if the likelihood rises. For a quantity that is a monotone function
+    of an unidentified direction it does not: the number is the prior's 95th
+    percentile. The text withdraws the limit on the convertible fraction for
+    exactly this reason, and the converted fraction today -- a monotone
+    function of the same directions -- was still being quoted a page later.
+
+    The criterion is applied rather than argued: a derived quantity is quoted
+    as a limit only if ``results/profile.json`` holds a profile for it whose
+    Delta chi-square crosses 2.71.
+    """
+    import json as _json
+    path = ROOT / "results" / "profile.json"
+    if not path.exists():
+        return set()
+    out = set()
+    for entry in _json.loads(path.read_text()).values():
+        q = entry.get("quantity")
+        if q and not entry.get("unbounded", True):
+            out.add(q)
+    return out
+
+
 #: A parameter whose 5--95 span covers more than this fraction of its prior is
 #: not measured; the number that would be printed for it is the prior's, not
 #: the data's.  Same threshold and same definition as the chain-stability gate,
@@ -216,13 +242,19 @@ def parameter_table(chains: dict, model: str = "memory") -> str:
             cell = pm(entry)
         frac = "---" if fill is None else rf"{fill:.0%}".replace("%", r"\%")
         lines.append(rf"{PARAM_LABEL.get(p, p)} & {cell} & {frac} \\")
+    profiled = profiled_quantities()
     lines.append(r"\midrule")
     lines.append(r"\multicolumn{3}{l}{\emph{derived}}\\")
     for p, label in DERIVED_LABEL.items():
         if p in c.get("derived", {}):
             fmt = ".2f" if p == "H0" else ".4f"
             entry = c["derived"][p]
-            cell = upper_limit(entry, fmt) if p in ONE_SIDED else pm(entry, fmt)
+            if p in ONE_SIDED and p not in profiled:
+                cell = r"\emph{prior-limited}"
+            elif p in ONE_SIDED:
+                cell = upper_limit(entry, fmt)
+            else:
+                cell = pm(entry, fmt)
             lines.append(rf"{label} & {cell} & \\")
     lines += [r"\bottomrule", r"\end{tabular}"]
     return "\n".join(lines) + "\n"

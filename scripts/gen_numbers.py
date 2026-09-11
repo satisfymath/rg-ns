@@ -120,7 +120,11 @@ def fmt(value, spec: str | None = None) -> str:
     if isinstance(value, int):
         return f"{value:,}".replace(",", r"{,}")
     if isinstance(value, float):
-        return f"{value:{spec}}" if spec else f"{value:.4g}"
+        text = f"{value:{spec}}" if spec else f"{value:.4g}"
+        # A percent format emits a bare "%", which in LaTeX comments out the
+        # rest of the line -- silently, and the macro then swallows whatever
+        # follows it in the manuscript.
+        return text.replace("%", r"\%")
     return str(value)
 
 

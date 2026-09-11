@@ -104,7 +104,17 @@ than as a measurement of nine numbers.
   \centering
   \input{generated/tab_parameters}
   \caption{Posterior for the full model on the baseline combination. Derived
-    quantities are computed from samples, not propagated linearly.}
+    quantities are computed from samples, not propagated linearly. The last
+    column is the fraction of each prior covered by the $5$--$95$ span, by the
+    same definition the chain-stability gate uses; a parameter above
+    $\numDiagPriorFillMax$ of its prior is marked \emph{unconstrained} and no
+    number is quoted for it, because the number would be the prior's. A
+    derived quantity is marked \emph{prior-limited} when it is bounded only in
+    that sense --- when no profile of it crosses $\Delta\chisq=2.71$ --- which
+    is why $\Delta$ carries a limit and $\fconv_0$ does not. The limit shown
+    for $\Delta$ is the marginal $95\%$ bound for this nine-parameter model;
+    \cref{eq:observations-deficit-limit} is the profile-likelihood limit for
+    the $\Gam=\xi\Hub$ benchmark, and the two agree to about eight per cent.}
   \label{tab:parameters}
 \end{table}
 

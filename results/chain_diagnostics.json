@@ -12,6 +12,10 @@
     "outside_prior_fraction": 0.0,
     "tau_max": 12.727108821408745
   },
+  "prior_fill_max": {
+    "fmt": ".0%",
+    "value": 0.75
+  },
   "reinforce_baseline_demove_frozen": {
     "acceptance": 0.008492998710683338,
     "de_gamma": 0.63608175575157,

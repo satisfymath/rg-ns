@@ -108,6 +108,16 @@ def main() -> int:
         print(f"  {key:34s} acc {d['acceptance']:.4f}  move "
               f"{d['move_rate_early']:.4f} -> {d['move_rate_late']:.4f}  "
               f"outside prior {d['outside_prior_fraction']:.3f}")
+    # The threshold the gate and the parameter table both use, promoted so the
+    # manuscript can quote it instead of typing it. Imported from the gate
+    # rather than repeated, so the three cannot drift apart.
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "_ccs", ROOT / "scripts" / "check_chain_stability.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    out["prior_fill_max"] = {"value": float(mod.PRIOR_FILL_MAX), "fmt": ".0%"}
+
     OUT.write_text(json.dumps(out, indent=2, sort_keys=True))
     print(f"wrote {OUT.relative_to(ROOT)}")
     return 0
