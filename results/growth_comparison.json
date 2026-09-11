@@ -1,5 +1,12 @@
 {
+  "change": -0.21721398051772667,
+  "datasets": [
+    "baseline",
+    "rsd"
+  ],
   "ln_bayes_baseline": -1.6119663689116805,
+  "ln_bayes_baseline_err": 0.2862415979651169,
   "ln_bayes_with_growth": -1.8291803494294072,
-  "change": -0.21721398051772667
+  "ln_bayes_with_growth_err": 0.2855863715254291,
+  "model": "xi_h"
 }

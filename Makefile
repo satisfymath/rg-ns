@@ -48,6 +48,7 @@ check:    ## all quality gates
 	$(PY) scripts/claim_ledger.py
 	$(PY) scripts/check_chain_stability.py
 	$(PY) scripts/check_map_reference.py
+	$(PY) scripts/check_reproducible.py
 	@echo "== all gates passed =="
 
 arxiv:    ## build the arXiv submission bundle
@@ -79,6 +80,8 @@ reproduce-full:  ## reproduce-core plus every sampler run (hours; see README_REP
 	$(PY) scripts/run_map.py --models lcdm xi_h reinforce memory track_b --data baseline
 	$(PY) scripts/evidence_repeatability.py --model xi_h --data baseline --repeats 3
 	$(PY) scripts/prior_width_evidence.py --model xi_h --param log10_xi --lows -3 -5 -7
+	$(PY) scripts/prior_width_summary.py
+	$(PY) scripts/growth_comparison.py
 	$(PY) scripts/run_profile.py --models xi_h --data baseline --quantity matter_deficit
 	$(PY) scripts/run_profile.py --models xi_h --data baseline --quantity jerk_excess --log-range -4 -0.8
 	$(PY) scripts/summarise_posteriors.py --data baseline
