@@ -51,10 +51,14 @@ into.
   term carrying a $\umu$ and leaves \cref{eq:perturbations-vorticity}.
 \end{proof}
 
-This is stronger than the clock argument of \cref{sec:realizations-clock},
+This is more general than the clock argument of \cref{sec:realizations-clock},
 which obtains $\omega_{\mu\nu}=0$ from $u_\mu=-\partial_\mu\clock$ and
-therefore covers only that realization. \Cref{prop:vorticity-obstruction} uses
-no realization at all. The consequence is worth stating plainly: a rotating
+therefore covers only that realization; it is not stronger, and the difference
+matters. \Cref{eq:perturbations-vorticity} permits $\omega_{\mu\nu}\ne0$
+wherever $\QV=0$, which the clock realization does not, so what is bought by
+dropping the realization is generality and what is paid is the set where the
+transfer is off. \Cref{prop:vorticity-obstruction} uses no realization at
+all. The consequence is worth stating plainly: a rotating
 flow cannot be the one that feeds an exact vacuum, so any picture in which
 vortical structures drive the vacuum production must abandon one of the three
 hypotheses. The minimal abandonment is the second. Allowing a spatial momentum
@@ -264,11 +268,16 @@ the others that point the same way.
 \end{theorem}
 
 \begin{proof}
-  Perturb the continuity equation of each pressureless species and add. The
-  transfer contributes $-\bar\Gam\bar\rho_I\delta_I$ to the precursor and
-  $+\bfrac\bar\Gam\bar\rho_I\delta_I$ to the defects, so the terms proportional
-  to $\bfrac$ cancel in the sum and the residual transfer term is exactly
-  $-\delta \QV$, which vanishes by \cref{eq:perturbations-com}. The
+  Perturb the continuity equation of each pressureless species and add. Write
+  the perturbed transfer out of the precursor as $\delta(\Gam\rhoI)$ without
+  evaluating it: the defects then receive $+\bfrac\,\delta(\Gam\rhoI)$ and the
+  vacuum $+(1-\bfrac)\delta(\Gam\rhoI)$, so in the dust sum the terms
+  proportional to $\bfrac$ cancel identically and the residual is exactly
+  $-\delta \QV$, which vanishes by \cref{eq:perturbations-com}. Leaving
+  $\delta(\Gam\rhoI)$ unevaluated is not fastidiousness: writing it as
+  $\bar\Gam\bar\rho_I\delta_I$ would set $\delta\Gam=0$, which contradicts
+  \cref{asm:geodesic}'s $\delta\Gam/\bar\Gam=-\delta_I$, under which the two
+  contributions vanish separately. The cancellation needs neither. The
   $+\gamma_c\delta_{\rm m}$ of \cref{eq:perturbations-system} therefore does not
   come from the transfer perturbation at all: it comes from the denominator,
   because $\delta_{\rm m}$ is defined relative to a background density obeying
@@ -382,8 +391,9 @@ shortcut here: one might expect $\Phi$ to decay at the full rate
 $\bar \QV/(\Hub\bar\rho_{\rm m})$, since that is the rate at which the matter
 is drained, but that answer holds only if $\delta_{\rm m}$ is frozen. Including
 the back-reaction of the drain on the growth reduces it by the factor
-$2/(2p_g+5)$, which for the fitted rate law and $p=6$ is about one
-seventh.
+$2/(2p_g+5)$, which for the fitted rate law and $p=6$ means
+$p_g=p+\tfrac32$ by \cref{eq:perturbations-peff} and so a factor of one
+tenth.
 
 \subsection{No large-scale instability}\label{sec:perturbations-stability}
 

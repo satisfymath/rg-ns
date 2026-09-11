@@ -38,14 +38,30 @@ parametrizations and states what it predicts that cannot be fitted away.
 \end{theorem}
 
 \begin{proof}
-  Apply the Nagumo subtangent criterion face by face. On $\{\rhoI=0\}$ the
-  field is $\dot\rhoI=0$; on $\{\rhoD=0\}$ it is $\dot\rhoD=\bfrac\Gam\rhoI\ge0$;
-  on $\{\rhoV=0\}$ it is $\dot \rhoV=(1-\bfrac)\Gam\rhoI\ge0$; on
-  $\{\rhob=0\}$ and $\{\rhor=0\}$ it vanishes. In every case the field points
-  into the orthant or along its boundary, which is the subtangent condition;
-  local integrability of $\Gam$ suffices because the argument is applied to the
-  integral form of the equations.
+  Not by the Nagumo subtangent criterion, which is a statement about continuous
+  vector fields and would need a continuity hypothesis the theorem declines to
+  make. Integrating factors suffice and need nothing beyond local
+  integrability. The precursor equation is linear in $\rhoI$, so
+  %
+  \begin{equation*}
+    \rhoI(t)=\rhoI(t_i)\exp\left[-\int_{t_i}^{t}\left(3\Hub+\Gam\right)\dd s
+    \right]\ \ge 0 ,
+  \end{equation*}
+  %
+  the integral being finite on any interval where the solution exists. With
+  $\rhoI\ge0$ the sources $\bfrac\Gam\rhoI$ and $(1-\bfrac)\Gam\rhoI$ are
+  non-negative, and the same integrating factor applied to $\rhoD$ and to
+  $\rhoV$ writes each as a non-negative initial value times a positive
+  exponential plus a non-negative integral of those sources. Baryons and
+  radiation are unsourced and the same argument applies with no source term.
 \end{proof}
+
+Two remarks on what the theorem does and does not assert. It is conditional on
+existence --- it says the densities cannot change sign while a solution lasts,
+not that one lasts forever --- and existence on a maximal interval follows from
+\cref{thm:regular-future} under the extra hypotheses stated there, not from
+this argument. And ``forward'' is essential; see the first of the two
+consequences recorded below.
 
 The mechanism is visible in the proof and is worth naming, because it is what
 the pathological models lack: \emph{every outflow is proportional to the

@@ -48,9 +48,10 @@ everything that follows.
   \label{prop:no-pressure-from-kinetics}
   Let the dark sector consist of components exchanging energy with no momentum
   transfer, each a perfect fluid with its own density $\rho_i$ and pressure
-  $p_i$. Then the total pressure is $\sum_i p_i$, independent of every transfer
-  rate. In particular, if every component is pressureless the total is
-  pressureless, and
+  $p_i$ \emph{and a common four-velocity}. Then the total pressure is
+  $\sum_i p_i$, independent of every transfer rate. In particular, if every
+  component is pressureless the total is pressureless, and, provided the total
+  density is non-negative,
   %
   \begin{keyresult}{C}{eq:cosmology-no-acceleration}
     \ddot a\le0 \quad\text{for all }t,
@@ -66,6 +67,18 @@ everything that follows.
   depends on the total through $\rho+3p$ alone, and the sources cancel in the
   sum by total conservation.
 \end{proof}
+
+Both added hypotheses earn their place. A common four-velocity is needed
+because perfect fluids in relative motion generate an isotropic pressure from
+that motion, so ``each a perfect fluid'' alone does not give
+$p_{\rm tot}=\sum_ip_i$; in this model the dark components share the congruence
+of \cref{asm:closure} and the hypothesis holds. Non-negativity of the total
+density is needed for the second conclusion and not the first: with
+$p_{\rm tot}=0$ the acceleration equation gives
+$\ddot a/a=-\rho_{\rm tot}/(6\Mpl^2)$, so $\ddot a\le0$ requires
+$\rho_{\rm tot}\ge0$ --- which \cref{thm:quasi-positivity} supplies towards the
+future, and which \cref{sec:solvable-early} shows is exactly what can fail
+towards the past.
 
 Read as an effective bulk pressure the two halves are individually non-trivial
 and individually misleading. Solving $\dot\rho_i+3\Hub(\rho_i+\Pi_i)=0$ for the
@@ -200,8 +213,14 @@ caustics or gravitational collapse.
 \end{theorem}
 
 \begin{proof}
-  Under the second alternative the source $\QV$ is strictly positive initially,
-  so there is $t_1$ with $\rhoV(t_1)>0$; by monotonicity
+  Under the second alternative $\int^\infty\Gam\,\dd t=\infty$, so $\Gam$ cannot
+  vanish identically and there is $t_1$ with $\Gam(t_1)>0$; since
+  $\rhoI(t_1)>0$ by \cref{eq:cosmology-survival} and $\bfrac<1$, the source
+  $\QV$ is positive there and $\rhoV(t)>0$ for $t>t_1$. Note that $\QV$ need
+  \emph{not} be positive initially --- under \cref{asm:activation} it is not,
+  since $\Gam\to0$ as $a\to0$ --- so $\Hub>0$ before $t_1$ comes from
+  \cref{thm:regular-future} and not from this argument. For $t>t_1$, by
+  monotonicity
   $\Hub\ge\sqrt{\rhoV(t_1)/3\Mpl^2}>0$ thereafter, hence $a$ grows at least
   exponentially. \Cref{eq:cosmology-survival} bounds the comoving dust density,
   so dust and radiation decay exponentially in $t$, while $\rhoV$ is monotone

@@ -12,8 +12,8 @@ background signature.
 
 \begin{theorem}[Jerk identity and bound]\label{thm:jerk}
   For a spatially flat universe containing pressureless matter, conserved
-  radiation, an exact vacuum that receives energy at rate $\QV$, and any
-  further conserved species whose pressure is non-increasing in time,
+  radiation and an exact vacuum that receives energy at rate $\QV$, and nothing
+  else,
   %
   \begin{keyresult}{C}{eq:cosmography-jerk}
     \jerk=1+2\Omr+\varepsilon ,
@@ -26,6 +26,14 @@ background signature.
   \begin{keyresult}{C}{eq:cosmography-jerk-bound}
     \QV\ge0\ \Longrightarrow\ \jerk\ \ge\ 1+2\Omr .
   \end{keyresult}
+  %
+  Adding any further conserved species whose pressure is non-increasing in time
+  --- a massive neutrino, for instance --- leaves \cref{eq:cosmography-jerk} an
+  inequality, $\jerk\ge1+2\Omr+\varepsilon$, and therefore strengthens
+  \cref{eq:cosmography-jerk-bound} rather than weakening it. The identity and
+  the bound are stated separately because only the second survives the
+  addition; \cref{rem:jerk-neutrinos} quantifies the extra term for the fits of
+  \cref{sec:observations}.
 \end{theorem}
 
 \begin{remark}[Massive neutrinos strengthen the bound]\label{rem:jerk-neutrinos}
@@ -78,10 +86,17 @@ today, which says that the transfer measured against the expansion rate is
 still switching on, then $\mathsf q\le \mathsf q_0$ throughout and
 %
 \begin{keyresult}{C}{eq:cosmography-deficit-floor}
+  \mathsf q\ \text{non-decreasing}
+  \ \Longrightarrow\
   j_0-1\ \ge\ 2\Omega_{r0}+\frac92\,\Delta ,
 \end{keyresult}
 %
-with the relation exact, $\varepsilon_0=\tfrac32(p_{\rm eff}+3)\Delta$, when
+The hypothesis is displayed inside the box because the level marked on it
+--- theorem of the model --- would otherwise overstate it: the implication is
+proved, and the paragraphs below show that this model's activation law does not
+satisfy the antecedent for any activation redshift tried, so the consequent is
+never actually available here. With the relation exact,
+$\varepsilon_0=\tfrac32(p_{\rm eff}+3)\Delta$, when
 $\mathsf q\propto a^{p_{\rm eff}}$ near today. The hypothesis is on
 $\QV/\Hub$, not on $\QV a^3/\Hub$. The latter is strictly weaker and gives no
 floor: since $\Delta$ already weights $\mathsf q$ by $a^3$, a $\mathsf q$ that
@@ -110,8 +125,10 @@ before today, leaving a large deficit and a transfer that has already switched
 off, so $\varepsilon_0$ is small; a late one has the opposite. The deficit and
 the jerk excess therefore measure different things, and neither bounds the
 other.
-a class of transfer histories that this model does not realise, and nothing in
-this paper may be inferred from it. In particular a bound on the deficit does
+
+What survives of \cref{eq:cosmography-deficit-floor} is therefore a statement
+about a class of transfer histories that this model does not realise, and
+nothing in this paper may be inferred from it. In particular a bound on the deficit does
 not bound the jerk excess: the relation runs the wrong way for that even when
 it holds. Where the jerk excess is needed it is computed directly, as in
 \cref{sec:observations-results}. We keep the bound because the hypothesis is a
