@@ -73,6 +73,10 @@ FORMATS = {
     "ln_bayes_err": ".2f",
     "chi2_min": ".4f",
     "chi2_spread": ".4f",
+    # The jerk sits at 1 + 2 Omega_r + a neutrino term, so four
+    # significant figures round it to exactly 1 and erase the thing the
+    # section is about.
+    "j0": ".5f",
     "z_star_recipe": ".2f",
     "z_star_planck": ".2f",
     "reference_chi2": ".4f",
@@ -100,7 +104,12 @@ FORMATS = {
     "logz_spread": ".3f",
     "logz_reported_error": ".3f",
     "ratio_spread_to_reported": ".2f",
+    # "today" is the neutrino jerk term's key and wants an exponent; the
+    # matter densities end in the same word and do not, so they are registered
+    # explicitly and the longest match wins.
     "today": ".1e",
+    "omega_m_today": ".4f",
+    "omega_m_early": ".4f",
     "z_of_max": ".0f",
     "two_omega_r_today": ".2e",
     "length_in_tau": ".0f",
@@ -126,7 +135,15 @@ def fmt(value, spec: str | None = None) -> str:
         # A percent format emits a bare "%", which in LaTeX comments out the
         # rest of the line -- silently, and the macro then swallows whatever
         # follows it in the manuscript.
-        return text.replace("%", r"\%")
+        text = text.replace("%", r"\%")
+        # Machine exponent notation -- "4.9e-05" -- is not acceptable in a
+        # journal's prose and appeared in nine places in the manuscript.
+        # siunitx renders it properly both in and out of math mode, so the
+        # macro carries the markup rather than every call site having to
+        # remember it.
+        if re.fullmatch(r"-?\d+(\.\d+)?[eE][-+]?\d+", text):
+            return "\\num{" + text + "}"
+        return text
     return str(value)
 
 
@@ -157,7 +174,17 @@ def walk(node, prefix: str, out: dict[str, str],
 
     if isinstance(node, dict):
         if "value" in node:
-            put(camel(prefix), fmt(node["value"], node.get("fmt")), prefix)
+            # The registered FORMATS were consulted only for bare scalars, so
+            # a quantity stored as {"value": ...} fell back to four significant
+            # figures whatever its entry said. That rounded the LambdaCDM jerk
+            # to exactly 1 and erased the neutrino term the section is about.
+            # Longest registered suffix first: "omega_m_today" must beat
+            # "today", which carries an exponent format for a different
+            # quantity entirely.
+            spec = (node.get("fmt")
+                    or FORMATS.get(_tail(prefix))
+                    or FORMATS.get(prefix.rsplit("_", 1)[-1]))
+            put(camel(prefix), fmt(node["value"], spec), prefix)
             for extra in ("err", "err_lo", "err_hi"):
                 if extra in node:
                     put(camel(f"{prefix}_{extra}"),
@@ -168,8 +195,8 @@ def walk(node, prefix: str, out: dict[str, str],
             walk(v, f"{prefix}_{k}" if prefix else k, out, origin)
     elif isinstance(node, (int, float, str, bool)):
         put(camel(prefix),
-            fmt(node, FORMATS.get(prefix.rsplit("_", 1)[-1])
-                or FORMATS.get(_tail(prefix))), prefix)
+            fmt(node, FORMATS.get(_tail(prefix))
+                or FORMATS.get(prefix.rsplit("_", 1)[-1])), prefix)
 
 
 def collect() -> dict[str, str]:
