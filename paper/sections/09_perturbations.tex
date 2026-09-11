@@ -20,7 +20,48 @@ gradient, hence
 \end{keyresult}
 %
 This is a genuine constraint, not a definition: a scalar expression for $\QV$
-does not by itself define a consistent transfer. In the clock realization
+does not by itself define a consistent transfer. Its spatial projection is
+sharper than the Frobenius statement below, and is worth extracting because it
+settles a question the geometric readings of \cref{sec:outlook} keep running
+into.
+
+\begin{proposition}[An exact vacuum fed without momentum transfer forbids
+  vorticity]\label{prop:vorticity-obstruction}
+  Let the vacuum be exact, $T^{\mu\nu}_V=-\rhoV g^{\mu\nu}$, let it receive
+  energy with no spatial momentum transfer in the frame $\umu$, so that
+  $\covd_\mu T^{\mu\nu}_V=\QV u^\nu$, and let $\umu$ be a unit timelike field.
+  Then
+  %
+  \begin{keyresult}{C}{eq:perturbations-vorticity}
+    \QV\,\omega_{\mu\nu}=0 ,
+  \end{keyresult}
+  %
+  where $\omega_{\mu\nu}$ is the vorticity of $\umu$: the congruence is
+  irrotational wherever the transfer is active.
+\end{proposition}
+
+\begin{proof}
+  The first hypothesis gives $\covd_\mu T^{\mu\nu}_V=-\covd^\nu\rhoV$, so the
+  second reads $\covd_\mu\rhoV=-\QV u_\mu$. The left side is a gradient, whose
+  curl vanishes identically, so $\covd_{[\mu}(\QV u_{\nu]})=0$. Decomposing
+  $\covd_\mu u_\nu=-u_\mu a_\nu+\tfrac13\expa h_{\mu\nu}+\sigma_{\mu\nu}
+  +\omega_{\mu\nu}$ and antisymmetrising removes $h$ and $\sigma$, leaving
+  $(\covd_{[\mu}\QV)u_{\nu]}+\QV(\omega_{\mu\nu}-u_{[\mu}a_{\nu]})=0$.
+  Projecting both indices with $h^\mu{}_\alpha h^\nu{}_\beta$ annihilates every
+  term carrying a $\umu$ and leaves \cref{eq:perturbations-vorticity}.
+\end{proof}
+
+This is stronger than the clock argument of \cref{sec:realizations-clock},
+which obtains $\omega_{\mu\nu}=0$ from $u_\mu=-\partial_\mu\clock$ and
+therefore covers only that realization. \Cref{prop:vorticity-obstruction} uses
+no realization at all. The consequence is worth stating plainly: a rotating
+flow cannot be the one that feeds an exact vacuum, so any picture in which
+vortical structures drive the vacuum production must abandon one of the three
+hypotheses. The minimal abandonment is the second. Allowing a spatial momentum
+transfer $q_\mu$, so that the source is $\QV\umu+q_\mu$, the same projection
+gives $\QV\omega_{\mu\nu}=-h^\alpha{}_\mu h^\beta{}_\nu\covd_{[\alpha}q_{\beta]}$:
+vorticity is permitted exactly to the extent that the momentum transfer carries
+a spatial curl. That is a requirement on a mechanism, not a freedom. In the clock realization
 $u_\mu=-\partial_\mu \clock$, and \cref{eq:perturbations-integrability} is
 equivalent to $\dd \QV\wedge \dd \clock=0$, so that $\QV$ and $\rhoV$ are
 functions of $\clock$ alone wherever the clock is regular. That proviso is not

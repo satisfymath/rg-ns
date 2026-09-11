@@ -695,7 +695,9 @@
     "level_name": null,
     "referenced_in": [],
     "status": "UNREVIEWED",
-    "tests": [],
+    "tests": [
+      "test_symbolic.py"
+    ],
     "text": "",
     "title": ""
   },
@@ -855,6 +857,21 @@
     "referenced_in": [],
     "status": "UNREVIEWED",
     "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:perturbations-vorticity": {
+    "claim_id": "eq:perturbations-vorticity",
+    "file": "09_perturbations.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_symbolic.py"
+    ],
     "text": "",
     "title": ""
   },
@@ -1713,6 +1730,21 @@
     ],
     "text": "Let $\\Hilb$ be finite-dimensional, $U(t)=e^{-iHt/\\hbar}$ unitary, and $\\mathcal A\\subset\\Hilb$ a subspace with $U(t)\\mathcal A\\subseteq\\mathcal A$ for all $t\\ge0$. Then $U(t)\\mathcal A=\\mathcal A$ and $U(t)\\mathcal A^{\\perp}=\\mathcal A^{\\perp}$, so the probability of occupying $\\mathcal A$ cannot increase by transfer from its complement.",
     "title": "No absorption under unitary flow"
+  },
+  "prop:vorticity-obstruction": {
+    "claim_id": "prop:vorticity-obstruction",
+    "file": "09_perturbations.tex",
+    "in_summary": [],
+    "kind": "proposition",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_symbolic.py"
+    ],
+    "text": "Let the vacuum be exact, $T^{\\mu\\nu}_V=-\\rhoV g^{\\mu\\nu}$, let it receive energy with no spatial momentum transfer in the frame $\\umu$, so that $\\covd_\\mu T^{\\mu\\nu}_V=\\QV u^\\nu$, and let $\\umu$ be a unit timelike field. Then % \\begin{keyresult}{C}{eq:perturbations-vorticity} \\QV\\,\\omega_{\\mu\\nu}=0 , \\end{keyresult} % where $\\omega_{\\mu\\nu}$ is the vorticity of $\\umu$: the congruence is irrotation",
+    "title": "An exact vacuum fed without momentum transfer forbids\n  vorticity"
   },
   "rem:activation-local": {
     "claim_id": "rem:activation-local",

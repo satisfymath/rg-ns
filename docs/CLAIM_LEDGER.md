@@ -6,8 +6,8 @@ conclusions that refer to it: those are the places where a claim can
 quietly become stronger than its proof, which is what four referees
 found independently.
 
-- results catalogued: **139**
-- carrying an explicit evidential level: **55**
+- results catalogued: **141**
+- carrying an explicit evidential level: **56**
 - referred to from a summary section: **22**
 - referred to from a summary but covered by no test: **0**
 
@@ -60,7 +60,7 @@ found independently.
 | `eq:observations-deficit-limit` | equation | — | 10_observations.tex | 14_conclusions.tex | published_limits |
 | `eq:observations-jerk-limit` | equation | — | 10_observations.tex | 14_conclusions.tex | published_limits |
 | `eq:outlook-bridge` | keyresult | S (conjecture) | 13_outlook.tex | — | — |
-| `eq:outlook-reynolds-eos` | equation | — | 13_outlook.tex | — | — |
+| `eq:outlook-reynolds-eos` | equation | — | 13_outlook.tex | — | symbolic |
 | `eq:outlook-spin` | keyresult | S (conjecture) | 13_outlook.tex | — | — |
 | `eq:perturbations-com` | equation | — | 09_perturbations.tex | — | — |
 | `eq:perturbations-compatibility` | equation | — | 09_perturbations.tex | — | — |
@@ -72,6 +72,7 @@ found independently.
 | `eq:perturbations-isw` | keyresult | C (theorem of the model) | 09_perturbations.tex | — | — |
 | `eq:perturbations-peff` | equation | — | 09_perturbations.tex | — | — |
 | `eq:perturbations-system` | keyresult | C (theorem of the model) | 09_perturbations.tex | — | — |
+| `eq:perturbations-vorticity` | keyresult | C (theorem of the model) | 09_perturbations.tex | — | symbolic |
 | `eq:positivity-deficit` | keyresult | C (theorem of the model) | 05_positivity_ide.tex | — | — |
 | `eq:positivity-map` | keyresult | I (identity) | 05_positivity_ide.tex | — | — |
 | `eq:positivity-no-sign-flip` | keyresult | C (theorem of the model) | 05_positivity_ide.tex | — | — |
@@ -131,6 +132,7 @@ found independently.
 | `prop:recipient-proportional` | proposition | — | 05_positivity_ide.tex | 14_conclusions.tex | symbolic |
 | `prop:survival` | proposition | — | 03_absorbing_process.tex | — | — |
 | `prop:unitary-obstruction` | proposition | — | 12_quantum.tex | — | lindblad |
+| `prop:vorticity-obstruction` | proposition | — | 09_perturbations.tex | — | symbolic |
 | `rem:activation-local` | remark | — | 06_solvable_early.tex | — | early_branch |
 | `rem:bridge-limits` | remark | — | 08_realizations.tex | — | — |
 | `rem:hazard-time-change` | remark | — | 03_absorbing_process.tex | — | collapse |

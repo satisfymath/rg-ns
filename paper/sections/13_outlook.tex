@@ -139,15 +139,36 @@ $\avg{w_iw_j}=\tfrac12a_ia_j$, hence
   w_{\rm eff}=\frac{p_{\rm R}}{\varepsilon_{\rm kin}}=\frac23 ,
 \end{equation}
 %
-exactly, and unchanged for any superposition of families with vanishing cross
-terms. This is the ideal monatomic-gas relation, and it is not an accident:
-$\avg{w\otimes w}$ is a sum of rank-one terms $\tfrac12 a\otimes a$ with
-positive weights, so it is positive semidefinite and its trace can never be
-negative. Measured instead against a total energy density including rest mass
+exactly. Both statements are in fact unconditional, and the qualification we
+first attached to them --- that the modes have vanishing cross terms --- is not
+needed for either.
+
+The value is an identity. Writing $R_{ij}=\avg{\rho\,\delta v_i\delta v_j}$ for
+a density-weighted average, $p_{\rm R}=\Tr R/3$ and
+$\varepsilon_{\rm kin}=\tfrac12\avg{\rho\abs{\delta v}^2}=\Tr R/2$ by
+definition, so $w_{\rm eff}=2/3$ for \emph{any} velocity field and any
+non-negative weight: the two quantities are the same trace with different
+factors, and transversality never enters. The positivity needs exactly one
+hypothesis. For any direction $n$,
+$n^iR_{ij}n^j=\avg{\rho\,(n\cdot\delta v)^2}\ge0$ whenever $\rho\ge0$, so $R$ is
+positive semidefinite and its trace cannot be negative whatever the
+correlations, the anisotropy, or the number of scales. Replacing $\rho$ by a
+signed weight does produce negative eigenvalues, which locates the content of
+the result: it rests on the non-negativity of the mass density and on nothing
+else. Measured instead against a total energy density including rest mass
 one gets $w_{\rm eff}=\avg{v^2}/3c^2\ge0$, the warm-dark-matter result. Both
 normalizations are strictly positive. An averaged quadratic stress of this kind
-therefore cannot approach $p=-\rho$ by any choice of amplitudes or number of
-modes; reaching it needs a different object, not a better average. The same
+therefore cannot approach $p=-\rho$ by any choice of amplitudes, correlations or
+number of modes; reaching it needs a different object, not a better average.
+
+One distinction is worth making explicit, because the intuition that motivates
+the attempt comes from a different quantity. The pressure depression that
+sustains a vortex core is not $p_{\rm R}$. For incompressible flow the pressure
+is determined only up to an additive function of time, $p\to p+C(t)$, which
+changes no motion, so a core depression is a difference within a solution and
+not an absolute value. What a cosmological reading needs is the full stress
+tensor, where that freedom is fixed by the coupling to gravity --- and the
+fixed value is the one bounded below by zero above. The same
 computation for high-frequency gravitational waves gives $p=\rho/3$. Concentration phenomena in the continuum limit are suggestive of
 where a description of this kind would break down, but a singularity of a
 continuum equation says only that the solution leaves a regularity class; it

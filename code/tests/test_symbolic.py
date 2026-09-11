@@ -4,7 +4,7 @@ Each ``check_*`` is exercised twice: once through its own assertion machinery,
 and once through an independent spot check performed here, so that a check that
 silently degenerated into a tautology would still be caught.
 """
-# covers: eq:realizations-lnrate, eq:realizations-alpha, thm:quasi-positivity, thm:no-sign-flip, prop:recipient-proportional, thm:regular-future, thm:de-sitter, thm:sandwich, thm:sign-table
+# covers: eq:perturbations-vorticity, prop:vorticity-obstruction, eq:outlook-reynolds-eos, eq:realizations-lnrate, eq:realizations-alpha, thm:quasi-positivity, thm:no-sign-flip, prop:recipient-proportional, thm:regular-future, thm:de-sitter, thm:sandwich, thm:sign-table
 #   Machine-readable link from tests to the claims they cover, read by
 #   scripts/claim_ledger.py. A claim quoted in the abstract or the
 #   conclusions with nothing testing it is what the ledger exists to find.
@@ -178,3 +178,86 @@ def test_upward_nucleation_rate_rises_with_accumulated_flux():
     # (iv) alpha = 3 (N q / h) Delta S in the entropy-dominated regime
     alpha_entropy = sp.simplify(N * q * sp.diff(-delta_S, h))
     assert sp.simplify(alpha_entropy / delta_S - 3 * N * q / h) == 0
+
+
+def test_exact_vacuum_fed_without_momentum_transfer_forbids_vorticity():
+    """Q_V omega_{mu nu} = 0, checked on explicit tensors.
+
+    The integrability of the transfer is standard; the vorticity corollary is
+    what the geometric readings of the outlook keep running into, so the index
+    placement is verified rather than quoted. Built from a concrete unit
+    timelike u, a spatial acceleration, a spatial symmetric traceless shear and
+    a spatial antisymmetric vorticity, all satisfying their constraints.
+    """
+    import numpy as np
+
+    rng = np.random.default_rng(3)
+    eta = np.diag([-1.0, 1.0, 1.0, 1.0])
+
+    v = rng.normal(size=3) * 0.3
+    gamma = 1.0 / np.sqrt(1.0 - v @ v)
+    u_up = np.array([gamma, *(gamma * v)])
+    u_dn = eta @ u_up
+    assert abs(u_up @ eta @ u_up + 1.0) < 1e-12
+
+    h = eta + np.outer(u_dn, u_dn)
+    h_mixed = np.linalg.inv(eta) @ h
+
+    def spatial(M):
+        return h_mixed.T @ M @ h_mixed
+
+    sym = rng.normal(size=(4, 4))
+    sigma = spatial((sym + sym.T) / 2)
+    sigma = sigma - np.trace(np.linalg.inv(eta) @ sigma) / 3 * h
+    anti = rng.normal(size=(4, 4))
+    omega = spatial((anti - anti.T) / 2)
+    accel = h_mixed.T @ rng.normal(size=4)
+
+    # the pieces must satisfy their defining properties
+    assert abs(accel @ u_up) < 1e-10
+    assert np.abs(omega + omega.T).max() < 1e-10
+    assert np.abs(omega @ u_up).max() < 1e-10
+    assert abs(np.trace(np.linalg.inv(eta) @ sigma)) < 1e-10
+
+    Q, theta = 1.3, 0.7
+    grad_u = -np.outer(u_dn, accel) + theta / 3 * h + sigma + omega
+    antisymmetrised = Q * (grad_u - grad_u.T) / 2
+
+    # the spatial projection of the Q-proportional part is exactly Q omega
+    assert np.abs(spatial(antisymmetrised) - Q * omega).max() < 1e-9
+
+
+def test_averaged_kinetic_stress_is_positive_for_any_correlations():
+    """w_eff = 2/3 is an identity, and positivity needs only rho >= 0.
+
+    Section 13.6 first qualified both as holding for superpositions with
+    vanishing cross terms. Neither qualification is needed: p = Tr(R)/3 and
+    eps_kin = Tr(R)/2 by definition, so their ratio is 2/3 for any field, and
+    n.R.n = <rho (n.dv)^2> is non-negative whenever rho is.
+    """
+    import numpy as np
+
+    rng = np.random.default_rng(0)
+    n = 60_000
+
+    def stress(rho, dv):
+        return np.einsum("n,ni,nj->ij", rho, dv, dv) / len(rho)
+
+    fields = {
+        "independent": rng.normal(size=(n, 3)),
+        "rank one": np.outer(rng.normal(size=n), [1.0, 2.0, -0.5]),
+        "anticorrelated": (lambda s: np.c_[s, -s, 0.3 * s])(rng.normal(size=n)),
+        "heavy tailed": rng.standard_t(1.5, size=(n, 3)),
+    }
+    for name, dv in fields.items():
+        rho = rng.random(n)                       # any non-negative weight
+        R = stress(rho, dv)
+        assert np.linalg.eigvalsh(R).min() > -1e-10, name
+        p = np.trace(R) / 3.0
+        eps_kin = 0.5 * np.einsum("n,ni,ni->", rho, dv, dv) / n
+        assert abs(p / eps_kin - 2.0 / 3.0) < 1e-12, name
+
+    # a signed weight, which rho >= 0 forbids, does break it
+    dv = rng.normal(size=(n, 3))
+    R = stress(rng.normal(size=n), dv)
+    assert np.linalg.eigvalsh(R).min() < 0.0
