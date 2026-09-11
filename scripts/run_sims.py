@@ -190,12 +190,27 @@ def merge_pancake(data: dict) -> dict:
     pk = json.loads(src.read_text())
     def grab(case, key, fmt=".4g"):
         return {"value": float(pk[case][key]), "fmt": fmt}
+
+    def grab_exp(case, key, fmt=".4f"):
+        """An exponent and its fit uncertainty, promoted together.
+
+        Separately is how they get separated: the paper quoted these bare for
+        a while, which claims a precision the straight-line fit over a decade
+        does not establish.
+        """
+        d = {"value": float(pk[case][key]), "fmt": fmt}
+        err = pk[case].get(key + "_err")
+        return d, ({"value": float(err), "fmt": ".2g"}
+                   if err is not None else None)
+
     out = {}
     if "A_none" in pk:
-        out["control_exponent"] = grab("A_none", "exp_rho_I_near", ".4f")
+        out["control_exponent"], e = grab_exp("A_none", "exp_rho_I_near")
+        if e: out["control_exponent_err"] = e
         out["control_peak"] = grab("A_none", "centre_rho_I", ".4g")
     if "B_cosmo" in pk:
-        out["bounded_exponent"] = grab("B_cosmo", "exp_rho_I_near", ".4f")
+        out["bounded_exponent"], e = grab_exp("B_cosmo", "exp_rho_I_near")
+        if e: out["bounded_exponent_err"] = e
         out["bounded_peak"] = grab("B_cosmo", "centre_rho_I", ".4g")
         out["bounded_suppression"] = {
             "value": float(pk["A_none"]["centre_rho_I"]
@@ -204,7 +219,8 @@ def merge_pancake(data: dict) -> dict:
                        ("C_collapse_k1p5", "kappa_onepointfive"),
                        ("C_collapse_k3p0", "kappa_three")):
         if tag in pk:
-            out[f"{label}_exponent"] = grab(tag, "exp_rho_I_near", ".4f")
+            out[f"{label}_exponent"], e = grab_exp(tag, "exp_rho_I_near")
+            if e: out[f"{label}_exponent_err"] = e
     if "A_none" in pk:
         res = [v["dust_residual"] for v in pk.values() if "dust_residual" in v]
         if res:

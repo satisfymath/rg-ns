@@ -115,6 +115,7 @@ class PantheonLikelihood:
     def __post_init__(self) -> None:
         self.name = "SN(Pantheon+SH0ES)" if self.with_shoes else "SN(Pantheon+)"
         self._d = pantheon_data.load_pantheon(with_shoes=self.with_shoes)
+        self._real_mb = None
         self._marg_cache = None
 
     @property
@@ -160,6 +161,27 @@ class PantheonLikelihood:
         B = float(delta @ Cinv_one)
         return A - B * B / E0 + float(np.log(E0 / (2.0 * np.pi)))
 
+    def simulate(self, bg: Background, rng) -> None:
+        """Replace the data with a draw from the model at ``bg``.
+
+        Used only by the threshold calibration, which needs the null
+        distribution of a likelihood-ratio statistic that regular asymptotics
+        do not supply. The draw is ``model + L z`` with ``L`` the Cholesky
+        factor already held for the chi-square, so the synthetic data carry
+        exactly the covariance the fit assumes. ``restore`` puts the real data
+        back, and every simulate/restore pair is balanced by the caller.
+        """
+        d = self._d
+        if self._real_mb is None:
+            self._real_mb = d.m_b_corr.copy()
+        mu = bg.distance_modulus(d.z_hd, d.z_hel)
+        model = np.where(d.use_cepheid, d.ceph_dist, mu)
+        d.m_b_corr[:] = model + _draw(d.cho, rng, d.n)
+
+    def restore(self) -> None:
+        if self._real_mb is not None:
+            self._d.m_b_corr[:] = self._real_mb
+
     def best_fit_MB(self, bg: Background) -> float:
         """The profiled absolute magnitude, M_B = B/E0."""
         d = self._d
@@ -171,6 +193,21 @@ class PantheonLikelihood:
 # ---------------------------------------------------------------------------
 # BAO
 # ---------------------------------------------------------------------------
+def _draw(cho, rng, n) -> np.ndarray:
+    """A correlated Gaussian draw with covariance ``C``, given ``cho_factor``.
+
+    ``cho_factor`` returns the factor in one triangle and *arbitrary values in
+    the other*, so the raw array must not be multiplied as if it were
+    triangular. Extracting the triangle is the whole content of this helper,
+    and getting it wrong would silently inflate the simulated covariance --
+    which is why the test asserts the empirical covariance of many draws
+    against the stated one.
+    """
+    c, lower = cho
+    L = np.tril(c) if lower else np.triu(c).T
+    return L @ rng.standard_normal(n)
+
+
 def _bao_model(bg: Background, z: np.ndarray, quantity: np.ndarray,
                r_d: float) -> np.ndarray:
     """Model vector for a list of (z, quantity) BAO observables."""
@@ -210,6 +247,7 @@ class DesiBAOLikelihood:
 
     def __post_init__(self) -> None:
         self._d = desi_data.load_desi()
+        self._real = None
 
     @property
     def data(self) -> desi_data.BAOData:
@@ -231,6 +269,16 @@ class DesiBAOLikelihood:
         d = self._d
         return _chi2_cho(d.value - self.model(bg), d.cho)
 
+    def simulate(self, bg: Background, rng) -> None:
+        d = self._d
+        if self._real is None:
+            self._real = d.value.copy()
+        d.value[:] = self.model(bg) + _draw(d.cho, rng, d.n)
+
+    def restore(self) -> None:
+        if self._real is not None:
+            self._d.value[:] = self._real
+
 
 # ---------------------------------------------------------------------------
 # Cosmic chronometers
@@ -248,6 +296,7 @@ class ChronometerLikelihood:
 
     def __post_init__(self) -> None:
         self._d = cc_data.load_cc(self.variant)
+        self._real = None
         self.name = f"CC({self.variant})"
 
     @property
@@ -260,6 +309,16 @@ class ChronometerLikelihood:
     def chi2(self, bg: Background, nuisance: Nuisance = None) -> float:
         d = self._d
         return _chi2_cho(d.H - 100.0 * bg.E(d.z), d.cho)
+
+    def simulate(self, bg: Background, rng) -> None:
+        d = self._d
+        if self._real is None:
+            self._real = d.H.copy()
+        d.H[:] = 100.0 * bg.E(d.z) + _draw(d.cho, rng, d.n)
+
+    def restore(self) -> None:
+        if self._real is not None:
+            self._d.H[:] = self._real
 
 
 # ---------------------------------------------------------------------------
@@ -282,6 +341,7 @@ class PlanckPriorLikelihood:
 
     def __post_init__(self) -> None:
         self._d = planck_data.load_planck_priors()
+        self._real = None
 
     @property
     def data(self) -> planck_data.PlanckPriors:
@@ -299,6 +359,16 @@ class PlanckPriorLikelihood:
     def chi2(self, bg: Background, nuisance: Nuisance = None) -> float:
         d = self._d
         return _chi2_cho(d.mean - self.model(bg), d.cho)
+
+    def simulate(self, bg: Background, rng) -> None:
+        d = self._d
+        if self._real is None:
+            self._real = d.mean.copy()
+        d.mean[:] = self.model(bg) + _draw(d.cho, rng, d.n)
+
+    def restore(self) -> None:
+        if self._real is not None:
+            self._d.mean[:] = self._real
 
 
 # ---------------------------------------------------------------------------
@@ -408,3 +478,28 @@ class JointLikelihood:
 
     def logL(self, bg: Background, nuisance: Nuisance = None) -> float:
         return -0.5 * self.chi2(bg, nuisance)
+
+    def can_simulate(self) -> bool:
+        return all(hasattr(p, "simulate") for p in self.parts)
+
+    def simulate(self, bg: Background, rng) -> None:
+        """Replace every component's data with a draw from the model at ``bg``.
+
+        The components are independent by construction -- that is the premise
+        of adding their chi-squares -- so drawing each separately is the
+        correct joint draw. A component that cannot simulate makes the whole
+        joint refuse, rather than silently leaving real data in place beside
+        synthetic data, which would produce a statistic with no null
+        distribution at all.
+        """
+        if not self.can_simulate():
+            missing = [p.name for p in self.parts if not hasattr(p, "simulate")]
+            raise NotImplementedError(
+                f"these components cannot generate synthetic data: {missing}")
+        for p in self.parts:
+            p.simulate(bg, rng)
+
+    def restore(self) -> None:
+        for p in self.parts:
+            if hasattr(p, "restore"):
+                p.restore()

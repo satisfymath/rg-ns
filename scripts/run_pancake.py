@@ -30,11 +30,20 @@ N_STEPS = 25000
 D_END = 1.0 - 1e-6
 
 
-def fit_exponent(s: np.ndarray, y: np.ndarray, lo: float, hi: float) -> float:
+def fit_exponent(s: np.ndarray, y: np.ndarray, lo: float,
+                 hi: float) -> tuple[float, float]:
+    """Power-law exponent over a window, with its least-squares uncertainty.
+
+    The uncertainty is reported because the exponent is quoted in the text and
+    a bare number there claims a precision the fit does not establish. It is
+    the formal error of the straight-line fit and takes no account of the
+    residual curvature, which is why the window is stated alongside it.
+    """
     m = (s > lo) & (s < hi) & (y > 0) & np.isfinite(y)
     if m.sum() < 5:
-        return float("nan")
-    return float(np.polyfit(np.log(s[m]), np.log(y[m]), 1)[0])
+        return float("nan"), float("nan")
+    (slope, _), cov = np.polyfit(np.log(s[m]), np.log(y[m]), 1, cov=True)
+    return float(slope), float(np.sqrt(cov[0, 0]))
 
 
 def summarise(r) -> dict:
@@ -70,8 +79,10 @@ def summarise(r) -> dict:
     out["dust_residual"] = float(np.max(np.abs(
         (r.final["rho_I"] + r.final["rho_D"]) * J - ((1.0 - f) + b * f))))
     for tag, (lo, hi) in {"far": (1e-3, 1e-2), "near": (1e-5, 1e-4)}.items():
-        out[f"exp_rho_I_{tag}"] = fit_exponent(s, np.asarray(r.centre_rho_I), lo, hi)
-        out[f"exp_rho_D_{tag}"] = fit_exponent(s, np.asarray(r.centre_rho_D), lo, hi)
+        for name, series in (("rho_I", r.centre_rho_I), ("rho_D", r.centre_rho_D)):
+            val, err = fit_exponent(s, np.asarray(series), lo, hi)
+            out[f"exp_{name}_{tag}"] = val
+            out[f"exp_{name}_{tag}_err"] = err
     # width of the converted region: fraction of sheets past half conversion
     f_final = r.final["f"]
     out["converted_sheet_fraction"] = float((f_final > 0.5).mean())
@@ -98,8 +109,15 @@ def run(label: str, store_curves: bool = False, **kw) -> dict:
     return d
 
 
-def summarise(res: dict[str, dict]) -> dict:
+def summarise_cases(res: dict[str, dict]) -> dict:
     """Cross-case quantities the manuscript quotes.
+
+    Named differently from :func:`summarise` above, which summarises a single
+    run. Both were called ``summarise``, so the second definition shadowed the
+    first and every call in :func:`run` reached the wrong one: the script
+    raised ``AttributeError`` on its first case and ``make reproduce-core``,
+    which runs it, could not complete. The committed ``results/pancake.json``
+    predates the collision.
 
     Computed here rather than read off the table by eye, because the paper's
     rule is that no number in it is typed by hand.  The suppression factor is
@@ -146,7 +164,7 @@ def main() -> int:
             res[tag] = run(tag, False, rate_mode="collapse", kappa=1.5, b=0.0,
                            alpha=alpha, beta=beta)
 
-    res["summary"] = summarise(res)
+    res["summary"] = summarise_cases(res)
     OUT.write_text(json.dumps(res, indent=2, sort_keys=True))
     print(f"\n{'case':22s} {'centre rho_I':>13} {'exp near':>9} {'centre V':>10} "
           f"{'<f>':>7} {'dust resid':>11}")

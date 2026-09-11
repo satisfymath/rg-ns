@@ -21,6 +21,7 @@ import pytest
 from scipy.linalg import cho_solve
 
 from absorb import early
+from absorb.params import MODELS
 from absorb.likelihoods import (
     ChronometerLikelihood,
     DesiBAOLikelihood,
@@ -319,3 +320,58 @@ def test_marginalisation_jacobian_is_the_known_constant():
     ones = np.ones(d.n)
     e0 = float(ones @ cho_solve(d.cho, ones))
     assert np.log(e0 / (2.0 * np.pi)) == pytest.approx(9.3251, abs=5e-4)
+
+
+def test_synthetic_data_carry_the_covariance_the_fit_assumes():
+    """The draws used by the threshold calibration must have the right spread.
+
+    ``cho_factor`` returns the factor in one triangle and arbitrary values in
+    the other, so multiplying the raw array as if it were triangular would
+    silently inflate the simulated covariance and make the calibrated
+    threshold meaningless in an undetectable way. The empirical covariance of
+    many draws is compared against the stated one.
+    """
+    from absorb.data import cc as cc_data
+    from absorb.likelihoods import _draw
+
+    d = cc_data.load_cc("default")
+    rng = np.random.default_rng(0)
+    draws = np.array([_draw(d.cho, rng, d.n) for _ in range(20000)])
+    emp = np.cov(draws.T)
+    scale = np.abs(d.cov).max()
+    assert np.abs(emp - d.cov).max() / scale < 0.03
+
+    # and the draws are not accidentally independent, which a wrong triangle
+    # could also produce: the off-diagonal correlations must survive
+    corr = d.cov / np.sqrt(np.outer(np.diag(d.cov), np.diag(d.cov)))
+    off = corr[np.triu_indices_from(corr, k=1)]
+    assert np.abs(off).max() > 0.1, "the test data have no correlations to check"
+
+
+def test_simulate_and_restore_leave_the_data_untouched():
+    """A calibration that corrupted the real data would poison everything after.
+
+    Every component is simulated and restored, and the data vectors must come
+    back bit for bit.
+    """
+    from absorb import datasets
+
+    like = datasets.build("baseline")
+    assert like.can_simulate()
+    before = {p.name: np.array(
+        getattr(p.data, "m_b_corr", None) if hasattr(p.data, "m_b_corr")
+        else getattr(p.data, "value", None) if hasattr(p.data, "value")
+        else getattr(p.data, "H", None) if hasattr(p.data, "H")
+        else p.data.mean, copy=True) for p in like.parts}
+
+    m = MODELS["lcdm"]
+    bg = m.builder(m.to_dict([0.02237, 0.1177, 0.3266]))
+    like.simulate(bg, np.random.default_rng(3))
+    like.restore()
+
+    for p in like.parts:
+        d = p.data
+        now = (d.m_b_corr if hasattr(d, "m_b_corr") else
+               d.value if hasattr(d, "value") else
+               d.H if hasattr(d, "H") else d.mean)
+        assert np.array_equal(now, before[p.name]), p.name

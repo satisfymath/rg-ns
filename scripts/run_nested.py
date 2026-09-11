@@ -50,6 +50,21 @@ from absorb.sampling import Posterior, WORKER_RSS_MB            # noqa: E402
 RESULTS = ROOT / "results" / "evidence.json"
 SAMPLE_DIR = ROOT / "results" / "posteriors"
 
+#: How many proposals the sampler keeps in flight, held fixed rather than tied
+#: to the number of workers.
+#:
+#: dynesty draws its proposals from ``rstate`` in batches of ``queue_size``, so
+#: tying that to the worker count makes the whole sequence of proposals -- and
+#: therefore the answer -- depend on how many cores the machine had. Measured
+#: on the six-parameter model on the baseline data: two runs at four workers
+#: agree to the last digit and reproduce the prior-width scan's row for the
+#: same prior and seed exactly, while eight workers move ``ln Z`` by about
+#: 0.34, which is larger than the quoted error and comparable to the whole
+#: effect being measured. Fixing the queue makes a run reproducible from its
+#: seed alone, which is what a released pipeline has to be. The pool may have
+#: any number of workers; it simply evaluates the same queue.
+QUEUE_SIZE = 8
+
 _POST: Posterior | None = None
 
 
@@ -97,7 +112,8 @@ def run(model: str, dataset: str, *, nlive: int, dlogz: float, seed: int,
     t0 = time.time()
     with ctx.Pool(n_proc) as pool:
         sampler = dynesty.NestedSampler(
-            _loglike, _ptform, ndim, nlive=nlive, pool=pool, queue_size=n_proc,
+            _loglike, _ptform, ndim, nlive=nlive, pool=pool,
+            queue_size=QUEUE_SIZE,
             rstate=np.random.default_rng(seed), sample="rwalk", bound="multi")
         sampler.run_nested(dlogz=dlogz, print_progress=False)
         res = sampler.results
@@ -125,7 +141,7 @@ def run(model: str, dataset: str, *, nlive: int, dlogz: float, seed: int,
             prior_high=np.array([p.high for p in priors]))
 
     return dict(model=model, dataset=dataset, ndim=ndim, nlive=nlive,
-                n_workers=n_proc,
+                n_workers=n_proc, queue_size=QUEUE_SIZE,
                 dlogz_target=dlogz, logz=logz, logz_err=logzerr,
                 chi2_min=chi2_min, n_eval=int(res.ncall.sum()),
                 n_samples=int(samples.shape[0]), runtime_s=runtime, seed=seed,

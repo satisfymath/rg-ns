@@ -382,5 +382,21 @@
     "mem_available_before_mb": 9575.0546875,
     "mem_available_after_mb": 9436.60546875,
     "notes": "nlive=500"
+  },
+  {
+    "name": "pancake_suite",
+    "seconds": 39.87440538406372,
+    "peak_rss_mb": 41.43359375,
+    "mem_available_before_mb": 8723.57421875,
+    "mem_available_after_mb": 7854.34765625,
+    "notes": "N=16384, 25000 graded steps"
+  },
+  {
+    "name": "pancake_suite",
+    "seconds": 680.5934698581696,
+    "peak_rss_mb": 44.46484375,
+    "mem_available_before_mb": 6938.234375,
+    "mem_available_after_mb": 9437.171875,
+    "notes": "N=16384, 25000 graded steps"
   }
 ]

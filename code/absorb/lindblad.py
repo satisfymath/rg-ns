@@ -306,7 +306,9 @@ class ClosureScaling:
     slope: float
     """Least-squares slope of ``log(error)`` against ``log(N)``."""
     intercept: float
-    engine: str
+    slope_err: float = float("nan")
+    """One-sigma uncertainty on ``slope`` from the least-squares covariance."""
+    engine: str = "master"
     """``"master"`` (full Liouvillian) or ``"dicke"`` (birth chain)."""
 
     @property
@@ -351,10 +353,15 @@ def closure_error_scaling(
         errs.append(float(np.max(np.abs(f_exact - f_mf))))
     N_arr = np.asarray(N_values, dtype=float)
     err_arr = np.asarray(errs)
-    slope, intercept = np.polyfit(np.log(N_arr), np.log(err_arr), 1)
+    # With the covariance, because a fitted exponent quoted bare invites the
+    # reader to believe a precision the fit does not have: the abstract says
+    # the closure error is "measured to scale as N^-1", and a measurement
+    # without an uncertainty is not one.
+    (slope, intercept), cov = np.polyfit(np.log(N_arr), np.log(err_arr), 1,
+                                         cov=True)
     return ClosureScaling(
         N=N_arr, error=err_arr, slope=float(slope), intercept=float(intercept),
-        engine=engine,
+        slope_err=float(np.sqrt(cov[0, 0])), engine=engine,
     )
 
 

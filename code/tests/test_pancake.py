@@ -73,7 +73,8 @@ def test_survival_identities_hold_per_sheet():
     assert np.max(np.abs(r.final["rho_D"] * J - p.b * f)) < 1e-8
 
 
-@pytest.mark.parametrize("kappa,expected", [(0.5, -0.5), (1.0, 0.0), (1.5, 0.5)])
+@pytest.mark.parametrize("kappa,expected", [(0.5, -0.5), (1.0, 0.0),
+                                           (1.5, 0.5), (3.0, 2.0)])
 def test_measured_exponent_matches_theory(kappa, expected):
     """The central density follows (T-t)^{kappa-1}."""
     p = PancakeParams(n_sheets=4096, rate_mode="collapse", kappa=kappa, b=0.0,
@@ -109,3 +110,53 @@ def test_resolution_floor_is_the_predicted_one():
         eps_predicted = np.pi ** 2 / (2.0 * N ** 2)
         J_at_D1 = pc.jacobian(1.0)[pc._centre]
         assert np.isclose(J_at_D1, eps_predicted, rtol=1e-3), (N, J_at_D1)
+
+
+def test_the_caustic_exponent_does_not_depend_on_the_other_parameters():
+    """Section 11 says the exponent is independent of the branching ratio, the
+    memory time and the reinforcement strengths. That claim was quoted from a
+    results file and gated by nothing.
+
+    It is an *asymptotic* statement, and the first version of this test
+    asserted it at a single window and failed, correctly: over
+    ``s in [1e-4, 1e-3]`` the fitted slopes span 0.04, because the bounded
+    factor ``e^{alpha f + beta M}`` still varies across the window and adds
+    curvature. What the theory says is that the reinforcement contributes a
+    *bounded* integral along the flow line, so its effect on the fitted slope
+    vanishes as the window approaches the caustic.
+
+    That is what is checked: the spread across parameter choices falls by
+    roughly a decade per decade of approach. The mean drifts in the innermost
+    window, where the sheet spacing no longer resolves the profile; that error
+    is common to every case and therefore cancels from the spread, which is
+    why the independence keeps improving while the value does not.
+    """
+    common = dict(n_sheets=4096, rate_mode="collapse", kappa=3.0,
+                  d_end=1.0 - 1e-7, n_steps=25000)
+    cases = [dict(b=0.0), dict(b=0.9), dict(b=0.25, alpha=4.0),
+             dict(b=0.25, beta=3.0, tau_M=0.3)]
+    windows = [(1e-3, 1e-2), (1e-4, 1e-3), (1e-5, 1e-4), (1e-6, 1e-5)]
+
+    slopes = {w: [] for w in windows}
+    for extra in cases:
+        kw = dict(common)
+        kw.update({k: v for k, v in extra.items()
+                   if k in PancakeParams.__dataclass_fields__})
+        r = Pancake(PancakeParams(**kw)).run()
+        s = 1.0 - np.asarray(r.D)
+        y = np.asarray(r.centre_rho_I)
+        for lo, hi in windows:
+            m = (s > lo) & (s < hi) & (y > 0)
+            assert m.sum() >= 5, (extra, lo, hi, m.sum())
+            slopes[(lo, hi)].append(
+                float(np.polyfit(np.log(s[m]), np.log(y[m]), 1)[0]))
+
+    spreads = [float(np.ptp(np.asarray(slopes[w]))) for w in windows]
+    # each decade closer to the caustic narrows the spread by at least five
+    for a, b in zip(spreads, spreads[1:]):
+        assert b < a / 5.0, spreads
+    assert spreads[-1] < 1e-3, spreads
+
+    # and where the profile is still resolved the exponent is the predicted one
+    mid = float(np.mean(slopes[(1e-5, 1e-4)]))
+    assert abs(mid - 2.0) < 0.05, mid
