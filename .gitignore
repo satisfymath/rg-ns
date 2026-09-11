@@ -29,3 +29,7 @@ results/chains/
 results/sims/
 *.npz
 *.h5
+
+# Build artifact: make_release.py rebuilds it from the tree, and a committed
+# copy would be a second, silently stale version of the whole repository.
+release/
