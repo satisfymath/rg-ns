@@ -6,10 +6,10 @@ conclusions that refer to it: those are the places where a claim can
 quietly become stronger than its proof, which is what four referees
 found independently.
 
-- results catalogued: **144**
+- results catalogued: **146**
 - carrying an explicit evidential level: **57**
-- referred to from a summary section: **25**
-- referred to from a summary but covered by no test: **0**
+- referred to from a summary section: **26**
+- referred to from a summary but covered by no test: **1**
 
 | claim | kind | level | file | in summary | tests |
 |---|---|---|---|---|---|
@@ -71,6 +71,7 @@ found independently.
 | `eq:perturbations-growth-signature` | keyresult | C (theorem of the model) | 09_perturbations.tex | 01_intro.tex, 14_conclusions.tex | growth |
 | `eq:perturbations-integrability` | keyresult | I (identity) | 09_perturbations.tex | — | — |
 | `eq:perturbations-isw` | keyresult | C (theorem of the model) | 09_perturbations.tex | — | — |
+| `eq:perturbations-local-drain` | equation | — | 09_perturbations.tex | — | — |
 | `eq:perturbations-peff` | equation | — | 09_perturbations.tex | — | — |
 | `eq:perturbations-system` | keyresult | C (theorem of the model) | 09_perturbations.tex | — | — |
 | `eq:perturbations-vorticity` | keyresult | C (theorem of the model) | 09_perturbations.tex | — | symbolic |
@@ -93,13 +94,13 @@ found independently.
 | `eq:quantum-collective` | equation | — | 12_quantum.tex | — | — |
 | `eq:quantum-collective-mean` | keyresult | I (identity) | 12_quantum.tex | — | — |
 | `eq:quantum-two-state` | keyresult | I (identity) | 12_quantum.tex | — | — |
-| `eq:realizations-alpha` | keyresult | C (theorem of the model) | 08_realizations.tex | — | symbolic |
+| `eq:realizations-alpha` | keyresult | X (?) | 08_realizations.tex | — | symbolic |
 | `eq:realizations-clock` | keyresult | I (identity) | 08_realizations.tex | — | — |
 | `eq:realizations-clock-action` | equation | — | 08_realizations.tex | — | — |
 | `eq:realizations-determined-V` | keyresult | I (identity) | 08_realizations.tex | — | — |
 | `eq:realizations-four-form` | keyresult | I (identity) | 08_realizations.tex | — | — |
 | `eq:realizations-four-form-action` | equation | — | 08_realizations.tex | — | — |
-| `eq:realizations-lnrate` | keyresult | C (theorem of the model) | 08_realizations.tex | — | symbolic |
+| `eq:realizations-lnrate` | keyresult | X (?) | 08_realizations.tex | — | symbolic |
 | `eq:realizations-rate-split` | equation | — | 08_realizations.tex | — | — |
 | `eq:realizations-suppression` | equation | — | 08_realizations.tex | — | — |
 | `eq:setup-action` | equation | — | 02_covariant_setup.tex | — | — |
@@ -132,6 +133,7 @@ found independently.
 | `prop:no-instability` | proposition | — | 09_perturbations.tex | — | growth |
 | `prop:no-pressure-from-kinetics` | proposition | — | 04_homogeneous_cosmology.tex | 14_conclusions.tex | background |
 | `prop:no-rolling` | proposition | — | 08_realizations.tex | — | symbolic |
+| `prop:no-signature-from-local-drain` | proposition | — | 09_perturbations.tex | — | growth |
 | `prop:recipient-proportional` | proposition | — | 05_positivity_ide.tex | 14_conclusions.tex | background, symbolic |
 | `prop:survival` | proposition | — | 03_absorbing_process.tex | — | stochastic |
 | `prop:unitary-obstruction` | proposition | — | 12_quantum.tex | — | lindblad |
@@ -139,7 +141,7 @@ found independently.
 | `rem:activation-local` | remark | — | 06_solvable_early.tex | — | early_branch |
 | `rem:bridge-limits` | remark | — | 08_realizations.tex | — | — |
 | `rem:hazard-time-change` | remark | — | 03_absorbing_process.tex | — | collapse |
-| `rem:hysteresis-prescribed` | remark | — | 03_absorbing_process.tex | — | — |
+| `rem:hysteresis-prescribed` | remark | — | 03_absorbing_process.tex | 14_conclusions.tex | — |
 | `rem:jerk-neutrinos` | remark | — | 07_cosmography.tex | — | background |
 | `rem:residual-boundary-layer` | remark | — | 03_absorbing_process.tex | — | collapse |
 | `rem:sandwich-naive` | remark | — | 05_positivity_ide.tex | — | — |
@@ -157,3 +159,7 @@ found independently.
 | `thm:sandwich` | theorem | — | 05_positivity_ide.tex | — | symbolic, theorems |
 | `thm:sign-table` | theorem | — | 07_cosmography.tex | 14_conclusions.tex | symbolic, theorems |
 | `thm:snap` | theorem | — | 07_cosmography.tex | 01_intro.tex | background |
+
+## Referred to from a summary, covered by no test
+
+- `rem:hysteresis-prescribed` (remark) — cited in 14_conclusions.tex

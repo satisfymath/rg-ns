@@ -852,6 +852,19 @@
     "text": "",
     "title": ""
   },
+  "eq:perturbations-local-drain": {
+    "claim_id": "eq:perturbations-local-drain",
+    "file": "09_perturbations.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
   "eq:perturbations-peff": {
     "claim_id": "eq:perturbations-peff",
     "file": "09_perturbations.tex",
@@ -1188,8 +1201,8 @@
     "file": "08_realizations.tex",
     "in_summary": [],
     "kind": "keyresult",
-    "level": "C",
-    "level_name": "theorem of the model",
+    "level": "X",
+    "level_name": "?",
     "referenced_in": [
       "13_outlook.tex"
     ],
@@ -1273,8 +1286,8 @@
     "file": "08_realizations.tex",
     "in_summary": [],
     "kind": "keyresult",
-    "level": "C",
-    "level_name": "theorem of the model",
+    "level": "X",
+    "level_name": "?",
     "referenced_in": [
       "13_outlook.tex"
     ],
@@ -1771,6 +1784,21 @@
     "text": "For a canonical real scalar with $\\Lag=-\\tfrac12(\\covd\\phi)^2-W(\\phi)$ one has $\\rho_\\phi+p_\\phi=\\dot\\phi^2$. Hence $w_\\phi=-1$ exactly requires $\\dot\\phi=0$.",
     "title": "No rolling exact vacuum"
   },
+  "prop:no-signature-from-local-drain": {
+    "claim_id": "prop:no-signature-from-local-drain",
+    "file": "09_perturbations.tex",
+    "in_summary": [],
+    "kind": "proposition",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_growth.py"
+    ],
+    "text": "Replace \\cref{eq:perturbations-com} by a transfer proportional to the local dust density, $\\delta Q_{V,\\rm com}=\\bar \\QV\\,\\delta_{\\rm m}$, keeping everything else in \\cref{thm:b-independence}. Then % \\begin{equation}\\label{eq:perturbations-local-drain} \\dot\\delta_{\\rm m}=-\\vartheta , \\qquad \\dot\\vartheta+2\\Hub\\vartheta=-\\frac{\\bar\\rho_{\\rm m}}{2\\Mpl^2} \\delta_{\\rm m} , \\end{equation} % so $f_g=f_{",
+    "title": "A density-proportional drain has no opposite-sign\n  signature"
+  },
   "prop:recipient-proportional": {
     "claim_id": "prop:recipient-proportional",
     "file": "05_positivity_ide.tex",
@@ -1890,11 +1918,15 @@
   "rem:hysteresis-prescribed": {
     "claim_id": "rem:hysteresis-prescribed",
     "file": "03_absorbing_process.tex",
-    "in_summary": [],
+    "in_summary": [
+      "14_conclusions.tex"
+    ],
     "kind": "remark",
     "level": null,
     "level_name": null,
-    "referenced_in": [],
+    "referenced_in": [
+      "14_conclusions.tex"
+    ],
     "status": "UNREVIEWED",
     "tests": [],
     "text": "The hypothesis is not cosmetic and cannot be removed by rewording. The comparison argument below compares two solutions of one system, so both must be driven by the same $a(t)$; and the conclusion is that they accumulate different vacuum, which through the Friedmann constraint would give them different $a(t)$. Stated for the coupled system the theorem would therefore contradict its own hypothesis.",

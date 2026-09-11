@@ -344,7 +344,13 @@ $g_c=\bar \QV/(\Hub\bar\rho_{\rm m})$ carries an explicit factor of $\Hub^{-1}$,
   p_g=p \quad\text{for }\Gam=\xi_0\Hub\actS e^{\alpha \fconv+\beta \Mmem},
 \end{equation}
 %
-in matter domination, which we have checked directly against the numerical
+in matter domination. This is a derivation and not a fit, which matters
+because a level-C result is built on it: near the onset of conversion
+$\actS\propto a^{p}$ and $\fconv\ll1$, so $\bar \QV=(1-\bfrac)\Gam\rhoI$ scales
+as $a^{p}a^{-3}$ for a constant amplitude and as $\Hub a^{p}a^{-3}$ for the
+expansion-tracking one, while $\bar\rho_{\rm m}\propto a^{-3}$ and
+$\Hub\propto a^{-3/2}$. Dividing, $g_c\propto a^{p+3/2}$ in the first case and
+$a^{p}$ in the second. We have also checked both against the numerical
 solution. With that identification,
 %
 \begin{keyresult}{C}{eq:perturbations-growth-signature}
@@ -357,10 +363,43 @@ The two move in \emph{opposite} directions: density growth is enhanced while
 the velocity field, and hence $\fsig$, is suppressed. The reason is that
 $\delta Q_{V,\rm com}=0$ makes overdense and underdense regions lose the same
 absolute energy density, so overdense regions lose the smaller fraction and
-$\delta_{\rm m}$ is boosted, while $\vartheta$ is not. A model that removed
-energy in proportion to the local density would suppress both, because the loss
-would then be larger where the density is larger, removing the boost while the
-drag on the velocity remains. Our numerical solution reproduces
+$\delta_{\rm m}$ is boosted, while $\vartheta$ is not. That the opposite signs
+are a consequence of \emph{this} closure and not a generic feature of an
+energy drain is worth proving rather than asserting, since the abstract rests
+on it.
+
+\begin{proposition}[A density-proportional drain has no opposite-sign
+  signature]\label{prop:no-signature-from-local-drain}
+  Replace \cref{eq:perturbations-com} by a transfer proportional to the local
+  dust density, $\delta Q_{V,\rm com}=\bar \QV\,\delta_{\rm m}$, keeping
+  everything else in \cref{thm:b-independence}. Then
+  %
+  \begin{equation}\label{eq:perturbations-local-drain}
+    \dot\delta_{\rm m}=-\vartheta ,
+    \qquad
+    \dot\vartheta+2\Hub\vartheta=-\frac{\bar\rho_{\rm m}}{2\Mpl^2}
+      \delta_{\rm m} ,
+  \end{equation}
+  %
+  so $f_g=f_{\rm RSD}$ identically: the enhancement of $\delta_{\rm m}$
+  disappears, the velocity equation is unchanged, and no signature of opposite
+  signs exists at any order in $g_c$.
+\end{proposition}
+
+\begin{proof}
+  In the proof of \cref{thm:b-independence} the residual transfer term in the
+  summed continuity equation is $-\delta \QV/\bar\rho_{\rm m}$, and the
+  $+\gamma_c\delta_{\rm m}$ comes not from it but from the drained background
+  in the definition of $\delta_{\rm m}$. With
+  $\delta Q_{V,\rm com}=\bar \QV\delta_{\rm m}$ the residual is
+  $-\gamma_c\delta_{\rm m}$, which cancels it exactly. The Raychaudhuri
+  equation contains no transfer perturbation at all under geodesic motion, so
+  it is untouched.
+\end{proof}
+
+The cancellation is exact and independent of $\gamma_c$, which is the content:
+it is the comoving-uniformity of the transfer, not its magnitude, that
+produces the opposite signs. Our numerical solution reproduces
 \cref{eq:perturbations-growth-signature}, but the comparison has to be made
 against the right reference and an earlier version of this paragraph did not
 make it. \Cref{eq:perturbations-growth-signature} expands about matter

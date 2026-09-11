@@ -1,5 +1,5 @@
 """Tests of the linear growth solver."""
-# covers: thm:b-independence, prop:clumping-unstable, prop:no-instability, eq:perturbations-growth, eq:perturbations-growth-signature, cor:b-invisible
+# covers: thm:b-independence, prop:clumping-unstable, prop:no-instability, prop:no-signature-from-local-drain, eq:perturbations-growth, eq:perturbations-growth-signature, cor:b-invisible
 #   Machine-readable link from tests to the claims they cover, read by
 #   scripts/claim_ledger.py. A claim quoted in the abstract or the
 #   conclusions with nothing testing it is what the ledger exists to find.
@@ -256,3 +256,54 @@ def test_the_model_itself_has_no_such_term():
         or "wavenumber" not in src.lower(), (
         "the growth module appears to have acquired a wavenumber; "
         "prop:no-instability asserts the linear system has none")
+
+
+def test_a_density_proportional_drain_kills_the_opposite_sign_signature():
+    """``prop:no-signature-from-local-drain``, the abstract's universal negative.
+
+    The abstract says a coupling proportional to the local density cannot
+    produce the opposite-sign signature. That was a one-sentence physical
+    argument and is now a proposition; this is the arithmetic behind it,
+    integrated rather than argued.
+
+    The two systems differ by one term. With a comoving-uniform transfer the
+    summed continuity equation keeps ``+g_c delta``, which comes from the
+    drained background in the definition of delta_m; with a transfer
+    proportional to the local density the residual transfer term is
+    ``-g_c delta`` and cancels it exactly. The velocity equation is the same in
+    both. The run also reproduces the coefficients of
+    ``eq:perturbations-growth-signature`` to three digits, which is a free
+    check on that result.
+    """
+    from scipy.integrate import solve_ivp
+
+    g_end, n_end, p_g = 0.05, 1.0, 7.5
+
+    def run(local_drain):
+        """Matter domination with a drain g_c = g_end a^{p_g}, normalised so
+        that g_c stays perturbative over the window."""
+        def rhs(n, y):
+            d, th = y                      # delta_m and theta/H
+            g = g_end * np.exp(p_g * (n - n_end))
+            return [-th + (0.0 if local_drain else g * d),
+                    -0.5 * th - 1.5 * d]
+
+        sol = solve_ivp(rhs, (0.0, n_end), [1.0, -1.0], rtol=1e-12,
+                        atol=1e-14, dense_output=True)
+        assert sol.success
+        n = np.linspace(0.0, n_end, 400)
+        d, th = sol.sol(n)
+        return np.gradient(np.log(d), n), -th / d
+
+    # comoving-uniform: the two separate, in opposite senses about unity, and
+    # by the amounts the closed form predicts
+    f_g, f_rsd = run(local_drain=False)
+    assert f_g[-1] > 1.0 and f_rsd[-1] < 1.0, (f_g[-1], f_rsd[-1])
+    assert abs(f_g[-1] - (1.0 + (2 * p_g + 3) / (2 * p_g + 5) * g_end)) < 1e-3
+    assert abs(f_rsd[-1] - (1.0 - 2.0 / (2 * p_g + 5) * g_end)) < 1e-3
+
+    # proportional to the local density: they coincide identically, and the
+    # growth is the undrained one
+    f_g2, f_rsd2 = run(local_drain=True)
+    assert np.max(np.abs(f_g2 - f_rsd2)) < 1e-8, np.max(np.abs(f_g2 - f_rsd2))
+    assert abs(f_g2[-1] - 1.0) < 1e-8
