@@ -6,7 +6,7 @@ conclusions that refer to it: those are the places where a claim can
 quietly become stronger than its proof, which is what four referees
 found independently.
 
-- results catalogued: **136**
+- results catalogued: **139**
 - carrying an explicit evidential level: **55**
 - referred to from a summary section: **22**
 - referred to from a summary but covered by no test: **0**
@@ -110,6 +110,7 @@ found independently.
 | `eq:setup-units` | equation | — | 02_covariant_setup.tex | — | — |
 | `eq:setup-vacuum-transfer` | keyresult | I (identity) | 02_covariant_setup.tex | — | — |
 | `eq:solvable-activation` | keyresult | A (postulate) | 06_solvable_early.tex | — | early_branch |
+| `eq:solvable-activation-local` | equation | — | 06_solvable_early.tex | — | early_branch |
 | `eq:solvable-closed-form` | keyresult | I (identity) | 06_solvable_early.tex | — | — |
 | `eq:solvable-exponent` | equation | — | 06_solvable_early.tex | — | early_branch |
 | `eq:solvable-friedmann` | equation | — | 06_solvable_early.tex | — | — |
@@ -130,6 +131,8 @@ found independently.
 | `prop:recipient-proportional` | proposition | — | 05_positivity_ide.tex | 14_conclusions.tex | symbolic |
 | `prop:survival` | proposition | — | 03_absorbing_process.tex | — | — |
 | `prop:unitary-obstruction` | proposition | — | 12_quantum.tex | — | lindblad |
+| `rem:activation-local` | remark | — | 06_solvable_early.tex | — | early_branch |
+| `rem:bridge-limits` | remark | — | 08_realizations.tex | — | — |
 | `rem:hazard-time-change` | remark | — | 03_absorbing_process.tex | — | collapse |
 | `rem:hysteresis-prescribed` | remark | — | 03_absorbing_process.tex | — | — |
 | `rem:jerk-neutrinos` | remark | — | 07_cosmography.tex | — | background |

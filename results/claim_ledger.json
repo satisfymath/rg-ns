@@ -523,7 +523,9 @@
     "kind": "equation",
     "level": null,
     "level_name": null,
-    "referenced_in": [],
+    "referenced_in": [
+      "08_realizations.tex"
+    ],
     "status": "UNREVIEWED",
     "tests": [],
     "text": "",
@@ -1135,7 +1137,9 @@
     "kind": "keyresult",
     "level": "C",
     "level_name": "theorem of the model",
-    "referenced_in": [],
+    "referenced_in": [
+      "13_outlook.tex"
+    ],
     "status": "UNREVIEWED",
     "tests": [
       "test_symbolic.py"
@@ -1218,7 +1222,9 @@
     "kind": "keyresult",
     "level": "C",
     "level_name": "theorem of the model",
-    "referenced_in": [],
+    "referenced_in": [
+      "13_outlook.tex"
+    ],
     "status": "UNREVIEWED",
     "tests": [
       "test_symbolic.py"
@@ -1384,6 +1390,21 @@
       "13_outlook.tex",
       "appF_numerics.tex"
     ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_early_branch.py"
+    ],
+    "text": "",
+    "title": ""
+  },
+  "eq:solvable-activation-local": {
+    "claim_id": "eq:solvable-activation-local",
+    "file": "06_solvable_early.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
     "status": "UNREVIEWED",
     "tests": [
       "test_early_branch.py"
@@ -1693,6 +1714,36 @@
     "text": "Let $\\Hilb$ be finite-dimensional, $U(t)=e^{-iHt/\\hbar}$ unitary, and $\\mathcal A\\subset\\Hilb$ a subspace with $U(t)\\mathcal A\\subseteq\\mathcal A$ for all $t\\ge0$. Then $U(t)\\mathcal A=\\mathcal A$ and $U(t)\\mathcal A^{\\perp}=\\mathcal A^{\\perp}$, so the probability of occupying $\\mathcal A$ cannot increase by transfer from its complement.",
     "title": "No absorption under unitary flow"
   },
+  "rem:activation-local": {
+    "claim_id": "rem:activation-local",
+    "file": "06_solvable_early.tex",
+    "in_summary": [],
+    "kind": "remark",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_early_branch.py"
+    ],
+    "text": "As written, $\\actS$ refers to the scale factor, which is not a local scalar, so \\cref{eq:solvable-activation} is a statement about the homogeneous mode. It need not stay one. The survival identity $\\rhoI a^3=\\rho_{I,\\rm act}(1-\\fconv)$ is exact, so $a$ can be eliminated with no approximation: writing $\\rho_*=\\rho_{I,\\rm act}/\\aact^3$ for the comoving precursor density at activation, % \\begin{equat",
+    "title": "The switch is local, and it closes under compression"
+  },
+  "rem:bridge-limits": {
+    "claim_id": "rem:bridge-limits",
+    "file": "08_realizations.tex",
+    "in_summary": [],
+    "kind": "remark",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "13_outlook.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "It is tempting to read $E_{\\rm wall}$ as the rest energy of a localized object and to identify that object with the texture of \\cref{sec:defects}. Neither step is available here, and saying so costs the bridge half its reach. First, the thin-wall membrane leaves no object. For a closed wall of radius $R$ enclosing a region lower in vacuum energy by $\\Delta V$, the energy $E=4\\pi R^2\\varsigma-\\tfra",
+    "title": "The remnant is not the defect of \\cref{sec:defects}, and is not\n  stable"
+  },
   "rem:hazard-time-change": {
     "claim_id": "rem:hazard-time-change",
     "file": "03_absorbing_process.tex",
@@ -1799,6 +1850,7 @@
     "level": null,
     "level_name": null,
     "referenced_in": [
+      "06_solvable_early.tex",
       "14_conclusions.tex"
     ],
     "status": "UNREVIEWED",
