@@ -251,9 +251,57 @@ survives is one order more delicate. The suppression of a single upward step,
   \simeq 24\pi^2\Mpl^4\,\frac{\mathsf q h}{V^2} ,
 \end{equation}
 %
-itself decreases as $V$ grows, so the upward rate rises with accumulated flux
-even though it never overtakes the downward one. That is the behaviour
-$\alpha>0$ requires, and it is the corrected form of the argument.
+itself decreases as $V$ grows. That is not yet the statement wanted, because
+$\Delta S$ controls the \emph{ratio}: writing
+$\Gam_\uparrow=\Gam_\downarrow e^{-\Delta S}$,
+%
+\begin{equation}\label{eq:realizations-rate-split}
+  \odv{\log\Gam_\uparrow}{h}
+  = \odv{\log\Gam_\downarrow}{h} - \odv{\Delta S}{h} ,
+\end{equation}
+%
+and a downward rate falling faster than the suppression relaxes would carry the
+upward rate down with it. The second term is the one \cref{eq:realizations-suppression}
+supplies; the first has to be computed.
+
+Take the downward nucleation in the thin-wall limit,
+$B_\downarrow=27\pi^2\varsigma^4/2(\mathsf qh)^3$ with $\varsigma$ the membrane
+tension, valid while the critical bubble is small against the horizon, which
+requires $\varsigma\lesssim(\sqrt6/3)\Mpl\mathsf q$. Both terms then scale the
+same way in the flux,
+%
+\begin{keyresult}{C}{eq:realizations-lnrate}
+  \log\Gam_\uparrow=-\frac{\mathcal K}{h^{3}},
+  \qquad
+  \mathcal K=\frac{\pi^2}{\mathsf q^{3}}
+    \left(96\Mpl^4\mathsf q^4+\tfrac{27}{2}\varsigma^4\right)>0 ,
+\end{keyresult}
+%
+so $\dd\log\Gam_\uparrow/\dd h=3\mathcal K/h^4>0$ and the upward rate does rise
+with accumulated flux --- now for a reason, and a stronger one than the
+original argument gave, since the two contributions push the same way rather
+than competing. In the regime where the thin-wall form is valid the entropy
+term dominates, $\mathcal K_{\rm bounce}/\mathcal K_{\rm entropy}
+=9\varsigma^4/64\Mpl^4\mathsf q^4<1/16$: what makes each successive nucleation
+easier is that the horizon entropy cost of a step falls as the vacuum grows.
+
+\Cref{eq:realizations-lnrate} also says what the exponential law of
+\cref{eq:process-rate} costs. Linearity of $\log\Gam$ in $h$ across a swept
+range $\Delta h=N\mathsf q$ holds with relative curvature $4N\mathsf q/h$, and
+truncating at the linear term leaves a relative error $2N\mathsf q/h$ in the
+exponent at the end of conversion: the form is an approximation valid when the
+flux converted is small against the flux already there. The coefficient is then
+%
+\begin{keyresult}{C}{eq:realizations-alpha}
+  \alpha=3\,\frac{N\mathsf q}{h}\,\Delta S
+  \left[1+\order{(\varsigma/\Mpl\mathsf q)^4}\right],
+  \qquad\text{so}\qquad
+  \alpha<\tfrac34\Delta S ,
+\end{keyresult}
+%
+the bound following from the linearity condition. That is a relation rather
+than a fit: reinforcement of order unity requires an entropy change per step of
+at least order unity, and the two cannot be chosen independently.
 
 Two honest caveats accompany it. At vacuum densities of order the observed one
 these rates are astronomically small, so the mechanism can only be relevant if

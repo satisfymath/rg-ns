@@ -4,7 +4,7 @@ Each ``check_*`` is exercised twice: once through its own assertion machinery,
 and once through an independent spot check performed here, so that a check that
 silently degenerated into a tautology would still be caught.
 """
-# covers: thm:quasi-positivity, thm:no-sign-flip, prop:recipient-proportional, thm:regular-future, thm:de-sitter, thm:sandwich, thm:sign-table
+# covers: eq:realizations-lnrate, eq:realizations-alpha, thm:quasi-positivity, thm:no-sign-flip, prop:recipient-proportional, thm:regular-future, thm:de-sitter, thm:sandwich, thm:sign-table
 #   Machine-readable link from tests to the claims they cover, read by
 #   scripts/claim_ledger.py. A claim quoted in the abstract or the
 #   conclusions with nothing testing it is what the ledger exists to find.
@@ -138,3 +138,43 @@ def test_run_all() -> None:
     results = sy.run_all()
     assert set(results) == {fn.__name__ for fn in sy.ALL_CHECKS}
     assert all(results.values())
+
+
+def test_upward_nucleation_rate_rises_with_accumulated_flux():
+    """The four-form bridge's reinforcement, derived rather than argued.
+
+    Section 8.5 originally concluded that the upward rate rises because the
+    entropy suppression Delta S falls as the vacuum grows. That controls the
+    *ratio* Gamma_up / Gamma_down; a downward rate falling faster would have
+    carried the upward rate down with it. This checks the completed statement:
+    with the thin-wall bounce for the downward channel and detailed balance
+    against the de Sitter entropy, both contributions to log Gamma_up scale as
+    h^-3 and both push the same way.
+    """
+    import sympy as sp
+
+    h, q, sigma, Mpl, N = sp.symbols("h q sigma M_pl N", positive=True)
+
+    B_down = 27 * sp.pi**2 * sigma**4 / (2 * (q * h) ** 3)
+    S = 24 * sp.pi**2 * Mpl**4 / (h**2 / 2)
+    delta_S = sp.series(S - S.subs(h, h + q), q, 0, 2).removeO()
+
+    ln_gamma_up = sp.simplify(-B_down - delta_S)
+
+    # (i) it is -K/h^3 with K > 0
+    K = sp.simplify(-ln_gamma_up * h**3)
+    assert sp.simplify(sp.diff(K, h)) == 0, "K must not depend on h"
+    assert sp.simplify(K.subs({sigma: 1, Mpl: 1, q: 1})) > 0
+
+    # (ii) the rate rises with flux
+    d1 = sp.simplify(sp.diff(ln_gamma_up, h))
+    assert sp.simplify(d1.subs({sigma: 1, Mpl: 1, q: 1, h: 2})) > 0
+
+    # (iii) relative curvature across a swept range N q is 4 N q / h
+    d2 = sp.diff(ln_gamma_up, h, 2)
+    curvature = sp.simplify(sp.Abs(d2) * N * q / sp.Abs(d1))
+    assert sp.simplify(curvature - 4 * N * q / h) == 0
+
+    # (iv) alpha = 3 (N q / h) Delta S in the entropy-dominated regime
+    alpha_entropy = sp.simplify(N * q * sp.diff(-delta_S, h))
+    assert sp.simplify(alpha_entropy / delta_S - 3 * N * q / h) == 0

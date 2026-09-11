@@ -6,8 +6,8 @@ conclusions that refer to it: those are the places where a claim can
 quietly become stronger than its proof, which is what four referees
 found independently.
 
-- results catalogued: **133**
-- carrying an explicit evidential level: **53**
+- results catalogued: **136**
+- carrying an explicit evidential level: **55**
 - referred to from a summary section: **22**
 - referred to from a summary but covered by no test: **0**
 
@@ -91,11 +91,14 @@ found independently.
 | `eq:quantum-collective` | equation | — | 12_quantum.tex | — | — |
 | `eq:quantum-collective-mean` | keyresult | I (identity) | 12_quantum.tex | — | — |
 | `eq:quantum-two-state` | keyresult | I (identity) | 12_quantum.tex | — | — |
+| `eq:realizations-alpha` | keyresult | C (theorem of the model) | 08_realizations.tex | — | symbolic |
 | `eq:realizations-clock` | keyresult | I (identity) | 08_realizations.tex | — | — |
 | `eq:realizations-clock-action` | equation | — | 08_realizations.tex | — | — |
 | `eq:realizations-determined-V` | keyresult | I (identity) | 08_realizations.tex | — | — |
 | `eq:realizations-four-form` | keyresult | I (identity) | 08_realizations.tex | — | — |
 | `eq:realizations-four-form-action` | equation | — | 08_realizations.tex | — | — |
+| `eq:realizations-lnrate` | keyresult | C (theorem of the model) | 08_realizations.tex | — | symbolic |
+| `eq:realizations-rate-split` | equation | — | 08_realizations.tex | — | — |
 | `eq:realizations-suppression` | equation | — | 08_realizations.tex | — | — |
 | `eq:setup-action` | equation | — | 02_covariant_setup.tex | — | — |
 | `eq:setup-conservation` | keyresult | I (identity) | 02_covariant_setup.tex | — | — |

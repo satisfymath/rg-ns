@@ -1128,6 +1128,21 @@
     "text": "",
     "title": ""
   },
+  "eq:realizations-alpha": {
+    "claim_id": "eq:realizations-alpha",
+    "file": "08_realizations.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_symbolic.py"
+    ],
+    "text": "",
+    "title": ""
+  },
   "eq:realizations-clock": {
     "claim_id": "eq:realizations-clock",
     "file": "08_realizations.tex",
@@ -1185,6 +1200,34 @@
   },
   "eq:realizations-four-form-action": {
     "claim_id": "eq:realizations-four-form-action",
+    "file": "08_realizations.tex",
+    "in_summary": [],
+    "kind": "equation",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [],
+    "text": "",
+    "title": ""
+  },
+  "eq:realizations-lnrate": {
+    "claim_id": "eq:realizations-lnrate",
+    "file": "08_realizations.tex",
+    "in_summary": [],
+    "kind": "keyresult",
+    "level": "C",
+    "level_name": "theorem of the model",
+    "referenced_in": [],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_symbolic.py"
+    ],
+    "text": "",
+    "title": ""
+  },
+  "eq:realizations-rate-split": {
+    "claim_id": "eq:realizations-rate-split",
     "file": "08_realizations.tex",
     "in_summary": [],
     "kind": "equation",
@@ -1937,6 +1980,7 @@
     "level_name": null,
     "referenced_in": [
       "01_intro.tex",
+      "04_homogeneous_cosmology.tex",
       "06_solvable_early.tex",
       "14_conclusions.tex"
     ],
