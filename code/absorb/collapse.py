@@ -37,18 +37,43 @@ from scipy.integrate import quad, solve_ivp
 # --------------------------------------------------------------------------- #
 def log_density_change(theta: Callable[[float], float],
                        gamma: Callable[[float], float],
-                       t0: float, t: float, **kw) -> float:
+                       t0: float, t: float,
+                       t_sing: float | None = None, **kw) -> float:
     """Return ln[rho_I(t)/rho_I(t0)] = -int_{t0}^{t} (Theta + Gamma) ds."""
-    # points= tells the quadrature where the integrand is singular; without it
-    # a 1/(T-t) integrand triggers a bad-behaviour warning near the endpoint.
+    # The integrand of interest is ~ -c/(T - s) with the singular time T at or
+    # just beyond the right endpoint, so it varies over many orders of
+    # magnitude in the last sliver of the interval and adaptive quadrature
+    # reports "extremely bad integrand behavior" there.
+    #
+    # Breakpoints in t do not fix it. Near t = 1 the spacing of doubles is
+    # 2e-16, so any breakpoint within 1e-13 of the endpoint is quantised away
+    # and the last panel still spans the whole divergence. The cure is to
+    # integrate in the distance to the singularity, u = t_sing - s, where that
+    # distance is an ordinary small number and geometric breakpoints in u are
+    # exactly representable. Callers that know where the singularity is should
+    # say so; without it the routine falls back to breakpoints in t, which is
+    # enough whenever the endpoint is not within about 1e-10 of it.
+    points = kw.pop("points", None)
+    limit = kw.pop("limit", 400)
+    if t_sing is not None:
+        lo, hi = t_sing - t, t_sing - t0
+        if lo <= 0.0:
+            raise ValueError("the interval reaches the singularity itself")
+        pts = [lo * (hi / lo) ** (k / 16.0) for k in range(1, 16)]
+        val, _ = quad(lambda u: theta(t_sing - u) + gamma(t_sing - u), lo, hi,
+                      limit=limit, points=pts, **kw)
+        return -val
+    if points is None and t > t0:
+        points = [t - (t - t0) * 10.0 ** -k for k in range(1, 8)]
     val, _ = quad(lambda s: theta(s) + gamma(s), t0, t,
-                  limit=kw.pop("limit", 400), points=kw.pop("points", None),
-                  **kw)
+                  limit=limit, points=points, **kw)
     return -val
 
 
-def density_ratio(theta, gamma, t0: float, t: float, **kw) -> float:
-    return float(np.exp(log_density_change(theta, gamma, t0, t, **kw)))
+def density_ratio(theta, gamma, t0: float, t: float,
+                  t_sing: float | None = None, **kw) -> float:
+    return float(np.exp(log_density_change(theta, gamma, t0, t,
+                                           t_sing=t_sing, **kw)))
 
 
 @dataclass(frozen=True)

@@ -113,12 +113,38 @@ def test_bounded_rate_is_the_paper_s_case():
     precursor is suppressed only until ln(1/s) ~ 20 and diverges thereafter.
     """
     gamma_max = 1.0 * np.exp(2.0 + 1.0)
+
     def ratio_at(s):
+        # The quadrature tolerance is set to what the integrand's own
+        # conditioning supports: written as -1/(1 - t), the rate carries a
+        # relative cancellation error growing to about 1e-5 as s falls to
+        # 1e-11, so demanding scipy's default 1.5e-8 absolute on an integral
+        # of magnitude 25 asks for accuracy the inputs do not contain, and
+        # quad correctly reports roundoff. Correctness is checked against the
+        # closed form below rather than against quad's own error estimate.
         return density_ratio(lambda t: -1.0 / (1.0 - t),
-                             lambda t: gamma_max, 0.0, 1.0 - s)
+                             lambda t: gamma_max, 0.0, 1.0 - s, t_sing=1.0,
+                             epsabs=1e-6, epsrel=1e-6)
+
+    def ratio_exact(s):
+        """ln(rho/rho_0) = ln(1/s) - Gamma_max (1 - s), in closed form."""
+        return np.exp(-np.log(s) - gamma_max * (1.0 - s))
+
+    # quadrature against the closed form, over the range where 1 - t is
+    # representable to useful precision. Below about s = 1e-12, evaluating a
+    # rate written as -1/(1 - t) loses most of its significant digits to
+    # cancellation, so an assertion there would be probing double precision
+    # rather than the mathematics; the closed form covers that range instead.
+    for s in (1e-3, 1e-6, 1e-9, 1e-11):
+        assert abs(ratio_at(s) / ratio_exact(s) - 1.0) < 1e-4, s
+
     assert ratio_at(1e-6) < 1.0                      # still suppressed
     assert ratio_at(1e-9) > 1.0                      # crossover
-    assert ratio_at(1e-13) > 1e3                     # unambiguously divergent
+    assert ratio_at(1e-11) > 1e2                     # growing
+    # and the closed form, which needs no quadrature, shows there is no
+    # bound at all: the ratio exceeds any threshold for small enough s.
+    assert ratio_exact(1e-20) > 1e10
+    assert ratio_exact(1e-40) > 1e30
     # the crossover is exactly where ln(1/s) = Gamma_max
     assert np.isclose(np.log(1e-9) + gamma_max, 0.0, atol=1.5)
 
