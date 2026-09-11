@@ -9,6 +9,7 @@
     "dataset": "baseline",
     "model": "lcdm",
     "n_reaching_best": 8,
+    "n_reference_kicks": 0,
     "n_refined": 8,
     "n_screen": 3000,
     "n_seeded_from_submodels": 0,
@@ -20,6 +21,10 @@
       "omega_V_act"
     ],
     "polish_gain": 1.513285496912431e-08,
+    "reference_chi2": 1436.516088616481,
+    "reference_shortfall": -7.05745151208248e-09,
+    "reference_via": "lcdm",
+    "reproduces_reference": true,
     "theta": [
       0.022516828206057632,
       0.11773260999990567,

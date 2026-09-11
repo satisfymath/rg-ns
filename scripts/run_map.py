@@ -32,6 +32,36 @@ from absorb.sampling import (MAP_BUDGET_PER_DIM, Posterior,      # noqa: E402
 
 OUT = ROOT / "results" / "map.json"
 
+#: The frozen brute-force answer: forty full Nelder-Mead runs from random prior
+#: points, eight hours of compute, kept so that a cheaper protocol cannot
+#: silently return a worse maximum. A chi-square is a value attained at an
+#: actual point in parameter space, so the reference is a *ceiling*: any run
+#: that lands above it has failed to find something already known to exist.
+#: LambdaCDM reproduces to 1e-9, which is what certifies that the likelihood
+#: has not changed since the reference was taken.
+REFERENCE = ROOT / "results" / "map_reference.json"
+
+#: How far above the reference a run may land before it counts as a failure.
+#: The reference was itself an optimisation, so exact equality is not expected;
+#: 0.01 is a hundredth of the smallest chi-square difference in the comparison
+#: table and a tenth of the profile-likelihood step.
+REFERENCE_TOL = 0.01
+
+
+def reference_ceiling(model: str, dataset: str, ref: dict) -> tuple[float, str]:
+    """The lowest chi-square this model is already known to be able to reach.
+
+    A model cannot fit worse than any model it contains, so a submodel's
+    reference constrains it too. That is how the reverse-channel and memory
+    models get a ceiling even though the brute-force run only covered three.
+    """
+    best, via = float("inf"), ""
+    for name in [model] + CONTAINS.get(model, []):
+        entry = ref.get(f"{name}__{dataset}")
+        if entry and entry["chi2_min"] < best:
+            best, via = float(entry["chi2_min"]), name
+    return best, via
+
 #: Which models contain which, as submodels. A model that contains another
 #: cannot fit worse than it, so the larger search is seeded with the smaller
 #: model's answer embedded. Without this the nine-parameter model returned a
@@ -132,13 +162,46 @@ def best_fit(model: str, dataset: str, n_restarts: int, seed: int,
         if r.fun < best:
             best, best_x = r.fun, r.x
 
+    # Polish. Nelder-Mead alone stalls on the curved degeneracy between the
+    # rate normalisation and the activation redshift: it contracts along the
+    # ridge instead of following it, and stops 0.14 above a point the
+    # brute-force run is known to have reached. Alternating with Powell, which
+    # searches along directions rather than by reflection, follows the ridge;
+    # the two together reach the reference where either alone does not.
     for _ in range(n_polish):
-        r = minimize(neg, best_x, method="Nelder-Mead",
-                     options=dict(maxfev=2 * budget, xatol=1e-10, fatol=1e-10))
-        if r.fun < best - 1e-9:
-            best, best_x = r.fun, r.x
-        else:
+        improved = False
+        for method, opts in (("Nelder-Mead",
+                              dict(maxfev=2 * budget, xatol=1e-10, fatol=1e-10)),
+                             ("Powell",
+                              dict(maxfev=2 * budget, xtol=1e-10, ftol=1e-10))):
+            r = minimize(neg, best_x, method=method, options=opts)
+            if r.fun < best - 1e-9:
+                best, best_x, improved = r.fun, r.x, True
+        if not improved:
             break
+
+    # If a value is already known to be attainable and we are above it, the
+    # search has failed rather than converged, so spend more on it: kick the
+    # best point along each axis in turn and re-polish. Silence here was the
+    # defect -- the previous protocol reported "converged" while sitting above
+    # a maximum recorded in this repository.
+    ref_all = json.loads(REFERENCE.read_text()) if REFERENCE.exists() else {}
+    target, _via = reference_ceiling(model, dataset, ref_all)
+    rng = np.random.default_rng(seed + 1)
+    n_kicks = 0
+    while np.isfinite(target) and best > target + REFERENCE_TOL and n_kicks < 40:
+        n_kicks += 1
+        scale = 10.0 ** (-rng.integers(1, 4))          # 0.1, 0.01 or 0.001
+        x0 = np.clip(best_x + scale * (hi - lo) * rng.normal(size=post.ndim),
+                     lo, hi)
+        for method, opts in (("Nelder-Mead", dict(maxfev=budget, xatol=1e-10,
+                                                  fatol=1e-10)),
+                             ("Powell", dict(maxfev=budget, xtol=1e-10,
+                                             ftol=1e-10))):
+            r = minimize(neg, x0, method=method, options=opts)
+            if r.fun < best - 1e-9:
+                best, best_x = r.fun, r.x
+            x0 = r.x
 
     reached = np.asarray([v for v in reached if v < 1e9])
     spread = float(reached.max() - reached.min()) if reached.size > 1 else float("nan")
@@ -149,6 +212,9 @@ def best_fit(model: str, dataset: str, n_restarts: int, seed: int,
     best_refined = float(reached.min()) if reached.size else float("nan")
     n_at_best = int(np.sum(reached < best_refined + 0.01)) if reached.size else 0
     polish_gain = float(best_refined - best) if reached.size else float("nan")
+    ceiling, via = target, _via
+    shortfall = float(best - ceiling) if np.isfinite(ceiling) else float("nan")
+
     on_edge = [n for n, x, l, h in zip(post.param_names, best_x, lo, hi)
                if abs(x - l) < 1e-6 * (h - l) or abs(x - h) < 1e-6 * (h - l)]
     return dict(model=model, dataset=dataset, ndim=post.ndim,
@@ -158,7 +224,14 @@ def best_fit(model: str, dataset: str, n_restarts: int, seed: int,
                 n_reaching_best=n_at_best,
                 best_before_polish=best_refined,
                 polish_gain=polish_gain,
+                n_reference_kicks=n_kicks,
                 converged=bool(n_at_best >= 2),
+                reference_chi2=(None if not np.isfinite(ceiling) else ceiling),
+                reference_via=via,
+                reference_shortfall=(None if not np.isfinite(shortfall)
+                                     else shortfall),
+                reproduces_reference=(True if not np.isfinite(shortfall)
+                                      else bool(shortfall <= REFERENCE_TOL)),
                 budget_evals=budget, budget_per_dim=MAP_BUDGET_PER_DIM,
                 on_prior_edge=on_edge,
                 theta=np.asarray(best_x).tolist(),
@@ -192,6 +265,9 @@ def main() -> int:
         edge = (f", on the prior edge in {','.join(e['on_prior_edge'])}"
                 if e["on_prior_edge"] else "")
         mark = "" if e["converged"] else "   [NOT CONVERGED]"
+        if e.get("reference_chi2") is not None and not e["reproduces_reference"]:
+            mark += (f"   [ABOVE THE {e['reference_via']} REFERENCE BY "
+                     f"{e['reference_shortfall']:.4f}]")
         seed_note = (f", {e['n_seeded_from_submodels']} submodel seed(s)"
                      if e.get("n_seeded_from_submodels") else "")
         print(f"  {tag:24s} chi2_min = {e['chi2_min']:.4f}  "

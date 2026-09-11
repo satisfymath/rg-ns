@@ -50,7 +50,8 @@
     "level_name": null,
     "referenced_in": [
       "08_realizations.tex",
-      "11_defects.tex"
+      "11_defects.tex",
+      "13_outlook.tex"
     ],
     "status": "UNREVIEWED",
     "tests": [],
@@ -1691,7 +1692,9 @@
     "kind": "proposition",
     "level": null,
     "level_name": null,
-    "referenced_in": [],
+    "referenced_in": [
+      "13_outlook.tex"
+    ],
     "status": "UNREVIEWED",
     "tests": [
       "test_background.py"
@@ -1768,7 +1771,9 @@
     "kind": "proposition",
     "level": null,
     "level_name": null,
-    "referenced_in": [],
+    "referenced_in": [
+      "13_outlook.tex"
+    ],
     "status": "UNREVIEWED",
     "tests": [
       "test_symbolic.py"

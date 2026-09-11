@@ -350,5 +350,13 @@
     "mem_available_before_mb": 6949.07421875,
     "mem_available_after_mb": 7347.96875,
     "notes": "8 restarts"
+  },
+  {
+    "name": "map_lcdm__baseline",
+    "seconds": 25.269198894500732,
+    "peak_rss_mb": 260.7109375,
+    "mem_available_before_mb": 6618.546875,
+    "mem_available_after_mb": 6453.0,
+    "notes": "8 restarts"
   }
 ]
