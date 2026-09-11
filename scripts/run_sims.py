@@ -144,12 +144,16 @@ def run_lindblad() -> dict:
     local = np.diff(np.log(dicke.error)) / np.diff(np.log(dicke.N))
     np.savez(SIMS / "lindblad.npz", N=full.N, error=full.error,
              N_dicke=dicke.N, error_dicke=dicke.error)
-    print(f"  full Liouvillian, N = 2..8   : slope {full.slope:.4f}")
+    print(f"  full Liouvillian, N = 2..8   : slope {full.slope:.4f} "
+          f"+/- {full.slope_err:.4f}")
     print(f"  Dicke chain,      N = 8..512 : slope {dicke.slope:.4f} "
+          f"+/- {dicke.slope_err:.4f} "
           f"(local slope at the largest N: {local[-1]:.4f})")
     return {
-        "closure_slope_full": {"value": float(full.slope), "fmt": ".3f"},
-        "closure_slope_dicke": {"value": float(dicke.slope), "fmt": ".3f"},
+        "closure_slope_full": {"value": float(full.slope), "fmt": ".3f",
+                               "err": float(full.slope_err)},
+        "closure_slope_dicke": {"value": float(dicke.slope), "fmt": ".3f",
+                                "err": float(dicke.slope_err)},
         "closure_slope_local": {"value": float(local[-1]), "fmt": ".3f"},
         "closure_error_N8": {"value": float(full.error[-1]), "fmt": ".2e"},
         "closure_N_max": {"value": int(dicke.N[-1])},

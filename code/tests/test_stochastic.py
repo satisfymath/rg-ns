@@ -56,18 +56,46 @@ def test_law_of_large_numbers() -> None:
     assert np.allclose(ens.M.mean(axis=0), det.M, atol=5e-3)
 
 
-def test_finite_size_bias_is_order_one_over_N() -> None:
-    """The residual N-dependence of the mean is O(1/N), not O(1/sqrt(N))."""
+def test_the_finite_size_bias_is_not_order_one_over_sqrt_N() -> None:
+    """What this can establish, and what it cannot.
+
+    The test used to be called ``..._is_order_one_over_N`` and asserted that
+    ``N * bias`` stays below 12. It cannot support that name. At the largest
+    ``N`` the measured ``N * bias`` is of the same size as its own Monte-Carlo
+    error, so the data are equally consistent with a bias of exactly zero, and
+    a bound of 12 on a quantity whose value is about 2 is not a measurement of
+    anything.
+
+    What the same numbers do establish is the alternative that matters: a bias
+    of order ``1/sqrt(N)`` would make ``N * bias`` grow by a factor of four
+    across this range of ``N``, and it does not grow beyond the Monte-Carlo
+    error. That is asserted here, against an error estimated from the ensemble
+    rather than assumed.
+    """
     t = np.array([0.3, 0.5, 0.7])
     det = st.deterministic(t, REF)
-    scaled = []
-    for N in (500, 2000, 8000):
-        ens = st.simulate_thinning(N, t, REF, R=1500, seed=SEED)
+    n_values, R = (500, 2000, 8000), 20000
+
+    scaled, errors = [], []
+    for N in n_values:
+        ens = st.simulate_thinning(N, t, REF, R=R, seed=SEED)
         scaled.append(np.abs(ens.mean_f - det.f) * N)
-    scaled = np.asarray(scaled)
-    # N * bias must stay bounded (an O(1/sqrt(N)) bias would grow like sqrt(N),
-    # i.e. by a factor of 4 across this range)
-    assert scaled.max() < 12.0, scaled
+        errors.append(N * ens.std_f / np.sqrt(R))
+    scaled, errors = np.asarray(scaled), np.asarray(errors)
+
+    # Test at the epoch where the bias is largest at the smallest N, because
+    # that is the only one with enough signal to separate the two laws; at the
+    # others the bias is small enough that a factor of four is inside the
+    # Monte-Carlo error and nothing can be concluded, which is itself the
+    # point of the rewrite.
+    k = int(np.argmax(scaled[0]))
+    predicted_if_sqrt = 4.0 * scaled[0, k]     # sqrt(8000/500) = 4
+    gap = (predicted_if_sqrt - scaled[-1, k]) / errors[-1, k]
+    assert gap > 3.0, (scaled[:, k], errors[:, k], gap)
+
+    # and the honest statement of what is not established: at the largest N the
+    # signal is within its own error, so this cannot separate O(1/N) from zero
+    assert scaled[-1, k] < 2.0 * errors[-1, k], (scaled[-1, k], errors[-1, k])
 
 
 def test_fluctuation_scaling() -> None:
