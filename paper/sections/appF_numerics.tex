@@ -217,6 +217,33 @@ the search reached, checked against a frozen independent answer, and not a
 converged goodness of fit; the conclusions of \cref{sec:observations} rest on
 the evidence column, which is computed by integration rather than by search.
 
+\paragraph{Profiles.} A profile in a derived quantity imposes the target
+exactly --- at each grid point every parameter but $\epsilon$ is free and
+$\epsilon$ is solved for by a bracketed root find, so the achieved value
+matches the target to a relative
+$\numProfileXiHBaselineJerkExcessMaxTargetMissRel$ --- and is computed in two
+sweeps. The forward sweep warm-starts each target from the previous one, which
+helps in one direction only: a target whose search fails then seeds the next
+from a failure, and the profile acquires local minima that belong to the
+optimiser and not to the likelihood. A profile is the lower envelope of what
+is attainable, so a backward sweep from the far end can only improve it, and
+on the jerk profile it improved
+$\numProfileXiHBaselineJerkExcessNImprovedByBackwardSweep$ of the
+$13$ grid points. Two diagnostics are reported with every profile: the worst
+relative miss of the target, and the number of decreasing steps \emph{above}
+the minimum, which must be zero because a profile cannot fall on its rising
+side. Both were added after an earlier version used a quadratic penalty too
+weak to hold the constraint, whose grid points missed their targets by up to a
+factor of three.
+
+The grid matters as much as the search. The jerk profile was first run from
+$10^{-4}$, while the unconstrained maximum sits at a jerk excess of
+$\num{1.4e-8}$; the grid then never sampled the region containing its own
+minimum, and every $\Delta\chisq$ in it was measured from a floor
+$0.93$ too high, which makes the limit too weak. A gate now records where the
+maximum sits in the profiled quantity and refuses a grid that does not bracket
+it.
+
 \subsection{Sampling}\label{app:numerics-sampling}
 
 Posteriors are sampled with an affine-invariant ensemble sampler using
