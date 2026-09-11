@@ -309,18 +309,25 @@ in the endpoint of the kinetics, because \cref{eq:cosmology-dVdf} weights each
 increment of $\fconv$ by $a^{-3}$ and the two histories convert at different
 epochs. The simulation of \cref{fig:hysteresis} reports exactly this: at the
 end of the integration window the converted fractions agree to
-$\numHysteresisDeltaVacuum$ while the vacuum densities differ by
-$\numHysteresisRelativeDeltaVacuum$ in relative terms.
+$\numHysteresisDeltaFFinal$ --- both have run to completion --- while the
+vacuum densities differ by $\numHysteresisRelativeDeltaVacuum$ in relative
+terms. The expansion is what separates the two: with $a$ held constant the
+vacuum increment \emph{is} the converted fraction, by
+\cref{eq:cosmology-dVdf}, so the two differences coincide identically and no
+such run can exhibit the theorem. A test asserts that degeneracy, so the
+choice of an expanding background here is checked rather than asserted.
 
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.62\textwidth]{hysteresis.pdf}
   \caption{Hysteresis. Two histories are prepared to reach the same converted
     fraction at the first plotted time while carrying different memory states.
-    Evolved thereafter under identical conditions they separate, and their
-    asymptotic vacuum densities differ by
-    $\numHysteresisRelativeDeltaVacuum$ in relative terms. In the memoryless
-    limit the two curves coincide to solver tolerance.}
+    Evolved thereafter under identical conditions on a matter-dominated
+    background they separate, both running to $\fconv=1$ --- the converted
+    fractions agree to $\numHysteresisDeltaFFinal$ --- while their asymptotic
+    vacuum densities differ by $\numHysteresisRelativeDeltaVacuum$ in relative
+    terms. In the memoryless limit the two curves coincide to solver
+    tolerance.}
   \label{fig:hysteresis}
 \end{figure}
 

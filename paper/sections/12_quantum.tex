@@ -89,13 +89,15 @@ Replacing $\avg{(1-n_i)e^{\alpha\hat \fconv_{\neg i}}}$ by
 $(1-\fconv)e^{\alpha \fconv}$ discards correlations. Two computations bound the
 cost. Integrating the full Liouvillian, which is tractable only to $N=8$, the
 maximum discrepancy between the exact $\avg{\hat \fconv}$ and the mean-field
-solution falls with a fitted exponent $\numLindbladClosureSlopeFull$. That
+solution falls with a fitted exponent
+$\numLindbladClosureSlopeFull\pm\numLindbladClosureSlopeFullErr$. That
 number should not be quoted on its own: over so short a range it is still
 contaminated by small-$N$ curvature. Because the jump operators preserve
 permutation symmetry, the same quantity can be computed exactly from the
 $(N+1)$-state symmetric chain, which reaches $N=\numLindbladClosureNMax$; there
-the fitted exponent is $\numLindbladClosureSlopeDicke$ and the local slope at
-the largest $N$ is $\numLindbladClosureSlopeLocal$
+the fitted exponent is
+$\numLindbladClosureSlopeDicke\pm\numLindbladClosureSlopeDickeErr$ and the
+local slope at the largest $N$ is $\numLindbladClosureSlopeLocal$
 (\cref{fig:lindblad}). The closure is therefore $\order{N^{-1}}$, and its error
 is subleading to the $\order{N^{-1/2}}$ fluctuations of
 \cref{thm:deterministic-limit}.
