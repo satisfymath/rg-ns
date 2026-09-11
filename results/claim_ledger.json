@@ -11,6 +11,7 @@
     "referenced_in": [
       "01_intro.tex",
       "03_absorbing_process.tex",
+      "04_homogeneous_cosmology.tex",
       "10_observations.tex",
       "11_defects.tex",
       "appB_proofs.tex"
@@ -49,6 +50,7 @@
     "level": null,
     "level_name": null,
     "referenced_in": [
+      "06_solvable_early.tex",
       "08_realizations.tex",
       "11_defects.tex",
       "13_outlook.tex"
@@ -906,7 +908,9 @@
       "appA_conventions.tex"
     ],
     "status": "UNREVIEWED",
-    "tests": [],
+    "tests": [
+      "test_theorems.py"
+    ],
     "text": "",
     "title": ""
   },
@@ -932,7 +936,9 @@
     "level_name": "theorem of the model",
     "referenced_in": [],
     "status": "UNREVIEWED",
-    "tests": [],
+    "tests": [
+      "test_theorems.py"
+    ],
     "text": "",
     "title": ""
   },
@@ -945,7 +951,9 @@
     "level_name": "theorem of the model",
     "referenced_in": [],
     "status": "UNREVIEWED",
-    "tests": [],
+    "tests": [
+      "test_theorems.py"
+    ],
     "text": "",
     "title": ""
   },
@@ -1062,15 +1070,20 @@
   "eq:process-memory": {
     "claim_id": "eq:process-memory",
     "file": "03_absorbing_process.tex",
-    "in_summary": [],
+    "in_summary": [
+      "01_intro.tex"
+    ],
     "kind": "equation",
     "level": null,
     "level_name": null,
     "referenced_in": [
+      "01_intro.tex",
       "appB_proofs.tex"
     ],
     "status": "UNREVIEWED",
-    "tests": [],
+    "tests": [
+      "test_stochastic.py"
+    ],
     "text": "",
     "title": ""
   },
@@ -1113,16 +1126,21 @@
   "eq:process-survival": {
     "claim_id": "eq:process-survival",
     "file": "03_absorbing_process.tex",
-    "in_summary": [],
+    "in_summary": [
+      "01_intro.tex"
+    ],
     "kind": "keyresult",
     "level": "I",
     "level_name": "identity",
     "referenced_in": [
+      "01_intro.tex",
       "04_homogeneous_cosmology.tex",
       "appB_proofs.tex"
     ],
     "status": "UNREVIEWED",
-    "tests": [],
+    "tests": [
+      "test_stochastic.py"
+    ],
     "text": "",
     "title": ""
   },
@@ -1422,6 +1440,7 @@
     "level": "A",
     "level_name": "postulate",
     "referenced_in": [
+      "07_cosmography.tex",
       "13_outlook.tex",
       "appF_numerics.tex"
     ],
@@ -1512,7 +1531,9 @@
     "level_name": null,
     "referenced_in": [],
     "status": "UNREVIEWED",
-    "tests": [],
+    "tests": [
+      "test_early_branch.py"
+    ],
     "text": "Under \\cref{asm:activation} with $\\bfrac<1$, the limit $V_{\\rm early}=\\lim_{a\\to0^+}\\rhoV(a)$ exists and is finite, $\\rhoV$ is non-decreasing, and therefore $\\rhoV\\ge0$ on $(0,1]$ if and only if $V_{\\rm early}\\ge0$. The vacuum increment is $\\rhoV_0-V_{\\rm early}=(1-\\bfrac)\\int_0^1\\Gam\\rhoI\\,\\dd a/(a\\Hub)$, so with $\\rhoI\\propto a^{-3}$ and a radiation-dominated deep past the integrand behaves as $",
     "title": "Convergence and positivity"
   },
@@ -1557,7 +1578,9 @@
     "level_name": null,
     "referenced_in": [],
     "status": "UNREVIEWED",
-    "tests": [],
+    "tests": [
+      "test_symbolic.py"
+    ],
     "text": "On the branch with future-directed timelike gradient and $\\lagm\\ge0$, \\cref{eq:realizations-clock-action} gives % \\begin{keyresult}{I}{eq:realizations-clock} \\ulow=-\\partial_\\mu \\clock,\\quad u^\\mu u_\\mu=-1,\\quad \\Tmn=\\lagm\\, u_\\mu u_\\nu-V g_{\\mu\\nu}, \\end{keyresult} % together with $u^\\nu\\covd_\\nu \\umu=0$, $\\covd_\\mu(\\lagm \\umu)=-V_{,\\clock}$ and $\\covd_\\mu T_V^{\\mu\\nu}=V_{,\\clock}\\,u^\\nu$.",
     "title": "Clock field equations"
   },
@@ -1570,7 +1593,9 @@
     "level_name": null,
     "referenced_in": [],
     "status": "UNREVIEWED",
-    "tests": [],
+    "tests": [
+      "test_growth.py"
+    ],
     "text": "If instead $\\delta \\rhoV_{\\rm com}=\\zeta\\,\\delta_I$ with $\\zeta>0$, the dust experiences a force $\\rhoI A^i=\\partial^i \\rhoV$, and the growth equation acquires a term $-k^2\\zeta\\delta/(a^2\\bar\\rho_I)$. The effective sound speed squared is then negative and short-wavelength modes grow without bound.",
     "title": "A clumping vacuum is gradient-unstable"
   },
@@ -1611,7 +1636,9 @@
     "level_name": null,
     "referenced_in": [],
     "status": "UNREVIEWED",
-    "tests": [],
+    "tests": [
+      "test_symbolic.py"
+    ],
     "text": "Let $C_{\\mu\\nu\\rho}$ be a three-form potential with $\\fourform_{\\mu\\nu\\rho\\sigma}=4\\covd_{[\\mu}C_{\\nu\\rho\\sigma]}$ and % \\begin{equation}\\label{eq:realizations-four-form-action} \\Sact_4=-\\frac{1}{2\\cdot4!}\\int \\dd^4x\\,\\gdet\\, \\fourform_{\\alpha\\beta\\gamma\\delta}\\fourform^{\\alpha\\beta\\gamma\\delta} . \\end{equation} % In a connected source-free region the field equations imply % \\begin{keyresult}{I}{e",
     "title": "Four-form vacuum"
   },
@@ -1623,13 +1650,14 @@
     "level": null,
     "level_name": null,
     "referenced_in": [
+      "06_solvable_early.tex",
       "13_outlook.tex"
     ],
     "status": "UNREVIEWED",
     "tests": [
       "test_symbolic.py"
     ],
-    "text": "Let the dark sector consist of pressureless components with a common four-velocity $\\umu$ and an exact vacuum, $T^{\\mu\\nu}_V=-\\rhoV g^{\\mu\\nu}$; let the transfer between them carry no momentum in the frame $\\umu$, so that $\\covd_\\mu T^{\\mu\\nu}_V=\\QV u^\\nu$; and let $\\rhoI+\\rhoD>0$. Then, on any simply connected region where $\\QV\\neq0$ and the congruence is regular, % \\begin{enumerate} \\item $a^\\mu",
+    "text": "Let the dark sector consist of pressureless components with a common four-velocity $\\umu$ and no heat flux, $T^{\\mu\\nu}_{I,D}=\\rho_{I,D}u^\\mu u^\\nu$, together with an exact vacuum, $T^{\\mu\\nu}_V=-\\rhoV g^{\\mu\\nu}$; let the remaining species be separately conserved, so that the dark sector conserves in total; let the transfer within it carry no momentum in the frame $\\umu$, so that $\\covd_\\mu T^{\\m",
     "title": "The geodesic realization is forced, not chosen"
   },
   "prop:ide-map": {
@@ -1664,7 +1692,9 @@
     "level_name": null,
     "referenced_in": [],
     "status": "UNREVIEWED",
-    "tests": [],
+    "tests": [
+      "test_background.py"
+    ],
     "text": "With $a_i=1$, constant $\\bfrac$ and $\\fconv_i<1$, the system \\cref{eq:cosmology-system} satisfies % \\begin{keyresult}{I}{eq:cosmology-survival} \\rhoI a^3=\\rho_{I,i}\\,\\frac{1-\\fconv}{1-\\fconv_i}, \\qquad \\rhoD a^3=\\rho_{D,i}+\\bfrac\\,\\rho_{I,i}\\,\\frac{\\fconv-\\fconv_i}{1-\\fconv_i} , \\end{keyresult} % and, wherever $\\dot \\fconv>0$, % \\begin{keyresult}{I}{eq:cosmology-dVdf} \\odv{\\rhoV}{\\fconv}=\\frac{(1-",
     "title": "Survival and product identities"
   },
@@ -1700,7 +1730,9 @@
       "08_realizations.tex"
     ],
     "status": "UNREVIEWED",
-    "tests": [],
+    "tests": [
+      "test_growth.py"
+    ],
     "text": "Under \\cref{asm:geodesic} the system \\cref{eq:perturbations-system} contains no independent dark-energy degree of freedom, no pressure perturbation, and no $k$-dependent coefficient. Its coefficients are of order $\\Hub$ and $\\Hub^2$, so $|\\delta_{\\rm m}|$ is bounded by a power of $a$ on every scale.",
     "title": "Absence of the instability"
   },
@@ -1721,7 +1753,7 @@
     "tests": [
       "test_background.py"
     ],
-    "text": "Let the dark sector consist of components exchanging energy with no momentum transfer, each a perfect fluid with its own density $\\rho_i$ and pressure $p_i$. Then the total pressure is $\\sum_i p_i$, independent of every transfer rate. In particular, if every component is pressureless the total is pressureless, and % \\begin{keyresult}{C}{eq:cosmology-no-acceleration} \\ddot a\\le0 \\quad\\text{for all ",
+    "text": "Let the dark sector consist of components exchanging energy with no momentum transfer, each a perfect fluid with its own density $\\rho_i$ and pressure $p_i$ \\emph{and a common four-velocity}. Then the total pressure is $\\sum_i p_i$, independent of every transfer rate. In particular, if every component is pressureless the total is pressureless, and, provided the total density is non-negative, % \\be",
     "title": "Conversion cannot manufacture an equation of state"
   },
   "prop:no-rolling": {
@@ -1733,7 +1765,9 @@
     "level_name": null,
     "referenced_in": [],
     "status": "UNREVIEWED",
-    "tests": [],
+    "tests": [
+      "test_symbolic.py"
+    ],
     "text": "For a canonical real scalar with $\\Lag=-\\tfrac12(\\covd\\phi)^2-W(\\phi)$ one has $\\rho_\\phi+p_\\phi=\\dot\\phi^2$. Hence $w_\\phi=-1$ exactly requires $\\dot\\phi=0$.",
     "title": "No rolling exact vacuum"
   },
@@ -1751,9 +1785,10 @@
     ],
     "status": "UNREVIEWED",
     "tests": [
+      "test_background.py",
       "test_symbolic.py"
     ],
-    "text": "Consider two sectors with $\\dot\\rho_1+3\\Hub\\rho_1=-Q$ and $\\dot\\rho_2+3\\Hub(1+w)\\rho_2=+Q$. If $Q=\\xi \\Hub\\rho_2$ with $\\xi>0$, then on the face $\\{\\rho_1=0\\}$ the field is $\\dot\\rho_1=-\\xi \\Hub\\rho_2<0$ whenever $\\rho_2>0$: the subtangent condition fails on a set of codimension one, and $\\rho_1$ is driven through zero. The same argument with the roles exchanged applies to $Q=\\xi \\Hub\\rho_1$ drain",
+    "text": "Consider two sectors with $\\dot\\rho_1+3\\Hub\\rho_1=-Q$ and $\\dot\\rho_2+3\\Hub(1+w)\\rho_2=+Q$, and let $Q=\\xi \\Hub\\rho_2$ with $\\xi>0$. \\begin{enumerate} \\item On the face $\\{\\rho_1=0\\}$ the field is $\\dot\\rho_1=-\\xi \\Hub\\rho_2<0$ whenever $\\rho_2>0$, so the subtangent condition fails on a set of codimension one and the non-negative orthant is \\emph{not} forward invariant. \\item Whether a given traje",
     "title": "Recipient-proportional couplings are not positivity-safe"
   },
   "prop:survival": {
@@ -1767,7 +1802,9 @@
       "11_defects.tex"
     ],
     "status": "UNREVIEWED",
-    "tests": [],
+    "tests": [
+      "test_stochastic.py"
+    ],
     "text": "For $\\Gam\\ge0$ locally integrable along the solution and $\\fconv_i\\in[0,1)$, % \\begin{keyresult}{I}{eq:process-survival} 1-\\fconv(t)=(1-\\fconv_i)\\exp\\left[-\\int_{t_i}^{t}\\Gam(s)\\,\\dd s\\right] , \\end{keyresult} % so $\\fconv_i\\le \\fconv(t)<1$ at every finite time, and $\\fconv\\to1$ if and only if $\\int^{\\infty}\\Gam\\,\\dd s$ diverges.",
     "title": "Survival"
   },
@@ -1875,7 +1912,7 @@
     "tests": [
       "test_background.py"
     ],
-    "text": "The last hypothesis is there because the fits of \\cref{sec:observations} carry one massive neutrino eigenstate, which is neither pressureless nor conserved radiation, so a bound advertised as parameter-free must say what it does with it. Such a species contributes $-\\tfrac32\\dot p/(2\\Mpl^2\\Hub^3)$ to $\\jerk$, and its pressure falls monotonically as it becomes non-relativistic, so the contribution ",
+    "text": "The last hypothesis is there because the fits of \\cref{sec:observations} carry one massive neutrino eigenstate, which is neither pressureless nor conserved radiation, so a bound advertised as parameter-free must say what it does with it. Such a species contributes $-\\dot p/(2\\Mpl^2\\Hub^3)$ to $\\jerk$, by the same identity as every other pressure, and its pressure falls monotonically as it becomes ",
     "title": "Massive neutrinos strengthen the bound"
   },
   "rem:residual-boundary-layer": {
@@ -1965,6 +2002,7 @@
     ],
     "status": "UNREVIEWED",
     "tests": [
+      "test_background.py",
       "test_symbolic.py"
     ],
     "text": "Add to \\cref{thm:regular-future} either $V_i>0$, or $\\bfrac<1$ together with $\\rho_{I,i}>0$ and $\\int^\\infty\\Gam\\,\\dd t=\\infty$. Then $\\rhoV\\to \\Vinf>0$, all other densities tend to zero, % \\begin{keyresult}{C}{eq:cosmology-desitter} \\Hub(t)\\longrightarrow \\Hinf=\\sqrt{\\frac{\\Vinf}{3\\Mpl^2}}>0, \\qquad a(t)e^{-\\Hinf(t-t_i)}\\longrightarrow C\\in(0,\\infty) , \\end{keyresult} % and the expansion accelera",
@@ -2040,7 +2078,7 @@
       "test_background.py",
       "test_deficit_floor.py"
     ],
-    "text": "For a spatially flat universe containing pressureless matter, conserved radiation, an exact vacuum that receives energy at rate $\\QV$, and any further conserved species whose pressure is non-increasing in time, % \\begin{keyresult}{C}{eq:cosmography-jerk} \\jerk=1+2\\Omr+\\varepsilon , \\qquad \\varepsilon\\eqdef\\frac{\\QV}{2\\Mpl^2\\Hub^3} , \\end{keyresult} % and therefore, whenever the transfer is towards",
+    "text": "For a spatially flat universe containing pressureless matter, conserved radiation and an exact vacuum that receives energy at rate $\\QV$, and nothing else, % \\begin{keyresult}{C}{eq:cosmography-jerk} \\jerk=1+2\\Omr+\\varepsilon , \\qquad \\varepsilon\\eqdef\\frac{\\QV}{2\\Mpl^2\\Hub^3} , \\end{keyresult} % and therefore, whenever the transfer is towards the vacuum, % \\begin{keyresult}{C}{eq:cosmography-jerk",
     "title": "Jerk identity and bound"
   },
   "thm:memory-fingerprint": {
@@ -2104,7 +2142,8 @@
     ],
     "status": "UNREVIEWED",
     "tests": [
-      "test_symbolic.py"
+      "test_symbolic.py",
+      "test_theorems.py"
     ],
     "text": "Define $\\delta_{\\rm eff}=\\dd\\ln(\\rhodmeff a^3)/\\dd\\ln a$. Under \\cref{asm:closure} with $\\rhodmeff>0$, % \\begin{keyresult}{C}{eq:positivity-no-sign-flip} \\delta_{\\rm eff}(a)=-\\frac{\\QV}{\\Hub\\rhodmeff}=-\\xieff(a)\\le0 \\qquad\\text{for every }a , \\end{keyresult} % for every admissible rate law, with equality only where $\\Gam\\rhoI=0$ or $\\bfrac=1$. The same holds for the total dust.",
     "title": "No sign flip"
@@ -2127,6 +2166,7 @@
     ],
     "status": "UNREVIEWED",
     "tests": [
+      "test_background.py",
       "test_symbolic.py"
     ],
     "text": "Assume \\cref{asm:closure} with non-negative initial data, and let $\\Gam\\ge0$ be merely locally integrable along the solution: no lower bound, no upper bound, and no continuity are required. Then the non-negative orthant is forward invariant: every density in \\cref{eq:cosmology-system} remains non-negative for as long as the solution exists.",
@@ -2142,12 +2182,14 @@
     "level": null,
     "level_name": null,
     "referenced_in": [
+      "05_positivity_ide.tex",
       "06_solvable_early.tex",
       "08_realizations.tex",
       "14_conclusions.tex"
     ],
     "status": "UNREVIEWED",
     "tests": [
+      "test_background.py",
       "test_symbolic.py"
     ],
     "text": "Assume \\cref{asm:closure}; non-negative initial densities with positive sum; $a_i=1$, $\\fconv_i\\in[0,1)$, $\\Mmem_i\\in[0,1]$, $\\bfrac\\in[0,1]$, $\\tauM>0$; and $\\Gam$ locally Lipschitz with $0\\le\\Gam\\le G<\\infty$ on the physical domain. Then a unique solution exists for all finite future times, all densities remain non-negative, $\\fconv,\\Mmem\\in[0,1]$, $\\Hub>0$, and % \\begin{keyresult}{C}{eq:cosmolo",
@@ -2165,7 +2207,8 @@
     ],
     "status": "UNREVIEWED",
     "tests": [
-      "test_symbolic.py"
+      "test_symbolic.py",
+      "test_theorems.py"
     ],
     "text": "Let the solution be defined and non-negative on $[a_e,1]$ with radiation exactly conserved, and define the matter deficit % \\begin{keyresult}{C}{eq:positivity-deficit} \\Delta\\eqdef\\frac{\\rho_{\\rm m}^{\\rm early}-\\rho_{\\rm m0}}{3\\Mpl^2\\Hz^2} =\\frac{1}{3\\Mpl^2\\Hz^2}\\int_{t_e}^{t_0}\\QV a^3\\,\\dd t\\ \\ge 0 , \\qquad \\rho_{\\rm m}^{\\rm early}\\eqdef\\rhom(t_e)\\,a_e^3 , \\end{keyresult} % both densities being c",
     "title": "Sandwich"
@@ -2184,9 +2227,10 @@
     ],
     "status": "UNREVIEWED",
     "tests": [
-      "test_symbolic.py"
+      "test_symbolic.py",
+      "test_theorems.py"
     ],
-    "text": "Neglecting radiation, the competing late-time descriptions give % \\begin{center} \\begin{tabular}{lll} \\toprule Model & $\\jerk-1$ & Sign \\\\ \\midrule $\\LCDM$ & $0$ & zero \\\\ This model, one-way & $\\tfrac32(1-\\bfrac)(\\Gam/\\Hub)\\Omega_I$ & $>0$ \\\\ This model, reverse channel dominant & $\\varepsilon-\\Gamdn \\rhoV/(2\\Mpl^2\\Hub^3)$ & $<0$ \\\\ Running vacuum, $\\nu>0$ & $-3\\nu(1+\\decel)$ & $<0$ \\\\ CPL in the",
+    "text": "Neglecting radiation, the competing late-time descriptions give % \\begin{center} \\begin{tabular}{lll} \\toprule Model & $\\jerk-1$ & Sign \\\\ \\midrule $\\LCDM$ & $0$ & zero \\\\ This model, one-way & $\\tfrac32(1-\\bfrac)(\\Gam/\\Hub)\\Omega_I$ & $>0$ \\\\ This model, reverse channel dominant & $\\varepsilon-\\Gamdn \\rhoV/(2\\Mpl^2\\Hub^3)$ & $<0$ \\\\ Running vacuum, $\\nu>0$ \\parencite{shapiro2002_scaling} & $-3\\nu",
     "title": "Sign table"
   },
   "thm:snap": {

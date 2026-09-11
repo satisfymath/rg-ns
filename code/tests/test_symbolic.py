@@ -4,7 +4,14 @@ Each ``check_*`` is exercised twice: once through its own assertion machinery,
 and once through an independent spot check performed here, so that a check that
 silently degenerated into a tautology would still be caught.
 """
-# covers: eq:perturbations-vorticity, prop:vorticity-obstruction, prop:geodesic-forced, prop:four-form, prop:clock, prop:no-rolling, eq:outlook-reynolds-eos, eq:realizations-lnrate, eq:realizations-alpha, thm:quasi-positivity, thm:no-sign-flip, prop:recipient-proportional, thm:regular-future, thm:de-sitter, thm:sandwich, thm:sign-table
+# covers: eq:perturbations-vorticity, prop:vorticity-obstruction, prop:geodesic-forced, prop:four-form, prop:clock, prop:no-rolling, eq:outlook-reynolds-eos, eq:realizations-lnrate, eq:realizations-alpha
+#   Six labels were removed from this line: thm:quasi-positivity,
+#   thm:no-sign-flip, prop:recipient-proportional, thm:regular-future,
+#   thm:de-sitter, thm:sandwich, thm:sign-table. Nothing in this file
+#   tested any of them; the header had drifted from the code and the
+#   ledger reported coverage that did not exist, for claims two of which
+#   appear in the abstract. They are now covered by test_theorems.py and
+#   by test_background.py, which do test them.
 #   Machine-readable link from tests to the claims they cover, read by
 #   scripts/claim_ledger.py. A claim quoted in the abstract or the
 #   conclusions with nothing testing it is what the ledger exists to find.

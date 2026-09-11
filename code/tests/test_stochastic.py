@@ -15,7 +15,7 @@ The suite pins down four independent things:
 All randomness is seeded from ``absorb.constants.SEED``, so every number below
 is reproducible.
 """
-# covers: thm:deterministic-limit, prop:memory-origin, thm:hysteresis, prop:survival, eq:process-survival
+# covers: thm:deterministic-limit, prop:memory-origin, eq:process-memory, thm:hysteresis, prop:survival, eq:process-survival
 #   Machine-readable link from tests to the claims they cover, read by
 #   scripts/claim_ledger.py. A claim quoted in the abstract or the
 #   conclusions with nothing testing it is what the ledger exists to find.
@@ -543,3 +543,71 @@ def test_a_flat_background_cannot_exhibit_hysteresis_in_the_vacuum():
     # and the accumulated vacua nonetheless differ, by far more than that
     assert grown.relative_delta_V > 0.05, grown.relative_delta_V
     assert abs(grown.delta_V) > 1e6 * abs(grown.delta_f_final)
+
+
+def test_the_memory_law_is_the_exact_average_of_per_unit_relaxations():
+    """``prop:memory-origin`` and ``eq:process-memory``, with stochastic input.
+
+    The claim is that the population law tau dM/dt = f - M is not an extra
+    non-local assumption but the exact average of per-unit laws
+    tau dm_i/dt = s_i - m_i with a *common* tau, where s_i is the indicator
+    that unit i has converted. It is exact by linearity, which is the point:
+    the assumption it replaces is local and of equal or greater strength, not
+    weaker.
+
+    This was among the claims whose coverage the ledger asserted and no test
+    supplied. The check drives the per-unit equations with conversion times
+    drawn at random rather than with a smooth prescribed f, so that the two
+    sides are compared on a realization and not on the idealisation the
+    proposition is stated over.
+    """
+    from scipy.integrate import solve_ivp
+
+    rng = np.random.default_rng(11)
+    n_units, tau = 400, 0.7
+    t_conv = np.sort(rng.exponential(1.0, size=n_units))   # conversion times
+    t_end = float(t_conv.max()) + 3.0 * tau
+
+    def f_of(t):
+        """Realized converted fraction: a staircase with n_units steps."""
+        return float(np.searchsorted(t_conv, t, side="right")) / n_units
+
+    # per-unit: tau m_i' = s_i - m_i, integrated for every unit at once
+    def per_unit(t, m):
+        s = (t >= t_conv).astype(float)
+        return (s - m) / tau
+
+    sol_units = solve_ivp(per_unit, (0.0, t_end), np.zeros(n_units),
+                          rtol=1e-11, atol=1e-13, dense_output=True,
+                          max_step=0.01)
+    assert sol_units.success
+
+    # population: tau M' = f - M, driven by the same realization
+    def population(t, y):
+        return [(f_of(t) - y[0]) / tau]
+
+    sol_pop = solve_ivp(population, (0.0, t_end), [0.0], rtol=1e-11,
+                        atol=1e-13, dense_output=True, max_step=0.01)
+    assert sol_pop.success
+
+    t = np.linspace(0.0, t_end, 500)
+    mean_of_units = sol_units.sol(t).mean(axis=0)
+    population_M = sol_pop.sol(t)[0]
+    assert np.max(np.abs(mean_of_units - population_M)) < 1e-6, (
+        np.max(np.abs(mean_of_units - population_M)))
+
+    # the test would pass trivially if nothing moved
+    assert population_M[-1] > 0.9
+    assert np.ptp(population_M) > 0.9
+
+    # and the identification fails if the relaxation times are not common,
+    # which is what makes "a common tau" a hypothesis rather than a convention
+    taus = tau * rng.uniform(0.5, 2.0, size=n_units)
+
+    def per_unit_mixed(t, m):
+        return ((t >= t_conv).astype(float) - m) / taus
+
+    mixed = solve_ivp(per_unit_mixed, (0.0, t_end), np.zeros(n_units),
+                      rtol=1e-11, atol=1e-13, dense_output=True,
+                      max_step=0.01)
+    assert np.max(np.abs(mixed.sol(t).mean(axis=0) - population_M)) > 1e-3

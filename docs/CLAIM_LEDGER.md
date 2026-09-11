@@ -8,7 +8,7 @@ found independently.
 
 - results catalogued: **144**
 - carrying an explicit evidential level: **57**
-- referred to from a summary section: **23**
+- referred to from a summary section: **25**
 - referred to from a summary but covered by no test: **0**
 
 | claim | kind | level | file | in summary | tests |
@@ -74,10 +74,10 @@ found independently.
 | `eq:perturbations-peff` | equation | — | 09_perturbations.tex | — | — |
 | `eq:perturbations-system` | keyresult | C (theorem of the model) | 09_perturbations.tex | — | — |
 | `eq:perturbations-vorticity` | keyresult | C (theorem of the model) | 09_perturbations.tex | — | symbolic |
-| `eq:positivity-deficit` | keyresult | C (theorem of the model) | 05_positivity_ide.tex | — | — |
+| `eq:positivity-deficit` | keyresult | C (theorem of the model) | 05_positivity_ide.tex | — | theorems |
 | `eq:positivity-map` | keyresult | I (identity) | 05_positivity_ide.tex | — | — |
-| `eq:positivity-no-sign-flip` | keyresult | C (theorem of the model) | 05_positivity_ide.tex | — | — |
-| `eq:positivity-sandwich` | keyresult | C (theorem of the model) | 05_positivity_ide.tex | — | — |
+| `eq:positivity-no-sign-flip` | keyresult | C (theorem of the model) | 05_positivity_ide.tex | — | theorems |
+| `eq:positivity-sandwich` | keyresult | C (theorem of the model) | 05_positivity_ide.tex | — | theorems |
 | `eq:positivity-sandwich-lower` | equation | — | 05_positivity_ide.tex | — | — |
 | `eq:positivity-sandwich-upper` | equation | — | 05_positivity_ide.tex | — | — |
 | `eq:positivity-track-b` | equation | — | 05_positivity_ide.tex | — | — |
@@ -86,10 +86,10 @@ found independently.
 | `eq:process-breakdown-gap` | keyresult | C (theorem of the model) | 03_absorbing_process.tex | — | — |
 | `eq:process-deterministic` | keyresult | C (theorem of the model) | 03_absorbing_process.tex | — | — |
 | `eq:process-intensity` | equation | — | 03_absorbing_process.tex | — | — |
-| `eq:process-memory` | equation | — | 03_absorbing_process.tex | — | — |
+| `eq:process-memory` | equation | — | 03_absorbing_process.tex | 01_intro.tex | stochastic |
 | `eq:process-memory-solution` | equation | — | 03_absorbing_process.tex | — | — |
 | `eq:process-rate` | keyresult | A (postulate) | 03_absorbing_process.tex | — | — |
-| `eq:process-survival` | keyresult | I (identity) | 03_absorbing_process.tex | — | — |
+| `eq:process-survival` | keyresult | I (identity) | 03_absorbing_process.tex | 01_intro.tex | stochastic |
 | `eq:quantum-collective` | equation | — | 12_quantum.tex | — | — |
 | `eq:quantum-collective-mean` | keyresult | I (identity) | 12_quantum.tex | — | — |
 | `eq:quantum-two-state` | keyresult | I (identity) | 12_quantum.tex | — | — |
@@ -117,23 +117,23 @@ found independently.
 | `eq:solvable-exponent` | equation | — | 06_solvable_early.tex | — | early_branch |
 | `eq:solvable-friedmann` | equation | — | 06_solvable_early.tex | — | — |
 | `eq:solvable-nogo` | keyresult | C (theorem of the model) | 06_solvable_early.tex | — | — |
-| `prop:activation` | proposition | — | 06_solvable_early.tex | — | — |
+| `prop:activation` | proposition | — | 06_solvable_early.tex | — | early_branch |
 | `prop:bridge` | remark | — | 08_realizations.tex | — | — |
 | `prop:classical-reduction` | proposition | — | 12_quantum.tex | 01_intro.tex | lindblad |
-| `prop:clock` | proposition | — | 08_realizations.tex | — | — |
-| `prop:clumping-unstable` | proposition | — | 09_perturbations.tex | — | — |
+| `prop:clock` | proposition | — | 08_realizations.tex | — | symbolic |
+| `prop:clumping-unstable` | proposition | — | 09_perturbations.tex | — | growth |
 | `prop:derrick` | proposition | — | 11_defects.tex | — | skyrme |
 | `prop:determined-V` | proposition | — | 08_realizations.tex | — | — |
-| `prop:four-form` | proposition | — | 08_realizations.tex | — | — |
+| `prop:four-form` | proposition | — | 08_realizations.tex | — | symbolic |
 | `prop:geodesic-forced` | proposition | — | 09_perturbations.tex | — | symbolic |
 | `prop:ide-map` | proposition | — | 05_positivity_ide.tex | 01_intro.tex, 14_conclusions.tex | likelihoods |
-| `prop:identities` | proposition | — | 04_homogeneous_cosmology.tex | — | — |
+| `prop:identities` | proposition | — | 04_homogeneous_cosmology.tex | — | background |
 | `prop:memory-origin` | proposition | — | 03_absorbing_process.tex | 01_intro.tex, 14_conclusions.tex | stochastic |
-| `prop:no-instability` | proposition | — | 09_perturbations.tex | — | — |
+| `prop:no-instability` | proposition | — | 09_perturbations.tex | — | growth |
 | `prop:no-pressure-from-kinetics` | proposition | — | 04_homogeneous_cosmology.tex | 14_conclusions.tex | background |
-| `prop:no-rolling` | proposition | — | 08_realizations.tex | — | — |
-| `prop:recipient-proportional` | proposition | — | 05_positivity_ide.tex | 14_conclusions.tex | symbolic |
-| `prop:survival` | proposition | — | 03_absorbing_process.tex | — | — |
+| `prop:no-rolling` | proposition | — | 08_realizations.tex | — | symbolic |
+| `prop:recipient-proportional` | proposition | — | 05_positivity_ide.tex | 14_conclusions.tex | background, symbolic |
+| `prop:survival` | proposition | — | 03_absorbing_process.tex | — | stochastic |
 | `prop:unitary-obstruction` | proposition | — | 12_quantum.tex | — | lindblad |
 | `prop:vorticity-obstruction` | proposition | — | 09_perturbations.tex | — | symbolic |
 | `rem:activation-local` | remark | — | 06_solvable_early.tex | — | early_branch |
@@ -145,15 +145,15 @@ found independently.
 | `rem:sandwich-naive` | remark | — | 05_positivity_ide.tex | — | — |
 | `thm:b-independence` | theorem | — | 09_perturbations.tex | 01_intro.tex, 14_conclusions.tex | growth |
 | `thm:bounded-rate-obstruction` | theorem | — | 11_defects.tex | 14_conclusions.tex | collapse, pancake |
-| `thm:de-sitter` | theorem | — | 04_homogeneous_cosmology.tex | 14_conclusions.tex | symbolic |
+| `thm:de-sitter` | theorem | — | 04_homogeneous_cosmology.tex | 14_conclusions.tex | background, symbolic |
 | `thm:deterministic-limit` | theorem | — | 03_absorbing_process.tex | 01_intro.tex, 14_conclusions.tex | stochastic |
 | `thm:hysteresis` | theorem | — | 03_absorbing_process.tex | 01_intro.tex, 14_conclusions.tex | stochastic |
 | `thm:jerk` | theorem | — | 07_cosmography.tex | 01_intro.tex, 14_conclusions.tex | background, deficit_floor |
 | `thm:memory-fingerprint` | theorem | — | 07_cosmography.tex | 01_intro.tex, 14_conclusions.tex | background |
 | `thm:no-go` | theorem | — | 06_solvable_early.tex | 01_intro.tex, 14_conclusions.tex | early_branch |
-| `thm:no-sign-flip` | theorem | — | 05_positivity_ide.tex | 01_intro.tex, 14_conclusions.tex | symbolic |
-| `thm:quasi-positivity` | theorem | — | 05_positivity_ide.tex | 01_intro.tex, 14_conclusions.tex | symbolic |
-| `thm:regular-future` | theorem | — | 04_homogeneous_cosmology.tex | 14_conclusions.tex | symbolic |
-| `thm:sandwich` | theorem | — | 05_positivity_ide.tex | — | symbolic |
-| `thm:sign-table` | theorem | — | 07_cosmography.tex | 14_conclusions.tex | symbolic |
+| `thm:no-sign-flip` | theorem | — | 05_positivity_ide.tex | 01_intro.tex, 14_conclusions.tex | symbolic, theorems |
+| `thm:quasi-positivity` | theorem | — | 05_positivity_ide.tex | 01_intro.tex, 14_conclusions.tex | background, symbolic |
+| `thm:regular-future` | theorem | — | 04_homogeneous_cosmology.tex | 14_conclusions.tex | background, symbolic |
+| `thm:sandwich` | theorem | — | 05_positivity_ide.tex | — | symbolic, theorems |
+| `thm:sign-table` | theorem | — | 07_cosmography.tex | 14_conclusions.tex | symbolic, theorems |
 | `thm:snap` | theorem | — | 07_cosmography.tex | 01_intro.tex | background |

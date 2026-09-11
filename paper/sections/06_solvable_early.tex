@@ -17,7 +17,8 @@ expansion rate, and with $n=3+\xi$ the system integrates in closed form:
   \begin{aligned}
     \fconv&=1-\left(a/a_{\rm act}\right)^{-\xi}, &
     \rhoI&=\rho_{I,\rm act}\,(a/a_{\rm act})^{-n},\\
-    \rhoD&=a^{-3}\left[\rho_{D,\rm act}+\bfrac\,\rho_{I,\rm act}
+    \rhoD&=\left(a/a_{\rm act}\right)^{-3}
+      \left[\rho_{D,\rm act}+\bfrac\,\rho_{I,\rm act}
       \left(1-(a/a_{\rm act})^{-\xi}\right)\right], &
     \rhoV&=V_{\rm act}+\frac{(1-\bfrac)\xi}{3+\xi}\rho_{I,\rm act}
       \left(1-(a/a_{\rm act})^{-n}\right).
@@ -27,13 +28,21 @@ expansion rate, and with $n=3+\xi$ the system integrates in closed form:
 Summing gives the expansion history explicitly,
 %
 \begin{equation}\label{eq:solvable-friedmann}
-  3\Mpl^2\Hub^2=\Vinf
-  +\left(\rho_{\rm b,act}+\rho_{D,\rm act}+\bfrac\rho_{I,\rm act}\right)a^{-3}
-  +\frac{3(1-\bfrac)}{3+\xi}\rho_{I,\rm act}\,a^{-(3+\xi)}
-  +\rho_{\rm r,act}a^{-4} ,
+  \begin{aligned}
+    3\Mpl^2\Hub^2=\ &\Vinf
+    +\left(\rho_{\rm b,act}+\rho_{D,\rm act}+\bfrac\rho_{I,\rm act}\right)
+      \hat a^{-3}\\
+    &+\frac{3(1-\bfrac)}{3+\xi}\rho_{I,\rm act}\,\hat a^{-(3+\xi)}
+    +\rho_{\rm r,act}\,\hat a^{-4} ,
+    \qquad \hat a\eqdef a/a_{\rm act} ,
+  \end{aligned}
 \end{equation}
 %
-with $\Vinf=V_{\rm act}+(1-\bfrac)\xi\rho_{I,\rm act}/(3+\xi)$. In the
+with $\Vinf=V_{\rm act}+(1-\bfrac)\xi\rho_{I,\rm act}/(3+\xi)$. Every density
+subscripted ``act'' is the physical density at $a=a_{\rm act}$, not a comoving
+one referred to $a=1$, which is why each power is written in
+$a/a_{\rm act}$; the two conventions differ by factors of $a_{\rm act}$ and
+agree only for $a_{\rm act}=1$. In the
 two-sector subcase one may go further and solve for the time dependence,
 $\Hub=\Hinf\coth y$ with $y=\tfrac{n}{2}\Hinf(t-t_B)$ and
 $a^n\propto\sinh^2y$; substituting into
