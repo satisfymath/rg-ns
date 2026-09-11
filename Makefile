@@ -83,6 +83,7 @@ reproduce-full:  ## reproduce-core plus every sampler run (hours; see README_REP
 	$(PY) scripts/prior_width_evidence.py --model xi_h --param log10_xi --lows -3 -5 -7
 	$(PY) scripts/prior_width_summary.py
 	$(PY) scripts/growth_comparison.py
+	$(PY) scripts/evidence_spread.py
 	$(PY) scripts/run_profile.py --models xi_h --data baseline --quantity matter_deficit
 	$(PY) scripts/run_profile.py --models xi_h --data baseline --quantity jerk_excess --log-range -4 -0.8
 	$(PY) scripts/calibrate_threshold.py --draws 96

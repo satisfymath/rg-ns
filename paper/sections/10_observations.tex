@@ -273,23 +273,25 @@ $\numRepeatXiHBaselineLogzReportedError$, a ratio of
 $\numRepeatXiHBaselineRatioSpreadToReported$. The uncertainty in the comparison
 is the prior, not the sampling.
 
-Two features of the table are worth more than the headline. Adding parameters
-buys almost nothing: the nine-parameter model with memory is no better placed
+One feature of the table is worth more than the headline: adding parameters
+buys nothing. The nine-parameter model with memory is placed \emph{worse}
 than the six-parameter one, because the parameters it adds are the ones the
 data do not identify, and the evidence charges them their prior volume and
-credits them nothing. And the model that does best is the one with the
-\emph{most} parameters, the reverse channel of
-\cref{sec:positivity-track-b}, which recovers part of its penalty by fitting
-better. That is the branch whose jerk excess has the opposite sign, and it is
-the branch a confirmed preference for $j_0<1$ would select. It is still
-disfavoured against $\LCDM$, and the ordering among the four extensions should
-not be read as a result: the gap between the best and the worst of them is
-$0.77$ in $\ln B$ against an error of about $0.30$ on any difference between
-two of them, and against a prior-width range of $1.39$ documented above, which
-is larger than the whole spread. On the evidence the four are
-indistinguishable. The reverse channel is carried through the comparison
-because the theory requires it to be --- it is what the sign predictions are
-predictions \emph{against} --- and not because the data prefer it.
+credits them nothing. The reverse channel, with the most parameters of all,
+recovers part of its penalty by fitting better --- its $\Delta\chisq$ is four
+times the others' --- and still does not come out ahead.
+
+The ordering among the $\numSpreadNExtensions$ extensions should not be read
+as a result. The gap between the best and the worst of them is
+$\numSpreadSpread$ in $\ln B$, against an error of
+$\numSpreadErrorOnADifference$ on a difference between two of them --- the
+$\LCDM$ reference cancels, so the two log-evidence errors add in quadrature
+--- which is $\numSpreadSpreadInSigma\sigma$; and against a prior-width range
+of $\numWidthLnBayesRange$ documented above, which is larger than the whole
+spread. On the evidence the four are indistinguishable, and the reverse
+channel is carried through the comparison because the theory requires it to be
+--- it is what the sign predictions are predictions \emph{against} --- and not
+because the data prefer it.
 
 \paragraph{One ensemble chain is quoted from and two are archived.} Three
 ensemble chains were run. The $\LCDM$ one has cumulative acceptance

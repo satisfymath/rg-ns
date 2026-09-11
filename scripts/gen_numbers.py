@@ -35,6 +35,7 @@ SOURCES = [
     (ROOT / "results" / "growth_comparison.json", "growth"),
     (ROOT / "results" / "evidence_repeatability.json", "repeat"),
     (ROOT / "results" / "threshold_calibration.json", "thresh"),
+    (ROOT / "results" / "evidence_spread.json", "spread"),
 ]
 
 HEADER = (
@@ -74,6 +75,9 @@ FORMATS = {
     "ln_bayes_err": ".2f",
     "chi2_min": ".4f",
     "chi2_spread": ".4f",
+    "spread": ".2f",
+    "error_on_a_difference": ".2f",
+    "spread_in_sigma": ".1f",
     "change": "+.2f",
     "pct90": ".2f",
     "pct90_err": ".2f",

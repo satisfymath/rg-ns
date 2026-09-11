@@ -1,0 +1,10 @@
+{
+  "best_model": "xi_h",
+  "error_on_a_difference": 0.295867433981896,
+  "ln_bayes_best": -1.617057085162969,
+  "ln_bayes_worst": -2.323990218449808,
+  "n_extensions": 4,
+  "spread": 0.7069331332868387,
+  "spread_in_sigma": 2.389357705823398,
+  "worst_model": "memory"
+}
