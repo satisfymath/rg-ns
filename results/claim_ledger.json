@@ -54,7 +54,9 @@
       "13_outlook.tex"
     ],
     "status": "UNREVIEWED",
-    "tests": [],
+    "tests": [
+      "test_symbolic.py"
+    ],
     "text": "The theory is \\emph{defined} by imposing \\cref{eq:perturbations-integrability} with a geodesic clock, so that the volumetric transfer is spatially uniform on comoving hypersurfaces, \\cref{eq:perturbations-com}. Equivalently, the local conversion rate anti-correlates exactly with the local precursor density, $\\delta\\Gam/\\bar\\Gam=-\\delta_I$. The kinetic variables $(\\fconv,\\Mmem)$ are then \\emph{diag",
     "title": "Geodesic realization"
   },
@@ -1613,6 +1615,23 @@
     "text": "Let $C_{\\mu\\nu\\rho}$ be a three-form potential with $\\fourform_{\\mu\\nu\\rho\\sigma}=4\\covd_{[\\mu}C_{\\nu\\rho\\sigma]}$ and % \\begin{equation}\\label{eq:realizations-four-form-action} \\Sact_4=-\\frac{1}{2\\cdot4!}\\int \\dd^4x\\,\\gdet\\, \\fourform_{\\alpha\\beta\\gamma\\delta}\\fourform^{\\alpha\\beta\\gamma\\delta} . \\end{equation} % In a connected source-free region the field equations imply % \\begin{keyresult}{I}{e",
     "title": "Four-form vacuum"
   },
+  "prop:geodesic-forced": {
+    "claim_id": "prop:geodesic-forced",
+    "file": "09_perturbations.tex",
+    "in_summary": [],
+    "kind": "proposition",
+    "level": null,
+    "level_name": null,
+    "referenced_in": [
+      "13_outlook.tex"
+    ],
+    "status": "UNREVIEWED",
+    "tests": [
+      "test_symbolic.py"
+    ],
+    "text": "Let the dark sector consist of pressureless components with a common four-velocity $\\umu$ and an exact vacuum, $T^{\\mu\\nu}_V=-\\rhoV g^{\\mu\\nu}$; let the transfer between them carry no momentum in the frame $\\umu$, so that $\\covd_\\mu T^{\\mu\\nu}_V=\\QV u^\\nu$; and let $\\rhoI+\\rhoD>0$. Then, on any simply connected region where $\\QV\\neq0$ and the congruence is regular, % \\begin{enumerate} \\item $a^\\mu",
+    "title": "The geodesic realization is forced, not chosen"
+  },
   "prop:ide-map": {
     "claim_id": "prop:ide-map",
     "file": "05_positivity_ide.tex",
@@ -1688,12 +1707,15 @@
   "prop:no-pressure-from-kinetics": {
     "claim_id": "prop:no-pressure-from-kinetics",
     "file": "04_homogeneous_cosmology.tex",
-    "in_summary": [],
+    "in_summary": [
+      "14_conclusions.tex"
+    ],
     "kind": "proposition",
     "level": null,
     "level_name": null,
     "referenced_in": [
-      "13_outlook.tex"
+      "13_outlook.tex",
+      "14_conclusions.tex"
     ],
     "status": "UNREVIEWED",
     "tests": [

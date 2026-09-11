@@ -4,7 +4,7 @@ Each ``check_*`` is exercised twice: once through its own assertion machinery,
 and once through an independent spot check performed here, so that a check that
 silently degenerated into a tautology would still be caught.
 """
-# covers: eq:perturbations-vorticity, prop:vorticity-obstruction, eq:outlook-reynolds-eos, eq:realizations-lnrate, eq:realizations-alpha, thm:quasi-positivity, thm:no-sign-flip, prop:recipient-proportional, thm:regular-future, thm:de-sitter, thm:sandwich, thm:sign-table
+# covers: eq:perturbations-vorticity, prop:vorticity-obstruction, prop:geodesic-forced, eq:outlook-reynolds-eos, eq:realizations-lnrate, eq:realizations-alpha, thm:quasi-positivity, thm:no-sign-flip, prop:recipient-proportional, thm:regular-future, thm:de-sitter, thm:sandwich, thm:sign-table
 #   Machine-readable link from tests to the claims they cover, read by
 #   scripts/claim_ledger.py. A claim quoted in the abstract or the
 #   conclusions with nothing testing it is what the ledger exists to find.
@@ -261,3 +261,17 @@ def test_averaged_kinetic_stress_is_positive_for_any_correlations():
     dv = rng.normal(size=(n, 3))
     R = stress(rng.normal(size=n), dv)
     assert np.linalg.eigvalsh(R).min() < 0.0
+
+
+def test_the_geodesic_clock_is_forced_not_assumed() -> None:
+    """The donor cannot be accelerated, so \\cref{asm:geodesic} is a theorem.
+
+    Checked on a static spherically symmetric metric whose observers *do*
+    accelerate, so that the conclusion is a consequence of the hypotheses
+    rather than of a degenerate setting: the check asserts the acceleration is
+    nonzero before imposing anything, and asserts that an exact vacuum with a
+    density gradient does exert a transverse force. Only when the
+    no-momentum-transfer hypothesis removes that gradient does the donor's
+    equation of motion collapse to ``rho a = 0``.
+    """
+    assert sy.check_geodesic_forced() is True

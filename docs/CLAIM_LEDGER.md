@@ -6,16 +6,16 @@ conclusions that refer to it: those are the places where a claim can
 quietly become stronger than its proof, which is what four referees
 found independently.
 
-- results catalogued: **143**
+- results catalogued: **144**
 - carrying an explicit evidential level: **57**
-- referred to from a summary section: **22**
+- referred to from a summary section: **23**
 - referred to from a summary but covered by no test: **0**
 
 | claim | kind | level | file | in summary | tests |
 |---|---|---|---|---|---|
 | `asm:activation` | assumption | — | 06_solvable_early.tex | 01_intro.tex | early_branch |
 | `asm:closure` | assumption | — | 04_homogeneous_cosmology.tex | — | — |
-| `asm:geodesic` | assumption | — | 09_perturbations.tex | — | — |
+| `asm:geodesic` | assumption | — | 09_perturbations.tex | — | symbolic |
 | `asm:rate-regularity` | assumption | — | 03_absorbing_process.tex | — | — |
 | `cor:b-invisible` | corollary | — | 09_perturbations.tex | — | growth |
 | `cor:memory-invisible` | corollary | — | 05_positivity_ide.tex | — | — |
@@ -125,11 +125,12 @@ found independently.
 | `prop:derrick` | proposition | — | 11_defects.tex | — | skyrme |
 | `prop:determined-V` | proposition | — | 08_realizations.tex | — | — |
 | `prop:four-form` | proposition | — | 08_realizations.tex | — | — |
+| `prop:geodesic-forced` | proposition | — | 09_perturbations.tex | — | symbolic |
 | `prop:ide-map` | proposition | — | 05_positivity_ide.tex | 01_intro.tex, 14_conclusions.tex | likelihoods |
 | `prop:identities` | proposition | — | 04_homogeneous_cosmology.tex | — | — |
 | `prop:memory-origin` | proposition | — | 03_absorbing_process.tex | 01_intro.tex, 14_conclusions.tex | stochastic |
 | `prop:no-instability` | proposition | — | 09_perturbations.tex | — | — |
-| `prop:no-pressure-from-kinetics` | proposition | — | 04_homogeneous_cosmology.tex | — | background |
+| `prop:no-pressure-from-kinetics` | proposition | — | 04_homogeneous_cosmology.tex | 14_conclusions.tex | background |
 | `prop:no-rolling` | proposition | — | 08_realizations.tex | — | — |
 | `prop:recipient-proportional` | proposition | — | 05_positivity_ide.tex | 14_conclusions.tex | symbolic |
 | `prop:survival` | proposition | — | 03_absorbing_process.tex | — | — |

@@ -94,9 +94,11 @@ hypersurfaces of constant $\clock$ this gives
 \end{assumption}
 
 The draft listed four ways to extend the transfer off the background and chose
-none of them. We choose this one and state it as an assumption, not a
-derivation, because that is what it is; the natural alternative is shown below
-to be unstable.
+none of them. It is stated here as an assumption because that is the role it
+plays in what follows --- every later result is proved \emph{under} it --- but
+it is not an independent one: \cref{prop:geodesic-forced} below shows that the
+hypotheses already in force leave no alternative to it, and the natural
+alternative is in any case shown to be unstable.
 
 \paragraph{The structural cost, stated plainly.} If instead the rate law
 \cref{eq:process-rate} is read as a \emph{local} law, so that
@@ -142,7 +144,64 @@ receiving sector its own dynamics and pressure. Those are different theories,
 not refuted ones. What can be said is that the geodesic branch is the one used
 in the interacting-vacuum literature
 \parencite{wands2012_12036776,sebastianutti2023_231214123} and the one for which
-the linear sector closes.
+the linear sector closes. More can be said, and should be, because
+presenting four completions as a menu understates how little freedom there
+actually is.
+
+\begin{proposition}[The geodesic realization is forced, not chosen]
+  \label{prop:geodesic-forced}
+  Let the dark sector consist of pressureless components with a common
+  four-velocity $\umu$ and an exact vacuum, $T^{\mu\nu}_V=-\rhoV g^{\mu\nu}$;
+  let the transfer between them carry no momentum in the frame $\umu$, so that
+  $\covd_\mu T^{\mu\nu}_V=\QV u^\nu$; and let $\rhoI+\rhoD>0$. Then, on any
+  simply connected region where $\QV\neq0$ and the congruence is regular,
+  %
+  \begin{enumerate}
+    \item $a^\mu \equiv u^\nu\covd_\nu u^\mu=0$: the congruence is geodesic;
+    \item $\omega_{\mu\nu}=0$, so $\umu$ is hypersurface-orthogonal and
+      $u_\mu=-\partial_\mu\clock$ with $(\partial\clock)^2=-1$;
+    \item $\rhoV$ and $\QV$ are functions of $\clock$ alone, hence
+      $\delta\rhoV=\delta\QV=0$ on the surfaces $\clock=\text{const}$.
+  \end{enumerate}
+  %
+  \Cref{eq:perturbations-com} therefore holds identically, and
+  \cref{asm:geodesic} states a consequence of hypotheses already in force
+  rather than a choice among completions.
+\end{proposition}
+
+\begin{proof}
+  (1) Baryons and radiation are separately conserved, so the dark sector
+  conserves in total, $\covd_\mu(T_I+T_D+T_V)^{\mu\nu}=0$, with $T^{\mu\nu}_{I,D}
+  =\rho_{I,D}u^\mu u^\nu$. Using
+  $\covd_\mu(\rho u^\mu u^\nu)=u^\nu\covd_\mu(\rho u^\mu)+\rho\,a^\nu$ and
+  projecting the whole equation with $h^\lambda{}_\nu$, every term carrying a
+  free $u^\nu$ is annihilated --- including the vacuum source, which by
+  hypothesis has no other part --- and what remains is
+  $(\rhoI+\rhoD)\,a^\lambda=0$.
+
+  (2) The first hypothesis gives $\covd_\mu\rhoV=-\QV u_\mu$, so $\QV u$ is
+  exact and hence closed, which is \cref{prop:vorticity-obstruction}. With
+  $a^\mu=0$ from (1), $\covd_{[\mu}u_{\nu]}=\omega_{\mu\nu}-u_{[\mu}a_{\nu]}$
+  vanishes as well, so $u$ is itself closed and locally exact; the
+  normalization $u\cdot u=-1$ is the clock constraint.
+
+  (3) $\covd_\mu\rhoV=-\QV u_\mu=\QV\,\partial_\mu\clock$ says that
+  $\covd\rhoV$ is everywhere parallel to $\covd\clock$, so $\rhoV=F(\clock)$
+  locally, and comparing the two expressions gives $\QV=F'(\clock)$.
+\end{proof}
+
+The reason to state this separately from \cref{prop:vorticity-obstruction} is
+that the two use different equations. The vorticity result uses only the
+vacuum's own divergence and holds whatever the donor is. Geodesy comes from
+the \emph{donor's} equation of motion: a pressureless fluid whose only source
+points along its own four-velocity feels no transverse force, so it cannot be
+accelerated, and the exact vacuum by construction exerts none. Once both are
+in hand the third completion listed above, a compensating acceleration of the
+donor, is excluded rather than merely untried, and the first, $\zeta\neq0$, is
+excluded by (3). What survives is the fourth: give the receiving sector its
+own dynamics and pressure. That is the one modification this paper's
+obstructions keep pointing at, and \cref{sec:outlook-one-obstruction} collects
+the others that point the same way.
 
 \subsection{The branching ratio is invisible}\label{sec:perturbations-b}
 

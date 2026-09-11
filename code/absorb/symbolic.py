@@ -392,6 +392,118 @@ def check_solvable_family() -> bool:
     return True
 
 
+# ---------------------------------------------------------------------------
+# 7. the donor's equation of motion forbids acceleration
+# ---------------------------------------------------------------------------
+def check_geodesic_forced() -> bool:
+    """Verify Proposition ``prop:geodesic-forced`` part (1) by computation.
+
+    The claim is that a pressureless donor whose only source points along its
+    own four-velocity cannot be accelerated, so the geodesic clock of
+    ``asm:geodesic`` is a consequence rather than an assumption. The proof is
+    three lines of index algebra, which is the kind of argument that can hide a
+    projection error, so it is checked on a metric general enough to carry a
+    nonzero acceleration: static and spherically symmetric with two free
+    functions, ``u`` along ``d/dt``, acceleration ``a^r = e^{-2L} Phi'(r)``.
+
+    The first version of this check asserted that the transverse projection of
+    the total divergence is ``rho a`` outright and failed, correctly: it is
+    ``rho a - D^nu rho_V``. The vacuum term is not identically zero; it is zero
+    *by the no-momentum-transfer hypothesis*, which for an exact vacuum says
+    precisely that its density has no gradient along the leaves. The three
+    steps are therefore checked separately, so that the place where the
+    hypothesis does the work is visible rather than assumed away.
+    """
+    t, r, th, ph = sp.symbols("t r theta phi", real=True)
+    coords = [t, r, th, ph]
+    Phi, Lam = sp.Function("Phi")(r), sp.Function("Lambda")(r)
+    rho = sp.Function("rho")(t, r)
+    rhoV_general = sp.Function("rho_V")(t, r)
+
+    g = sp.diag(-sp.exp(2 * Phi), sp.exp(2 * Lam), r ** 2,
+                r ** 2 * sp.sin(th) ** 2)
+    ginv = g.inv()
+    gamma = _christoffel(g, coords)
+
+    u_up = sp.Matrix([sp.exp(-Phi), 0, 0, 0])
+    u_dn = g * u_up
+    assert sp.simplify((u_dn.T * u_up)[0, 0] + 1) == 0, "u is not unit timelike"
+
+    def is_zero(x) -> bool:
+        """Zero test that survives sympy leaving ``sin(2t)tan(t)+cos(2t)-1``.
+
+        That expression is identically zero and ``trigsimp`` does not reduce
+        it; rewriting the double angles first does. Each stage is tried in
+        turn so that a genuinely nonzero residual still fails.
+        """
+        for f in (sp.simplify,
+                  lambda e: sp.simplify(sp.expand_trig(e)),
+                  lambda e: sp.simplify(sp.expand_trig(e).rewrite(sp.sin)),
+                  lambda e: sp.cancel(sp.together(sp.expand_trig(e)))):
+            if f(x) == 0:
+                return True
+        return False
+
+    def cov_div_T(T):
+        """``(div T)^nu = nabla_mu T^{mu nu}`` for a symmetric (2,0) tensor."""
+        out = []
+        for nu in IDX:
+            expr = sum(sp.diff(T[mu, nu], coords[mu]) for mu in IDX)
+            for mu in IDX:
+                for lam in IDX:
+                    expr += gamma[mu][mu][lam] * T[lam, nu]
+                    expr += gamma[nu][mu][lam] * T[mu, lam]
+            out.append(sp.trigsimp(sp.simplify(expr)))
+        return sp.Matrix(out)
+
+    acc = sp.Matrix([
+        sp.simplify(sum(u_up[mu] * sp.diff(u_up[nu], coords[mu]) for mu in IDX)
+                    + sum(gamma[nu][mu][lam] * u_up[mu] * u_up[lam]
+                          for mu in IDX for lam in IDX))
+        for nu in IDX])
+    assert sp.simplify(acc[1] - sp.exp(-2 * Lam) * sp.diff(Phi, r)) == 0, (
+        "the acceleration of a static observer is not the expected gradient; "
+        "the test setting has lost its generality")
+    assert not is_zero(acc[1]), "the test metric carries no acceleration"
+
+    h = sp.eye(4) + u_up * u_dn.T          # h^lam_nu, orthogonal projector
+
+    def transverse(vec):
+        return sp.Matrix([sp.trigsimp(sp.simplify(x)) for x in (h * vec)])
+
+    # step 1: dust alone. The transverse part of its divergence is rho a,
+    # with no contribution from the continuity term.
+    T_dust = sp.Matrix(4, 4, lambda a, b: rho * u_up[a] * u_up[b])
+    res1 = transverse(cov_div_T(T_dust)) - rho * acc
+    assert all(is_zero(x) for x in res1), (
+        f"transverse divergence of dust is not rho*a: {res1}")
+
+    # step 2: an exact vacuum exerts a transverse force exactly when its
+    # density has a gradient along the leaves -- so "no momentum transfer"
+    # is the statement that it does not.
+    T_vac = -rhoV_general * ginv
+    grad_spatial = sp.Matrix([sum(ginv[nu, mu] * sp.diff(rhoV_general,
+                                                         coords[mu])
+                                  for mu in IDX) for nu in IDX])
+    res2 = transverse(cov_div_T(T_vac)) + transverse(grad_spatial)
+    assert all(is_zero(x) for x in res2), (
+        f"divergence of an exact vacuum is not minus its gradient: {res2}")
+    assert not is_zero(transverse(cov_div_T(T_vac))[1]), (
+        "the check has been set up so that the hypothesis is vacuous")
+
+    # step 3: impose the hypothesis (no transverse source), and the
+    # acceleration is forced to vanish wherever the donor is present.
+    rhoV_ondisk = sp.Function("rho_V")(t)
+    T_vac0 = -rhoV_ondisk * ginv
+    div0 = cov_div_T(T_vac0)
+    assert all(is_zero(x) for x in transverse(div0)), (
+        "a vacuum uniform on the leaves still exerts a transverse force")
+    total = transverse(cov_div_T(T_dust) + div0)
+    assert all(is_zero(x - y) for x, y in zip(total, rho * acc)), (
+        f"the forced equation is not rho*a = 0: {total}")
+    return True
+
+
 ALL_CHECKS = (
     check_four_form,
     check_clock_action,
@@ -399,6 +511,7 @@ ALL_CHECKS = (
     check_jerk_identity,
     check_growth_equation,
     check_solvable_family,
+    check_geodesic_forced,
 )
 
 
