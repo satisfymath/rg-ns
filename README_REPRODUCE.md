@@ -89,4 +89,7 @@ file and the reason. The gates are:
 | `check_figures.py` | a referenced figure that does not exist |
 | `verify_bib.py` | a reference whose metadata does not match arXiv or Crossref |
 | `check_chain_stability.py` | a chain not fit to quote from |
+| `check_required_cites.py` | a work the manuscript must engage with and does not cite |
+| `check_map_reference.py` | a best fit above the frozen brute-force reference, or above a model it contains |
+| `check_reproducible.py` | a results file the paper quotes that no `make` target produces |
 | `make_release.py` | a placeholder or missing input in the deposit archive |
