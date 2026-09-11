@@ -33,3 +33,7 @@ results/sims/
 # Build artifact: make_release.py rebuilds it from the tree, and a committed
 # copy would be a second, silently stale version of the whole repository.
 release/
+
+# arXiv bundle: make_arxiv.py rebuilds it; a committed copy is a stale
+# submission sitting next to the live one.
+build/
