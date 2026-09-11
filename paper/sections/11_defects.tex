@@ -28,12 +28,12 @@ We take the last route. Let $n^A(\mathbf x)$, $A=1,\dots,4$, satisfy
 $n^An^A=1$ with a constant value at infinity, so that configurations are maps
 $S^3\to S^3$, and take
 %
-\begin{equation}\label{eq:defects-energy}
+\begin{keyresult}{A}{eq:defects-energy}
   E=\int \dd^3x\left[\frac{\Fstar^2}{2}\partial_i n^A\partial_i n^A
   +\frac{\kaps}{4}\mathcal W_{ij}^{AB}\mathcal W_{ij}^{AB}\right],
   \qquad
   \mathcal W_{ij}^{AB}=\partial_i n^A\partial_j n^B-\partial_j n^A\partial_i n^B ,
-\end{equation}
+\end{keyresult}
 %
 with $\Fstar>0$ of mass dimension one and $\kaps>0$ dimensionless. Under the
 same scaling the two terms go as $\sigma^{-1}$ and $\sigma^{+1}$, so
@@ -78,10 +78,10 @@ sharpens the statement. With the hedgehog ansatz $n^4=\cos F(r)$,
 $n^a=\sin F(r)\,\hat x^a$ and $r=(\sqrt{\kaps}/\Fstar)x$, the Euler--Lagrange
 equation of \cref{eq:defects-energy} is
 %
-\begin{equation}\label{eq:defects-ode}
+\begin{keyresult}{I}{eq:defects-ode}
   \left(x^2+4\sin^2F\right)F''+2xF'+2\sin 2F\,F'^2
   -\sin 2F-\frac{2\sin 2F\sin^2F}{x^2}=0 ,
-\end{equation}
+\end{keyresult}
 %
 with $F(0)=\pi$ and $F(\infty)=0$, regular series $F\simeq\pi-\kappa_1 x$ at
 the origin and tail $F\simeq C/x^2$. Solving this boundary-value problem
@@ -367,10 +367,12 @@ $\numPancakeCCollapseKOpVExpRhoINear$ and
 $\numPancakeCCollapseKWpZExpRhoINear$ for $\kappa=0.5$, $1$, $1.5$ and $3$
 against the predicted $-0.5$, $0$, $0.5$ and $2$, and the exponent is
 independent of the branching ratio, the memory time and the reinforcement
-strengths, as the analysis requires. Across all
-$\numPancakeSummaryNCases$ runs the largest violation of the three exact
-identities of \cref{eq:defects-local-exact} is
-$\numPancakeSummaryWorstIdentityResidual$.
+strengths --- asymptotically, and measurably so: the spread of the fitted
+exponent across those choices falls by about a decade for each decade closer
+to the caustic. Across all $\numPancakeSummaryNCases$ runs the largest
+violation of the three identities the simulation conserves exactly ---
+$\rhoI\abs{J}=1-\fconv$, $\rhoD\abs{J}=\bfrac\fconv$, and their sum ---
+is $\numPancakeSummaryWorstIdentityResidual$.
 
 \subsection{What would be needed for an abundance}\label{sec:defects-abundance}
 

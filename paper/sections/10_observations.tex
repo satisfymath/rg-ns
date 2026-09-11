@@ -160,9 +160,9 @@ physical content is not how much substrate could convert but how much vacuum
 the conversion has actually produced, which is the matter deficit $\Delta$ of
 \cref{eq:positivity-deficit}. Profiling it rather than $\epsilon$ gives a
 genuine one-sided limit,
-\begin{equation}\label{eq:observations-deficit-limit}
+\begin{keyresult}{P}{eq:observations-deficit-limit}
   \Delta < \numProfileXiHBaselineMatterDeficitLimitNV \qquad (95\%),
-\end{equation}
+\end{keyresult}
 with the profile rising to $\Delta\chisq\simeq\numProfileXiHBaselineMatterDeficitMaxDeltaChiT$
 across the grid, so this is a constraint and not another flat direction. About
 one per cent of the critical density is the most that can have been moved from
@@ -185,9 +185,9 @@ for the reason set out in \cref{sec:cosmography-jerk}. The excess is therefore
 profiled directly, as its own derived quantity $\varepsilon_0$ --- the transfer
 term alone, not $j_0-1-2\Omega_{r0}$, which also contains the massive-neutrino
 pressure that $\LCDM$ carries too. That gives
-\begin{equation}\label{eq:observations-jerk-limit}
+\begin{keyresult}{P}{eq:observations-jerk-limit}
   \varepsilon_0 < \numProfileXiHBaselineJerkExcessLimitNV \qquad (95\%),
-\end{equation}
+\end{keyresult}
 with the same exact constraint and the same two diagnostics: targets met to
 $\numProfileXiHBaselineJerkExcessMaxTargetMissRel$ and
 $\numProfileXiHBaselineJerkExcessNNonMonotoneSteps$ decreasing steps. Set
@@ -264,9 +264,14 @@ indistinguishable. The reverse channel is carried through the comparison
 because the theory requires it to be --- it is what the sign predictions are
 predictions \emph{against} --- and not because the data prefer it.
 
-\paragraph{One chain is quoted from and three are not.} The $\LCDM$ ensemble
-acceptance $\numDiagLcdmBaselineAcceptance$, length $\numDiagLcdmBaselineLengthInTau$ autocorrelation times
-and is the source of the $\LCDM$ row. The chains for the extended models are
+\paragraph{One ensemble chain is quoted from and two are archived.} Three
+ensemble chains were run. The $\LCDM$ one has cumulative acceptance
+$\numDiagLcdmBaselineAcceptance$, runs for
+$\numDiagLcdmBaselineLengthInTau$ autocorrelation times, and is the source of
+the $\LCDM$ row. The other two, for the $\Gam=\xi\Hub$ and reinforced
+models, are archived failures kept so that the diagnosis below can be
+repeated; the four extended rows of \cref{tab:comparison} come from nested
+sampling and not from any ensemble chain. The chains for the extended models are
 not, and this is a consequence of the geometry just described rather than of
 insufficient running: with the rate parameters unidentified along the
 $\LCDM$ boundary the ensemble spread to fill its prior in those directions,

@@ -155,8 +155,12 @@ claim against both.
 \subsection{What is claimed, and at what level}\label{sec:intro-ladder}
 
 This paper is a framework, not a unification. To keep that distinction from
-eroding as the argument proceeds, every displayed key result carries an
-explicit evidential level, printed with it. A build check
+eroding as the argument proceeds, every displayed \emph{key} result carries an
+explicit evidential level, printed with it. ``Key'' is not left to taste: a
+displayed equation is levelled if it is referred to anywhere else in the
+paper, which is the operational test the build applies --- the remaining
+numbered displays are intermediate steps of the argument around them, and a
+level on those would classify the algebra rather than the claims. A build check
 refuses an unclassified boxed result, and refuses a conjecture outside
 \cref{sec:outlook}. What the check enforces is the presence and the placement
 of a level, not its correctness: the assignment of a particular result to a

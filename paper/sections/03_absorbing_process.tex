@@ -22,9 +22,9 @@ by irreversible stochastic growth \parencite{rideout1999_gr-qc9904062}; the
 process below differs in carrying a memory, which that construction does not.
 The total intensity is
 %
-\begin{equation}\label{eq:process-intensity}
+\begin{keyresult}{A}{eq:process-intensity}
   \lambda_k(\Mmem,t)=(N-k)\,\Gam(k/N,\Mmem,t),\qquad \lambda_N=0 ,
-\end{equation}
+\end{keyresult}
 %
 so that in a short interval the probability of a jump is
 $\lambda_k\Delta t+o(\Delta t)$. The rate is a conditional probability per unit
@@ -33,16 +33,16 @@ time, not a probability: it is not bounded by one.
 \begin{definition}[Memory variable]\label{def:memory}
   Along a flow line with proper time $\tau$,
   %
-  \begin{equation}\label{eq:process-memory}
+  \begin{keyresult}{A}{eq:process-memory}
     \tauM\,\odv{\Mmem}{\tau}=\fconv-\Mmem,\qquad \tauM>0 ,
-  \end{equation}
+  \end{keyresult}
   %
   whose solution from $\tau_i$ is
   %
-  \begin{equation}\label{eq:process-memory-solution}
+  \begin{keyresult}{I}{eq:process-memory-solution}
     \Mmem(\tau)=\Mmem_i e^{-(\tau-\tau_i)/\tauM}
     +\frac{1}{\tauM}\int_{\tau_i}^{\tau}e^{-(\tau-s)/\tauM}\fconv(s)\,\dd s .
-  \end{equation}
+  \end{keyresult}
 \end{definition}
 
 Only the past enters \cref{eq:process-memory-solution}, and the weights of

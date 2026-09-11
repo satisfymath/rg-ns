@@ -12,6 +12,10 @@ an explicit level:
 Rules enforced here:
   * no bare \boxed outside a keyresult environment;
   * every keyresult carries a valid level and a label;
+  * every numbered display that the paper refers to elsewhere carries a level,
+    which is the operational meaning of "key result" stated in Sec. 1.5 -- the
+    phrase was unfalsifiable while the criterion was left to taste, and
+    fourteen referenced displays had no level when it was first applied;
   * no level-S result appears outside the Outlook;
   * the abstract contains no level-S claim.
 The extracted table is written to paper/generated/tab_claims.tex.
@@ -109,6 +113,22 @@ def main() -> int:
         for label, level, name in rows:
             md.append(f"| `{label}` | {level} | {LEVELS[level]} | `{name}` |")
         LADDER.write_text("\n".join(md) + "\n")
+
+    # Every referenced numbered display must carry a level.
+    import re as _re
+    alltex = "".join(p.read_text() for p in
+                     sorted((ROOT / "paper" / "sections").glob("*.tex")))
+    numbered = set(_re.findall(r"\\begin\{equation\}\s*\\label\{(eq:[^}]+)\}",
+                               alltex))
+    keyed = set(_re.findall(r"\\begin\{keyresult\}\{[A-Z]\}\{(eq:[^}]+)\}",
+                            alltex))
+    referenced = set()
+    for m in _re.finditer(r"\\[cC]ref\{([^}]*)\}", alltex):
+        referenced |= {x.strip() for x in m.group(1).split(",")}
+    unlevelled = sorted(l for l in numbered if l in referenced and l not in keyed)
+    for label in unlevelled:
+        failures.append(f"{label}: a numbered display referred to elsewhere "
+                        f"with no evidential level")
 
     if failures:
         print("check_claims FAILED:")
