@@ -11,22 +11,35 @@ falls independently of anything here.
 The reinforced rate \cref{eq:process-rate} and the activation law
 \cref{eq:solvable-activation} are effective descriptions with five parameters.
 \Cref{sec:realizations-bridge} proposed that a nucleation event in a four-form
-sector is an absorption event, which would fix $\bfrac$ as a ratio of energies
-and make $\alpha>0$ equivalent to the upward tunnelling exponent decreasing
-with accumulated flux. Stated as the conjecture it is:
+sector is an absorption event. Part of that proposal is now a calculation
+rather than a conjecture, and it is worth being exact about which part.
+
+The reinforcement is derived: \cref{eq:realizations-lnrate,eq:realizations-alpha}
+give $\log\Gam_\uparrow$ and fix $\alpha=3(N\mathsf q/h)\Delta S$, with the
+range of validity of the exponential law and its truncation error, under the
+thin-wall and detailed-balance hypotheses stated there. What those hypotheses
+do not cover is the one the mechanism needs most: detailed balance is an
+equilibrium relation, and the nucleation here is assumed to be driven by the
+precursor rather than thermal. Redoing the calculation for a driven process is
+the open problem, and it is the same computation that would supply the
+prefactor and convert a rate per four-volume into a rate per correlated region.
+That last conversion would also decide whether the memory time $\tauM$ is the
+light-crossing time of that region, which remains the only physical candidate
+we can point to.
+
+What is not derived, and is now known not to follow from this bridge, is the
+identification of $\bfrac$ with a fraction ending in localized objects. By
+\cref{rem:bridge-limits} the membrane leaves no stable remnant in this action,
+and the object of \cref{sec:defects} is built from different fields carrying a
+different charge. The conjecture that survives is therefore narrower:
 %
 \begin{keyresult}{S}{eq:outlook-bridge}
-  \alpha=N\mathsf{q}\,\odv{\log\Gam}{h}>0 ,
-  \qquad
-  \bfrac=\frac{E_{\rm wall}}{\epsilon} ,
+  \text{the driven rate retains}\quad
+  \odv{\log\Gam}{h}>0
+  \quad\text{with}\quad
+  \bfrac=\frac{E_{\rm wall}}{\epsilon}
+  \quad\text{a fraction, not a defect abundance.}
 \end{keyresult}
-%
-for nucleation driven by the precursor rather than thermally. Turning that into a derivation requires a computation
-this paper does not contain: the critical configuration, its action, the
-prefactor, and the conversion from a rate per four-volume to a rate per
-correlated region. The same computation would decide whether the memory time
-$\tauM$ is the light-crossing time of that region, which is the only physical
-candidate we can point to.
 
 \subsection{A local rate law off the background}\label{sec:outlook-local-rate}
 
