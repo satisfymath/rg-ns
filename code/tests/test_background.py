@@ -4,7 +4,7 @@ These check the *model identities* against numerics that do not assume them,
 and the numerics against an external reference (astropy) and against the
 closed-form solutions of the analytically solvable family.
 """
-# covers: eq:cosmology-no-acceleration, prop:no-pressure-from-kinetics, eq:cosmology-survival, prop:identities, thm:jerk, thm:snap, thm:memory-fingerprint, eq:cosmography-jerk, eq:cosmography-snap, rem:jerk-neutrinos
+# covers: eq:cosmology-no-acceleration, prop:recipient-proportional, prop:no-pressure-from-kinetics, eq:cosmology-survival, prop:identities, thm:jerk, thm:snap, thm:memory-fingerprint, eq:cosmography-jerk, eq:cosmography-snap, rem:jerk-neutrinos
 #   Machine-readable link from tests to the claims they cover, read by
 #   scripts/claim_ledger.py. A claim quoted in the abstract or the
 #   conclusions with nothing testing it is what the ledger exists to find.
@@ -412,3 +412,62 @@ def test_conversion_between_pressureless_sectors_never_accelerates():
         assert np.max(np.abs(rho - predicted)) / rho[0] < 1e-9, (
             "the total density departs from dust, so the transfer has leaked "
             "into the total pressure")
+
+
+def test_a_recipient_proportional_coupling_needs_w_le_zero_to_empty_the_donor():
+    """``prop:recipient-proportional`` part 2, including its counterexample.
+
+    The proposition used to say that a recipient-proportional coupling drives
+    the donor through zero, full stop. It does not: with a stiff recipient the
+    outflow dies away faster than the donor dilutes, the integral converges,
+    and for small enough coupling the donor survives forever. The failure of
+    forward invariance is unconditional; the crossing is not.
+
+    Both halves are checked here, because the corrected statement is only
+    worth having if the boundary it draws is the right one: crossing for every
+    xi when w <= 0, and no crossing below an explicit threshold when w > 0.
+    """
+    from scipy.integrate import solve_ivp
+
+    def crosses(w, xi, n_end=None):
+        """Does rho_1 reach zero within the window?
+
+        Integrated in ``u = rho_1 a^3`` rather than in ``rho_1``. The sign of
+        the two agrees, but ``rho_1`` itself carries a factor ``e^{-3N}`` that
+        underflows to exactly zero well before the crossing when the coupling
+        is small, which destroys the sign change the event detector is looking
+        for and turns the proposition's own case into a false counterexample.
+
+        The window also has to scale with the coupling: at ``w = 0`` the donor
+        empties at ``N = 1/xi``.
+        """
+        if n_end is None:
+            n_end = 10.0 + 2.0 / xi
+
+        def rhs(n, y):
+            return [-xi * np.exp(-3.0 * w * n)]
+
+        def hit(n, y):
+            return y[0]
+        hit.terminal, hit.direction = True, -1
+        sol = solve_ivp(rhs, (0.0, n_end), [1.0], rtol=1e-12, atol=1e-16,
+                        events=hit, max_step=n_end / 200.0)
+        return sol.t_events[0].size > 0
+
+    # w <= 0: the donor is emptied for every coupling strength, however small
+    for w in (-1.0, -0.5, 0.0):
+        for xi in (1e-3, 0.05, 1.0):
+            assert crosses(w, xi), (w, xi)
+
+    # w > 0: the threshold is xi = 3 w rho_1i / rho_2i, here 3w, which is the
+    # counterexample to the unqualified statement -- a stiff recipient and a
+    # small coupling leave the donor positive forever
+    for w in (0.5, 1.0):
+        assert not crosses(w, 0.9 * 3.0 * w), w
+        assert crosses(w, 1.1 * 3.0 * w), w
+
+    # and the face itself is never invariant, whatever w does: the field there
+    # points strictly out of the orthant
+    for w in (-1.0, 0.0, 1.0):
+        rho2 = 0.7
+        assert -1.0 * rho2 < 0.0, w          # rho_1' = -xi H rho_2 at rho_1 = 0

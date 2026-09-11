@@ -10,6 +10,7 @@ unverified or mismatched.
 | key | identifier | status | title match | source |
 |---|---|---|---:|---|
 | `albertini2023_230312842` | arXiv:2303.12842 | OK | 1.000 | arxiv |
+| `avrami1939_kinetics` | doi:10.1063/1.1750380 | OK | 1.000 | crossref |
 | `babichev2017_170403367` | arXiv:1704.03367 | OK | 1.000 | arxiv |
 | `bemfica2020_200911388` | arXiv:2009.11388 | OK | 1.000 | arxiv |
 | `bousso2000_hep-th0004134` | arXiv:hep-th/0004134 | OK | 1.000 | arxiv |
@@ -17,9 +18,11 @@ unverified or mismatched.
 | `carroll1997_gr-qc9712019` | arXiv:gr-qc/9712019 | OK | 1.000 | arxiv |
 | `chamseddine2014_14033961` | arXiv:1403.3961 | OK | 1.000 | arxiv |
 | `chen2018_180805724` | arXiv:1808.05724 | OK | 1.000 | arxiv |
+| `chevallier2001_accelerating` | arXiv:gr-qc/0009008 | OK | 1.000 | arxiv |
 | `clarke1985_strongcurvature` | doi:10.1016/0393-0440(85)90012-9 | OK | 0.992 | crossref |
 | `collaboration2018_180706209` | arXiv:1807.06209 | OK | 1.000 | arxiv |
 | `collaboration2025_250314738` | arXiv:2503.14738 | OK | 1.000 | arxiv |
+| `eggenberger1923_urn` | doi:10.1002/zamm.19230030407 | OK | 0.974 | crossref |
 | `hinrichsen2000_cond-mat0001070` | arXiv:cond-mat/0001070 | OK | 1.000 | arxiv |
 | `hogg2020_200210449` | arXiv:2002.10449 | OK | 1.000 | arxiv |
 | `ijjas2016_160408586` | arXiv:1604.08586 | OK | 1.000 | arxiv |
@@ -29,15 +32,19 @@ unverified or mismatched.
 | `kitano2016_160507355` | arXiv:1605.07355 | OK | 1.000 | arxiv |
 | `lesgourgues2012_12126154` | arXiv:1212.6154 | OK | 1.000 | arxiv |
 | `lim2010_10035751` | arXiv:1003.5751 | OK | 1.000 | arxiv |
+| `linder2003_exploring` | arXiv:astro-ph/0208512 | OK | 1.000 | arxiv |
 | `malaeb2026_260214082` | arXiv:2602.14082 | OK | 1.000 | arxiv |
 | `martinelli2019_190210694` | arXiv:1902.10694 | OK | 1.000 | arxiv |
 | `moresco2022_220107241` | arXiv:2201.07241 | OK | 1.000 | arxiv |
+| `pemantle2007_reinforcement` | arXiv:math/0610076 | OK | 1.000 | arxiv |
 | `popovic2025_251107517` | arXiv:2511.07517 | OK | 1.000 | arxiv |
 | `prez2026_260719494` | arXiv:2607.19494 | OK | 1.000 | arxiv |
+| `prout1944_thermal` | doi:10.1039/TF9444000488 | OK | 1.000 | crossref |
 | `rideout1999_gr-qc9904062` | arXiv:gr-qc/9904062 | OK | 1.000 | arxiv |
 | `salcedo2026_260312321` | arXiv:2603.12321 | OK | 1.000 | arxiv |
 | `sebastiani2016_161208661` | arXiv:1612.08661 | OK | 1.000 | arxiv |
 | `sebastianutti2023_231214123` | arXiv:2312.14123 | OK | 1.000 | arxiv |
+| `shapiro2002_scaling` | arXiv:hep-th/0012227 | OK | 1.000 | arxiv |
 | `szydlowski2005_astro-ph0502034` | arXiv:astro-ph/0502034 | OK | 1.000 | arxiv |
 | `tipler1977_singularities` | doi:10.1016/0375-9601(77)90508-4 | OK | 1.000 | inspire |
 | `valiviita2008_08040232` | arXiv:0804.0232 | OK | 1.000 | arxiv |

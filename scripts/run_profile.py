@@ -111,6 +111,22 @@ def profile_derived(model: str, dataset: str, quantity: str = "matter_deficit",
         targets = np.concatenate([[0.0], np.logspace(-4, -0.7, 12)])
     targets = np.asarray(targets, dtype=float)
 
+    # Seed every target with the global best fit, which is the one point
+    # guaranteed to be at least as good as anything the screen will find. A
+    # profile whose own minimum lies above the model's maximum likelihood is
+    # measuring Delta chi-square from the wrong floor: the three profiles run
+    # before this was added sat 0.78, 0.12 and 0.56 above it, and the largest
+    # rise reported for the convertible fraction was 0.859 where the correct
+    # figure from the true floor is about 1.64. Neither crosses the 2.71 the
+    # limit uses, so the conclusions were unaffected -- but the numbers were
+    # quoted, and they were wrong.
+    map_theta = None
+    map_path = ROOT / "results" / "map.json"
+    if map_path.exists():
+        entry = json.loads(map_path.read_text()).get(f"{model}__{dataset}")
+        if entry is not None and list(entry["param_names"]) == names:
+            map_theta = np.asarray(entry["theta"], dtype=float)
+
     free = [j for j in range(len(names)) if j != i_eps]
     chi2 = np.full(len(targets), np.nan)
     achieved = np.full(len(targets), np.nan)
@@ -139,6 +155,8 @@ def profile_derived(model: str, dataset: str, quantity: str = "matter_deficit",
         # of the constraint at the two ends of the eps interval -- and start
         # only from points that admit a solution.
         starts = []
+        if map_theta is not None:
+            starts.append(map_theta[free])
         if k > 0 and best_theta[k - 1] is not None:
             starts.append(np.asarray(best_theta[k - 1])[free])
         screen = lows[free] + rng.random((n_screen, len(free))) * (
@@ -167,6 +185,14 @@ def profile_derived(model: str, dataset: str, quantity: str = "matter_deficit",
                            options=dict(maxfev=maxfev, xatol=1e-5, fatol=1e-4))
             if res.fun < best:
                 best, best_sub = res.fun, res.x
+            # One direction-set pass from the simplex's answer. On this
+            # objective the simplex contracts across the rate/activation ridge
+            # instead of following it, exactly as in the unconstrained
+            # maximisation, and Powell recovers what it leaves behind.
+            res = minimize(neg, res.x, method="Powell",
+                           options=dict(maxfev=maxfev, xtol=1e-6, ftol=1e-6))
+            if res.fun < best:
+                best, best_sub = res.fun, res.x
 
         if best_sub is None or best >= 1e10:
             print(f"  target {quantity}={target:11.6f}  unreachable")
@@ -193,6 +219,19 @@ def profile_derived(model: str, dataset: str, quantity: str = "matter_deficit",
                      "unbounded": False, "all_unreachable": True})
         return base
 
+    # The floor the profile is measured from, against the floor the
+    # unconstrained maximisation found. These must agree: the profile ranges
+    # over a superset of the unconstrained problem at the target it can reach
+    # freely, so a positive excess means the constrained search failed, and
+    # every Delta chi-square below is then measured from too high a base.
+    profile_min = float(np.nanmin(chi2))
+    map_chi2 = None
+    if map_path.exists():
+        entry = json.loads(map_path.read_text()).get(f"{model}__{dataset}")
+        if entry is not None:
+            map_chi2 = float(entry["chi2_min"])
+    excess = None if map_chi2 is None else profile_min - map_chi2
+
     chi2 = chi2 - np.nanmin(chi2)
     seq = chi2[ok]
     non_monotone = int(np.sum(np.diff(seq) < -0.5))
@@ -204,6 +243,9 @@ def profile_derived(model: str, dataset: str, quantity: str = "matter_deficit",
     limit = (float(np.interp(2.71, chi2[: above[0] + 1], targets[: above[0] + 1]))
              if above.size else float("nan"))
     base.update({"delta_chi2": chi2.tolist(), "limit_95": limit,
+                 "profile_min_chi2": profile_min,
+                 "map_chi2": map_chi2,
+                 "profile_min_excess": excess,
                  "max_delta_chi2": float(np.nanmax(chi2)),
                  "n_non_monotone_steps": non_monotone,
                  "max_target_miss_rel": miss,
@@ -224,6 +266,22 @@ def profile(model: str, dataset: str, n_grid: int = 17,
     grid = np.linspace(0.0, 0.6, n_grid)
     chi2 = np.empty(n_grid)
     best_theta = [None] * n_grid
+
+    # Seed every target with the global best fit, which is the one point
+    # guaranteed to be at least as good as anything the screen will find. A
+    # profile whose own minimum lies above the model's maximum likelihood is
+    # measuring Delta chi-square from the wrong floor: the three profiles run
+    # before this was added sat 0.78, 0.12 and 0.56 above it, and the largest
+    # rise reported for the convertible fraction was 0.859 where the correct
+    # figure from the true floor is about 1.64. Neither crosses the 2.71 the
+    # limit uses, so the conclusions were unaffected -- but the numbers were
+    # quoted, and they were wrong.
+    map_theta = None
+    map_path = ROOT / "results" / "map.json"
+    if map_path.exists():
+        entry = json.loads(map_path.read_text()).get(f"{model}__{dataset}")
+        if entry is not None and list(entry["param_names"]) == names:
+            map_theta = np.asarray(entry["theta"], dtype=float)
 
     free = [j for j in range(len(names)) if j != i_eps]
 

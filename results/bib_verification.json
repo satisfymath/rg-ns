@@ -349,5 +349,68 @@
     "identifier": "doi:10.1016/0393-0440(85)90012-9",
     "fetched_title": "Conditions for the occurence of strong curvature singularities",
     "author_ok": true
+  },
+  {
+    "key": "avrami1939_kinetics",
+    "status": "OK",
+    "score": 1.0,
+    "source": "crossref",
+    "identifier": "doi:10.1063/1.1750380",
+    "fetched_title": "Kinetics of Phase Change. I General Theory",
+    "author_ok": true
+  },
+  {
+    "key": "prout1944_thermal",
+    "status": "OK",
+    "score": 1.0,
+    "source": "crossref",
+    "identifier": "doi:10.1039/TF9444000488",
+    "fetched_title": "The thermal decomposition of potassium permanganate",
+    "author_ok": true
+  },
+  {
+    "key": "pemantle2007_reinforcement",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:math/0610076",
+    "fetched_title": "A survey of random processes with reinforcement",
+    "author_ok": true
+  },
+  {
+    "key": "chevallier2001_accelerating",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:gr-qc/0009008",
+    "fetched_title": "Accelerating Universes with Scaling Dark Matter",
+    "author_ok": true
+  },
+  {
+    "key": "linder2003_exploring",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:astro-ph/0208512",
+    "fetched_title": "Exploring the Expansion History of the Universe",
+    "author_ok": true
+  },
+  {
+    "key": "shapiro2002_scaling",
+    "status": "OK",
+    "score": 1.0,
+    "source": "arxiv",
+    "identifier": "arXiv:hep-th/0012227",
+    "fetched_title": "The scaling evolution of cosmological constant",
+    "author_ok": true
+  },
+  {
+    "key": "eggenberger1923_urn",
+    "status": "OK",
+    "score": 0.9744,
+    "source": "crossref",
+    "identifier": "doi:10.1002/zamm.19230030407",
+    "fetched_title": "\u00dcber die Statistik verketteter Vorg\u00e4nge",
+    "author_ok": true
   }
 ]

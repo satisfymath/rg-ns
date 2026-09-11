@@ -36,6 +36,11 @@ from run_map import CONTAINS, REFERENCE, REFERENCE_TOL, OUT  # noqa: E402
 #: optimiser's own noise on two separate searches for the same maximum.
 CONTAIN_TOL = 0.01
 
+#: A profile is a harder search than the unconstrained one -- a root-find per
+#: evaluation -- so its floor is allowed to sit slightly higher, but only by
+#: far less than the 2.71 the limits are read off at.
+PROFILE_TOL = 0.05
+
 
 def main() -> int:
     if not OUT.exists():
@@ -70,6 +75,26 @@ def main() -> int:
                 if d > CONTAIN_TOL:
                     bad.append(f"{tag}: {chi2:.4f} is {d:.4f} worse than the "
                                f"{label} of {sub}, which it contains")
+
+    # Profiles too: a profile is a constrained maximisation over a superset of
+    # the unconstrained problem at the target it can reach freely, so its floor
+    # cannot lie above the unconstrained maximum. Three of them did, by up to
+    # 0.78, and every Delta chi-square in those profiles was measured from that
+    # floor.
+    prof = ROOT / "results" / "profile.json"
+    if prof.exists():
+        for tag, e in sorted(json.loads(prof.read_text()).items()):
+            ex = e.get("profile_min_excess")
+            if ex is None:
+                print(f"  {tag:34s} profile floor not compared (no MAP)")
+                continue
+            kind = "matches" if ex <= PROFILE_TOL else "ABOVE"
+            print(f"  {tag:34s} floor {e['profile_min_chi2']:.4f} vs MAP "
+                  f"{e['map_chi2']:.4f}  ({ex:+.4f}, {kind})")
+            if ex > PROFILE_TOL:
+                bad.append(f"{tag}: the profile's floor is {ex:.4f} above the "
+                           f"model's own maximum, so every Delta chi-square in "
+                           f"it is measured from the wrong base")
 
     if bad:
         print("\ncheck_map_reference: FAILED")

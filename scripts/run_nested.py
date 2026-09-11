@@ -120,10 +120,12 @@ def run(model: str, dataset: str, *, nlive: int, dlogz: float, seed: int,
             # provenance, so that a file can be checked against the run that
             # made it rather than trusted because of its name
             seed=np.array(seed), nlive=np.array(nlive),
+            n_workers=np.array(n_proc),
             prior_low=np.array([p.low for p in priors]),
             prior_high=np.array([p.high for p in priors]))
 
     return dict(model=model, dataset=dataset, ndim=ndim, nlive=nlive,
+                n_workers=n_proc,
                 dlogz_target=dlogz, logz=logz, logz_err=logzerr,
                 chi2_min=chi2_min, n_eval=int(res.ncall.sum()),
                 n_samples=int(samples.shape[0]), runtime_s=runtime, seed=seed,
@@ -140,6 +142,10 @@ def main() -> int:
     ap.add_argument("--nlive", type=int, default=500)
     ap.add_argument("--dlogz", type=float, default=0.1)
     ap.add_argument("--workers", type=int, default=None)
+    ap.add_argument("--no-archive", action="store_true",
+                    help="do not overwrite results/posteriors/*.npz; use for "
+                         "runs that vary the priors, the seed or the worker "
+                         "count, since the file name encodes none of those")
     ap.add_argument("--seed", type=int, default=SEED)
     args = ap.parse_args()
 
@@ -154,7 +160,8 @@ def main() -> int:
             print(f"\n=== {tag} ===", flush=True)
             with record(f"nested_{tag}", notes=f"nlive={args.nlive}"):
                 entry = run(mname, dname, nlive=args.nlive, dlogz=args.dlogz,
-                            seed=args.seed, n_proc=n_proc)
+                            seed=args.seed, n_proc=n_proc,
+                            archive=not args.no_archive)
             out[tag] = entry
             print(f"  ln Z = {entry['logz']:.3f} +/- {entry['logz_err']:.3f}"
                   f"   chi2_min = {entry['chi2_min']:.4f}"

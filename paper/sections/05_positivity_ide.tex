@@ -4,12 +4,28 @@
 
 A recent survey of interacting dark energy models found that in seven of eight
 standard couplings the energy densities become negative somewhere in the
-physical domain
+physical domain, and it is important to quote its conclusion in full rather
+than in the half that suits the present model: the negative densities arise
+\emph{if energy flows from dark matter to dark energy}, which the authors read
+as a strong theoretical preference for the opposite direction
 \parencite{westhuizen2025_250904495,westhuizen2025_250904494,westhuizen2025_250904496}.
-This section identifies the structural reason, which is not the direction of
-the flow but the choice of what the transfer is proportional to, shows why the
-present model is immune, maps it onto the standard parametrizations, and states
-what it predicts that cannot be fitted away.
+The model of this paper flows the disfavoured way. Its precursor is
+pressureless and its product is vacuum, so if that preference is a statement
+about interacting dark energy in general, this model is excluded on theoretical
+grounds before any data are considered.
+
+It is not such a statement, and this section says why. All eight couplings
+surveyed have the form $Q=3H\delta\,F(\rho_{\rm dm},\rho_{\rm de})$ with $F$
+depending on the recipient's density, and it is that dependence, not the
+direction, which breaks positivity: a transfer whose size is set by the sector
+receiving energy keeps draining a donor that has already run out. A
+donor-proportional transfer in the same direction is safe, unconditionally and
+with no tuning, which is what \cref{thm:quasi-positivity} establishes and what
+\cref{prop:recipient-proportional} shows fails without it. The survey's
+conclusion is therefore a property of the couplings it surveys and not of the
+direction of flow --- a claim this paper owes the reader, having placed itself
+on the wrong side of it. The section then maps the model onto the standard
+parametrizations and states what it predicts that cannot be fitted away.
 
 \subsection{Positivity is structural}\label{sec:positivity-structural}
 
@@ -39,17 +55,41 @@ makes the comparison informative, and it is equally elementary.
 \begin{proposition}[Recipient-proportional couplings are not positivity-safe]
   \label{prop:recipient-proportional}
   Consider two sectors with $\dot\rho_1+3\Hub\rho_1=-Q$ and
-  $\dot\rho_2+3\Hub(1+w)\rho_2=+Q$. If $Q=\xi \Hub\rho_2$ with $\xi>0$, then on
-  the face $\{\rho_1=0\}$ the field is $\dot\rho_1=-\xi \Hub\rho_2<0$ whenever
-  $\rho_2>0$: the subtangent condition fails on a set of codimension one, and
-  $\rho_1$ is driven through zero. The same argument with the roles exchanged
-  applies to $Q=\xi \Hub\rho_1$ draining $\rho_2$.
+  $\dot\rho_2+3\Hub(1+w)\rho_2=+Q$, and let $Q=\xi \Hub\rho_2$ with $\xi>0$.
+  \begin{enumerate}
+    \item On the face $\{\rho_1=0\}$ the field is
+      $\dot\rho_1=-\xi \Hub\rho_2<0$ whenever $\rho_2>0$, so the subtangent
+      condition fails on a set of codimension one and the non-negative orthant
+      is \emph{not} forward invariant.
+    \item Whether a given trajectory reaches that face is a separate question
+      with a separate answer. Writing $u=\rho_1a^3$ gives
+      $\dd u/\dd \efold=-\xi\rho_{2i}e^{-3w \efold}$, so $\rho_1$ reaches zero
+      at finite $a$ for every $\xi>0$ if and only if $w\le0$, and for $w>0$ only
+      if $\xi>3w\rho_{1i}/\rho_{2i}$.
+  \end{enumerate}
+  The same argument with the roles exchanged applies to $Q=\xi \Hub\rho_1$
+  draining $\rho_2$.
 \end{proposition}
 
-So the diagnostic is \emph{donor versus recipient}, not the direction of the
-flow: a coupling whose magnitude is set by the sector \emph{receiving} energy
-keeps draining a donor that has already run out. Here the precursor is a
-reservoir that empties, and an empty reservoir supplies nothing.
+The second part is not a technicality, and the first is what the comparison
+rests on. A stiff recipient, $w=1$, makes the integral converge: the outflow
+dies away faster than the donor dilutes, and for small enough $\xi$ the donor
+survives. The failure is therefore guaranteed exactly in the regime the
+catalogued models occupy --- a recipient that behaves like dark energy, $w$
+close to $-1$ --- and the unqualified statement that $\rho_1$ ``is driven
+through zero'' is true there and not in general.
+
+It is worth stating the sharp criterion, because \emph{donor versus recipient}
+is a useful label and not the underlying condition. By Nagumo the orthant is
+forward invariant if and only if the outflow vanishes on the face it would
+leave through, $Q|_{\rho_1=0}\le0$. Donor-proportionality, $Q\propto\rho_1$, is
+the simplest sufficient case and the one this model realises --- and it
+additionally gives uniqueness, which a coupling like $Q=\xi
+\Hub\sqrt{\rho_1\rho_2}$ satisfies the invariance condition without. What the
+recipient-proportional couplings fail is the condition itself:
+$Q|_{\rho_1=0}=\xi \Hub\rho_2>0$, an outflow from a sector that has nothing
+left. Here the precursor is a reservoir that empties, and an empty reservoir
+supplies nothing.
 
 Two consequences should be recorded immediately. First,
 \cref{thm:quasi-positivity} is a statement about the future. It is not

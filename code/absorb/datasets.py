@@ -35,6 +35,13 @@ def build(name: str) -> JointLikelihood:
     sn_shoes = PantheonLikelihood(with_shoes=True)
     bao = DesiBAOLikelihood()
     cc = ChronometerLikelihood()
+    # The cosmic-chronometer covariance has two published variants. The one
+    # used by default adds the IMF and the "model, odd one out" terms to the
+    # statistical errors; the conservative one adds the stellar library and the
+    # full model term as well, which doubles the effective error on a coherent
+    # offset in H(z), from 5.7% to 11.6%. Carrying both lets the dependence on
+    # that choice be measured rather than assumed away.
+    cc_cons = ChronometerLikelihood(variant="conservative")
     cmb = PlanckPriorLikelihood()
 
     combos = {
@@ -43,10 +50,12 @@ def build(name: str) -> JointLikelihood:
         "nocmb":    [sn, bao, cc],
         "rsd":      [sn, bao, cc, cmb, RSDLikelihood(fs8_model=_fs8())],
         "bao_only": [bao, cmb],
+        "baseline_cc_cons": [sn, bao, cc_cons, cmb],
     }
     if name not in combos:
         raise KeyError(f"unknown dataset {name!r}; have {sorted(combos)}")
     return JointLikelihood(combos[name], name=name)
 
 
-DATASETS = ("baseline", "shoes", "nocmb", "rsd", "bao_only")
+DATASETS = ("baseline", "shoes", "nocmb", "rsd", "bao_only",
+            "baseline_cc_cons")

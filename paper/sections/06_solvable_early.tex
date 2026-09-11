@@ -130,19 +130,41 @@ hypothesis does the work.
   The rewriting has a consequence that matters for \cref{sec:defects-caustics}.
   Under compression at fixed $\fconv$ the switch \emph{closes},
   $\actS\to((1-\fconv)\rho_*/\rhoI)^{p/3}$, and near a fold caustic
-  $\rhoI\sim\abs{J}^{-1}$, so $\Gam\sim\abs{J}^{p/3}\to0$. The rate does not
-  merely stay bounded on the approach, as \cref{thm:bounded-rate-obstruction}
-  assumes; it vanishes, which is strictly worse for any hope of regularization.
+  $\rhoI\sim\abs{J}^{-1}$, so $\Gam\sim\abs{J}^{p/3}\to0$ --- with the exponent
+  carrying the caveat recorded below. The rate does not merely stay bounded on
+  the approach, as \cref{thm:bounded-rate-obstruction} assumes; it vanishes,
+  which is strictly worse for any hope of regularization.
 
-  One caveat, and it is not small. This is \emph{a} local completion, not
-  \emph{the} local completion: it is distinguished by using only an exact
-  identity of the model and by reproducing $\actS(a)$ exactly rather than
-  approximately, but a switch written in the expansion $\expa$ also reduces to
-  a function of $a$ on FLRW and behaves in the opposite way at a caustic,
-  where $\expa\to-\infty$ and such a switch would saturate rather than close.
-  The completions disagree precisely where the question is interesting, so we
-  record \cref{eq:solvable-activation-local} as what the model's own identity
-  gives and not as a derivation of what happens at a caustic.
+  Two caveats, and neither is small.
+
+  First, this is \emph{a} local completion, not \emph{the} local completion: it
+  is distinguished by using only an exact identity of the model and by
+  reproducing $\actS(a)$ exactly rather than approximately, but a switch
+  written in the expansion $\expa$ also reduces to a function of $a$ on FLRW
+  and behaves in the opposite way at a caustic, where $\expa\to-\infty$ and
+  such a switch would saturate rather than close. The completions disagree
+  precisely where the question is interesting, so we record
+  \cref{eq:solvable-activation-local} as what the model's own identity gives
+  and not as a derivation of what happens at a caustic.
+
+  Second, and more sharply: \cref{eq:solvable-activation-local} is not
+  consistent with \cref{asm:geodesic}. Linearising at fixed $\fconv$ gives
+  $\delta\ln\Gam=\delta\ln\actS=-\tfrac{p}{3}(1-\actS)\,\delta_I$, which equals
+  the $-\delta_I$ that \cref{asm:geodesic} requires --- and that
+  \cref{prop:geodesic-forced} shows is forced --- only where
+  $\actS=1-3/p$, a single value of the scale factor, $\actS=\tfrac12$ for the
+  $p=6$ used here. Away from that instant this completion describes a theory in
+  which the transfer is not comoving-uniform, which is a different theory from
+  the one the rest of this paper analyses.
+
+  The consequence for \cref{sec:defects-caustics} is that the exponent quoted
+  above belongs to that other theory. In the theory as defined, $\delta\QV=0$
+  forces $\Gam\propto1/\rhoI$, so near a fold caustic $\Gam\sim\abs{J}$ ---
+  exponent one rather than $p/3$. The qualitative conclusion is unchanged and
+  is in fact reached by both routes: the rate vanishes on the approach rather
+  than merely staying bounded, so \cref{thm:bounded-rate-obstruction} applies a
+  fortiori. It is the exponent, and the route to it, that depend on which
+  completion one is willing to adopt.
 \end{remark}
 
 The reinforcement and memory structure is untouched; only the floor is

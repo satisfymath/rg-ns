@@ -51,9 +51,13 @@ it says. Every occurrence must match.
 | C-04 | Sec. 3.1: rate law displayed with a constant amplitude | Sec. 6.3: convergence analysed for the expansion-tracking law | scope | both laws named, each exponent derived, the fitted one identified | high |
 | C-05 | Sec. 8.5: entropy said to increase with the vacuum density | standard de Sitter result | numerical | corrected; the surviving argument is the second-order one | high |
 | C-06 | abstract: "classified as an identity, a theorem, or a conjecture" | ladder has four levels | numerical | abstract corrected | high |
+| C-08 | Sec. 5 opening: survey quoted without its flow-direction conditional | the survey's own abstract, which concludes a preference for DE->DM | elision | conditional restored; the section now states that this model flows the disfavoured way and argues that the preference is a property of the recipient-dependent couplings surveyed, not of the direction | high |
 | C-07 | App. F: residual bounds tighter than the tests assert | test suite | numerical | table aligned to the asserted bounds; survival test tightened | high |
 
-No high-confidence contradictions remain open.
+No high-confidence contradictions remain open. C-08 was found by an
+independent referee, not by this audit, which is worth recording: the audit
+had passed over a quotation that removed the clause cutting against the
+manuscript's own model.
 
 ## 4. Placeholder and reference audit
 
