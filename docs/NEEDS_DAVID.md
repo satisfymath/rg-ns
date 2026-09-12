@@ -37,9 +37,9 @@ accurate and costs nothing.
 
 ## ~~Step 1~~ — a personal email address (5 minutes)
 
-The only requirement is that it is not the Despegar address. A work address on
-a paper stops working the day you change jobs, and it implies an institutional
-affiliation for work that is not institutional.
+The requirement is that it is a personal address and not a work one. A work
+address on a paper stops working the day you change jobs, and it implies an
+institutional affiliation for work that is not institutional.
 
 If you already have a personal address, use it. If not, any provider is fine;
 Gmail, Proton and Fastmail all take about three minutes. Use something you
