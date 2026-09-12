@@ -208,3 +208,28 @@ def _writer(path, key, delay):
 
     time.sleep(delay)
     jsonstore.update(_Path(path), {key: {"value": key}})
+
+
+@pytest.mark.parametrize("key", ["xi_h__baseline",
+                                 "xi_h__baseline__matter_deficit",
+                                 "xi_h__baseline__jerk_excess"])
+def test_every_profile_grid_reaches_the_unconstrained_maximum(key):
+    """A profile whose grid misses its own minimum measures from the wrong floor.
+
+    Both failures found here had this shape and neither was visible in the
+    output: the jerk grid started four decades above the maximum, and the eps
+    grid had a spacing of 0.0375 with the maximum at 0.014. In both cases the
+    profile looked perfectly ordinary -- smooth, monotone above its reported
+    minimum, crossing the threshold at a plausible place -- and every rise in
+    it was measured from a floor that was not the maximum.
+    """
+    p = _profile(key)
+    covers = p.get("grid_covers_the_maximum")
+    if covers is None:
+        pytest.skip(f"{key}: predates the coverage record")
+    assert covers, f"{key}: the grid does not reach the unconstrained maximum"
+    excess = p.get("profile_min_excess")
+    if excess is not None:
+        assert excess < 0.05, (
+            f"{key}: the profile's floor is {excess:.4f} above the model's "
+            f"maximum; the grid covers it, so this is a search failure")

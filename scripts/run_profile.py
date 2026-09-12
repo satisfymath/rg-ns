@@ -352,6 +352,13 @@ def profile(model: str, dataset: str, n_grid: int = 17,
     highs = np.array([p.high for p in post.model.priors()])
     rng = np.random.default_rng(seed)
 
+    # A uniform grid over [0, 0.6] has a spacing of 0.0375 and the
+    # unconstrained maximum sits at eps = 0.014, so the grid never sampled the
+    # region containing its own minimum and reported every rise from a floor
+    # 0.76 too high -- the same failure the jerk profile had four decades
+    # away. The grid is therefore the uniform one, refined geometrically near
+    # zero where the likelihood turns over, with the maximum's own value
+    # inserted so that coverage is guaranteed rather than hoped for.
     grid = np.linspace(0.0, 0.6, n_grid)
     chi2 = np.empty(n_grid)
     best_theta = [None] * n_grid
@@ -371,6 +378,15 @@ def profile(model: str, dataset: str, n_grid: int = 17,
         entry = json.loads(map_path.read_text()).get(f"{model}__{dataset}")
         if entry is not None and list(entry["param_names"]) == names:
             map_theta = np.asarray(entry["theta"], dtype=float)
+
+    extra = [grid[1] * 10.0 ** -q for q in (0.25, 0.5, 0.75, 1.0, 1.5)]
+    if map_theta is not None:
+        extra.append(float(map_theta[i_eps]))
+    grid = np.unique(np.clip(np.concatenate([grid, extra]),
+                             lows[i_eps], highs[i_eps]))
+    n_grid = grid.size
+    chi2 = np.empty(n_grid)
+    best_theta = [None] * n_grid
 
     free = [j for j in range(len(names)) if j != i_eps]
 
@@ -470,7 +486,10 @@ def profile(model: str, dataset: str, n_grid: int = 17,
         "map_chi2": map_chi2,
         "profile_min_excess": (None if map_chi2 is None
                                else profile_min - map_chi2),
-        "grid_covers_the_maximum": True,
+        "grid_covers_the_maximum": bool(
+            map_theta is None
+            or (grid.min() <= float(map_theta[i_eps]) <= grid.max()
+                and float(np.abs(grid - map_theta[i_eps]).min()) < 1e-9)),
         "n_improved_by_backward_sweep": n_improved,
         "best_theta": [t.tolist() for t in best_theta],
         "param_names": names,
