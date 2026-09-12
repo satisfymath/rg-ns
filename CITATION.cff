@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite both the software and the paper."
+title: "Self-reinforced geometric absorption: code, data pipeline and generated results"
+type: software
+authors:
+  - family-names: "Astudillo Muñoz"
+    given-names: "David Alexander"
+    affiliation: "Independent researcher"
+    orcid: "TODO-ORCID"
+license: MIT
+doi: TODO-ZENODO-DOI

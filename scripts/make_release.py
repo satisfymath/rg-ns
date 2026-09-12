@@ -99,6 +99,29 @@ def copy_into(dest: Path) -> int:
     return n
 
 
+METADATA_FILES = (".zenodo.json", "CITATION.cff")
+
+
+def metadata_placeholders(root) -> list[str]:
+    """Placeholders in the deposit metadata, not just in the manuscript.
+
+    The manuscript's TODOs are checked because they would be printed. These
+    are checked because they would be *deposited*: a Zenodo record whose
+    creator has "TODO-ORCID" where an identifier belongs is worse than no
+    record, since it is permanent and public.
+    """
+    out = []
+    for name in METADATA_FILES:
+        path = root / name
+        if not path.exists():
+            out.append(f"{name} is missing")
+            continue
+        for i, line in enumerate(path.read_text().splitlines(), 1):
+            if "TODO" in line:
+                out.append(f"{name}:{i} contains a placeholder: {line.strip()}")
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--force", action="store_true",
@@ -106,7 +129,7 @@ def main() -> int:
                          "the archive is then marked DRAFT and not checksummed")
     args = ap.parse_args()
 
-    found = blockers()
+    found = blockers() + metadata_placeholders(ROOT)
     if found and not args.force:
         print("make_release refuses to build: the manuscript is not shippable")
         for b in found:
