@@ -1,3 +1,21 @@
+Scope of this licence
+=====================
+
+The MIT terms below cover the *software* in this repository and the results it
+generates: everything under code/, scripts/, results/ and paper/figures/, and
+the generated LaTeX fragments under paper/generated/.
+
+They do not cover the manuscript. The text of the paper -- paper/main.tex,
+paper/sections/, paper/preamble.tex, paper/macros.tex and the compiled
+paper/build/main.pdf -- remains (c) 2026 David Alexander Astudillo Munoz, all
+rights reserved, pending the licence terms of the venue where it is published.
+It is included here so that the archived code can be matched to the exact
+version of the paper whose numbers it produces.
+
+No observational data are redistributed. The data sets the pipeline downloads
+remain under the terms set by the collaborations that published them; only
+their checksums are recorded here.
+
 MIT License
 
 Copyright (c) 2026 David Alexander Astudillo Muñoz
