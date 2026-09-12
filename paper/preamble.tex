@@ -63,7 +63,7 @@
 % in final mode a missing figure is a hard error (never silently dropped).
 % ============================================================================
 \newif\ifdraftfigs
-\draftfigstrue   % <-- set \draftfigsfalse before submission
+\draftfigsfalse  % submission: a missing figure must be an error, not a red box
 \let\origincludegraphics\includegraphics
 \renewcommand{\includegraphics}[2][]{%
   \IfFileExists{figures/#2}%
