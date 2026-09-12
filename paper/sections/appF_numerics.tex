@@ -227,9 +227,11 @@ helps in one direction only: a target whose search fails then seeds the next
 from a failure, and the profile acquires local minima that belong to the
 optimiser and not to the likelihood. A profile is the lower envelope of what
 is attainable, so a backward sweep from the far end can only improve it, and
-on the jerk profile it improved
-$\numProfileXiHBaselineJerkExcessNImprovedByBackwardSweep$ of the
-$13$ grid points. Two diagnostics are reported with every profile: the worst
+it improved $\numProfileXiHBaselineJerkExcessNImprovedByBackwardSweep$ of the
+thirteen grid points of the jerk profile and
+$\numProfileXiHBaselineMatterDeficitNImprovedByBackwardSweep$ of the deficit
+profile's --- that almost every point improved is the measure of how much the
+forward-only sweep was propagating. Two diagnostics are reported with every profile: the worst
 relative miss of the target, and the number of decreasing steps \emph{above}
 the minimum, which must be zero because a profile cannot fall on its rising
 side. Both were added after an earlier version used a quadratic penalty too

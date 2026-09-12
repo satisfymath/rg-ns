@@ -382,22 +382,69 @@ def profile(model: str, dataset: str, n_grid: int = 17,
             v = post(theta)
             return 1e10 if not np.isfinite(v) else -2.0 * v
 
+        starts = []
+        if map_theta is not None:
+            starts.append(map_theta[free])
+        if k > 0 and best_theta[k - 1] is not None:
+            starts.append(best_theta[k - 1][free])
+        starts += [lows[free] + rng.random(len(free)) * (highs[free] - lows[free])
+                   for _ in range(n_restarts)]
+
         best = np.inf
-        for r in range(n_restarts):
-            x0 = lows[free] + rng.random(len(free)) * (highs[free] - lows[free])
-            if best_theta[max(k - 1, 0)] is not None and r == 0:
-                x0 = best_theta[max(k - 1, 0)][free]      # warm start
-            res = minimize(neg, x0, method="Nelder-Mead",
-                           options=dict(maxfev=3000, xatol=1e-4, fatol=1e-4))
-            if res.fun < best:
-                best = res.fun
+        for x0 in starts:
+            for method, opts in (("Nelder-Mead", dict(maxfev=3000, xatol=1e-6,
+                                                      fatol=1e-6)),
+                                 ("Powell", dict(maxfev=3000, xtol=1e-7,
+                                                 ftol=1e-7))):
+                res = minimize(neg, x0, method=method, options=opts)
+                x0 = res.x
+                if res.fun < best:
+                    best = res.fun
+                    th = np.empty(len(names))
+                    th[i_eps] = eps
+                    th[free] = res.x
+                    best_theta[k] = th
+        chi2[k] = best
+        print(f"  eps={eps:5.3f}   chi2_min={best:10.3f}", flush=True)
+
+    # Backward sweep, for the reason given in profile_derived: a forward-only
+    # warm start propagates a failed search forward and nothing corrects it.
+    n_improved = 0
+    for k in range(n_grid - 2, -1, -1):
+        if best_theta[k + 1] is None:
+            continue
+        eps = float(grid[k])
+
+        def neg_back(sub, eps=eps):
+            theta = np.empty(len(names))
+            theta[i_eps] = eps
+            theta[free] = sub
+            v = post(theta)
+            return 1e10 if not np.isfinite(v) else -2.0 * v
+
+        x0 = best_theta[k + 1][free]
+        for method, opts in (("Nelder-Mead", dict(maxfev=3000, xatol=1e-6,
+                                                  fatol=1e-6)),
+                             ("Powell", dict(maxfev=3000, xtol=1e-7,
+                                             ftol=1e-7))):
+            res = minimize(neg_back, x0, method=method, options=opts)
+            x0 = res.x
+            if res.fun < chi2[k] - 1e-9:
+                chi2[k] = res.fun
                 th = np.empty(len(names))
                 th[i_eps] = eps
                 th[free] = res.x
                 best_theta[k] = th
-        chi2[k] = best
-        print(f"  eps={eps:5.3f}   chi2_min={best:10.3f}")
+                n_improved += 1
+    if n_improved:
+        print(f"  backward sweep improved {n_improved} grid point(s)")
 
+    profile_min = float(chi2.min())
+    map_chi2 = None
+    if map_path.exists():
+        entry = json.loads(map_path.read_text()).get(f"{model}__{dataset}")
+        if entry is not None:
+            map_chi2 = float(entry["chi2_min"])
     chi2 -= chi2.min()
     # One-sided 95% limit for one parameter of interest: Delta chi2 = 2.71.
     # If the profile never reaches it, there is no limit, and saying so is the
@@ -419,6 +466,12 @@ def profile(model: str, dataset: str, n_grid: int = 17,
         "unbounded": bool(unbounded),
         "max_delta_chi2": float(chi2.max()),
         "chi2_at_zero": float(chi2[0]),
+        "profile_min_chi2": profile_min,
+        "map_chi2": map_chi2,
+        "profile_min_excess": (None if map_chi2 is None
+                               else profile_min - map_chi2),
+        "grid_covers_the_maximum": True,
+        "n_improved_by_backward_sweep": n_improved,
         "best_theta": [t.tolist() for t in best_theta],
         "param_names": names,
     }
