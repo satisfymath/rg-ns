@@ -24,6 +24,7 @@ import sys
 import time
 import urllib.parse
 import urllib.request
+import urllib.error
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -166,7 +167,16 @@ def fetch_crossref_doi(doi: str) -> dict | None:
 # --------------------------------------------------------------------------- #
 def verify(entries: list[dict]) -> list[dict]:
     arxiv_ids = [e["eprint"] for e in entries if e.get("eprint")]
-    remote = fetch_arxiv(arxiv_ids) if arxiv_ids else {}
+    # One service being down is not a bibliography failure, and it is not a
+    # reason to stop checking the others: the DOI-only entries go to INSPIRE
+    # and Crossref and are unaffected. Entries whose service is unreachable are
+    # marked as such, and main() passes them only if they carry a stamp from a
+    # previous successful run.
+    arxiv_down = ""
+    try:
+        remote = fetch_arxiv(arxiv_ids) if arxiv_ids else {}
+    except (urllib.error.URLError, urllib.error.HTTPError, OSError) as exc:
+        remote, arxiv_down = {}, str(exc)
 
     rows = []
     for e in entries:
@@ -178,6 +188,11 @@ def verify(entries: list[dict]) -> list[dict]:
             row["identifier"] = f"arXiv:{eprint}"
             row["source"] = "arxiv"
             meta = remote.get(re.sub(r"v\d+$", "", eprint))
+            if meta is None and arxiv_down:
+                row["status"] = "UNREACHABLE"
+                row["note"] = arxiv_down
+                rows.append(row)
+                continue
         elif doi:
             row["identifier"] = f"doi:{doi}"
             meta = fetch_inspire_doi(doi) or fetch_crossref_doi(doi)
@@ -336,6 +351,39 @@ def write_report(rows: list[dict]) -> None:
     REPORT.write_text("\n".join(lines) + "\n")
 
 
+def stamp_verified(entries: list[dict], rows: list[dict]) -> int:
+    """Record, in the .bib itself, that an entry has been checked.
+
+    The stamp is what the offline fallback falls back on, and it was written
+    only by ``--add``: entries appended by hand had none, so a build during an
+    outage refused to pass on nine perfectly good references. Only missing
+    stamps are added, so a passing run leaves the file alone once every entry
+    has one.
+    """
+    ok = {r["key"] for r in rows if r["status"] == "OK"}
+    need = [e for e in entries if e["key"] in ok and not e.get("verified")]
+    if not need:
+        return 0
+    text = BIB.read_text()
+    today = dt.date.today().isoformat()
+    source = {r["key"]: r.get("source", "remote") for r in rows}
+    for e in need:
+        head = "@" + e.get("type", "article") + "{" + e["key"] + ","
+        i = text.find(head)
+        if i < 0:
+            continue
+        j = text.find("\n}", i)
+        if j < 0:
+            continue
+        line = (f"\n  verified     = {{{source.get(e['key'], 'remote')} API "
+                f"{today}}},")
+        text = text[:j] + line + text[j:]
+    BIB.write_text(text)
+    print(f"  stamped {len(need)} entr{'y' if len(need) == 1 else 'ies'} "
+          f"as verified on {today}")
+    return len(need)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--add", nargs="+", metavar="ARXIV_ID")
@@ -355,11 +403,32 @@ def main() -> int:
         return 0
 
     rows = verify(entries)
+    stamped = {e["key"] for e in entries if e.get("verified")}
+    unreachable = [r for r in rows if r["status"] == "UNREACHABLE"]
+    if unreachable:
+        note = unreachable[0].get("note", "")
+        print(f"verify_bib: a lookup service is unreachable ({note}); "
+              f"{len(unreachable)} entr{'y' if len(unreachable) == 1 else 'ies'} "
+              f"could not be re-checked.")
+        missing = [r["key"] for r in unreachable if r["key"] not in stamped]
+        if missing:
+            print("  and these carry no stored verification stamp:")
+            for k in missing:
+                print(f"    - {k}")
+            print("  refusing to pass: an entry added since the last "
+                  "successful run has never been checked.")
+            return 1
+        print("  all of them carry a stamp from a previous run; treating them "
+              "as verified and not re-checking in this build.")
+        for r in unreachable:
+            r["status"] = "OK (stamped)"
     RESULTS.parent.mkdir(parents=True, exist_ok=True)
     RESULTS.write_text(json.dumps(rows, indent=2))
     write_report(rows)
 
-    bad = [r for r in rows if r["status"] != "OK"]
+    bad = [r for r in rows if not r["status"].startswith("OK")]
+    if not bad:
+        stamp_verified(entries, rows)
     for r in rows:
         mark = "ok " if r["status"] == "OK" else "FAIL"
         print(f"  [{mark}] {r['key']:32s} {r['identifier']:22s} "

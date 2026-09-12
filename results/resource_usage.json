@@ -534,5 +534,13 @@
     "mem_available_before_mb": 8782.890625,
     "mem_available_after_mb": 8034.046875,
     "notes": "profile likelihood in eps"
+  },
+  {
+    "name": "profile_xi_h",
+    "seconds": 2974.630479335785,
+    "peak_rss_mb": 655.70703125,
+    "mem_available_before_mb": 7978.8828125,
+    "mem_available_after_mb": 7635.10546875,
+    "notes": "profile likelihood in eps"
   }
 ]
