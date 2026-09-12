@@ -1,86 +1,75 @@
 # Paper I — release readiness
 
-**Status: BLOCKED ON THE AUTHOR, and on one running job.** Everything the
-repository can decide for itself is green or is listed below with the command
-that shows it. This file is regenerated as gates close; it is a statement of
-what is currently true, not a plan.
+**Status: BLOCKED ONLY ON THE AUTHOR.** Every gate the repository can decide
+for itself is green, the full test suite passes, and the manuscript builds
+clean. Three placeholders remain and all three need David.
 
-Working tree at the time of writing: `git rev-parse HEAD`. Manuscript: 65
-pages (about 52 of main text, the rest references and six appendices).
+Manuscript: 74 pages (≈52 of main text, the rest references and six
+appendices). Commit: `git rev-parse HEAD`.
 
 ## Gate table
 
-| gate | status | evidence | command |
-|---|---|---|---|
-| Test suite passes | **amber** | 274 passed, 1 failing — the failure is the maximisation gate below, and it is correct to fail | `cd code && pytest tests -q` |
-| LaTeX builds, no undefined refs or cites | **green** | 0 tolerated overfull boxes | `python3 scripts/check_log.py` |
-| No hand-typed numbers; no undefined macros | **green** | whitelist in `docs/NUMBERS_WHITELIST.txt` | `python3 scripts/check_numbers.py` |
-| No NaN/inf reaching the text | **green** | gate added after one did | `python3 scripts/check_numbers.py` |
-| No duplicated lines or words | **green** | one real duplicate removed | `python3 scripts/check_prose.py` |
-| Every boxed result classified | **green** | 57 classified | `python3 scripts/check_claims.py` |
-| Claim ledger: no summary claim untested | **green** | 144 results, 23 cited in a summary, 0 untested | `python3 scripts/claim_ledger.py` |
-| Bibliography verified against arXiv/DOI | **green** | 39/39 | `python3 scripts/verify_bib.py` |
-| Required citations present | **green** | 27 works | `python3 scripts/check_required_cites.py` |
-| Chain stability, pinning, move rates | **green** | archived failures reported and exempt | `python3 scripts/check_chain_stability.py` |
-| Published limits regression-tested | **green** | 9 checks, incl. no number for an unconstrained parameter | `pytest code/tests/test_published_limits.py` |
-| Posterior present for every model in a table | **green** | `memory` posterior produced | `python3 scripts/check_numbers.py` |
-| Evidence reproducible between seeds | **green** | spread 0.146 vs reported 0.208; the larger is quoted | `results/evidence_repeatability.json` |
-| Prior sensitivity measured both ways | **green** | `ln B` from −1.93 to −0.55 across widths | `results/prior_width_summary.json` |
-| Conservation identities across the prior | **green** | Friedmann 2e−16, jerk 4e−13 | `pytest code/tests/test_background.py` |
-| Chi-square column monotone in the nesting | **green** | submodel seeding; gated | `python3 scripts/check_map_reference.py` |
-| Best fits reach the frozen brute-force reference | **RED, running** | `reinforce` was 0.137 above it; re-running with the repaired polish | `python3 scripts/check_map_reference.py` |
-| All figures regenerable and placed | **green** | 10 figures | `python3 scripts/check_figures.py` |
-| `make reproduce` documented and tested | **green** | two tiers, core ≈25 min | `make reproduce-core` |
-| PDF inspected page by page | **green** | `docs/review/pdf_visual_inspection.md` | — |
-| Referee map | **green** | 24 anticipated objections, each with a location | `docs/review/REFEREE_MAP.md` |
-| Three final independent referee reports | **in progress** | theory, data, claims — running | `docs/review/referee_{F,G,H}_*.md` |
-| Release archive + checksums | **blocked** | refuses to build while placeholders remain | `python3 scripts/make_release.py` |
-| Author metadata | **RED (external)** | `paper/main.tex:10` | needs the author |
-| Zenodo DOI | **RED (external)** | `99_acknowledgments.tex:26`, `appF_numerics.tex:208` | needs the author |
+| gate | status | evidence |
+|---|---|---|
+| Test suite | **green** | 301 passed |
+| LaTeX builds, no undefined refs or cites | **green** | 0 tolerated overfull boxes |
+| No hand-typed numbers; no undefined or `nan` macros | **green** | `check_numbers.py` |
+| No duplicated lines or words | **green** | `check_prose.py` |
+| Every boxed result classified; ladder complete | **green** | 74 classified; every referenced display carries a level |
+| Claim ledger: no summary claim untested | **green** | 0 untested |
+| Bibliography verified | **green** | 51/51, each stamped with its date |
+| Required citations present | **green** | 27 works |
+| Chain stability, pinning, move rates | **green** | archived failures reported and exempt |
+| Best fits reach what is known reachable | **green** | `check_map_reference.py` |
+| Profile floors reach the model's maximum | **green** | −0.000, +0.012, +0.043 |
+| Profile grids bracket the maximum | **green** | all three |
+| Archived posteriors match their models | **green** | 7 files, priors and seeds checked |
+| Evidence table from one sampler configuration | **green** | queue 8, nlive 500, 7 runs |
+| Every quoted results file has a `make` target | **green** | `check_reproducible.py` |
+| Figures regenerable and placed | **green** | 10 |
+| `make reproduce` works end to end | **green** | two crashes in `run_pancake.py` fixed |
+| PDF inspected page by page | **green** | `docs/review/pdf_visual_inspection.md` |
+| Referee map | **green** | 24 objections, each with a location |
+| Three final independent referee reports | **green** | `referee_{F,G,H}`, answered in `RESPONSE_r3.md` |
+| Release archive | **blocked** | refuses while placeholders remain |
+| Author email and ORCID | **RED (external)** | `paper/main.tex:10` |
+| Zenodo DOI | **RED (external)** | `99_acknowledgments.tex:26`, `appF_numerics.tex:341` |
 
-## Blockers by severity
+## What the paper now says
 
-### FATAL SCIENTIFIC
-None known. Seven adversarial reviews have now been run against the
-manuscript. What they found were numbers attached to conclusions, not
-conclusions; every one has been recomputed, withdrawn, or gated.
+ΛCDM is preferred over every extension fitted, at odds between 5:1 and 10:1,
+and 4.3:1 with growth data added. That is the result, reported as one. The
+memory model — the part with no precedent found in the literature — is the
+worst placed of the four, because the parameters it adds are the ones the data
+do not identify.
 
-### STATISTICAL
-None open. The three that were open are closed and the closures are in the
-manuscript rather than in this file: between-seed scatter is measured and the
-larger error is quoted; prior width is varied in both directions and the range
-is reported; and the wording of the comparison is held to what survives both.
+What survives independently of the data: positivity is structural rather than
+tuned, and the one coupling out of eight in the published survey that keeps
+every density positive is the one satisfying the same criterion; the jerk
+bound, whose sign is opposite to running vacuum and to the DESI-favoured
+quadrant; path dependence, which no interaction written on the densities can
+have; the geodesic realization, which turned out to be forced rather than
+assumed; and the vorticity obstruction.
 
-### REPRODUCIBILITY
-**R1 (running).** `run_map.py` documented a comparison against the frozen
-brute-force maximisation in its docstring without performing it. Performing it
-found the reinforced model 0.137 above a chi-square this repository had already
-recorded, while reporting its own search as converged. The polish now
-alternates simplex with direction-set steps and kicks the best point until the
-known ceiling is reached; `xi_h` reproduces the reference exactly and the
-remaining models are re-running. `check_map_reference.py` fails the build until
-they do.
+What does not survive: the conjecture that conversion regularizes caustics is
+false for the model as published; the deficit–jerk floor does not apply,
+its hypothesis failing for every activation tried; and the identification of
+the defects with dark matter was never established and is labelled a
+conjecture.
 
-### MANUSCRIPT
-**M1 (external).** Author metadata and the archive DOI are placeholders. Both
-need the author, and `make_release.py` refuses to assemble anything while they
-are present.
+## Defects found and fixed in this cycle
 
-**M2 (in progress).** Three final referee reports are running. Their findings
-will be answered in `docs/review/RESPONSE_r3.md` before any submission.
+Four in displayed results — the snap's activation term, the neutrino jerk
+factor, the hysteresis run that could not exhibit its own theorem, and the
+solvable family's missing `a_act` factors. Four in provenance — an archived
+posterior from the wrong priors, an evidence that depended on the core count,
+two concurrent runs overwriting each other, and two crashes that made
+`make reproduce-core` unable to finish. Three in profiles — two grids that did
+not sample their own minimum and a forward-only sweep that propagated failed
+searches. None changed a conclusion. All changed numbers the paper prints.
 
-## Resolved this cycle
-- The geodesic realization was presented as an assumption; it is a theorem
-  (`prop:geodesic-forced`), and the abstract, §9, §13 and §14 now say so.
-- The three obstructions are collected under their common root
-  (`sec:outlook-one-obstruction`), and the successor's requirement is stated as
-  one capacity with two rungs of cost rather than as a demand for a new sector.
-- The parameter table quoted `< 0.8337` for a fraction the text explicitly
-  withdraws a limit on. It now marks prior-dominated parameters as
-  unconstrained and prints, for every sampled parameter, the fraction of its
-  prior the posterior covers. A test enforces it.
-- The caustic check integrated in a coordinate where the endpoint was not
-  representable; it now integrates in the distance to the singularity and is
-  verified against the closed form, including two decades deeper than the old
-  assertion reached.
-- `check_map_reference.py` and the referee map are new.
+## What only David can supply
+
+1. Personal email and ORCID, replacing `\TODO{email, ORCID}`.
+2. A Zenodo DOI for the code, after tagging the repository.
+3. The title decision recorded in `docs/NEEDS_DAVID.md`.

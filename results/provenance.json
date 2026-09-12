@@ -13,8 +13,8 @@
     "sdss_DR16_QSO_FSBAO_cov.txt": "88f844447fb546792769cdf09b4df7b7a7f77a948f02ef371f54a6f7dddb3d41"
   },
   "git_branch": "master",
-  "git_commit": "ed1bdece1eac15c32214fd2efc04402a07d6b167",
-  "git_dirty": true,
+  "git_commit": "914b0b4523b580d53e44150f4fcede5c426c4a22",
+  "git_dirty": false,
   "master_seed": 20260909,
   "packages": {
     "astropy": "8.0.1",
@@ -30,13 +30,15 @@
   "platform": "Linux-6.19.14-200.fc43.x86_64-x86_64-with-glibc2.42",
   "python": "3.14.4",
   "result_checksums": {
-    "chain_diagnostics.json": "f998b85bf51d258781108cc6ec44e6df3bc3add0490d84f3c586e81c48bf765f",
-    "evidence.json": "fbd551f993f2750b126c6c5f2da057a9eaadeb54e23554c21c474301b5fb057a",
-    "map.json": "562cbc14862b4b7d053d60f12a01fd8012ee01664bbce47e7ebf8c33c38c550f",
-    "pancake.json": "7ab95e0316787bf93f57706e22310b7d1faf0b44b2179ecf0228b9161ecf9519",
-    "prior_sensitivity.json": "d70284a6c54abd412d3c969f2ccda50aa5ef6761353be4894c6e7748f69d3b80",
-    "profile.json": "89d9abdd0f667969deaf04d086caaa00894b96a1379245b4f4baa7f6368ccd9a",
-    "results.json": "c47e49b0ef94ba204a23199647663d620b3447c5d0391f4134e000d806e539bb",
-    "theory_checks.json": "d4f8b3959642789745ea9a89025db238fc3c179889a409fd7ca220b84908a1ba"
+    "chain_diagnostics.json": "20976b5d19c05dd7d09767683097835ce0519c3324fae4bf2ae0852ce301e7fa",
+    "evidence.json": "445bb54fec4cf48872c720e0daa62a1abfcfbab3dc2e0f04ed68ec6c7ff97761",
+    "evidence_repeatability.json": "4635537591ecabe22329c514afb8296cd1d2db50f7744c5c82773c24955dba74",
+    "map.json": "fd9144d034588498996988bc7841b77ee5452b09f016fb73831662634894bd4a",
+    "pancake.json": "7a4be3e2bc3868ebfbedfd17918c875dbee853b3dc84cc8cd095a7a7cb36f2ce",
+    "prior_sensitivity.json": "36d52071b30c95b88cf76d66a4ba6f5b0dab29c524aeeef0df15dcb06d1ec703",
+    "prior_width_evidence.json": "94ce5c79646fb43edc753d2f95bf56923b0d68cb067ad780b9cd1e0c6052aef3",
+    "profile.json": "50daf793836f421d4116422fd686ae0dcbae3c9b9d111ca6c7adf79d782ce301",
+    "results.json": "cf9f2765f3cee263ca824620c54408b79d521b13c1d0b0901754676d64a3bdc1",
+    "theory_checks.json": "ee015491073539ea964ace38e35bc6fb47f255f9cc7659ef209f0497868c2d03"
   }
 }
