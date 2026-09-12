@@ -8,7 +8,34 @@ publishing. Do it in this order and nothing has to be done twice.
 
 ---
 
-## Step 1 — a personal email address (5 minutes)
+## Step 1 — a personal email address — **DONE**
+
+`daviddelmac@gmail.com`, in `paper/main.tex` and on the title page.
+
+### One thing to settle before Step 2: the affiliation
+
+You said "Ing. Civil Matemático, U. de Chile". That is a *degree*, and the
+paper currently says **Independent researcher**, which is what I have left it
+as. The two are not interchangeable and the distinction is not pedantry:
+
+* An affiliation line states where the work was done and who stands behind it.
+  Naming a university on a paper it had no part in is a misrepresentation that
+  a journal will treat seriously, and it is the kind of thing that is noticed
+  precisely when a paper gets attention.
+* A degree belongs in a CV, not in an author block.
+
+So: **do you currently hold a position, an appointment or a formal affiliation
+at Universidad de Chile** — student, researcher, staff, visiting, anything with
+a current institutional relationship? If yes, say which and I will put it in.
+If it is the degree you earned there and nothing current, "Independent
+researcher" is both correct and perfectly respectable; plenty of good papers
+carry it.
+
+There is a third option if you want the training visible without claiming a
+current affiliation: the acknowledgements can say where you trained. That is
+accurate and costs nothing.
+
+## ~~Step 1~~ — a personal email address (5 minutes)
 
 The only requirement is that it is not the Despegar address. A work address on
 a paper stops working the day you change jobs, and it implies an institutional
@@ -19,7 +46,7 @@ Gmail, Proton and Fastmail all take about three minutes. Use something you
 will still read in ten years, because it goes on the paper permanently and is
 how a referee or a reader reaches you.
 
-## Step 2 — an ORCID (5 minutes, free, needs Step 1)
+## Step 2 — an ORCID (5 minutes, free) — **NEXT**
 
 An ORCID is a permanent author identifier — sixteen digits like
 `0000-0002-1825-0097`. It exists because names are ambiguous and change;
