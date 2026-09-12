@@ -183,7 +183,9 @@ def test_two_writers_do_not_lose_each_other_s_results():
     with tempfile.TemporaryDirectory() as d:
         path = _Path(d) / "results.json"
         path.write_text('{"pre_existing": 1}')
-        ctx = mp.get_context("fork")
+        # spawn, not fork: pytest runs multi-threaded and forking from a
+        # multi-threaded process is deprecated and can deadlock the child.
+        ctx = mp.get_context("spawn")
         procs = [ctx.Process(target=_writer, args=(str(path), f"k{i}", 0.05 * i))
                  for i in range(3)]
         for pr in procs:

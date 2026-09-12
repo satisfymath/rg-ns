@@ -394,9 +394,18 @@ def solve_hedgehog(
         return float(energy_densities(xx, F, Fp)[1])
 
     # Break the quadrature at x = 1, where the densities turn over.
+    #
+    # The tolerance is 1e-11 and not 1e-13. The integrand is a cubic spline
+    # through the solver's mesh, and on a coarse mesh that interpolant is not
+    # smooth enough for the quadrature to reach 1e-13: it reported roundoff and
+    # returned the same answer anyway. Asking for accuracy the input does not
+    # contain produces a warning and no information. At 1e-11 the energy is
+    # unchanged to every digit the manuscript prints, which the mesh
+    # convergence test checks, and it is still two orders below the 1e-9 that
+    # test requires.
     def _integrate(fn: Callable[[float], float]) -> float:
-        a, _ = quad(fn, x_min, 1.0, limit=400, epsabs=1e-13, epsrel=1e-13)
-        b, _ = quad(fn, 1.0, x_max, limit=400, epsabs=1e-13, epsrel=1e-13)
+        a, _ = quad(fn, x_min, 1.0, limit=400, epsabs=1e-11, epsrel=1e-11)
+        b, _ = quad(fn, 1.0, x_max, limit=400, epsabs=1e-11, epsrel=1e-11)
         return a + b
 
     C = float(sol.sol(x_max)[0]) * x_max ** 2
