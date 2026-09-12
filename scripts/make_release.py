@@ -26,9 +26,19 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "release"
 
 INCLUDE_FILES = [
-    "Makefile", "requirements.txt", "README.md",
+    "Makefile", "requirements.txt", "README.md", "README_REPRODUCE.md",
+    # The licence and the citation metadata belong in the deposit itself. A
+    # record that declares MIT while the archive contains no licence text
+    # leaves a user with no grant, and one with no CITATION.cff makes the
+    # reader reconstruct by hand how to cite it.
+    "LICENSE", "CITATION.cff", ".zenodo.json",
     "docs/CLAIM_LEDGER.md", "docs/FINAL_READINESS.md",
-    "docs/NEEDS_DAVID.md",
+    "docs/NEEDS_DAVID.md", "docs/BIB_VERIFICATION.md",
+    "data/SHA256SUMS",
+    # The built manuscript. It lives under paper/build/, which the tree walk
+    # skips as a build directory, so it has to be named. A deposit that backs
+    # a paper's reproducibility claim should contain the paper.
+    "paper/build/main.pdf",
 ]
 INCLUDE_TREES = [
     ("paper", {".tex", ".bib", ".pdf"}),
@@ -154,6 +164,14 @@ def main() -> int:
             "".join(f"{d}  {p}\n" for p, d in sorted(digests.items())))
         print(f"assembled {n} files, {len(digests)} checksummed -> "
               f"{OUT.relative_to(ROOT)}")
+        # Zenodo takes one file. Building the archive here, rather than
+        # leaving it to be zipped by hand, keeps the deposited bytes identical
+        # to the ones whose checksums are recorded inside it.
+        archive = Path(shutil.make_archive(str(ROOT / "release_bundle"), "zip",
+                                           root_dir=str(OUT.parent),
+                                           base_dir=OUT.name))
+        print(f"archive:   {archive.relative_to(ROOT)}  "
+              f"({archive.stat().st_size / 1e6:.1f} MB)")
     return 0 if not found else 1
 
 

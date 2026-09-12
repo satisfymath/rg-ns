@@ -84,10 +84,17 @@ def main() -> int:
             failures.append(f"{tex.relative_to(ROOT)}: table has no data "
                             f"(its results entry is absent)")
 
+    # A DOI is an identifier, not a measurement: "10.5281/zenodo.22726266" is
+    # typed by hand because it can only be typed by hand, and the gate exists
+    # to stop *results* being typed by hand. Removed before the scan rather
+    # than whitelisted digit by digit, so a future DOI needs no maintenance.
+    DOI = re.compile(r"10\.\d{4,9}/[-._;()/:A-Za-z0-9]+")
+
     allowed = load_whitelist()
     for tex in sorted(SECTIONS.glob("*.tex")):
         text = tex.read_text()
         text = COMMENT.sub("", text)
+        text = DOI.sub(" ", text)
         text = MATH.sub(" ", text)
         text = COMMANDS.sub(" ", text)
         text = OPTS.sub(" ", text)

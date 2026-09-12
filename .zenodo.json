@@ -11,14 +11,20 @@
     }
   ],
   "keywords": [
-    "cosmology", "interacting vacuum", "dark energy", "absorbing-state kinetics",
-    "mimetic gravity", "nested sampling", "reproducible research"
+    "cosmology",
+    "interacting vacuum",
+    "dark energy",
+    "absorbing-state kinetics",
+    "mimetic gravity",
+    "nested sampling",
+    "reproducible research"
   ],
   "related_identifiers": [
     {
-      "relation": "isSupplementTo",
-      "identifier": "TODO-ARXIV",
-      "scheme": "arxiv"
+      "relation": "isSupplementedBy",
+      "identifier": "https://github.com/satisfymath/rg-ns",
+      "scheme": "url"
     }
-  ]
+  ],
+  "version": "v1.0"
 }

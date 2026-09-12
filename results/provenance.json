@@ -13,8 +13,8 @@
     "sdss_DR16_QSO_FSBAO_cov.txt": "88f844447fb546792769cdf09b4df7b7a7f77a948f02ef371f54a6f7dddb3d41"
   },
   "git_branch": "master",
-  "git_commit": "914b0b4523b580d53e44150f4fcede5c426c4a22",
-  "git_dirty": false,
+  "git_commit": "02e22a34a8322d4705c874258408707f1ea75709",
+  "git_dirty": true,
   "master_seed": 20260909,
   "packages": {
     "astropy": "8.0.1",

@@ -37,3 +37,6 @@ release/
 # arXiv bundle: make_arxiv.py rebuilds it; a committed copy is a stale
 # submission sitting next to the live one.
 build/
+
+# The deposit archive, rebuilt by make_release.py
+release_bundle.zip
